@@ -1,0 +1,73 @@
+#EXTM3U
+#EXTINF:-1 tvg-name="BC Lions at Ottawa RedBlacks" tvg-logo="https://static.ppvservices.st/assets/thumb/8e9c1e4e6bd52cf00279316dd4334354-thumbnail.jpg" group-title="American Football",[] BC Lions at Ottawa RedBlacks (American Football)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=cfl/2026-08-30/bc-ott
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=61DI9DxaO8VflC8mfbc8OQ&e=1788170578
+#EXTINF:-1 tvg-name="Fox Footy" tvg-logo="https://static.ppvservices.st/assets/thumb/514cf8272ec290889a5ce6fd299fb9c8-thumbnail.jpg" group-title="AFL",[] Fox Footy (AFL)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-fox-footy
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-fox-footy/playlist.m3u8?tk=61DI9DxaO8VflC8mfbc8OQ&e=1788170578
+#EXTINF:-1 tvg-name="Houston Astros vs. New York Mets" tvg-logo="https://static.ppvservices.st/assets/thumb/3a7c4cb360649a6c321701dec31a440d-thumbnail.jpg" group-title="MLB",[] Houston Astros vs. New York Mets (MLB)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mlb/2026-08-30/hou-nym
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/hou-nym/playlist.m3u8?tk=OrUyd2PJ2_yPxmHeShXigQ&e=1788170579
+#EXTINF:-1 tvg-name="Baltimore Orioles vs. Athletics" tvg-logo="https://static.ppvservices.st/assets/thumb/480cbe3fbe7862797938b64a8d53b0ef-thumbnail.jpg" group-title="MLB",[] Baltimore Orioles vs. Athletics (MLB)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mlb/2026-08-30/bal-ath
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/bal-ath/playlist.m3u8?tk=OrUyd2PJ2_yPxmHeShXigQ&e=1788170579
+#EXTINF:-1 tvg-name="Philadelphia Phillies vs. Los Angeles Angels" tvg-logo="https://static.ppvservices.st/assets/thumb/aeb5926e960cfcf425b4df98948c8f16-thumbnail.jpg" group-title="MLB",[] Philadelphia Phillies vs. Los Angeles Angels (MLB)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mlb/2026-08-30/phi-laa
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/phi-laa/playlist.m3u8?tk=OrUyd2PJ2_yPxmHeShXigQ&e=1788170579
+#EXTINF:-1 tvg-name="Cincinnati Reds vs. Chicago Cubs" tvg-logo="https://static.ppvservices.st/assets/thumb/eddfeba73d57d4a32082c45c4f10d93e-thumbnail.jpg" group-title="MLB",[] Cincinnati Reds vs. Chicago Cubs (MLB)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mlb/2026-08-30/cin-chc
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=OrUyd2PJ2_yPxmHeShXigQ&e=1788170579
+#EXTINF:-1 tvg-name="Los Angeles Sparks vs. Seattle Storm" tvg-logo="https://static.ppvservices.st/assets/thumb/20d7774b108b7894a7f82dfb03efaf38-thumbnail.jpg" group-title="WNBA",[] Los Angeles Sparks vs. Seattle Storm (WNBA)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=wnba/2026-08-30/la-sea
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/la-sea/playlist.m3u8?tk=OrUyd2PJ2_yPxmHeShXigQ&e=1788170579
+#EXTINF:-1 tvg-name="Golden State Valkyries vs. Portland Fire" tvg-logo="https://static.ppvservices.st/assets/thumb/aaccb5c967b8635098d3bc37df7450b7-thumbnail.jpg" group-title="WNBA",[] Golden State Valkyries vs. Portland Fire (WNBA)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=wnba/2026-08-30/gs-por
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=OrUyd2PJ2_yPxmHeShXigQ&e=1788170579
+#EXTINF:-1 tvg-name="Willow" tvg-logo="https://static.ppvservices.st/assets/thumb/2e3cba2a94ae6af4b958675e73fe91e9-thumbnail.jpg" group-title="Cricket",[] Willow (Cricket)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-willow
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-willow/playlist.m3u8?tk=LwTdoGozzyv7faRFEmuIZg&e=1788170580
+#EXTINF:-1 tvg-name="Fox Cricket" tvg-logo="https://static.ppvservices.st/assets/thumb/5dfe2fc8e56d59add47afb0f6e996e55-thumbnail.jpg" group-title="Cricket",[] Fox Cricket (Cricket)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-fox-cricket
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-fox-cricket/playlist.m3u8?tk=LwTdoGozzyv7faRFEmuIZg&e=1788170580
+#EXTINF:-1 tvg-name="St. Louis CITY SC vs. FC Dallas" tvg-logo="https://static.ppvservices.st/assets/thumb/cb6d4af05555067b0d8704c61f06075a-thumbnail.jpg" group-title="MLS",[] St. Louis CITY SC vs. FC Dallas (MLS)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mls/2026-08-30/stl-dal
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=LwTdoGozzyv7faRFEmuIZg&e=1788170580
+#EXTINF:-1 tvg-name="Fox League" tvg-logo="https://static.ppvservices.st/assets/thumb/5ec4933f4ae6363e151dfe5c75ad24e3-thumbnail.jpg" group-title="Rugby",[] Fox League (Rugby)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-fox-league
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-fox-league/playlist.m3u8?tk=LwTdoGozzyv7faRFEmuIZg&e=1788170580
+#EXTINF:-1 tvg-name="24/7 South Park" tvg-logo="https://thumbs.poocloud.in/southpark/preview.jpg" group-title="24/7 Streams",[] 24/7 South Park (24/7 Streams)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-south-park
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-south-park/playlist.m3u8?tk=LwTdoGozzyv7faRFEmuIZg&e=1788170580
+#EXTINF:-1 tvg-name="24/7 COWS" tvg-logo="https://static.ppvservices.st/assets/thumb/213d77252211e1926309f43b38263a4f-thumbnail.jpg" group-title="24/7 Streams",[] 24/7 COWS (24/7 Streams)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-cows
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-cows/playlist.m3u8?tk=LwTdoGozzyv7faRFEmuIZg&e=1788170580
+#EXTINF:-1 tvg-name="24/7 Family Guy" tvg-logo="https://thumbs.poocloud.in/familyguy/preview.jpg" group-title="24/7 Streams",[] 24/7 Family Guy (24/7 Streams)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-family-guy
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-family-guy/playlist.m3u8?tk=1ax-B--9dm7B4Iluj2h97A&e=1788170581
+#EXTINF:-1 tvg-name="24/7 The Simpsons" tvg-logo="https://thumbs.poocloud.in/thesimpsons/preview.jpg" group-title="24/7 Streams",[] 24/7 The Simpsons (24/7 Streams)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-the-simpsons
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-the-simpsons/playlist.m3u8?tk=1ax-B--9dm7B4Iluj2h97A&e=1788170581
+#EXTINF:-1 tvg-name="24/7 SpongeBob Squarepants" tvg-logo="https://static.ppvservices.st/assets/thumb/f8e24d78314ed44b137c90cbf50b1c1d-thumbnail.jpg" group-title="24/7 Streams",[] 24/7 SpongeBob Squarepants (24/7 Streams)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-spongebob-squarepants
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/247-spongebob-squarepants/playlist.m3u8?tk=1ax-B--9dm7B4Iluj2h97A&e=1788170581
+#EXTINF:-1 tvg-name="Rally TV" tvg-logo="https://static.ppvservices.st/assets/thumb/0b5137de6f5809a3c652fad1b9c1bd57-thumbnail.jpg" group-title="24/7 Streams",[] Rally TV (24/7 Streams)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=rally-tv
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/live-hls/channel/rally-tv/playlist.m3u8?tk=1ax-B--9dm7B4Iluj2h97A&e=1788170581
