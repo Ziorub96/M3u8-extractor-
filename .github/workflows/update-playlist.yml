@@ -1,0 +1,34 @@
+name: Update DAMITV Playlist
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # ogni ora
+  workflow_dispatch:        # esecuzione manuale
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run extractor
+        run: python damitv_extractor.py
+
+      - name: Commit and push updated playlist
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update playlist (automated)"
+          file_pattern: "damitv_events.m3u"
