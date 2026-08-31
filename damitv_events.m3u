@@ -4,210 +4,215 @@
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=cfl/2026-08-30/bc-ott
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=TSLrpeDxGUFYpxDkhCV8WQ&e=1788179158
+https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=1-oAZcsBN1X3GFy1Rnp1Ww&e=1788181136
 #EXTINF:-1 tvg-chno="2" tvg-id="baseball.MLB.main.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="Main HD",[baseball] Cincinnati Reds vs. Chicago Cubs (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mlb/2026-08-30/cin-chc
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=LmFwmyrhYvGUz3tjPz4sNw&e=1788179176
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=YQ5HAkQTAIJUJN2zcuC9XQ&e=1788181157
 #EXTINF:-1 tvg-chno="3" tvg-id="basketball.WNBA.main.Dummy.us" tvg-name="Golden State Valkyries vs. Portland Fire" tvg-logo="" group-title="Main HD",[basketball] Golden State Valkyries vs. Portland Fire (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=wnba/2026-08-30/gs-por
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=nJwR9s4hMAOMGUKqtAmLAA&e=1788179198
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=zk0LXPgHZiw6yy5QMRG9EQ&e=1788181181
 #EXTINF:-1 tvg-chno="4" tvg-id="basketball.WNBA.main.Dummy.us" tvg-name="Connecticut Sun vs. Dallas Wings" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/b2cqg21651998442.jpg" group-title="Main HD",[basketball] Connecticut Sun vs. Dallas Wings (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=wnba/2026-08-30/con-dal
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/con-dal/playlist.m3u8?tk=RoNSkcgnr5U-glu6cRjgtg&e=1788179206
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/con-dal/playlist.m3u8?tk=JxgSPPCUybaRffO2tSGS2w&e=1788181189
 #EXTINF:-1 tvg-chno="5" tvg-id="football.MLS.main.Dummy.us" tvg-name="St. Louis CITY SC vs. FC Dallas" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/g9mnk71771753400.jpg" group-title="Main HD",[football] St. Louis CITY SC vs. FC Dallas (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=mls/2026-08-30/stl-dal
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=ACV13kouJBLs9BU65y8-Xg&e=1788179213
+https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=BpMFJa71qXPNKmNbjWHhlg&e=1788181195
 #EXTINF:-1 tvg-chno="6" tvg-id="football.Football.main.Dummy.us" tvg-name="Toluca vs. FC Juarez" tvg-logo="" group-title="Main HD",[football] Toluca vs. FC Juarez (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=liga-mx/2026-08-30/tol-jua
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/tol-jua/playlist.m3u8?tk=OzpkFXl-hfA6TqzoZ0eijQ&e=1788179230
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/tol-jua/playlist.m3u8?tk=-VKDSmYASQCXIG07-1c9wQ&e=1788181208
 #EXTINF:-1 tvg-chno="7" tvg-id="football.Football.main.Dummy.us" tvg-name="Monterrey vs. Atlético de San Luis" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/hgqhmf1784405030.jpg" group-title="Main HD",[football] Monterrey vs. Atlético de San Luis (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=liga-mx/2026-08-30/mty-asl
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/mty-asl/playlist.m3u8?tk=4zEBEpfJiyVJwFRgZkFPYg&e=1788179231
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/mty-asl/playlist.m3u8?tk=gecob6xLeyaBi6-xhmKeeg&e=1788181210
 #EXTINF:-1 tvg-chno="8" tvg-id="football.Serie.A.main.Dummy.us" tvg-name="Lecce vs. AS Roma" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/zozan61765442609.jpg" group-title="Main HD",[football] Lecce vs. AS Roma (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=seriea/2026-08-31/lec-roma
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/lec-roma/playlist.m3u8?tk=2g4ywzW-Tyo97qiV5Dmaog&e=1788179239
+https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/lec-roma/playlist.m3u8?tk=Ovb7gdHZSm-v0adijPY5sw&e=1788181222
 #EXTINF:-1 tvg-chno="9" tvg-id="football.La.Liga.main.Dummy.us" tvg-name="Osasuna vs. Getafe" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/0y63br1784904443.jpg" group-title="Main HD",[football] Osasuna vs. Getafe (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=laliga/2026-08-31/osa-get
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/osa-get/playlist.m3u8?tk=f6q6CEjqJCaB2euR3tEwsw&e=1788179240
+https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/osa-get/playlist.m3u8?tk=rHKuvH1RY9Uy8_ORmKlVfA&e=1788181223
 #EXTINF:-1 tvg-chno="10" tvg-id="football.Serie.A.main.Dummy.us" tvg-name="Atalanta vs. Bologna" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/4jfxh71780899981.jpg" group-title="Main HD",[football] Atalanta vs. Bologna (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=seriea/2026-08-31/ata-bol
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/ata-bol/playlist.m3u8?tk=BjaOM71tipEzaC_Hv-endA&e=1788179242
+https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/ata-bol/playlist.m3u8?tk=m9u3IljOp5SZZwWLNRbkvw&e=1788181225
 #EXTINF:-1 tvg-chno="11" tvg-id="football.Premier.League.main.Dummy.us" tvg-name="Aston Villa vs. Arsenal" tvg-logo="https://www.thesportsdb.com/images/media/event/thumb/7wa4qy1787740853.jpg" group-title="Main HD",[football] Aston Villa vs. Arsenal (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=pl/2026-08-31/avl-ars
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/pl/2026-08-31/avl-ars/playlist.m3u8?tk=qwzfdTxP3RZ7xf3Z4_1wjA&e=1788179243
+https://messi.damitv.st/live-hls/channel/pl/2026-08-31/avl-ars/playlist.m3u8?tk=fGY--IEH5IfQxvwuhznFSw&e=1788181227
 #EXTINF:-1 tvg-chno="12" tvg-id="football.La.Liga.main.Dummy.us" tvg-name="Barcelona vs. Rayo Vallecano" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/22qa271784904444.jpg" group-title="Main HD",[football] Barcelona vs. Rayo Vallecano (HD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=laliga/2026-08-31/bar-ray
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/bar-ray/playlist.m3u8?tk=0qygxOSDiDjBZVxGMq7WCg&e=1788179244
+https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/bar-ray/playlist.m3u8?tk=fcRy9_QCjjj34ngGOCaxHA&e=1788181228
 # ===== ALL SOURCES =====
 #EXTINF:-1 tvg-chno="1" tvg-id="american-football.American.Football.s1.Dummy.us" tvg-name="BC Lions at Ottawa RedBlacks - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/5y15h71630954239.jpg" group-title="American Football",[american-football] BC Lions at Ottawa RedBlacks (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=TSLrpeDxGUFYpxDkhCV8WQ&e=1788179158
+https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=2Sedz2bvaOXvUEclqkGqqA&e=1788181137
 #EXTINF:-1 tvg-chno="2" tvg-id="american-football.American.Football.sd.Dummy.us" tvg-name="BC Lions at Ottawa RedBlacks - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/5y15h71630954239.jpg" group-title="American Football",[american-football] BC Lions at Ottawa RedBlacks (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=ilxFJplMfUfjF0NipVsAxw&e=1788179159
+https://messi.damitv.st/live-hls/channel/cfl/2026-08-30/bc-ott/playlist.m3u8?tk=6LTyQ1H_WJvWumOXa9a7VQ&e=1788181138
 #EXTINF:-1 tvg-chno="3" tvg-id="american-football.American.Football.dlhd-196.Dummy.us" tvg-name="BC Lions at Ottawa RedBlacks - Event SD Stream" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/5y15h71630954239.jpg" group-title="American Football",[american-football] BC Lions at Ottawa RedBlacks (Event SD Stream)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-196
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/papi/tv/live/196.m3u8?tk=RHSc87_94L5u4Ym7jTnH0Q&e=1788179162
+https://messi.damitv.st/papi/tv/live/196.m3u8?tk=MQjh_BJOkAsTBGqROIHUmw&e=1788181142
 #EXTINF:-1 tvg-chno="4" tvg-id="baseball.MLB.s1.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="MLB",[baseball] Cincinnati Reds vs. Chicago Cubs (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=lG7eGuP-v3_XD94A0RDu0g&e=1788179177
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=YQ5HAkQTAIJUJN2zcuC9XQ&e=1788181157
 #EXTINF:-1 tvg-chno="5" tvg-id="baseball.MLB.sd.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="MLB",[baseball] Cincinnati Reds vs. Chicago Cubs (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=lG7eGuP-v3_XD94A0RDu0g&e=1788179177
+https://messi.damitv.st/live-hls/channel/mlb/2026-08-30/cin-chc/playlist.m3u8?tk=TGjSZkDsuSxZ8Wiw7rsqWw&e=1788181158
 #EXTINF:-1 tvg-chno="6" tvg-id="baseball.MLB.dlhd-16.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs - MLB League Pass" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="MLB",[baseball] Cincinnati Reds vs. Chicago Cubs (MLB League Pass)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-16
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/papi/tv/live/16.m3u8?tk=_GAm3b71kwvGGqg_ec1VpQ&e=1788179180
-#EXTINF:-1 tvg-chno="7" tvg-id="baseball.MLB.dlhd-53.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs - NBC USA" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="MLB",[baseball] Cincinnati Reds vs. Chicago Cubs (NBC USA)
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-53
+https://messi.damitv.st/papi/tv/live/16.m3u8?tk=LU3DgbMZWDnECKikPqtyrw&e=1788181159
+#EXTINF:-1 tvg-chno="7" tvg-id="baseball.MLB.dlhd-769.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs - NBCNY USA" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="MLB",[baseball] Cincinnati Reds vs. Chicago Cubs (NBCNY USA)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-769
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/papi/tv/live/53.m3u8?tk=WTZgaq2vrBFoUEqJtBvBnA&e=1788179184
+https://messi.damitv.st/papi/tv/live/769.m3u8?tk=MjfxLvQpjPdljhL2o4GuOQ&e=1788181167
 #EXTINF:-1 tvg-chno="8" tvg-id="baseball.MLB.dlhd-31.Dummy.us" tvg-name="Cincinnati Reds vs. Chicago Cubs - TNT Sports 1 UK" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/9x2g6l1785918981.jpg" group-title="MLB",[baseball] Cincinnati Reds vs. Chicago Cubs (TNT Sports 1 UK)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-31
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/papi/tv/live/31.m3u8?tk=rDvVHoUrqpqfWzAGhp0RGg&e=1788179195
+https://messi.damitv.st/papi/tv/live/31.m3u8?tk=Wrgw7qnS0RpAZYD_DNSB0w&e=1788181176
 #EXTINF:-1 tvg-chno="9" tvg-id="basketball.WNBA.s1.Dummy.us" tvg-name="Golden State Valkyries vs. Portland Fire - Server 1" tvg-logo="" group-title="WNBA",[basketball] Golden State Valkyries vs. Portland Fire (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=DePHpcGfFcAWzfrGowwXAw&e=1788179199
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=zk0LXPgHZiw6yy5QMRG9EQ&e=1788181181
 #EXTINF:-1 tvg-chno="10" tvg-id="basketball.WNBA.sd.Dummy.us" tvg-name="Golden State Valkyries vs. Portland Fire - Server 2 SD" tvg-logo="" group-title="WNBA",[basketball] Golden State Valkyries vs. Portland Fire (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=DePHpcGfFcAWzfrGowwXAw&e=1788179199
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/gs-por/playlist.m3u8?tk=_O1jydHTD2wlHUqs5OUzvQ&e=1788181182
 #EXTINF:-1 tvg-chno="11" tvg-id="basketball.WNBA.s1.Dummy.us" tvg-name="Connecticut Sun vs. Dallas Wings - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/b2cqg21651998442.jpg" group-title="WNBA",[basketball] Connecticut Sun vs. Dallas Wings (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/con-dal/playlist.m3u8?tk=4XhQAJKWW6oY0QDE7i1XNA&e=1788179207
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/con-dal/playlist.m3u8?tk=rG1kwpQ_A3ExZROnlT7IhA&e=1788181190
 #EXTINF:-1 tvg-chno="12" tvg-id="basketball.WNBA.sd.Dummy.us" tvg-name="Connecticut Sun vs. Dallas Wings - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/b2cqg21651998442.jpg" group-title="WNBA",[basketball] Connecticut Sun vs. Dallas Wings (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/con-dal/playlist.m3u8?tk=4XhQAJKWW6oY0QDE7i1XNA&e=1788179207
-#EXTINF:-1 tvg-chno="13" tvg-id="basketball.WNBA.dlhd-209.Dummy.us" tvg-name="Connecticut Sun vs. Dallas Wings - Event SD Stream" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/b2cqg21651998442.jpg" group-title="WNBA",[basketball] Connecticut Sun vs. Dallas Wings (Event SD Stream)
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-209
+https://messi.damitv.st/live-hls/channel/wnba/2026-08-30/con-dal/playlist.m3u8?tk=rG1kwpQ_A3ExZROnlT7IhA&e=1788181190
+#EXTINF:-1 tvg-chno="13" tvg-id="basketball.WNBA.dlhd-754.Dummy.us" tvg-name="Connecticut Sun vs. Dallas Wings - NBCS Boston USA" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/b2cqg21651998442.jpg" group-title="WNBA",[basketball] Connecticut Sun vs. Dallas Wings (NBCS Boston USA)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-754
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/papi/tv/live/209.m3u8?tk=m3j0lib7PT8h8-s0wKBEgw&e=1788179212
+https://messi.damitv.st/papi/tv/live/754.m3u8?tk=kG8Ph6PNcBw4sVjHmrIgVQ&e=1788181191
 #EXTINF:-1 tvg-chno="14" tvg-id="football.MLS.s1.Dummy.us" tvg-name="St. Louis CITY SC vs. FC Dallas - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/g9mnk71771753400.jpg" group-title="MLS",[football] St. Louis CITY SC vs. FC Dallas (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=ACV13kouJBLs9BU65y8-Xg&e=1788179213
+https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=9g07vC5PwCVEkBakkFd4jw&e=1788181196
 #EXTINF:-1 tvg-chno="15" tvg-id="football.MLS.sd.Dummy.us" tvg-name="St. Louis CITY SC vs. FC Dallas - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/g9mnk71771753400.jpg" group-title="MLS",[football] St. Louis CITY SC vs. FC Dallas (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=Cdsunul5FbdQUQOMPb0tBQ&e=1788179214
-#EXTINF:-1 tvg-chno="16" tvg-id="football.Football.s1.Dummy.us" tvg-name="Toluca vs. FC Juarez - Server 1" tvg-logo="" group-title="Football",[football] Toluca vs. FC Juarez (Server 1)
+https://messi.damitv.st/live-hls/channel/mls/2026-08-30/stl-dal/playlist.m3u8?tk=9g07vC5PwCVEkBakkFd4jw&e=1788181196
+#EXTINF:-1 tvg-chno="16" tvg-id="football.MLS.dlhd-475.Dummy.us" tvg-name="St. Louis CITY SC vs. FC Dallas - MAX Sport 4 Bulgaria" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/g9mnk71771753400.jpg" group-title="MLS",[football] St. Louis CITY SC vs. FC Dallas (MAX Sport 4 Bulgaria)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-475
+#EXTVLCOPT:http-origin=https://ondemand.st
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/papi/tv/live/475.m3u8?tk=TBrYAn4rWv3WhjvZwdN1Sw&e=1788181204
+#EXTINF:-1 tvg-chno="17" tvg-id="football.MLS.dlhd-141.Dummy.us" tvg-name="St. Louis CITY SC vs. FC Dallas - Sport 2 Israel" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/g9mnk71771753400.jpg" group-title="MLS",[football] St. Louis CITY SC vs. FC Dallas (Sport 2 Israel)
+#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-141
+#EXTVLCOPT:http-origin=https://ondemand.st
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+https://messi.damitv.st/papi/tv/live/141.m3u8?tk=TBrYAn4rWv3WhjvZwdN1Sw&e=1788181204
+#EXTINF:-1 tvg-chno="18" tvg-id="football.Football.s1.Dummy.us" tvg-name="Toluca vs. FC Juarez - Server 1" tvg-logo="" group-title="Football",[football] Toluca vs. FC Juarez (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/tol-jua/playlist.m3u8?tk=OzpkFXl-hfA6TqzoZ0eijQ&e=1788179230
-#EXTINF:-1 tvg-chno="17" tvg-id="football.Football.sd.Dummy.us" tvg-name="Toluca vs. FC Juarez - Server 2 SD" tvg-logo="" group-title="Football",[football] Toluca vs. FC Juarez (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/tol-jua/playlist.m3u8?tk=-p51-T0eIpkJ_Fy38w7igw&e=1788181209
+#EXTINF:-1 tvg-chno="19" tvg-id="football.Football.sd.Dummy.us" tvg-name="Toluca vs. FC Juarez - Server 2 SD" tvg-logo="" group-title="Football",[football] Toluca vs. FC Juarez (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/tol-jua/playlist.m3u8?tk=4zEBEpfJiyVJwFRgZkFPYg&e=1788179231
-#EXTINF:-1 tvg-chno="18" tvg-id="football.Football.s1.Dummy.us" tvg-name="Monterrey vs. Atlético de San Luis - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/hgqhmf1784405030.jpg" group-title="Football",[football] Monterrey vs. Atlético de San Luis (Server 1)
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/tol-jua/playlist.m3u8?tk=-p51-T0eIpkJ_Fy38w7igw&e=1788181209
+#EXTINF:-1 tvg-chno="20" tvg-id="football.Football.s1.Dummy.us" tvg-name="Monterrey vs. Atlético de San Luis - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/hgqhmf1784405030.jpg" group-title="Football",[football] Monterrey vs. Atlético de San Luis (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/mty-asl/playlist.m3u8?tk=dbZvVcczMt0FmgyzSfKqUw&e=1788179232
-#EXTINF:-1 tvg-chno="19" tvg-id="football.Football.sd.Dummy.us" tvg-name="Monterrey vs. Atlético de San Luis - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/hgqhmf1784405030.jpg" group-title="Football",[football] Monterrey vs. Atlético de San Luis (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/mty-asl/playlist.m3u8?tk=pWvUU8mk-OAhynH_qwasmg&e=1788181211
+#EXTINF:-1 tvg-chno="21" tvg-id="football.Football.sd.Dummy.us" tvg-name="Monterrey vs. Atlético de San Luis - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/hgqhmf1784405030.jpg" group-title="Football",[football] Monterrey vs. Atlético de San Luis (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/mty-asl/playlist.m3u8?tk=dbZvVcczMt0FmgyzSfKqUw&e=1788179232
-#EXTINF:-1 tvg-chno="20" tvg-id="football.Football.dlhd-66.Dummy.us" tvg-name="Monterrey vs. Atlético de San Luis - TUDN USA" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/hgqhmf1784405030.jpg" group-title="Football",[football] Monterrey vs. Atlético de San Luis (TUDN USA)
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=dlhd-66
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/papi/tv/live/66.m3u8?tk=Iu7QYl8UH6Pt6isCYO2k5w&e=1788179233
-#EXTINF:-1 tvg-chno="21" tvg-id="football.Serie.A.s1.Dummy.us" tvg-name="Lecce vs. AS Roma - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/zozan61765442609.jpg" group-title="Serie A",[football] Lecce vs. AS Roma (Server 1)
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-08-30/mty-asl/playlist.m3u8?tk=pWvUU8mk-OAhynH_qwasmg&e=1788181211
+#EXTINF:-1 tvg-chno="22" tvg-id="football.Serie.A.s1.Dummy.us" tvg-name="Lecce vs. AS Roma - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/zozan61765442609.jpg" group-title="Serie A",[football] Lecce vs. AS Roma (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/lec-roma/playlist.m3u8?tk=f6q6CEjqJCaB2euR3tEwsw&e=1788179240
-#EXTINF:-1 tvg-chno="22" tvg-id="football.Serie.A.sd.Dummy.us" tvg-name="Lecce vs. AS Roma - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/zozan61765442609.jpg" group-title="Serie A",[football] Lecce vs. AS Roma (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/lec-roma/playlist.m3u8?tk=Ovb7gdHZSm-v0adijPY5sw&e=1788181222
+#EXTINF:-1 tvg-chno="23" tvg-id="football.Serie.A.sd.Dummy.us" tvg-name="Lecce vs. AS Roma - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/zozan61765442609.jpg" group-title="Serie A",[football] Lecce vs. AS Roma (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/lec-roma/playlist.m3u8?tk=f6q6CEjqJCaB2euR3tEwsw&e=1788179240
-#EXTINF:-1 tvg-chno="23" tvg-id="football.La.Liga.s1.Dummy.us" tvg-name="Osasuna vs. Getafe - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/0y63br1784904443.jpg" group-title="La Liga",[football] Osasuna vs. Getafe (Server 1)
+https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/lec-roma/playlist.m3u8?tk=rHKuvH1RY9Uy8_ORmKlVfA&e=1788181223
+#EXTINF:-1 tvg-chno="24" tvg-id="football.La.Liga.s1.Dummy.us" tvg-name="Osasuna vs. Getafe - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/0y63br1784904443.jpg" group-title="La Liga",[football] Osasuna vs. Getafe (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/osa-get/playlist.m3u8?tk=nkZ-wvJEgswHczDsf9DOTw&e=1788179241
-#EXTINF:-1 tvg-chno="24" tvg-id="football.La.Liga.sd.Dummy.us" tvg-name="Osasuna vs. Getafe - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/0y63br1784904443.jpg" group-title="La Liga",[football] Osasuna vs. Getafe (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/osa-get/playlist.m3u8?tk=-Qgv6y97LGX-B70wFjKuTA&e=1788181224
+#EXTINF:-1 tvg-chno="25" tvg-id="football.La.Liga.sd.Dummy.us" tvg-name="Osasuna vs. Getafe - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/0y63br1784904443.jpg" group-title="La Liga",[football] Osasuna vs. Getafe (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/osa-get/playlist.m3u8?tk=nkZ-wvJEgswHczDsf9DOTw&e=1788179241
-#EXTINF:-1 tvg-chno="25" tvg-id="football.Serie.A.s1.Dummy.us" tvg-name="Atalanta vs. Bologna - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/4jfxh71780899981.jpg" group-title="Serie A",[football] Atalanta vs. Bologna (Server 1)
+https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/osa-get/playlist.m3u8?tk=-Qgv6y97LGX-B70wFjKuTA&e=1788181224
+#EXTINF:-1 tvg-chno="26" tvg-id="football.Serie.A.s1.Dummy.us" tvg-name="Atalanta vs. Bologna - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/4jfxh71780899981.jpg" group-title="Serie A",[football] Atalanta vs. Bologna (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/ata-bol/playlist.m3u8?tk=BjaOM71tipEzaC_Hv-endA&e=1788179242
-#EXTINF:-1 tvg-chno="26" tvg-id="football.Serie.A.sd.Dummy.us" tvg-name="Atalanta vs. Bologna - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/4jfxh71780899981.jpg" group-title="Serie A",[football] Atalanta vs. Bologna (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/ata-bol/playlist.m3u8?tk=m9u3IljOp5SZZwWLNRbkvw&e=1788181225
+#EXTINF:-1 tvg-chno="27" tvg-id="football.Serie.A.sd.Dummy.us" tvg-name="Atalanta vs. Bologna - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/4jfxh71780899981.jpg" group-title="Serie A",[football] Atalanta vs. Bologna (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/ata-bol/playlist.m3u8?tk=BjaOM71tipEzaC_Hv-endA&e=1788179242
-#EXTINF:-1 tvg-chno="27" tvg-id="football.Premier.League.s1.Dummy.us" tvg-name="Aston Villa vs. Arsenal - Server 1" tvg-logo="https://www.thesportsdb.com/images/media/event/thumb/7wa4qy1787740853.jpg" group-title="Premier League",[football] Aston Villa vs. Arsenal (Server 1)
+https://messi.damitv.st/live-hls/channel/seriea/2026-08-31/ata-bol/playlist.m3u8?tk=_luoWzpUzySIY95TlRF-dA&e=1788181226
+#EXTINF:-1 tvg-chno="28" tvg-id="football.Premier.League.s1.Dummy.us" tvg-name="Aston Villa vs. Arsenal - Server 1" tvg-logo="https://www.thesportsdb.com/images/media/event/thumb/7wa4qy1787740853.jpg" group-title="Premier League",[football] Aston Villa vs. Arsenal (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/pl/2026-08-31/avl-ars/playlist.m3u8?tk=qwzfdTxP3RZ7xf3Z4_1wjA&e=1788179243
-#EXTINF:-1 tvg-chno="28" tvg-id="football.Premier.League.sd.Dummy.us" tvg-name="Aston Villa vs. Arsenal - Server 2 SD" tvg-logo="https://www.thesportsdb.com/images/media/event/thumb/7wa4qy1787740853.jpg" group-title="Premier League",[football] Aston Villa vs. Arsenal (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/pl/2026-08-31/avl-ars/playlist.m3u8?tk=fGY--IEH5IfQxvwuhznFSw&e=1788181227
+#EXTINF:-1 tvg-chno="29" tvg-id="football.Premier.League.sd.Dummy.us" tvg-name="Aston Villa vs. Arsenal - Server 2 SD" tvg-logo="https://www.thesportsdb.com/images/media/event/thumb/7wa4qy1787740853.jpg" group-title="Premier League",[football] Aston Villa vs. Arsenal (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/pl/2026-08-31/avl-ars/playlist.m3u8?tk=qwzfdTxP3RZ7xf3Z4_1wjA&e=1788179243
-#EXTINF:-1 tvg-chno="29" tvg-id="football.La.Liga.s1.Dummy.us" tvg-name="Barcelona vs. Rayo Vallecano - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/22qa271784904444.jpg" group-title="La Liga",[football] Barcelona vs. Rayo Vallecano (Server 1)
+https://messi.damitv.st/live-hls/channel/pl/2026-08-31/avl-ars/playlist.m3u8?tk=fcRy9_QCjjj34ngGOCaxHA&e=1788181228
+#EXTINF:-1 tvg-chno="30" tvg-id="football.La.Liga.s1.Dummy.us" tvg-name="Barcelona vs. Rayo Vallecano - Server 1" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/22qa271784904444.jpg" group-title="La Liga",[football] Barcelona vs. Rayo Vallecano (Server 1)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=s1
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/bar-ray/playlist.m3u8?tk=0qygxOSDiDjBZVxGMq7WCg&e=1788179244
-#EXTINF:-1 tvg-chno="30" tvg-id="football.La.Liga.sd.Dummy.us" tvg-name="Barcelona vs. Rayo Vallecano - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/22qa271784904444.jpg" group-title="La Liga",[football] Barcelona vs. Rayo Vallecano (Server 2 SD)
+https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/bar-ray/playlist.m3u8?tk=WHjFkrWjugDodJs5NmgBuA&e=1788181229
+#EXTINF:-1 tvg-chno="31" tvg-id="football.La.Liga.sd.Dummy.us" tvg-name="Barcelona vs. Rayo Vallecano - Server 2 SD" tvg-logo="https://r2.thesportsdb.com/images/media/event/thumb/22qa271784904444.jpg" group-title="La Liga",[football] Barcelona vs. Rayo Vallecano (Server 2 SD)
 #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd
 #EXTVLCOPT:http-origin=https://ondemand.st
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
-https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/bar-ray/playlist.m3u8?tk=LWAi-ZImC5suEBA9Ux0g4w&e=1788179245
+https://messi.damitv.st/live-hls/channel/laliga/2026-08-31/bar-ray/playlist.m3u8?tk=WHjFkrWjugDodJs5NmgBuA&e=1788181229
