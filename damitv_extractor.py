@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+from datetime import datetime, timedelta
 
 BASE_URL = "https://ondemand.st"
 API_STREAMS = f"{BASE_URL}/papi/api/streams"
@@ -11,7 +12,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 OUTPUT_FILE = "damitv_events.m3u"
 
-# --- CANALI FISSI (sempre presenti nella playlist) ---
+# --- CANALI FISSI ---
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -46,6 +47,15 @@ def get_channel_m3u8(ch_id):
         return data.get("stream") or data.get("url")
     return None
 
+def is_starting_soon(starts_at, hours_before=1):
+    """Ritorna True se l'evento inizia entro 'hours_before' ore."""
+    if not starts_at:
+        return False
+    now = int(time.time())
+    start = int(starts_at)
+    # Mostra eventi che iniziano tra (ora - 30 min) e (ora + hours_before)
+    return (start - now) <= (hours_before * 3600) and (start + 1800) >= now
+
 def main():
     print("📡 Recupero streams da papi/api/streams...")
     data = http_get(API_STREAMS, referer=BASE_URL)
@@ -53,7 +63,6 @@ def main():
         print("Errore API")
         return
 
-    # Liste per le sezioni
     fixed_lines = []
     main_hd_lines = []
     all_sources_lines = []
@@ -61,7 +70,7 @@ def main():
     chno_main = 1
     chno_all = 1
 
-    # ---- SEZIONE FISSA ----
+    # ---- CANALI FISSI ----
     for name, url in FIXED_CHANNELS:
         fixed_lines.append(f'#EXTINF:-1 tvg-chno="{chno_fixed}" tvg-name="{name}" group-title="Canali Fissi",{name}')
         fixed_lines.append(url)
@@ -74,6 +83,11 @@ def main():
             sport = category.get("category", "")
             logo = ev.get("poster", "")
             sources = ev.get("sources", [])
+            starts_at = ev.get("starts_at")
+
+            # Filtro: solo eventi che iniziano entro 1 ora (o già live)
+            if not is_starting_soon(starts_at, hours_before=1):
+                continue
 
             # ---- MAIN HD ----
             main_m3u8 = None
@@ -118,7 +132,7 @@ def main():
                     all_sources_lines.append(m3u8_url)
                     chno_all += 1
 
-    # Combina tutte le sezioni
+    # Combina tutto
     final_lines = ["#EXTM3U"]
     final_lines.append("# ===== CANALI FISSI =====")
     final_lines.extend(fixed_lines)
