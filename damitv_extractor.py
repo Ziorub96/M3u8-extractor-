@@ -1,7 +1,6 @@
 import requests
 import json
 import time
-import sys
 
 BASE_URL = "https://ondemand.st"
 API_STREAMS = f"{BASE_URL}/papi/api/streams"
@@ -12,7 +11,6 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 OUTPUT_FILE = "damitv_events.m3u"
 
-# --- CANALI FISSI (sempre presenti) ---
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -49,7 +47,10 @@ def get_channel_m3u8(ch_id):
     return None
 
 def get_live_tv_channels():
-    """Scarica i canali TimStreams e restituisce righe minimali."""
+    """
+    Scarica la lista dei canali TimStreams da ts-channels.json,
+    risolve ogni canale con /papi/tv/resolve/ e restituisce le righe M3U.
+    """
     ts_url = f"{BASE_URL}/data/ts-channels.json"
     print("📡 Scarico lista canali Live TV...")
     data = http_get_json(ts_url, referer=f"{BASE_URL}/livetv")
@@ -63,17 +64,22 @@ def get_live_tv_channels():
     lines = []
     for idx, ch in enumerate(data):
         if isinstance(ch, str):
-            print(f"Ignoro voce stringa: {ch[:80]}")
+            # Alcuni elementi potrebbero essere stringhe, li saltiamo
+            print(f"Ignoro voce stringa (idx {idx}): {ch[:60]}...")
             continue
         if not isinstance(ch, dict):
-            print(f"Ignoro voce non dizionario: {type(ch)}")
+            print(f"Ignoro voce non dizionario (idx {idx}): {type(ch)}")
             continue
 
+        # Estrai l'ID del canale (daddyId) e il nome
         daddy_id = ch.get("daddyId") or ch.get("id") or ch.get("channel_id")
         name = ch.get("name") or ch.get("title") or "Canale"
         if not daddy_id:
+            print(f"⚠️ Canale senza ID, saltato: {name}")
             continue
 
+        # Risolvi lo stream
+        print(f"🔍 Risolvo {name} (ID: {daddy_id})...")
         m3u8_url = get_channel_m3u8(daddy_id)
         if m3u8_url:
             lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}",{name}')
@@ -85,7 +91,9 @@ def get_live_tv_channels():
     return lines
 
 def build_sports_lines():
-    """Eventi sportivi in formato minimale con debug."""
+    """
+    Recupera eventi sportivi da papi/api/streams e restituisce righe M3U minimali.
+    """
     print("📡 Recupero eventi sportivi...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
     if data is None:
