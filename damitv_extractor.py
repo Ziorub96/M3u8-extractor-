@@ -11,7 +11,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 OUTPUT_FILE = "damitv_events.m3u"
 
-# --- CANALI FISSI (sempre presenti) ---
+# --- CANALI FISSI ---
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -20,7 +20,7 @@ FIXED_CHANNELS = [
     ("Match!Ultra", "http://stream.mcquack.net/169/index.m3u8"),
 ]
 
-def http_get(url, referer=None):
+def http_get_json(url, referer=None):
     headers = {"User-Agent": USER_AGENT}
     if referer:
         headers["Referer"] = referer
@@ -31,27 +31,67 @@ def http_get(url, referer=None):
     except:
         return None
 
+def http_get_text(url, referer=None):
+    headers = {"User-Agent": USER_AGENT}
+    if referer:
+        headers["Referer"] = referer
+    try:
+        r = requests.get(url, headers=headers, timeout=10)
+        r.raise_for_status()
+        return r.text
+    except:
+        return None
+
 def get_event_m3u8(event_id, sd=False):
     url = API_EXTRACT + event_id
     if sd:
         url += "?sd=1"
-    data = http_get(url, referer=f"{BASE_URL}/embed/?id={event_id}")
+    data = http_get_json(url, referer=f"{BASE_URL}/embed/?id={event_id}")
     if data and data.get("success"):
         return data.get("hlsUrl") or data.get("sdUrl")
     return None
 
 def get_channel_m3u8(ch_id):
-    data = http_get(API_TV_RESOLVE + ch_id, referer=f"{BASE_URL}/embed/?id={ch_id}")
+    data = http_get_json(API_TV_RESOLVE + ch_id, referer=f"{BASE_URL}/embed/?id={ch_id}")
     if data and (data.get("stream") or data.get("url")):
         return data.get("stream") or data.get("url")
     return None
 
+def get_live_tv_channels():
+    """Scarica la lista dei canali TimStreams e risolve i loro stream."""
+    ts_url = f"{BASE_URL}/data/ts-channels.json"
+    print("📡 Scarico lista canali Live TV (ts-channels.json)...")
+    data = http_get_json(ts_url, referer=f"{BASE_URL}/livetv")
+    if not data:
+        print("Errore nel download dei canali Live TV")
+        return []
+
+    lines = []
+    chno = 1
+    for ch in data:
+        daddy_id = ch.get("daddyId") or ch.get("id") or ch.get("channel_id")
+        name = ch.get("name") or ch.get("title") or "Canale"
+        logo = ch.get("logo") or ch.get("image") or ""
+        if not daddy_id:
+            continue
+        print(f"🔍 Risolvo {name} ({daddy_id})...")
+        m3u8_url = get_channel_m3u8(daddy_id)
+        if m3u8_url:
+            lines.append(f'#EXTINF:-1 tvg-chno="{chno}" tvg-name="{name}" tvg-logo="{logo}" group-title="Live TV",{name}')
+            lines.append(f'#EXTVLCOPT:http-referrer={BASE_URL}/embed/?id={daddy_id}')
+            lines.append(f'#EXTVLCOPT:http-origin={BASE_URL}')
+            lines.append(f'#EXTVLCOPT:http-user-agent={USER_AGENT}')
+            lines.append(m3u8_url)
+            chno += 1
+
+    print(f"✅ Canali Live TV aggiunti: {len(lines)//5}")
+    return lines
+
 def build_sports_lines():
-    """Genera le righe M3U per sport e live TV."""
-    print("📡 Recupero streams da papi/api/streams...")
-    data = http_get(API_STREAMS, referer=BASE_URL)
+    print("📡 Recupero eventi sportivi da papi/api/streams...")
+    data = http_get_json(API_STREAMS, referer=BASE_URL)
     if not data or not data.get("success"):
-        print("Errore API")
+        print("Errore API eventi")
         return []
 
     lines = []
@@ -63,22 +103,6 @@ def build_sports_lines():
         lines.append(url)
         chno += 1
 
-    # ---- LIVE TV CHANNELS (canali 24/7) ----
-    for category in data["streams"]:
-        for ev in category["streams"]:
-            ev_id = ev.get("id", "")
-            title = ev.get("name", "Sconosciuto")
-            if ev_id.startswith("247-") or ev.get("always_live") == 1:
-                m3u8_url = get_channel_m3u8(ev_id)
-                if m3u8_url:
-                    display = f"[LIVE TV] {title}"
-                    lines.append(f'#EXTINF:-1 tvg-chno="{chno}" tvg-name="{title}" group-title="Live TV",{display}')
-                    lines.append(f'#EXTVLCOPT:http-referrer={BASE_URL}/embed/?id={ev_id}')
-                    lines.append(f'#EXTVLCOPT:http-origin={BASE_URL}')
-                    lines.append(f'#EXTVLCOPT:http-user-agent={USER_AGENT}')
-                    lines.append(m3u8_url)
-                    chno += 1
-
     # ---- EVENTI SPORTIVI ----
     for category in data["streams"]:
         for ev in category["streams"]:
@@ -89,11 +113,7 @@ def build_sports_lines():
             logo = ev.get("poster", "")
             sources = ev.get("sources", [])
 
-            # Salta canali 24/7 già gestiti
-            if ev_id.startswith("247-") or ev.get("always_live") == 1:
-                continue
-
-            # ---- MAIN HD (solo s1) ----
+            # ---- MAIN HD ----
             main_m3u8 = None
             for src in sources:
                 if src.get("source") == "hls" and src.get("id") == "s1":
@@ -137,7 +157,19 @@ def build_sports_lines():
     return lines
 
 def main():
-    lines = build_sports_lines()
+    lines = []
+
+    # 1. Canali fissi + eventi sportivi
+    sports_lines = build_sports_lines()
+    if sports_lines:
+        lines.extend(sports_lines)
+
+    # 2. Canali Live TV (TimStreams)
+    live_tv_lines = get_live_tv_channels()
+    if live_tv_lines:
+        # Aggiungiamo i canali live tv dopo gli eventi sportivi
+        lines.extend(live_tv_lines)
+
     if not lines:
         print("Nessun dato, file non scritto.")
         return
@@ -146,7 +178,7 @@ def main():
         f.write("#EXTM3U\n")
         f.write("\n".join(lines))
 
-    print(f"\n✅ Salvato {OUTPUT_FILE} con {len(lines)//5} voci")
+    print(f"\n✅ Salvato {OUTPUT_FILE} con {len(lines)//5} voci totali")
 
 if __name__ == "__main__":
     main()
