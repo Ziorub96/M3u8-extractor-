@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run combine script
-        run: python combine_playlists.py
+      - name: Run playlist generator
+        run: python combine_playlist.py
 
       - name: Commit and push updated playlist
         uses: stefanzweifel/git-auto-commit-action@v5
