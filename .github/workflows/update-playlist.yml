@@ -2,7 +2,7 @@ name: Update DAMITV Playlist
 
 on:
   schedule:
-    - cron: "0 * * * *"   # ogni ora
+    - cron: "15 * * * *"   # ogni ora al minuto 15
   workflow_dispatch:
 
 permissions:
