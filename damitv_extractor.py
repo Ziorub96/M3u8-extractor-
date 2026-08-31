@@ -1,17 +1,18 @@
 import requests
 import json
 import time
+import sys
 
 BASE_URL = "https://ondemand.st"
 API_STREAMS = f"{BASE_URL}/papi/api/streams"
 API_EXTRACT = f"{BASE_URL}/papi/extract-url/"
 API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 
-USER_AGENT = "Mozilla/5.0"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 OUTPUT_FILE = "damitv_events.m3u"
 
-# --- CANALI FISSI ---
+# --- CANALI FISSI (sempre presenti) ---
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -25,10 +26,11 @@ def http_get_json(url, referer=None):
     if referer:
         headers["Referer"] = referer
     try:
-        r = requests.get(url, headers=headers, timeout=10)
+        r = requests.get(url, headers=headers, timeout=30)
         r.raise_for_status()
         return r.json()
-    except:
+    except Exception as e:
+        print(f"❌ Errore richiesta {url}: {e}")
         return None
 
 def get_event_m3u8(event_id, sd=False):
@@ -51,14 +53,20 @@ def get_live_tv_channels():
     ts_url = f"{BASE_URL}/data/ts-channels.json"
     print("📡 Scarico lista canali Live TV...")
     data = http_get_json(ts_url, referer=f"{BASE_URL}/livetv")
-    if not data:
+    if data is None:
+        print("❌ Impossibile scaricare ts-channels.json")
+        return []
+    if not isinstance(data, list):
+        print(f"⚠️ Formato inatteso per ts-channels.json: {type(data)}")
         return []
 
     lines = []
-    for ch in data:
+    for idx, ch in enumerate(data):
         if isinstance(ch, str):
-            # Se è una stringa, non possiamo estrarre i campi: salta
-            print(f"Ignoro voce non valida: {ch[:50]}...")
+            print(f"Ignoro voce stringa: {ch[:80]}")
+            continue
+        if not isinstance(ch, dict):
+            print(f"Ignoro voce non dizionario: {type(ch)}")
             continue
 
         daddy_id = ch.get("daddyId") or ch.get("id") or ch.get("channel_id")
@@ -70,20 +78,43 @@ def get_live_tv_channels():
         if m3u8_url:
             lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}",{name}')
             lines.append(m3u8_url)
+        else:
+            print(f"⚠️ Stream non disponibile per {name}")
 
     print(f"✅ Live TV aggiunti: {len(lines)//2}")
     return lines
 
 def build_sports_lines():
-    """Eventi sportivi in formato minimale."""
+    """Eventi sportivi in formato minimale con debug."""
     print("📡 Recupero eventi sportivi...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
-    if not data or not data.get("success"):
+    if data is None:
+        print("❌ API non raggiungibile")
+        return []
+    if not isinstance(data, dict):
+        print(f"❌ Risposta non dizionario: {type(data)}")
+        return []
+    if not data.get("success"):
+        print(f"❌ success=false: {data}")
         return []
 
+    streams = data.get("streams", [])
+    print(f"🔢 Numero categorie: {len(streams)}")
+    for cat in streams:
+        if isinstance(cat, dict):
+            cat_name = cat.get("category", "?")
+            cat_streams = cat.get("streams", [])
+            print(f"   - {cat_name}: {len(cat_streams)} eventi")
+        else:
+            print(f"   - Categoria non valida: {type(cat)}")
+
     lines = []
-    for category in data["streams"]:
-        for ev in category["streams"]:
+    for category in streams:
+        if not isinstance(category, dict):
+            continue
+        for ev in category.get("streams", []):
+            if not isinstance(ev, dict):
+                continue
             ev_id = ev.get("id", "")
             title = ev.get("name", "Sconosciuto")
             sport = category.get("category", "")
@@ -92,7 +123,7 @@ def build_sports_lines():
             # Main HD
             main_m3u8 = None
             for src in sources:
-                if src.get("source") == "hls" and src.get("id") == "s1":
+                if isinstance(src, dict) and src.get("source") == "hls" and src.get("id") == "s1":
                     main_m3u8 = get_event_m3u8(ev_id)
                     break
             if main_m3u8:
@@ -102,6 +133,8 @@ def build_sports_lines():
 
             # All sources
             for src in sources:
+                if not isinstance(src, dict):
+                    continue
                 src_id = src.get("id")
                 src_name = src.get("name", "Sorgente")
                 src_type = src.get("source", "")
@@ -122,6 +155,7 @@ def build_sports_lines():
                     lines.append(f'#EXTINF:-1 tvg-id="{src_id}",{display}')
                     lines.append(m3u8_url)
 
+    print(f"✅ Eventi sportivi aggiunti: {len(lines)//2}")
     return lines
 
 def main():
