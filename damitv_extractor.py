@@ -11,6 +11,15 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 OUTPUT_FILE = "damitv_events.m3u"
 
+# --- CANALI FISSI (sempre presenti nella playlist) ---
+FIXED_CHANNELS = [
+    ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
+    ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
+    ("Digi Sport 3", "https://dokagents.site/live/digisport3/mono.m3u8"),
+    ("Digi Sport 4", "https://dokagents.site/live/digisport4/mono.m3u8"),
+    ("Match!Ultra", "http://stream.mcquack.net/169/index.m3u8"),
+]
+
 def http_get(url, referer=None):
     headers = {"User-Agent": USER_AGENT}
     if referer:
@@ -44,11 +53,19 @@ def main():
         print("Errore API")
         return
 
-    # Liste per le due sezioni
+    # Liste per le sezioni
+    fixed_lines = []
     main_hd_lines = []
     all_sources_lines = []
+    chno_fixed = 1
     chno_main = 1
     chno_all = 1
+
+    # ---- SEZIONE FISSA ----
+    for name, url in FIXED_CHANNELS:
+        fixed_lines.append(f'#EXTINF:-1 tvg-chno="{chno_fixed}" tvg-name="{name}" group-title="Canali Fissi",{name}')
+        fixed_lines.append(url)
+        chno_fixed += 1
 
     for category in data["streams"]:
         for ev in category["streams"]:
@@ -58,7 +75,7 @@ def main():
             logo = ev.get("poster", "")
             sources = ev.get("sources", [])
 
-            # ---- SEZIONE MAIN HD (solo s1) ----
+            # ---- MAIN HD ----
             main_m3u8 = None
             for src in sources:
                 if src.get("source") == "hls" and src.get("id") == "s1":
@@ -74,7 +91,7 @@ def main():
                 main_hd_lines.append(main_m3u8)
                 chno_main += 1
 
-            # ---- SEZIONE ALL SOURCES (tutte) ----
+            # ---- ALL SOURCES ----
             for src in sources:
                 src_id = src.get("id")
                 src_name = src.get("name", "Sorgente")
@@ -101,8 +118,10 @@ def main():
                     all_sources_lines.append(m3u8_url)
                     chno_all += 1
 
-    # Combina le due sezioni in un unico file
+    # Combina tutte le sezioni
     final_lines = ["#EXTM3U"]
+    final_lines.append("# ===== CANALI FISSI =====")
+    final_lines.extend(fixed_lines)
     final_lines.append("# ===== MAIN HD =====")
     final_lines.extend(main_hd_lines)
     final_lines.append("# ===== ALL SOURCES =====")
@@ -112,6 +131,7 @@ def main():
         f.write("\n".join(final_lines))
 
     print(f"\n💾 Salvato {OUTPUT_FILE}")
+    print(f"   Canali fissi: {len(FIXED_CHANNELS)}")
     print(f"   Main HD: {len(main_hd_lines)//5} voci")
     print(f"   All Sources: {len(all_sources_lines)//5} voci")
 
