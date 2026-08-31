@@ -3,7 +3,7 @@ name: Update DAMITV Playlist
 on:
   schedule:
     - cron: "0 * * * *"   # ogni ora
-  workflow_dispatch:        # esecuzione manuale
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -22,10 +22,10 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install requests
 
-      - name: Run extractor
-        run: python damitv_extractor.py
+      - name: Run playlist generator
+        run: python generate_playlist.py
 
       - name: Commit and push updated playlist
         uses: stefanzweifel/git-auto-commit-action@v5
