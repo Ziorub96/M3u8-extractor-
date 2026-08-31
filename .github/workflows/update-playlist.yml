@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run playlist generator
-        run: python combine_playlist.py
+      - name: Run DAMITV extractor
+        run: python damitv_extractor.py
 
       - name: Commit and push updated playlist
         uses: stefanzweifel/git-auto-commit-action@v5
