@@ -5,8 +5,6 @@ import time
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ANIMEUNITY_REFERER = "https://www.animeunity.so/"
 
-# Mappa episodio: (episode_id, scws_id)
-# I dati sono stati estratti dalla pagina https://www.animeunity.so/anime/390-dragon-ball-super-ita/9262
 EPISODES = {
     1: (9198, 71552), 2: (9199, 71556), 3: (9200, 71553), 4: (9201, 71555),
     5: (9202, 71554), 6: (9203, 71551), 7: (9204, 71557), 8: (9205, 71561),
@@ -41,7 +39,6 @@ EPISODES = {
 }
 
 def get_embed_url(episode_id):
-    """Scarica la pagina dell'episodio ed estrae l'embed_url fresco."""
     url = f"https://www.animeunity.so/anime/390-dragon-ball-super-ita/{episode_id}"
     headers = {"User-Agent": USER_AGENT, "Referer": ANIMEUNITY_REFERER}
     try:
@@ -60,7 +57,6 @@ def get_embed_url(episode_id):
         return None
 
 def get_vixcloud_m3u8(embed_url):
-    """Dato un embed_url VixCloud, restituisce il link master m3u8."""
     headers = {"User-Agent": USER_AGENT, "Referer": ANIMEUNITY_REFERER}
     try:
         r = requests.get(embed_url, headers=headers, timeout=15)
@@ -70,7 +66,6 @@ def get_vixcloud_m3u8(embed_url):
         print(f"Errore recupero embed VixCloud: {e}")
         return None
 
-    # Estrai window.masterPlaylist
     m = re.search(
         r"window\.masterPlaylist\s*=\s*\{.*?params:\s*\{[^}]*?'token':\s*'([^']+)'[^}]*?'expires':\s*'([^']+)'[^}]*?\}.*?url:\s*'([^']+)'",
         html,
@@ -89,22 +84,32 @@ def get_vixcloud_m3u8(embed_url):
     return m3u8
 
 def get_anime_episodes():
-    """Genera le voci M3U per tutti gli episodi di Dragon Ball Super."""
     lines = []
     for ep, (ep_id, scws_id) in EPISODES.items():
         print(f"Processando episodio {ep}...")
         embed_url = get_embed_url(ep_id)
         if not embed_url:
+            time.sleep(2)
             continue
+
         m3u8 = get_vixcloud_m3u8(embed_url)
         if m3u8:
             lines.append(f'#EXTINF:-1 group-title="AnimeUnity - Dragon Ball Super",Dragon Ball Super Ep {ep:03d}')
             lines.append(m3u8)
-            print(f"  ok")
+            print("  ok")
         else:
-            print(f"  m3u8 non ottenuto")
+            print("  m3u8 non ottenuto")
+
+        time.sleep(1)
+
     return lines
 
 if __name__ == "__main__":
     lines = get_anime_episodes()
-    print(f"Totale episodi estratti: {len(lines)//2}")
+    if lines:
+        with open("anime_dragonball.m3u", "w", encoding="utf-8") as f:
+            f.write("#EXTM3U\n")
+            f.write("\n".join(lines))
+        print(f"\n✅ Salvato anime_dragonball.m3u con {len(lines)//2} episodi")
+    else:
+        print("Nessun episodio estratto.")
