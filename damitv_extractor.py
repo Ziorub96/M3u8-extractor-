@@ -9,6 +9,9 @@ API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
+OUTPUT_FILE = "damitv_events.m3u"
+
+# --- CANALI FISSI (sempre presenti) ---
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -44,7 +47,7 @@ def get_channel_m3u8(ch_id):
     return None
 
 def build_sports_lines():
-    """Genera le sezioni sportive e restituisce una lista di righe M3U."""
+    """Genera le righe M3U per sport e live TV."""
     print("📡 Recupero streams da papi/api/streams...")
     data = http_get(API_STREAMS, referer=BASE_URL)
     if not data or not data.get("success"):
@@ -54,13 +57,13 @@ def build_sports_lines():
     lines = []
     chno = 1
 
-    # Canali fissi
+    # ---- CANALI FISSI ----
     for name, url in FIXED_CHANNELS:
         lines.append(f'#EXTINF:-1 tvg-chno="{chno}" tvg-name="{name}" group-title="Canali Fissi",{name}')
         lines.append(url)
         chno += 1
 
-    # Live TV (canali 24/7)
+    # ---- LIVE TV CHANNELS (canali 24/7) ----
     for category in data["streams"]:
         for ev in category["streams"]:
             ev_id = ev.get("id", "")
@@ -76,7 +79,7 @@ def build_sports_lines():
                     lines.append(m3u8_url)
                     chno += 1
 
-    # Eventi sportivi
+    # ---- EVENTI SPORTIVI ----
     for category in data["streams"]:
         for ev in category["streams"]:
             ev_id = ev.get("id", "")
@@ -86,10 +89,11 @@ def build_sports_lines():
             logo = ev.get("poster", "")
             sources = ev.get("sources", [])
 
+            # Salta canali 24/7 già gestiti
             if ev_id.startswith("247-") or ev.get("always_live") == 1:
                 continue
 
-            # Main HD
+            # ---- MAIN HD (solo s1) ----
             main_m3u8 = None
             for src in sources:
                 if src.get("source") == "hls" and src.get("id") == "s1":
@@ -104,7 +108,7 @@ def build_sports_lines():
                 lines.append(main_m3u8)
                 chno += 1
 
-            # All sources
+            # ---- ALL SOURCES ----
             for src in sources:
                 src_id = src.get("id")
                 src_name = src.get("name", "Sorgente")
@@ -132,9 +136,17 @@ def build_sports_lines():
 
     return lines
 
-if __name__ == "__main__":
-    # Se eseguito direttamente, genera la playlist sportiva (senza anime)
+def main():
     lines = build_sports_lines()
-    with open("damitv_events.m3u", "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n" + "\n".join(lines))
-    print("Playlist sportiva generata.")
+    if not lines:
+        print("Nessun dato, file non scritto.")
+        return
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n")
+        f.write("\n".join(lines))
+
+    print(f"\n✅ Salvato {OUTPUT_FILE} con {len(lines)//5} voci")
+
+if __name__ == "__main__":
+    main()
