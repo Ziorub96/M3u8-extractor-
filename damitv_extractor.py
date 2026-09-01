@@ -5,7 +5,7 @@ import time
 BASE_URL = "https://ondemand.st"
 API_STREAMS = f"{BASE_URL}/papi/api/streams"
 API_EXTRACT = f"{BASE_URL}/papi/extract-url/"
-API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
+API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"   # ✅ costante aggiunta
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
@@ -46,48 +46,44 @@ def get_channel_m3u8(ch_id):
         return data.get("stream") or data.get("url")
     return None
 
-def get_live_tv_channels():
+def get_24_7_channels():
     """
-    Scarica la lista dei canali TimStreams da ts-channels.json,
-    risolve ogni canale con /papi/tv/resolve/ e restituisce le righe M3U.
+    Recupera i canali 24/7 da papi/api/streams e restituisce righe M3U.
+    I canali sono identificati dal prefisso "247-" nell'id o da always_live == 1.
     """
-    ts_url = f"{BASE_URL}/data/ts-channels.json"
-    print("📡 Scarico lista canali Live TV...")
-    data = http_get_json(ts_url, referer=f"{BASE_URL}/livetv")
-    if data is None:
-        print("❌ Impossibile scaricare ts-channels.json")
-        return []
-    if not isinstance(data, list):
-        print(f"⚠️ Formato inatteso per ts-channels.json: {type(data)}")
+    print("📡 Recupero canali 24/7...")
+    data = http_get_json(API_STREAMS, referer=BASE_URL)
+    if not data or not data.get("success"):
+        print("❌ API non raggiungibile")
         return []
 
     lines = []
-    for idx, ch in enumerate(data):
-        if isinstance(ch, str):
-            # Alcuni elementi potrebbero essere stringhe, li saltiamo
-            print(f"Ignoro voce stringa (idx {idx}): {ch[:60]}...")
-            continue
-        if not isinstance(ch, dict):
-            print(f"Ignoro voce non dizionario (idx {idx}): {type(ch)}")
-            continue
+    chno = 1
 
-        # Estrai l'ID del canale (daddyId) e il nome
-        daddy_id = ch.get("daddyId") or ch.get("id") or ch.get("channel_id")
-        name = ch.get("name") or ch.get("title") or "Canale"
-        if not daddy_id:
-            print(f"⚠️ Canale senza ID, saltato: {name}")
+    for category in data.get("streams", []):
+        if not isinstance(category, dict):
             continue
+        for ev in category.get("streams", []):
+            if not isinstance(ev, dict):
+                continue
+            ev_id = ev.get("id", "")
+            title = ev.get("name", "Sconosciuto")
+            logo = ev.get("poster", "")
 
-        # Risolvi lo stream
-        print(f"🔍 Risolvo {name} (ID: {daddy_id})...")
-        m3u8_url = get_channel_m3u8(daddy_id)
-        if m3u8_url:
-            lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}",{name}')
-            lines.append(m3u8_url)
-        else:
-            print(f"⚠️ Stream non disponibile per {name}")
+            # Filtra canali 24/7
+            if not ev_id or not (ev_id.startswith("247-") or ev.get("always_live") == 1):
+                continue
 
-    print(f"✅ Live TV aggiunti: {len(lines)//2}")
+            print(f"🔍 Risolvo {title} ({ev_id})...")
+            m3u8_url = get_event_m3u8(ev_id)
+            if m3u8_url:
+                lines.append(f'#EXTINF:-1 tvg-id="{ev_id}" tvg-logo="{logo}",{title}')
+                lines.append(m3u8_url)
+                chno += 1
+            else:
+                print(f"⚠️ Stream non disponibile per {title}")
+
+    print(f"✅ Canali 24/7 aggiunti: {len(lines)//2}")
     return lines
 
 def build_sports_lines():
@@ -128,6 +124,10 @@ def build_sports_lines():
             sport = category.get("category", "")
             sources = ev.get("sources", [])
 
+            # Salta i canali 24/7 (li abbiamo già gestiti)
+            if ev_id.startswith("247-") or ev.get("always_live") == 1:
+                continue
+
             # Main HD
             main_m3u8 = None
             for src in sources:
@@ -152,7 +152,8 @@ def build_sports_lines():
 
                 m3u8_url = None
                 if src_type == "hls":
-                    m3u8_url = get_event_m3u8(ev_id)
+                    # Ottimizzazione: se main_m3u8 già estratto, riusalo
+                    m3u8_url = main_m3u8 if main_m3u8 else get_event_m3u8(ev_id)
                 elif src_type == "sd":
                     m3u8_url = get_event_m3u8(ev_id, sd=True)
                 elif src_type == "dlhd":
@@ -174,15 +175,15 @@ def main():
         lines.append(f'#EXTINF:-1 tvg-id="{name}",{name}')
         lines.append(url)
 
+    # Canali 24/7
+    live_tv_lines = get_24_7_channels()
+    if live_tv_lines:
+        lines.extend(live_tv_lines)
+
     # Eventi sportivi
     sports_lines = build_sports_lines()
     if sports_lines:
         lines.extend(sports_lines)
-
-    # Live TV
-    live_tv_lines = get_live_tv_channels()
-    if live_tv_lines:
-        lines.extend(live_tv_lines)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
