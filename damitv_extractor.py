@@ -5,7 +5,7 @@ import time
 BASE_URL = "https://ondemand.st"
 API_STREAMS = f"{BASE_URL}/papi/api/streams"
 API_EXTRACT = f"{BASE_URL}/papi/extract-url/"
-API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"   # ✅ costante aggiunta
+API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
@@ -48,8 +48,8 @@ def get_channel_m3u8(ch_id):
 
 def get_24_7_channels():
     """
-    Recupera i canali 24/7 da papi/api/streams e restituisce righe M3U.
-    I canali sono identificati dal prefisso "247-" nell'id o da always_live == 1.
+    Recupera i canali 24/7 (lineari) da papi/api/streams.
+    Utilizza un filtro più flessibile basato su categoria e struttura dell'ID.
     """
     print("📡 Recupero canali 24/7...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
@@ -63,16 +63,27 @@ def get_24_7_channels():
     for category in data.get("streams", []):
         if not isinstance(category, dict):
             continue
+
+        category_name = category.get("category", "").lower()
+
         for ev in category.get("streams", []):
             if not isinstance(ev, dict):
                 continue
+
             ev_id = ev.get("id", "")
             title = ev.get("name", "Sconosciuto")
             logo = ev.get("poster", "")
 
-            # Filtra canali 24/7
-            if not ev_id or not (ev_id.startswith("247-") or ev.get("always_live") == 1):
+            # ----- Filtro aggiornato per i canali 24/7 -----
+            is_247_category = any(kw in category_name for kw in ["24/7", "channels", "live"])
+            is_channel_id = "-" in ev_id and not ev_id.isdigit()
+
+            # Debug temporaneo (rimuovere in produzione)
+            # print(f"DEBUG -> Categoria: {category.get('category')} | ID: {ev_id} | Nome: {title}")
+
+            if not ev_id or not (is_247_category or is_channel_id or ev.get("always_live") == 1):
                 continue
+            # ------------------------------------------------
 
             print(f"🔍 Risolvo {title} ({ev_id})...")
             m3u8_url = get_event_m3u8(ev_id)
@@ -152,8 +163,7 @@ def build_sports_lines():
 
                 m3u8_url = None
                 if src_type == "hls":
-                    # Ottimizzazione: se main_m3u8 già estratto, riusalo
-                    m3u8_url = main_m3u8 if main_m3u8 else get_event_m3u8(ev_id)
+                    m3u8_url = get_event_m3u8(ev_id)
                 elif src_type == "sd":
                     m3u8_url = get_event_m3u8(ev_id, sd=True)
                 elif src_type == "dlhd":
