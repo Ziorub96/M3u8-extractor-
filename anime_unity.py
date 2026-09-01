@@ -1,10 +1,12 @@
 import requests
 import re
+import json
 import time
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ANIMEUNITY_REFERER = "https://www.animeunity.so/"
 
+# Mappa episodi (episode_id, scws_id)
 EPISODES = {
     1: (9198, 71552), 2: (9199, 71556), 3: (9200, 71553), 4: (9201, 71555),
     5: (9202, 71554), 6: (9203, 71551), 7: (9204, 71557), 8: (9205, 71561),
@@ -39,56 +41,83 @@ EPISODES = {
 }
 
 def get_embed_url(episode_id):
+    """Scarica la pagina dell'episodio e restituisce l'embed_url."""
     url = f"https://www.animeunity.so/anime/390-dragon-ball-super-ita/{episode_id}"
     headers = {"User-Agent": USER_AGENT, "Referer": ANIMEUNITY_REFERER}
     try:
-        r = requests.get(url, headers=headers, timeout=15)
+        r = requests.get(url, headers=headers, timeout=30)
         r.raise_for_status()
         html = r.text
     except Exception as e:
-        print(f"Errore pagina episodio {episode_id}: {e}")
+        print(f"❌ Errore pagina episodio {episode_id}: {e}")
         return None
 
-    m = re.search(r'embed_url="([^"]+)"', html)
+    # Cerca embed_url="..." oppure embed_url='...'
+    m = re.search(r'embed_url=["\']([^"\']+)["\']', html)
     if m:
         return m.group(1)
     else:
-        print(f"embed_url non trovato per episode_id {episode_id}")
+        print(f"   ⚠️ embed_url non trovato per episode_id {episode_id}")
         return None
 
 def get_vixcloud_m3u8(embed_url):
-    headers = {"User-Agent": USER_AGENT, "Referer": ANIMEUNITY_REFERER}
+    """
+    Estrae il master playlist m3u8 da VixCloud partendo dall'embed url.
+    Risolve il 403 Forbidden pulendo l'URL e usando Referer corretto.
+    """
+    # Pulisci l'URL da eventuali entità HTML errate come &amp;
+    clean_embed_url = embed_url.replace("&amp;", "&")
+
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Referer": ANIMEUNITY_REFERER   # Fondamentale per VixCloud
+    }
+
     try:
-        r = requests.get(embed_url, headers=headers, timeout=15)
+        r = requests.get(clean_embed_url, headers=headers, timeout=30)
         r.raise_for_status()
         html = r.text
     except Exception as e:
-        print(f"Errore recupero embed VixCloud: {e}")
+        print(f"   ❌ Errore recupero embed VixCloud: {e}")
         return None
 
-    m = re.search(
-        r"window\.masterPlaylist\s*=\s*\{.*?params:\s*\{[^}]*?'token':\s*'([^']+)'[^}]*?'expires':\s*'([^']+)'[^}]*?\}.*?url:\s*'([^']+)'",
-        html,
-        re.DOTALL
-    )
-    if not m:
-        print("masterPlaylist non trovato")
-        return None
+    # Cerca il blocco window.masterPlaylist
+    match_playlist = re.search(r'window\.masterPlaylist\s*=\s*\{.*?params:\s*\{[^}]*\}[^}]*?url:\s*[\'"]([^\'"]+)[\'"]', html, re.DOTALL)
+    if match_playlist:
+        url_base = match_playlist.group(1)
+        token_match = re.search(r'[\'"]token[\'"]\s*:\s*[\'"]([^\'"]+)[\'"]', html)
+        expires_match = re.search(r'[\'"]expires[\'"]\s*:\s*[\'"]([^\'"]+)[\'"]', html)
+        can_fhd = "window.canPlayFHD = true" in html
 
-    token, expires, base_url = m.group(1), m.group(2), m.group(3)
-    can_fhd = "window.canPlayFHD = true" in html
+        if url_base and token_match and expires_match:
+            m3u8 = f"{url_base}?token={token_match.group(1)}&expires={expires_match.group(1)}"
+            if can_fhd:
+                m3u8 += "&h=1"
+            return m3u8
 
-    m3u8 = f"{base_url}?token={token}&expires={expires}"
-    if can_fhd:
-        m3u8 += "&h=1"
-    return m3u8
+    # Fallback: regex dirette
+    token_match = re.search(r'["\']token["\']\s*:\s*["\']([^"\']+)["\']', html)
+    expires_match = re.search(r'["\']expires["\']\s*:\s*["\']([^"\']+)["\']', html)
+    url_match = re.search(r'["\']url["\']\s*:\s*["\'](https?://[^"\']+\.m3u8[^"\']*)["\']', html)
+
+    if token_match and expires_match and url_match:
+        m3u8 = f"{url_match.group(1)}?token={token_match.group(1)}&expires={expires_match.group(1)}&h=1"
+        return m3u8
+
+    print("   ⚠️ masterPlaylist non trovato")
+    return None
 
 def get_anime_episodes():
+    """Genera le voci M3U per tutti gli episodi."""
     lines = []
+    success = 0
+    fail = 0
+
     for ep, (ep_id, scws_id) in EPISODES.items():
-        print(f"Processando episodio {ep}...")
+        print(f"\n🎬 Episodio {ep}...")
         embed_url = get_embed_url(ep_id)
         if not embed_url:
+            fail += 1
             time.sleep(2)
             continue
 
@@ -96,12 +125,15 @@ def get_anime_episodes():
         if m3u8:
             lines.append(f'#EXTINF:-1 group-title="AnimeUnity - Dragon Ball Super",Dragon Ball Super Ep {ep:03d}')
             lines.append(m3u8)
-            print("  ok")
+            print("   ✅ OK")
+            success += 1
         else:
-            print("  m3u8 non ottenuto")
+            print("   ❌ m3u8 non ottenuto")
+            fail += 1
 
         time.sleep(1)
 
+    print(f"\n📊 Successi: {success}, Falliti: {fail}")
     return lines
 
 if __name__ == "__main__":
@@ -112,4 +144,4 @@ if __name__ == "__main__":
             f.write("\n".join(lines))
         print(f"\n✅ Salvato anime_dragonball.m3u con {len(lines)//2} episodi")
     else:
-        print("Nessun episodio estratto.")
+        print("❌ Nessun episodio estratto")
