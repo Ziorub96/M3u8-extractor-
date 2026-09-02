@@ -24,8 +24,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests playwright
-          python -m playwright install --with-deps chromium
+          pip install requests
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
       - name: Run combiner
         run: python combine_playlist.py
