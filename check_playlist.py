@@ -1,41 +1,16 @@
-import subprocess
 import sys
-import urllib.request
-import json
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from playwright.sync_api import sync_playwright
 
 # --- Configurazione ---
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
-workers = 10
-timeout = 5
+workers = 5  # Ridotto leggermente per ottimizzare le risorse del browser headless
+timeout = 10
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 REFERER_DAMITV = "https://ondemand.st/"
 ORIGIN_DAMITV = "https://ondemand.st"
-
-def ottieni_proxy_italiani():
-    """Scarica una lista di proxy italiani gratuiti da fonti pubbliche."""
-    proxy_disponibili = []
-    # Fonti pubbliche di proxy a rotazione (es. PubProxy / ProxyScrape API)
-    url_api = "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=5000&country=IT&ssl=all&anonymity=all"
-    try:
-        req = urllib.request.Request(url_api, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=5) as response:
-            data = response.read().decode("utf-8")
-            linee = data.splitlines()
-            for p in linee:
-                p = p.strip()
-                if p:
-                    proxy_disponibili.append(f"http://{p}")
-    except Exception as e:
-        print(f"⚠️ Impossibile scaricare la lista proxy automatica: {e}")
-    
-    return proxy_disponibili
-
-print("🔍 Recupero proxy italiani gratuiti per il bypass cloud...")
-lista_proxy = ottieni_proxy_italiani()
-print(f"🌐 Trovati {len(lista_proxy)} proxy italiani potenziali.")
 
 def parse_m3u(lines):
     blocks = []
@@ -76,73 +51,54 @@ for block in blocks:
 blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
-def controlla_blocco(block, proxy_corrente=None):
+def controlla_con_playwright(browser, block):
     url = block[-1]
-    comando = [
-        "ffprobe", "-v", "error",
-        "-show_entries", "stream=codec_type",
-        "-of", "default=noprint_wrappers=1:nokey=1",
-        "-timeout", str(timeout * 1_000_000),
-        "-analyzeduration", "2000000",
-        "-probesize", "2000000",
-        "-user_agent", USER_AGENT,
-        "-headers", f"Referer: {REFERER_DAMITV}\r\nOrigin: {ORIGIN_DAMITV}\r\n"
-    ]
-    
-    if proxy_corrente:
-        comando.extend(["-http_proxy", proxy_corrente])
-        
-    comando.extend(["-i", url])
+    context = browser.new_context(
+        user_agent=USER_AGENT,
+        extra_http_headers={
+            "Referer": REFERER_DAMITV,
+            "Origin": ORIGIN_DAMITV
+        }
+    )
+    successo = False
+    motivo = ""
 
     try:
-        r = subprocess.run(
-            comando,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            timeout=timeout + 3
-        )
-        if r.returncode == 0 and r.stdout.strip():
-            return (block, True, "")
+        # Sfruttiamo il contesto di Playwright per gestire cookie e richieste HTTP protette
+        response = context.request.get(url, timeout=timeout * 1000)
+        if response.status == 200:
+            body = response.text()
+            if "#EXTM3U" in body or "#EXT-X-STREAM-INF" in body:
+                successo = True
+            else:
+                motivo = "Contenuto non valido (manifest HLS assente)"
         else:
-            err = r.stderr.strip().splitlines()
-            motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
-            return (block, False, motivo)
-    except subprocess.TimeoutExpired:
-        return (block, False, "Timeout scaduto")
+            motivo = f"Errore HTTP {response.status}"
     except Exception as e:
-        return (block, False, str(e)[:200])
+        motivo = str(e)[:200]
+    finally:
+        context.close()
 
-def testa_con_fallback(block):
-    # Primo tentativo diretto (senza proxy o con connessione standard)
-    block_res, ok, motivo = controlla_blocco(block, proxy_corrente=None)
-    if ok:
-        return block_res, True, ""
-
-    # Se fallisce (probabile blocco 403 / datacenter), prova ciclicamente i proxy italiani disponibili
-    if lista_proxy and ("403" in motivo or "Forbidden" in motivo or "Timeout" in motivo):
-        for px in lista_proxy[:5]: # prova al massimo i primi 5 proxy per non rallentare troppo
-            block_res, ok, motivo_px = controlla_blocco(block, proxy_corrente=px)
-            if ok:
-                return block_res, True, ""
-
-    return block, False, motivo
+    return (block, successo, motivo)
 
 funzionanti = []
 non_funzionanti = []
 
-with ThreadPoolExecutor(max_workers=workers) as executor:
-    futures = [executor.submit(testa_con_fallback, block) for block in blocks]
-    for i, future in enumerate(as_completed(futures), 1):
-        block, ok, motivo = future.result()
-        nome = block[0].split(",")[-1].strip() if "," in block[0] else "Senza nome"
-        stato = "OK" if ok else "KO"
-        print(f"[{i}/{len(blocks)}] {stato} | {nome}")
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futures = [executor.submit(controlla_con_playwright, browser, block) for block in blocks]
+        for i, future in enumerate(as_completed(futures), 1):
+            block, ok, motivo = future.result()
+            nome = block[0].split(",")[-1].strip() if "," in block[0] else "Senza nome"
+            stato = "OK" if ok else "KO"
+            print(f"[{i}/{len(blocks)}] {stato} | {nome}")
 
-        if ok:
-            funzionanti.append(block)
-        else:
-            non_funzionanti.append((block, motivo))
+            if ok:
+                funzionanti.append(block)
+            else:
+                non_funzionanti.append((block, motivo))
+    browser.close()
 
 # Salva playlist pulita
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
@@ -150,7 +106,7 @@ with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     for block in funzionanti:
         f.write("\n".join(block) + "\n")
 
-# Salva errori con motivo
+# Salva errori
 with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
     for block, motivo in non_funzionanti:
         nome = block[0].split(",")[-1].strip()
