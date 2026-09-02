@@ -24,7 +24,7 @@ jobs:
         run: pip install requests
 
       - name: Run combiner
-        run: python combine_all.py
+        run: python combine_playlist.py   # ✅ nome corretto
 
       - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
