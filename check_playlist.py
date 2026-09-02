@@ -1,12 +1,16 @@
+import os
+import subprocess
 import sys
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from playwright.sync_api import sync_playwright
+
+# Imposta output non bufferizzato per evitare problemi con GitHub Actions
+os.environ["PYTHONUNBUFFERED"] = "1"
 
 # --- Configurazione ---
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
-workers = 5  # Ridotto leggermente per ottimizzare le risorse del browser headless
-timeout = 10
+workers = 10
+timeout = 5
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 REFERER_DAMITV = "https://ondemand.st/"
@@ -51,62 +55,65 @@ for block in blocks:
 blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
-def controlla_con_playwright(browser, block):
+def controlla_blocco(block):
     url = block[-1]
-    context = browser.new_context(
-        user_agent=USER_AGENT,
-        extra_http_headers={
-            "Referer": REFERER_DAMITV,
-            "Origin": ORIGIN_DAMITV
-        }
-    )
-    successo = False
-    motivo = ""
-
+    comando = [
+        "ffprobe", "-v", "error",
+        "-show_entries", "stream=codec_type",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        "-timeout", str(timeout * 1_000_000),
+        "-analyzeduration", "2000000",
+        "-probesize", "2000000",
+        "-user_agent", USER_AGENT,
+        "-headers", f"Referer: {REFERER_DAMITV}\r\nOrigin: {ORIGIN_DAMITV}\r\n",
+        "-i", url
+    ]
     try:
-        # Sfruttiamo il contesto di Playwright per gestire cookie e richieste HTTP protette
-        response = context.request.get(url, timeout=timeout * 1000)
-        if response.status == 200:
-            body = response.text()
-            if "#EXTM3U" in body or "#EXT-X-STREAM-INF" in body:
-                successo = True
-            else:
-                motivo = "Contenuto non valido (manifest HLS assente)"
+        r = subprocess.run(
+            comando,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=timeout + 3,
+            check=False
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return (block, True, "")
         else:
-            motivo = f"Errore HTTP {response.status}"
+            err = r.stderr.strip().splitlines()
+            motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
+            return (block, False, motivo)
+    except subprocess.TimeoutExpired:
+        return (block, False, "Timeout scaduto")
     except Exception as e:
-        motivo = str(e)[:200]
-    finally:
-        context.close()
-
-    return (block, successo, motivo)
+        return (block, False, str(e)[:200])
 
 funzionanti = []
 non_funzionanti = []
 
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
-    with ThreadPoolExecutor(max_workers=workers) as executor:
-        futures = [executor.submit(controlla_con_playwright, browser, block) for block in blocks]
-        for i, future in enumerate(as_completed(futures), 1):
-            block, ok, motivo = future.result()
-            nome = block[0].split(",")[-1].strip() if "," in block[0] else "Senza nome"
-            stato = "OK" if ok else "KO"
+with ThreadPoolExecutor(max_workers=workers) as executor:
+    futures = [executor.submit(controlla_blocco, block) for block in blocks]
+    for i, future in enumerate(as_completed(futures), 1):
+        block, ok, motivo = future.result()
+        nome = block[0].split(",")[-1].strip() if "," in block[0] else "Senza nome"
+        stato = "OK" if ok else "KO"
+
+        # Stampa solo ogni 10 elementi o quando il test fallisce
+        if i % 10 == 0 or not ok:
             print(f"[{i}/{len(blocks)}] {stato} | {nome}")
 
-            if ok:
-                funzionanti.append(block)
-            else:
-                non_funzionanti.append((block, motivo))
-    browser.close()
+        if ok:
+            funzionanti.append(block)
+        else:
+            non_funzionanti.append((block, motivo))
 
-# Salva playlist pulita
+# Salva playlist pulita (stessa struttura)
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     for block in funzionanti:
         f.write("\n".join(block) + "\n")
 
-# Salva errori
+# Salva errori con motivo
 with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
     for block, motivo in non_funzionanti:
         nome = block[0].split(",")[-1].strip()
