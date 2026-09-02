@@ -1,4 +1,4 @@
-name: Update DAMITV Playlist
+name: Combine M3U Playlists
 
 on:
   schedule:
@@ -11,7 +11,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,14 +20,14 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install requests
         run: pip install requests
 
-      - name: Run DAMITV extractor
-        run: python damitv_extractor.py
+      - name: Run combiner
+        run: python combine_all.py
 
-      - name: Commit and push updated playlist
+      - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update playlist (automated)"
-          file_pattern: "damitv_events.m3u"
+          commit_message: "Update combined playlist"
+          file_pattern: "combined_events.m3u"
