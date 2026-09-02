@@ -1,99 +1,231 @@
-import re
+import json
+import time
 import requests
 
-SECTIONS = [
-    "https://raw.githubusercontent.com/fmhy/edit/main/video.md"
+BASE_URL = "https://ondemand.st"
+API_STREAMS = f"{BASE_URL}/papi/api/streams"
+API_EXTRACT = f"{BASE_URL}/papi/extract-url/"
+API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
+
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+OUTPUT_FILE = "damitv_events.m3u"
+
+FIXED_CHANNELS = [
+    ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
+    ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
+    ("Digi Sport 3", "https://dokagents.site/live/digisport3/mono.m3u8"),
+    ("Digi Sport 4", "https://dokagents.site/live/digisport4/mono.m3u8"),
+    ("Match!Ultra", "http://stream.mcquack.net/169/index.m3u8"),
 ]
 
-OUTPUT_FILE = "fmhy_streams.m3u"
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+# Sessione globale per il riutilizzo delle connessioni (Keep-Alive)
+session = requests.Session()
+session.headers.update({"User-Agent": USER_AGENT})
 
-def fetch_page(url):
-    """Scarica il contenuto testuale di una pagina Markdown."""
-    headers = {"User-Agent": USER_AGENT}
+# Cache per evitare chiamate ripetute allo stesso endpoint extract
+_event_cache = {}
+
+def http_get_json(url, referer=None):
+    headers = {}
+    if referer:
+        headers["Referer"] = referer
     try:
-        r = requests.get(url, headers=headers, timeout=30)
+        r = session.get(url, headers=headers, timeout=30)
         r.raise_for_status()
-        return r.text
+        return r.json()
     except Exception as e:
-        print(f"❌ Errore scaricando {url}: {e}")
+        print(f"❌ Errore richiesta {url}: {e}")
         return None
 
-def find_live_sports_section(text):
-    """
-    Individua la sezione 'Live Sports' nel Markdown.
-    Supporta qualsiasi livello di heading (##, ###, ecc.) e variazione di maiuscole.
-    Se non trova l'header esatto, cerca la prima riga contenente 'live sports'.
-    """
-    lines = text.splitlines()
-    heading_pattern = re.compile(r'^#+\s+live sports\s*$', re.IGNORECASE)
+def get_event_m3u8(event_id, sd=False):
+    cache_key = (event_id, sd)
+    if cache_key in _event_cache:
+        return _event_cache[cache_key]
 
-    # 1) Ricerca esatta dell'heading
-    for i, line in enumerate(lines):
-        if heading_pattern.match(line.strip()):
-            return i
+    url = API_EXTRACT + event_id
+    if sd:
+        url += "?sd=1"
+    
+    data = http_get_json(url, referer=f"{BASE_URL}/embed/?id={event_id}")
+    result = None
+    if data and data.get("success"):
+        result = data.get("hlsUrl") or data.get("sdUrl")
+    
+    _event_cache[cache_key] = result
+    return result
 
-    # 2) Fallback: cerca riga che contiene 'live sports'
-    for i, line in enumerate(lines):
-        if 'live sports' in line.lower():
-            return i
+def get_channel_m3u8(ch_id):
+    cache_key = (ch_id, "channel")
+    if cache_key in _event_cache:
+        return _event_cache[cache_key]
 
-    return None
+    data = http_get_json(API_TV_RESOLVE + ch_id, referer=f"{BASE_URL}/embed/?id={ch_id}")
+    result = None
+    if data and (data.get("stream") or data.get("url")):
+        result = data.get("stream") or data.get("url")
+    
+    _event_cache[cache_key] = result
+    return result
 
-def extract_markdown_links(text):
-    """Estrae tutti i link in formato Markdown [testo](url)."""
-    pattern = re.compile(r"\[([^\]]+)\]\((https?://[^\)]+)\)")
-    return pattern.findall(text)
+def get_24_7_channels(seen_ids):
+    print("📡 Recupero canali 24/7 da papi/api/streams...")
+    data = http_get_json(API_STREAMS, referer=BASE_URL)
+    if not data or not data.get("success"):
+        print("❌ API non raggiungibile")
+        return []
 
-def main():
-    all_links = []
-
-    for url in SECTIONS:
-        print(f"📡 Scarico {url}...")
-        text = fetch_page(url)
-        if not text:
+    lines = []
+    for category in data.get("streams", []):
+        if not isinstance(category, dict):
             continue
 
-        lines = text.splitlines()
+        category_name = category.get("category", "").lower()
 
-        # Trova l'inizio della sezione Live Sports
-        start_idx = find_live_sports_section(text)
-        if start_idx is None:
-            print("⚠️ Sezione 'Live Sports' non trovata. Proseguo senza filtrare.")
-            # Se la sezione non c'è, prendiamo tutto il testo (per non perdere eventuali link)
-            section_lines = lines
+        for ev in category.get("streams", []):
+            if not isinstance(ev, dict):
+                continue
+
+            ev_id = ev.get("id", "")
+            title = ev.get("name", "Sconosciuto")
+            logo = ev.get("poster", "")
+
+            is_247_category = any(kw in category_name for kw in ["24/7", "channels", "live"])
+            is_channel_id = "-" in ev_id and not ev_id.isdigit()
+
+            if not ev_id or not (is_247_category or is_channel_id or ev.get("always_live") == 1):
+                continue
+
+            if ev_id in seen_ids:
+                continue
+
+            print(f"🔍 Risolvo {title} ({ev_id})...")
+            m3u8_url = get_event_m3u8(ev_id)
+            if m3u8_url:
+                seen_ids.add(ev_id)
+                lines.append(f'#EXTINF:-1 tvg-id="{ev_id}" tvg-logo="{logo}",{title}')
+                lines.append(m3u8_url)
+            else:
+                print(f"⚠️ Stream non disponibile per {title}")
+
+    print(f"✅ Canali 24/7 aggiunti: {len(lines)//2}")
+    return lines
+
+def get_live_tv_channels(seen_ids):
+    ts_url = f"{BASE_URL}/data/ts-channels.json"
+    print("📡 Scarico lista canali Live TV da ts-channels.json...")
+    data = http_get_json(ts_url, referer=f"{BASE_URL}/livetv")
+    if not data or not isinstance(data, dict) or "channels" not in data:
+        print("❌ Errore nel recupero di ts-channels.json")
+        return []
+
+    channels = data["channels"]
+    print(f"🔢 Trovati {len(channels)} canali nel file.")
+
+    lines = []
+    for ch in channels:
+        if not isinstance(ch, dict):
+            continue
+
+        daddy_id = ch.get("daddyId")
+        name = ch.get("name", "Sconosciuto")
+        logo = ch.get("image", "")
+
+        if not daddy_id or daddy_id in seen_ids:
+            continue
+
+        print(f"🔍 Risolvo {name} ({daddy_id})...")
+        m3u8_url = get_channel_m3u8(daddy_id)
+        if m3u8_url:
+            seen_ids.add(daddy_id)
+            lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}" tvg-logo="{logo}",{name}')
+            lines.append(m3u8_url)
         else:
-            print(f"✅ Sezione 'Live Sports' trovata alla riga {start_idx}")
-            section_lines = []
-            for line in lines[start_idx+1:]:
-                # Interrompi alla prossima sezione dello stesso livello o superiore
-                if re.match(r'^#{1,6}\s+', line.strip()):
-                    break
-                section_lines.append(line)
+            print(f"⚠️ Stream non disponibile per {name}")
 
-        section_text = "\n".join(section_lines)
+    print(f"✅ Canali Live TV aggiunti: {len(lines)//2}")
+    return lines
 
-        links = extract_markdown_links(section_text)
-        print(f"   -> {len(links)} link Markdown trovati")
-        all_links.extend(links)
+def build_sports_lines(seen_ids):
+    print("📡 Recupero eventi sportivi...")
+    data = http_get_json(API_STREAMS, referer=BASE_URL)
+    if not data or not isinstance(data, dict) or not data.get("success"):
+        print("❌ API non raggiungibile o dati non validi")
+        return []
 
-    # Deduplicazione per URL
-    seen = set()
-    unique_links = []
-    for nome, url in all_links:
-        if url not in seen:
-            seen.add(url)
-            unique_links.append((nome.strip(), url))
+    streams = data.get("streams", [])
+    lines = []
 
-    # Scrive SEMPRE il file, anche se vuoto
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
-        for nome, url in unique_links:
-            f.write(f"#EXTINF:-1,{nome}\n{url}\n")
+    for category in streams:
+        if not isinstance(category, dict):
+            continue
+        sport = category.get("category", "")
+        for ev in category.get("streams", []):
+            if not isinstance(ev, dict):
+                continue
+            ev_id = ev.get("id", "")
+            title = ev.get("name", "Sconosciuto")
+            sources = ev.get("sources", [])
 
-    print(f"\n✅ Salvato {OUTPUT_FILE} con {len(unique_links)} link")
-    if len(unique_links) == 0:
-        print("⚠️ Nessun link trovato; il file è vuoto ma evita errori di commit.")
+            if not ev_id or ev_id.startswith("247-") or ev.get("always_live") == 1:
+                continue
+
+            # Gestione unificata delle sorgenti evitando richieste duplicate
+            for src in sources:
+                if not isinstance(src, dict):
+                    continue
+                src_id = src.get("id")
+                src_name = src.get("name", "Sorgente")
+                src_type = src.get("source", "")
+
+                if not src_id:
+                    continue
+
+                unique_key = f"{ev_id}_{src_id}"
+                if unique_key in seen_ids:
+                    continue
+
+                m3u8_url = None
+                if src_type == "hls":
+                    m3u8_url = get_event_m3u8(ev_id)
+                elif src_type == "sd":
+                    m3u8_url = get_event_m3u8(ev_id, sd=True)
+                elif src_type == "dlhd":
+                    m3u8_url = get_channel_m3u8(src_id)
+
+                if m3u8_url:
+                    seen_ids.add(unique_key)
+                    display = f"[{sport}] {title} ({src_name})"
+                    lines.append(f'#EXTINF:-1 tvg-id="{unique_key}",{display}')
+                    lines.append(m3u8_url)
+
+    print(f"✅ Eventi sportivi aggiunti: {len(lines)//2}")
+    return lines
+
+def main():
+    seen_ids = set()
+    lines = ["#EXTM3U"]
+
+    # Canali fissi
+    for name, url in FIXED_CHANNELS:
+        lines.append(f'#EXTINF:-1 tvg-id="{name}",{name}')
+        lines.append(url)
+
+    # Canali 24/7
+    lines.extend(get_24_7_channels(seen_ids))
+
+    # Canali Live TV
+    lines.extend(get_live_tv_channels(seen_ids))
+
+    # Eventi sportivi
+    lines.extend(build_sports_lines(seen_ids))
+
+    # Scrittura sicura: aggiorna il file solo se ci sono stream effettivi oltre all'intestazione
+    if len(lines) > 1:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+        print(f"\n✅ Salvato {OUTPUT_FILE} con {len(lines)//2} voci totali")
+    else:
+        print("\n⚠️ Nessun canale trovato. Il file non è stato sovrascritto.")
 
 if __name__ == "__main__":
     main()
