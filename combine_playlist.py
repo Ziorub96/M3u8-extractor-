@@ -10,6 +10,7 @@ SOURCES = [
 
 LOCAL_SOURCES = [
     ("FMHY", "fmhy_streams.m3u"),
+    ("YouTube Highlights", "youtube_highlights.m3u"),
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
