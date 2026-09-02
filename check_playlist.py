@@ -48,6 +48,11 @@ print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
 def controlla_blocco(block):
     url = block[-1]
+
+    # Se il link è YouTube, non testarlo (consideralo valido)
+    if "youtube.com" in url or "youtu.be" in url:
+        return (block, True, "")
+
     comando = [
         "ffprobe", "-v", "error",
         "-show_entries", "stream=codec_type",
@@ -86,8 +91,6 @@ with ThreadPoolExecutor(max_workers=workers) as executor:
         block, ok, motivo = future.result()
         nome = block[0].split(",")[-1].strip() if "," in block[0] else "Senza nome"
         stato = "OK" if ok else "KO"
-
-        # Stampa solo ogni 10 elementi o quando il test fallisce
         if i % 10 == 0 or not ok:
             print(f"[{i}/{len(blocks)}] {stato} | {nome}")
 
@@ -96,7 +99,7 @@ with ThreadPoolExecutor(max_workers=workers) as executor:
         else:
             non_funzionanti.append((block, motivo))
 
-# Salva playlist pulita (stessa struttura)
+# Salva playlist pulita
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     for block in funzionanti:
