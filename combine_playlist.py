@@ -1,11 +1,15 @@
 import re
 import requests
+from pathlib import Path
 
 SOURCES = [
     ("DAMITV", "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/damitv_events.m3u"),
     ("doms9", "https://s.id/d9M3U8"),
     ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u"),
-    # Aggiungi altre playlist qui
+]
+
+LOCAL_SOURCES = [
+    ("FMHY", "fmhy_streams.m3u"),
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
@@ -21,29 +25,22 @@ def fetch_playlist(url):
         print(f"❌ Errore scaricando {url}: {e}")
         return []
 
+def fetch_local_playlist(path):
+    try:
+        return Path(path).read_text(encoding="utf-8", errors="ignore").splitlines()
+    except FileNotFoundError:
+        print(f"❌ File locale non trovato: {path}")
+        return []
+
 def set_group_title(extinf_line, group_title):
-    """
-    Modifica la riga #EXTINF per impostare (o sostituire) l'attributo group-title.
-    Restituisce la riga aggiornata.
-    """
-    # Se esiste già group-title, lo sostituiamo
     if 'group-title="' in extinf_line:
-        new_line = re.sub(r'group-title="[^"]*"', f'group-title="{group_title}"', extinf_line)
-    else:
-        # Altrimenti lo aggiungiamo prima della virgola finale
-        if ',' in extinf_line:
-            head, tail = extinf_line.rsplit(',', 1)
-            new_line = f'{head} group-title="{group_title}",{tail}'
-        else:
-            # Caso anomalo: accodiamo
-            new_line = f'{extinf_line} group-title="{group_title}"'
-    return new_line
+        return re.sub(r'group-title="[^"]*"', f'group-title="{group_title}"', extinf_line)
+    if ',' in extinf_line:
+        head, tail = extinf_line.rsplit(',', 1)
+        return f'{head} group-title="{group_title}",{tail}'
+    return f'{extinf_line} group-title="{group_title}"'
 
 def parse_m3u(lines):
-    """
-    Estrae blocchi composti da #EXTINF + eventuali tag successivi + URL finale.
-    Ritorna lista di blocchi (liste di righe) dove l'URL è l'ultima riga.
-    """
     blocks = []
     current_block = []
     for line in lines:
@@ -57,7 +54,6 @@ def parse_m3u(lines):
             blocks.append(current_block)
             current_block = []
         elif stripped.startswith("#") and current_block:
-            # Tag aggiuntivo (es. #EXTVLCOPT)
             current_block.append(stripped)
     if current_block:
         blocks.append(current_block)
@@ -67,31 +63,38 @@ def main():
     all_lines = ["#EXTM3U"]
     seen_urls = set()
 
+    # Processa sorgenti remote
     for name, url in SOURCES:
         print(f"📡 Scarico {name}...")
         lines = fetch_playlist(url)
         blocks = parse_m3u(lines)
         print(f"   -> {len(blocks)} voci trovate")
-
         if blocks:
             all_lines.append(f"# ===== SORGENTE: {name} =====")
             for block in blocks:
-                # L'URL è l'ultima riga del blocco
                 stream_url = block[-1]
-
-                # ✅ Guardia di sicurezza: salta blocchi malformati senza URL
-                if stream_url.startswith("#"):
-                    continue
-
                 if stream_url in seen_urls:
                     continue
-
                 seen_urls.add(stream_url)
-
-                # Modifica la prima riga (#EXTINF) per aggiungere group-title = nome sorgente
                 if block[0].startswith("#EXTINF"):
                     block[0] = set_group_title(block[0], name)
+                all_lines.extend(block)
 
+    # Processa sorgenti locali
+    for name, path in LOCAL_SOURCES:
+        print(f"📂 Leggo file locale {name}...")
+        lines = fetch_local_playlist(path)
+        blocks = parse_m3u(lines)
+        print(f"   -> {len(blocks)} voci trovate")
+        if blocks:
+            all_lines.append(f"# ===== SORGENTE: {name} =====")
+            for block in blocks:
+                stream_url = block[-1]
+                if stream_url in seen_urls:
+                    continue
+                seen_urls.add(stream_url)
+                if block[0].startswith("#EXTINF"):
+                    block[0] = set_group_title(block[0], name)
                 all_lines.extend(block)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
