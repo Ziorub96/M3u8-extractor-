@@ -1,30 +1,3 @@
-Perfetto, chiaro! Ecco le modifiche esatte da applicare a `youtube_estractor.py` per:
-
-- **DAZN Italia** → estrarre solo i video dalla playlist Serie A indicata, ignorando il canale YouTube normale.
-- **Sky Sport** → filtrare solo i video che contengono "gol" e "highlights" nel titolo.
-- **Tutti gli altri** → restano come sono.
-
-## ✅ Modifiche richieste
-
-### 1. Aggiungi la playlist DAZN Serie A
-
-La playlist è:  
-`https://youtube.com/playlist?list=PLNlz0xe3bYHw&si=j74vN3F11HVd9Kkk`
-
-La useremo direttamente come URL per il canale DAZN Italia.
-
-### 2. Per Sky Sport, rendi il filtro più specifico
-
-Nel dizionario `HIGHLIGHTS_KEYWORDS`, per la lingua `IT`, aggiungi una voce speciale solo per Sky Sport? Meglio creare un filtro dedicato.
-
-Ti propongo di:
-
-- Aggiungere una lista `SKY_SPECIAL_KEYWORDS = ["gol", "highlights"]`
-- Nella funzione `is_highlight`, se il nome del canale è "Sky Sport IT", usa quelle parole invece del dizionario standard.
-
-## 🟢 Codice completo aggiornato
-
-```python
 from datetime import datetime
 import yt_dlp
 
@@ -124,21 +97,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
-## 📌 Riepilogo modifiche
-
-| Canale | Comportamento |
-|--------|---------------|
-| **DAZN Italia IT** | Usa la playlist Serie A (solo contenuti relativi) |
-| **Sky Sport IT** | Filtra per "gol" **e** "highlights" |
-| Tutti gli altri | Filtro standard multilingua |
-
-## 🚀 Da fare
-
-1. Sostituisci `youtube_estractor.py` con questo codice.
-2. Commit & push.
-3. Esegui il workflow.
-4. Prova su TV Samsung.
-
-Fammi sapere se ora i contenuti sono quelli giusti.
