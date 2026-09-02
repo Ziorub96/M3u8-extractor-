@@ -4,7 +4,8 @@ SOURCES = [
     ("DAMITV", "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/damitv_events.m3u"),
     ("doms9", "https://s.id/d9M3U8"),
     ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u"),
-    # Aggiungi altre playlist qui
+    # Aggiungi altre playlist qui, ad esempio:
+    # ("Nome Sorgente", "https://url/della/playlist.m3u"),
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
@@ -23,7 +24,7 @@ def fetch_playlist(url):
 def parse_m3u(lines):
     """
     Estrae blocchi composti da #EXTINF + eventuali tag successivi + URL finale.
-    Ritorna lista di (righe_blocco) dove righe_blocco include tutti i tag.
+    Ritorna lista di blocchi (liste di righe) dove l'URL è l'ultima riga.
     """
     blocks = []
     current_block = []
