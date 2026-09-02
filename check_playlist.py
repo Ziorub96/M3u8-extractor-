@@ -7,45 +7,57 @@ playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
 workers = 15
 timeout = 5
 
-# 1. Leggi e parsa la playlist con gestione del file mancante
+# 1. Leggi e parsifica a blocchi (come in combine_playlist.py)
+def parse_m3u(lines):
+    blocks = []
+    current_block = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#EXTINF"):
+            if current_block:
+                blocks.append(current_block)
+            current_block = [stripped]
+        elif stripped and not stripped.startswith("#"):
+            # URL finale
+            current_block.append(stripped)
+            blocks.append(current_block)
+            current_block = []
+        elif stripped.startswith("#") and current_block:
+            # Tag aggiuntivo (es. #EXTVLCOPT)
+            current_block.append(stripped)
+    if current_block:
+        blocks.append(current_block)
+    return blocks
+
 try:
     righe = playlist.read_text(encoding="utf-8", errors="ignore").splitlines()
 except FileNotFoundError:
     print(f"❌ Errore: File della playlist '{playlist}' non trovato.")
     sys.exit(1)
 
-voci = []
+blocks = parse_m3u(righe)
+print(f"🔍 Flussi totali da testare: {len(blocks)}")
 
-for i, riga in enumerate(righe):
-    riga = riga.strip()
-    if riga and not riga.startswith("#"):
-        nome = "Senza nome"
-        for precedente in reversed(righe[:i]):
-            if precedente.startswith("#EXTINF"):
-                nome = precedente.split(",", 1)[-1].strip()
-                break
-        voci.append((nome, riga))
+# 2. Deduplicazione per URL (opzionale, ma utile)
+visti = set()
+blocchi_unici = []
+for block in blocks:
+    url = block[-1]
+    if url not in visti:
+        visti.add(url)
+        blocchi_unici.append(block)
+blocks = blocchi_unici
+print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
-# 2. Deduplicazione per URL
-url_visti = set()
-voci_uniche = []
-for nome, url in voci:
-    if url not in url_visti:
-        url_visti.add(url)
-        voci_uniche.append((nome, url))
-voci = voci_uniche
-
-print(f"🔍 Flussi unici da testare: {len(voci)}")
-
-def controlla(voce):
-    nome, url = voce
+def controlla_blocco(block):
+    url = block[-1]
     comando = [
         "ffprobe", "-v", "error",
         "-show_entries", "stream=codec_type",
         "-of", "default=noprint_wrappers=1:nokey=1",
-        "-timeout", str(timeout * 1_000_000),   # Corretto per HTTP/HTTPS
-        "-analyzeduration", "2000000",          # Limita analisi a 2 secondi
-        "-probesize", "2000000",                # Limita buffer di probe
+        "-timeout", str(timeout * 1_000_000),
+        "-analyzeduration", "2000000",
+        "-probesize", "2000000",
         "-i", url
     ]
     try:
@@ -57,39 +69,44 @@ def controlla(voce):
             timeout=timeout + 3
         )
         if r.returncode == 0 and r.stdout.strip():
-            return (voce, True, "")
+            return (block, True, "")
         else:
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
-            return (voce, False, motivo)
+            return (block, False, motivo)
     except subprocess.TimeoutExpired:
-        return (voce, False, "Timeout scaduto")
+        return (block, False, "Timeout scaduto")
     except Exception as e:
-        return (voce, False, str(e)[:200])
+        return (block, False, str(e)[:200])
 
 funzionanti = []
 non_funzionanti = []
 
 with ThreadPoolExecutor(max_workers=workers) as executor:
-    futures = [executor.submit(controlla, voce) for voce in voci]
+    futures = [executor.submit(controlla_blocco, block) for block in blocks]
     for i, future in enumerate(as_completed(futures), 1):
-        (nome, url), ok, motivo = future.result()
+        block, ok, motivo = future.result()
+        url = block[-1]
+        nome = block[0]  # #EXTINF...
         stato = "OK" if ok else "KO"
-        print(f"[{i}/{len(voci)}] {stato} | {nome}")
-        if ok:
-            funzionanti.append((nome, url))
-        else:
-            non_funzionanti.append((nome, url, motivo))
+        print(f"[{i}/{len(blocks)}] {stato} | {nome.split(',')[-1].strip()}")
 
-# 3. Salva playlist funzionante
+        if ok:
+            funzionanti.append(block)
+        else:
+            non_funzionanti.append((block, motivo))
+
+# 3. Salva playlist pulita con la stessa struttura
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
-    for nome, url in funzionanti:
-        f.write(f"#EXTINF:-1,{nome}\n{url}\n")
+    for block in funzionanti:
+        f.write("\n".join(block) + "\n")
 
-# 4. Salva file con i motivi degli errori
+# 4. Salva errori con motivazioni
 with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
-    for nome, url, motivo in non_funzionanti:
+    for block, motivo in non_funzionanti:
+        url = block[-1]
+        nome = block[0].split(",")[-1].strip()
         f.write(f"{nome} | {url} | {motivo}\n")
 
 print(f"\n✅ Funzionanti: {len(funzionanti)}")
