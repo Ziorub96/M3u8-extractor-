@@ -32,6 +32,7 @@ def main():
         print(f"   -> {len(stream_links)} potenziali stream")
         all_links.extend(stream_links)
 
+    # Rimuovi duplicati per URL
     seen = set()
     unique_links = []
     for nome, url in all_links:
@@ -39,10 +40,7 @@ def main():
             seen.add(url)
             unique_links.append((nome, url))
 
-    if not unique_links:
-        print("Nessun flusso trovato.")
-        return
-
+    # Scrivi SEMPRE il file, anche se vuoto
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         for nome, url in unique_links:
