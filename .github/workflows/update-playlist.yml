@@ -2,7 +2,7 @@ name: Combine and Check M3U Playlists
 
 on:
   schedule:
-    - cron: "0 */3 * * *"   # ogni 3 ore
+    - cron: "15 * * * *"   # ogni ora al minuto 15
   workflow_dispatch:
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
         run: python fmhy_extractor.py
 
       - name: Extract YouTube highlights
-        run: python youtube_estractor.py
+        run: python YouTube.estractor.py
 
       - name: Run combiner
         run: python combine_playlist.py
