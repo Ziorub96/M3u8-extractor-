@@ -2,14 +2,15 @@ import subprocess
 import sys
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import requests
 
+# --- Configurazione ---
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
 workers = 15
 timeout = 5
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 REFERER_DAMITV = "https://ondemand.st/"
+ORIGIN_DAMITV = "https://ondemand.st"
 
 def parse_m3u(lines):
     blocks = []
@@ -59,6 +60,8 @@ def controlla_blocco(block):
         "-timeout", str(timeout * 1_000_000),
         "-analyzeduration", "2000000",
         "-probesize", "2000000",
+        "-user_agent", USER_AGENT,
+        "-headers", f"Referer: {REFERER_DAMITV}\r\nOrigin: {ORIGIN_DAMITV}\r\n",
         "-i", url
     ]
     try:
@@ -80,26 +83,6 @@ def controlla_blocco(block):
     except Exception as e:
         return (block, False, str(e)[:200])
 
-def diagnostica_url(url):
-    """Prova a capire il motivo del 403 facendo richieste HTTP con header diversi."""
-    headers_varianti = [
-        {"User-Agent": USER_AGENT},
-        {"User-Agent": USER_AGENT, "Referer": REFERER_DAMITV},
-        {"User-Agent": USER_AGENT, "Origin": "https://ondemand.st", "Referer": REFERER_DAMITV}
-    ]
-    esiti = []
-    for h in headers_varianti:
-        try:
-            r = requests.get(url, headers=h, timeout=8, stream=True)
-            esiti.append(f"Status {r.status_code} con header {list(h.keys())}")
-            if r.status_code == 200:
-                esiti.append("→ Il flusso risponde con questi header!")
-                break
-        except Exception as e:
-            esiti.append(f"Errore con header {list(h.keys())}: {e}")
-
-    return " | ".join(esiti)
-
 funzionanti = []
 non_funzionanti = []
 
@@ -117,36 +100,19 @@ with ThreadPoolExecutor(max_workers=workers) as executor:
         else:
             non_funzionanti.append((block, motivo))
 
-# Analisi aggiuntiva solo per i falliti
-print("\n🔬 Analisi diagnostica per i flussi falliti...")
-with ThreadPoolExecutor(max_workers=5) as executor:
-    futures = {executor.submit(diagnostica_url, block[-1]): block for block, _ in non_funzionanti}
-    for future in as_completed(futures):
-        block = futures[future]
-        try:
-            diagnosi = future.result()
-        except Exception as e:
-            diagnosi = f"Errore diagnosi: {e}"
-        nome = block[0].split(",")[-1].strip()
-        url = block[-1]
-        motivo = next((m for b, m in non_funzionanti if b[-1] == url), "")
-        print(f"🔍 {nome}: {motivo} → {diagnosi}")
-
 # Salva playlist pulita (stessa struttura)
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     for block in funzionanti:
         f.write("\n".join(block) + "\n")
 
-# Salva errori con motivo e diagnosi
+# Salva errori con motivo
 with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
     for block, motivo in non_funzionanti:
         nome = block[0].split(",")[-1].strip()
         url = block[-1]
-        # aggiungi diagnosi rapida (senza rifare richiesta, metti motivo)
         f.write(f"{nome} | {url} | {motivo}\n")
 
 print(f"\n✅ Funzionanti: {len(funzionanti)}")
 print(f"❌ Non funzionanti: {len(non_funzionanti)}")
 print("📄 Dettagli errori in flussi_non_funzionanti.txt")
-print("🔬 Diagnosi mostrata a schermo per i falliti")
