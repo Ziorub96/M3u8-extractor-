@@ -1,7 +1,6 @@
 import re
 import requests
 
-# Sezioni FMHY da analizzare (puoi aggiungerne altre)
 SECTIONS = [
     "https://raw.githubusercontent.com/fmhy/edit/main/videopiracy.md",
     "https://raw.githubusercontent.com/fmhy/edit/main/non-english.md",
@@ -9,8 +8,6 @@ SECTIONS = [
 ]
 
 OUTPUT_FILE = "fmhy_streams.m3u"
-
-# Parole chiave per identificare possibili flussi
 STREAM_KEYWORDS = [".m3u", ".m3u8", ".mp4", ".ts", ".mkv", "playlist", "stream", "iptv", "hls", "dash", "live"]
 
 def is_stream_url(url):
@@ -29,16 +26,12 @@ def main():
             print(f"❌ Errore: {e}")
             continue
 
-        # Estrai link Markdown
         pattern = re.compile(r"\[([^\]]+)\]\((https?://[^\)]+)\)")
         links = pattern.findall(r.text)
-
-        # Filtra solo URL di stream
         stream_links = [(nome, url) for nome, url in links if is_stream_url(url)]
         print(f"   -> {len(stream_links)} potenziali stream")
         all_links.extend(stream_links)
 
-    # Rimuovi duplicati per URL
     seen = set()
     unique_links = []
     for nome, url in all_links:
