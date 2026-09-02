@@ -32,7 +32,7 @@ jobs:
         run: python fmhy_extractor.py
 
       - name: Extract YouTube highlights
-        run: python YouTube_estractor.py
+        run: python youtube_estractor.py
 
       - name: Run combiner
         run: python combine_playlist.py
