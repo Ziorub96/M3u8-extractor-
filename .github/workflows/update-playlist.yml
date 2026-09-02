@@ -28,6 +28,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+      - name: Extract FMHY streams
+        run: python fmhy_extractor.py
+
       - name: Run combiner
         run: python combine_playlist.py
 
@@ -38,4 +41,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt"
+          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt fmhy_streams.m3u"
