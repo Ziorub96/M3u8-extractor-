@@ -43,7 +43,6 @@ HIGHLIGHTS_KEYWORDS = {
 
 # Canali ufficiali con handle corretti
 CHANNELS = [
-    ("Serie A IT", "https://www.youtube.com/@seriea/videos", "IT"),
     ("Sky Sport IT", "https://www.youtube.com/@SkySport/videos", "IT"),
     ("DAZN Italia IT", "https://www.youtube.com/playlist?list=PLNlz0xe3bYHw&si=j74vN3F11HVd9Kkk", "IT"),
     ("Bundesliga DE", "https://www.youtube.com/@Bundesliga/videos", "DE"),
