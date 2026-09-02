@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests
+          pip install requests yt-dlp
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
@@ -32,8 +32,6 @@ jobs:
         run: python fmhy_extractor.py
 
       - name: Extract YouTube highlights
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python youtube_extractor.py
 
       - name: Run combiner
