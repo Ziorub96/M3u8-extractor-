@@ -1,11 +1,12 @@
 from datetime import datetime
 import yt_dlp
 
-# Dizionario multilingua delle parole chiave per intercettare highlights e gol
+# Dizionario multilingua con tutte le parole chiave aggiornate (incluso "resumo" per il Portogallo)
 HIGHLIGHTS_KEYWORDS = {
     "IT": ["highlights", "sintesi", "gol", "summary"],
     "DE": ["höhepunkte", "tore", "zusammenfassung", "highlights"],
     "ES": ["resumen", "goles", "highlights", "gol"],
+    "PT": ["resumo", "resumos", "golos", "highlights", "liga portugal", "gols"],
     "BR": ["melhores momentos", "gols", "resumo", "highlights", "compacto"],
     "PL": ["skrót", "bramki", "najlepsze akcje", "highlights"],
     "UK": ["highlights", "goals", "summary"],
@@ -13,14 +14,15 @@ HIGHLIGHTS_KEYWORDS = {
     "AR": ["highlights", "goals", "goal collection", "ملخص", "أهداف"]
 }
 
-# Elenco dei canali ufficiali verificati (con il Brasileirão corretto su Fanatiz)
+# Elenco dei canali con gli handle ufficiali corretti al 100%
 CHANNELS = [
     ("Serie A IT", "https://www.youtube.com/@seriea/videos", "IT"),
     ("Sky Sport IT", "https://www.youtube.com/@SkySport/videos", "IT"),
     ("DAZN Italia IT", "https://www.youtube.com/@DAZNIT/videos", "IT"),
     ("Bundesliga DE", "https://www.youtube.com/@Bundesliga/videos", "DE"),
+    ("Liga Portugal PT", "https://www.youtube.com/@LigaPortugalOfficial/videos", "PT"),  # Handle corretto
     ("Liga Profesional AR", "https://www.youtube.com/@LigaProfesional/videos", "ES"),
-    ("Brasileirão Highlights BR", "https://www.youtube.com/@Fanatiz/videos", "BR"),  # Canale ufficiale partner per il Brasileirão
+    ("Brasileirão Highlights BR", "https://www.youtube.com/@Fanatiz/videos", "BR"),
     ("Ekstraklasa PL", "https://www.youtube.com/@Ekstraklasa/videos", "PL"),
     ("Scottish Premiership UK", "https://www.youtube.com/@spflofficial/videos", "UK"),
     ("Como TV Saudi Pro League", "https://www.youtube.com/@comotv_official/videos", "EN"),
