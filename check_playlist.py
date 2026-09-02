@@ -2,12 +2,15 @@ import subprocess
 import sys
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests
 
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
 workers = 15
 timeout = 5
 
-# 1. Leggi e parsifica a blocchi (come in combine_playlist.py)
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+REFERER_DAMITV = "https://ondemand.st/"
+
 def parse_m3u(lines):
     blocks = []
     current_block = []
@@ -18,12 +21,10 @@ def parse_m3u(lines):
                 blocks.append(current_block)
             current_block = [stripped]
         elif stripped and not stripped.startswith("#"):
-            # URL finale
             current_block.append(stripped)
             blocks.append(current_block)
             current_block = []
         elif stripped.startswith("#") and current_block:
-            # Tag aggiuntivo (es. #EXTVLCOPT)
             current_block.append(stripped)
     if current_block:
         blocks.append(current_block)
@@ -38,7 +39,7 @@ except FileNotFoundError:
 blocks = parse_m3u(righe)
 print(f"🔍 Flussi totali da testare: {len(blocks)}")
 
-# 2. Deduplicazione per URL (opzionale, ma utile)
+# Deduplicazione per URL
 visti = set()
 blocchi_unici = []
 for block in blocks:
@@ -79,6 +80,26 @@ def controlla_blocco(block):
     except Exception as e:
         return (block, False, str(e)[:200])
 
+def diagnostica_url(url):
+    """Prova a capire il motivo del 403 facendo richieste HTTP con header diversi."""
+    headers_varianti = [
+        {"User-Agent": USER_AGENT},
+        {"User-Agent": USER_AGENT, "Referer": REFERER_DAMITV},
+        {"User-Agent": USER_AGENT, "Origin": "https://ondemand.st", "Referer": REFERER_DAMITV}
+    ]
+    esiti = []
+    for h in headers_varianti:
+        try:
+            r = requests.get(url, headers=h, timeout=8, stream=True)
+            esiti.append(f"Status {r.status_code} con header {list(h.keys())}")
+            if r.status_code == 200:
+                esiti.append("→ Il flusso risponde con questi header!")
+                break
+        except Exception as e:
+            esiti.append(f"Errore con header {list(h.keys())}: {e}")
+
+    return " | ".join(esiti)
+
 funzionanti = []
 non_funzionanti = []
 
@@ -87,28 +108,45 @@ with ThreadPoolExecutor(max_workers=workers) as executor:
     for i, future in enumerate(as_completed(futures), 1):
         block, ok, motivo = future.result()
         url = block[-1]
-        nome = block[0]  # #EXTINF...
+        nome = block[0].split(",")[-1].strip() if "," in block[0] else "Senza nome"
         stato = "OK" if ok else "KO"
-        print(f"[{i}/{len(blocks)}] {stato} | {nome.split(',')[-1].strip()}")
+        print(f"[{i}/{len(blocks)}] {stato} | {nome}")
 
         if ok:
             funzionanti.append(block)
         else:
             non_funzionanti.append((block, motivo))
 
-# 3. Salva playlist pulita con la stessa struttura
+# Analisi aggiuntiva solo per i falliti
+print("\n🔬 Analisi diagnostica per i flussi falliti...")
+with ThreadPoolExecutor(max_workers=5) as executor:
+    futures = {executor.submit(diagnostica_url, block[-1]): block for block, _ in non_funzionanti}
+    for future in as_completed(futures):
+        block = futures[future]
+        try:
+            diagnosi = future.result()
+        except Exception as e:
+            diagnosi = f"Errore diagnosi: {e}"
+        nome = block[0].split(",")[-1].strip()
+        url = block[-1]
+        motivo = next((m for b, m in non_funzionanti if b[-1] == url), "")
+        print(f"🔍 {nome}: {motivo} → {diagnosi}")
+
+# Salva playlist pulita (stessa struttura)
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     for block in funzionanti:
         f.write("\n".join(block) + "\n")
 
-# 4. Salva errori con motivazioni
+# Salva errori con motivo e diagnosi
 with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
     for block, motivo in non_funzionanti:
-        url = block[-1]
         nome = block[0].split(",")[-1].strip()
+        url = block[-1]
+        # aggiungi diagnosi rapida (senza rifare richiesta, metti motivo)
         f.write(f"{nome} | {url} | {motivo}\n")
 
 print(f"\n✅ Funzionanti: {len(funzionanti)}")
 print(f"❌ Non funzionanti: {len(non_funzionanti)}")
 print("📄 Dettagli errori in flussi_non_funzionanti.txt")
+print("🔬 Diagnosi mostrata a schermo per i falliti")
