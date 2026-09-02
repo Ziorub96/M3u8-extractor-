@@ -2,6 +2,22 @@ import re
 import requests
 from pathlib import Path
 
+# URL della guida TV (EPG)
+EPG_URL = "https://raw.githubusercontent.com/iptv-org/epg/master/guides/it.xml"
+
+# Mapping canale -> tvg-id (per i canali principali)
+TVG_ID_MAP = {
+    "Digi Sport 1": "DigiSport1.it",
+    "Digi Sport 2 HD": "DigiSport2.it",
+    "Digi Sport 3": "DigiSport3.it",
+    "Digi Sport 4": "DigiSport4.it",
+    "Match!Ultra": "MatchTV.ru",
+    "DAZN 1 Italia": "DAZN1.it",
+    "Sky Sport 24": "SkySport24.it",
+    "Sky Sport Calcio": "SkySportCalcio.it",
+    "Sky Sport UNO": "SkySportUno.it",
+}
+
 SOURCES = [
     ("DAMITV", "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/damitv_events.m3u"),
     ("doms9", "https://s.id/d9M3U8"),
@@ -34,12 +50,27 @@ def fetch_local_playlist(path):
         return []
 
 def set_group_title(extinf_line, group_title):
+    """Imposta o sostituisce l'attributo group-title."""
     if 'group-title="' in extinf_line:
         return re.sub(r'group-title="[^"]*"', f'group-title="{group_title}"', extinf_line)
     if ',' in extinf_line:
         head, tail = extinf_line.rsplit(',', 1)
         return f'{head} group-title="{group_title}",{tail}'
     return f'{extinf_line} group-title="{group_title}"'
+
+def set_tvg_id(extinf_line, channel_name, group_title):
+    """Aggiunge tvg-id se il canale è nel mapping e non è già presente."""
+    if 'tvg-id="' in extinf_line:
+        return extinf_line
+    tvg_id = TVG_ID_MAP.get(channel_name)
+    if not tvg_id:
+        return extinf_line
+    if 'group-title="' in extinf_line:
+        return extinf_line.replace('group-title="', f'tvg-id="{tvg_id}" group-title="')
+    if ',' in extinf_line:
+        head, tail = extinf_line.rsplit(',', 1)
+        return f'{head} tvg-id="{tvg_id}",{tail}'
+    return extinf_line
 
 def parse_m3u(lines):
     blocks = []
@@ -61,7 +92,7 @@ def parse_m3u(lines):
     return blocks
 
 def main():
-    all_lines = ["#EXTM3U"]
+    all_lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
     seen_urls = set()
 
     # Processa sorgenti remote
@@ -79,6 +110,9 @@ def main():
                 seen_urls.add(stream_url)
                 if block[0].startswith("#EXTINF"):
                     block[0] = set_group_title(block[0], name)
+                    # Estrai il nome del canale dal testo dopo la virgola
+                    channel_name = block[0].split(",")[-1].strip()
+                    block[0] = set_tvg_id(block[0], channel_name, name)
                 all_lines.extend(block)
 
     # Processa sorgenti locali
@@ -96,6 +130,9 @@ def main():
                 seen_urls.add(stream_url)
                 if block[0].startswith("#EXTINF"):
                     block[0] = set_group_title(block[0], name)
+                    # Estrai il nome del canale dal testo dopo la virgola
+                    channel_name = block[0].split(",")[-1].strip()
+                    block[0] = set_tvg_id(block[0], channel_name, name)
                 all_lines.extend(block)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
