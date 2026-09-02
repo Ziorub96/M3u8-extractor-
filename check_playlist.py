@@ -1,20 +1,11 @@
-import os
 import subprocess
 import sys
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Imposta output non bufferizzato per evitare problemi con GitHub Actions
-os.environ["PYTHONUNBUFFERED"] = "1"
-
-# --- Configurazione ---
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
-workers = 10
+workers = 15
 timeout = 5
-
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-REFERER_DAMITV = "https://ondemand.st/"
-ORIGIN_DAMITV = "https://ondemand.st"
 
 def parse_m3u(lines):
     blocks = []
@@ -64,8 +55,6 @@ def controlla_blocco(block):
         "-timeout", str(timeout * 1_000_000),
         "-analyzeduration", "2000000",
         "-probesize", "2000000",
-        "-user_agent", USER_AGENT,
-        "-headers", f"Referer: {REFERER_DAMITV}\r\nOrigin: {ORIGIN_DAMITV}\r\n",
         "-i", url
     ]
     try:
