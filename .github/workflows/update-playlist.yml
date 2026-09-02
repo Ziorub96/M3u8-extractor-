@@ -1,8 +1,8 @@
-name: Combine M3U Playlists
+name: Combine and Check M3U Playlists
 
 on:
   schedule:
-    - cron: "15 * * * *"   # ogni ora al minuto 15
+    - cron: "0 */3 * * *"   # ogni 3 ore
   workflow_dispatch:
 
 permissions:
@@ -11,6 +11,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,14 +22,20 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install requests
-        run: pip install requests
+      - name: Install dependencies
+        run: |
+          pip install requests
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
       - name: Run combiner
-        run: python combine_playlist.py   # ✅ nome corretto
+        run: python combine_playlist.py
+
+      - name: Check streams
+        run: python check_playlist.py
 
       - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update combined playlist"
-          file_pattern: "combined_events.m3u"
+          commit_message: "Update combined and checked playlists"
+          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt"
