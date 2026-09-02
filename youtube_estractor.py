@@ -26,17 +26,15 @@ CHANNELS = [
 ]
 
 def is_highlight(title, lang):
-    """Verifica se il titolo corrisponde a highlights/goal nella lingua data."""
     title_lower = title.lower()
     keywords = HIGHLIGHTS_KEYWORDS.get(lang, HIGHLIGHTS_KEYWORDS["EN"])
     return any(kw in title_lower for kw in keywords)
 
 def get_recent_videos(channel_url, days=7):
-    """Estrae i video recenti dal canale YouTube gestendo il filtro temporale in Python."""
     ydl_opts = {
         'extract_flat': True,
         'quiet': True,
-        'playlistend': 30,  # Analizza gli ultimi 30 video caricati
+        'playlistend': 30,
     }
 
     limit_date = datetime.now() - timedelta(days=days)
@@ -50,17 +48,14 @@ def get_recent_videos(channel_url, days=7):
                     if entry:
                         title = entry.get('title')
                         video_id = entry.get('id')
-                        upload_date_str = entry.get('upload_date')  # Formato YYYYMMDD
-
-                        # Controllo della data (se presente nei metadati flat)
+                        upload_date_str = entry.get('upload_date')
                         if upload_date_str:
                             try:
                                 upload_date = datetime.strptime(upload_date_str, '%Y%m%d')
                                 if upload_date < limit_date:
-                                    continue  # Salta i video più vecchi del limite
+                                    continue
                             except ValueError:
                                 pass
-
                         if title and video_id:
                             videos.append((title, f"https://www.youtube.com/watch?v={video_id}"))
     except Exception as e:
