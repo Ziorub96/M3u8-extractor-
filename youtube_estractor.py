@@ -1,23 +1,7 @@
-import os
-from datetime import datetime, timedelta, timezone
-import requests
+from datetime import datetime, timedelta
+import yt_dlp
 
-YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")
-
-# Canali ufficiali con relativi Channel ID
-CHANNELS = {
-    "Serie A IT": "UCpC6Fsp7bO9K4yUaH6X9Eyg",
-    "Sky Sport IT": "UC-p28jGg_8Jt18_Zvyg5_yA",
-    "DAZN Italia IT": "UCm9fP7V7I786r_CgoAnIOfg",
-    "Bundesliga DE": "UC5_XWfUP1yREIf6vn5BcSpQ",
-    "Liga Profesional AR": "UCaI1vI06Es1q91gVgdXup1A",
-    "Brasileirão Play BR": "UCV30a6eR4asA27aZ3K69x5g",
-    "Ekstraklasa PL": "UC2qDLJ2jfB6T9F3b3YhGJtA",
-    "Scottish Premiership UK": "UCXp8RzG8Dz5kY3f7b8aFJw",
-    "Saudi Pro League AR": "UC0fO8wX1nYpK2eZ4t8QvVqA"
-}
-
-# Parole chiave per gli highlights in diverse lingue
+# Lingue supportate con parole chiave per highlights/goal
 HIGHLIGHTS_KEYWORDS = {
     "IT": ["highlights", "sintesi", "gol", "resumen", "summary"],
     "DE": ["höhepunkte", "tore", "zusammenfassung", "highlights"],
@@ -28,71 +12,80 @@ HIGHLIGHTS_KEYWORDS = {
     "EN": ["highlights", "goals", "summary"]
 }
 
-def get_language_for_channel(channel_name):
-    """Determina la lingua in base al nome del canale."""
-    for lang in ["IT", "DE", "AR", "BR", "PL", "UK", "EN"]:
-        if lang in channel_name:
-            return lang
-    return "EN"  # default
+# Elenco dei canali (URL principale del canale, senza /videos)
+CHANNELS = [
+    ("Serie A IT", "https://www.youtube.com/@seriea", "IT"),
+    ("Sky Sport IT", "https://www.youtube.com/@SkySport", "IT"),
+    ("DAZN Italia IT", "https://www.youtube.com/@DAZNItalia", "IT"),
+    ("Bundesliga DE", "https://www.youtube.com/@Bundesliga", "DE"),
+    ("Liga Profesional AR", "https://www.youtube.com/@LigaProfesional", "AR"),
+    ("Brasileirão Play BR", "https://www.youtube.com/@Brasileirao", "BR"),
+    ("Ekstraklasa PL", "https://www.youtube.com/@EkstraklasaPL", "PL"),
+    ("Scottish Premiership UK", "https://www.youtube.com/@spfl", "UK"),
+    ("Saudi Pro League AR", "https://www.youtube.com/@SPL", "AR"),
+]
 
 def is_highlight(title, lang):
-    """Verifica se il titolo contiene parole chiave per gli highlights."""
+    """Verifica se il titolo corrisponde a highlights/goal nella lingua data."""
     title_lower = title.lower()
-    keywords = HIGHLIGHTS_KEYWORDS.get(lang, [])
+    keywords = HIGHLIGHTS_KEYWORDS.get(lang, HIGHLIGHTS_KEYWORDS["EN"])
     return any(kw in title_lower for kw in keywords)
 
-def get_latest_videos(channel_name, channel_id):
-    if not YOUTUBE_API_KEY:
-        print("❌ YOUTUBE_API_KEY non configurata.")
-        return []
+def get_recent_videos(channel_url, days=7):
+    """Estrae i video recenti dal canale YouTube gestendo il filtro temporale in Python."""
+    ydl_opts = {
+        'extract_flat': True,
+        'quiet': True,
+        'playlistend': 30,  # Analizza gli ultimi 30 video caricati
+    }
 
-    one_week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat().replace("+00:00", "Z")
-
-    url = (
-        "https://www.googleapis.com/youtube/v3/search"
-        f"?key={YOUTUBE_API_KEY}"
-        f"&channelId={channel_id}"
-        "&part=snippet,id"
-        "&order=date"
-        "&maxResults=25"
-        "&type=video"
-        f"&publishedAfter={one_week_ago}"
-    )
+    limit_date = datetime.now() - timedelta(days=days)
+    videos = []
 
     try:
-        response = requests.get(url, timeout=15).json()
-        videos = []
-        if "items" in response:
-            for item in response["items"]:
-                video_id = item.get("id", {}).get("videoId")
-                if not video_id:
-                    continue
-                title = item["snippet"].get("title", "Senza titolo")
-                lang = get_language_for_channel(channel_name)
-                if is_highlight(title, lang):
-                    video_url = f"https://www.youtube.com/watch?v={video_id}"
-                    videos.append((title, video_url))
-        return videos
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(channel_url, download=False)
+            if info and 'entries' in info:
+                for entry in info['entries']:
+                    if entry:
+                        title = entry.get('title')
+                        video_id = entry.get('id')
+                        upload_date_str = entry.get('upload_date')  # Formato YYYYMMDD
+
+                        # Controllo della data (se presente nei metadati flat)
+                        if upload_date_str:
+                            try:
+                                upload_date = datetime.strptime(upload_date_str, '%Y%m%d')
+                                if upload_date < limit_date:
+                                    continue  # Salta i video più vecchi del limite
+                            except ValueError:
+                                pass
+
+                        if title and video_id:
+                            videos.append((title, f"https://www.youtube.com/watch?v={video_id}"))
     except Exception as e:
-        print(f"❌ Errore per {channel_name}: {e}")
-        return []
+        print(f"❌ Errore per {channel_url}: {e}")
+
+    return videos
 
 def main():
     lines = ["#EXTM3U"]
 
-    for channel_name, channel_id in CHANNELS.items():
-        print(f"📡 Controllo {channel_name}...")
-        videos = get_latest_videos(channel_name, channel_id)
-        print(f"   -> {len(videos)} highlights trovati")
-        for title, url in videos:
+    for name, url, lang in CHANNELS:
+        print(f"📡 Estraggo highlights da {name}...")
+        videos = get_recent_videos(url, days=7)
+        highlights = [(t, u) for t, u in videos if is_highlight(t, lang)]
+        print(f"   -> {len(highlights)} highlights trovati")
+
+        for title, video_url in highlights:
             clean_title = title.replace('"', '').replace('\n', '').replace(',', '-')
-            lines.append(f'#EXTINF:-1 tvg-name="{channel_name}" group-title="Calcio Gol 24/7",{channel_name} - {clean_title}')
-            lines.append(url)
+            lines.append(f'#EXTINF:-1 tvg-name="{name}" group-title="Calcio Gol 24/7",{name} - {clean_title}')
+            lines.append(video_url)
 
     with open("youtube_highlights.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
-    print("✅ File youtube_highlights.m3u generato!")
+    print("✅ File youtube_highlights.m3u generato con successo!")
 
 if __name__ == "__main__":
     main()
