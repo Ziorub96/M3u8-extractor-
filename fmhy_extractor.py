@@ -2,7 +2,7 @@ import re
 import requests
 
 SECTIONS = [
-    "https://raw.githubusercontent.com/fmhy/edit/main/video.md"
+    "https://raw.githubusercontent.com/fmhy/edit/main/docs/video.md"
 ]
 
 OUTPUT_FILE = "fmhy_streams.m3u"
