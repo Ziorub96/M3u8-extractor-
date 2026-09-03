@@ -31,8 +31,8 @@ jobs:
       - name: Extract FMHY streams
         run: python fmhy_extractor.py
 
-      - name: Extract YouTube highlights
-        run: python youtube_estractor.py
+      # - name: Extract YouTube highlights
+      #   run: python youtube_estractor.py
 
       - name: Combine EPG
         run: python epg_combiner.py
