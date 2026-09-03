@@ -2,10 +2,10 @@ import re
 import requests
 from pathlib import Path
 
-# URL della guida TV (EPG)
-EPG_URL = "https://raw.githubusercontent.com/iptv-org/epg/master/guides/it.xml"
+# URL della guida TV combinata (generata da epg_combiner.py)
+EPG_URL = "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/combined_epg.xml"
 
-# Mapping canale -> tvg-id (per i canali principali)
+# Mapping canale -> tvg-id per nazionalità multiple
 TVG_ID_MAP = {
     "Digi Sport 1": "DigiSport1.it",
     "Digi Sport 2 HD": "DigiSport2.it",
@@ -16,6 +16,18 @@ TVG_ID_MAP = {
     "Sky Sport 24": "SkySport24.it",
     "Sky Sport Calcio": "SkySportCalcio.it",
     "Sky Sport UNO": "SkySportUno.it",
+    "Sky Sports Main Event": "SkySportsMainEvent.uk",
+    "Sky Sports Premier League": "SkySportsPremierLeague.uk",
+    "TNT Sports 1": "TNTSports1.uk",
+    "TNT Sports 2": "TNTSports2.uk",
+    "ESPN": "ESPN.us",
+    "ESPN2": "ESPN2.us",
+    "FOX Sports 1": "FoxSports1.us",
+    "beIN Sports 1": "beINSports1.fr",
+    "Bundesliga 1": "Bundesliga1.de",
+    "Movistar Deportes": "MovistarDeportes.es",
+    "Sport TV1": "SportTV1.pt",
+    "Eleven Sports 1": "ElevenSports1.pl",
 }
 
 SOURCES = [
@@ -50,7 +62,6 @@ def fetch_local_playlist(path):
         return []
 
 def set_group_title(extinf_line, group_title):
-    """Imposta o sostituisce l'attributo group-title."""
     if 'group-title="' in extinf_line:
         return re.sub(r'group-title="[^"]*"', f'group-title="{group_title}"', extinf_line)
     if ',' in extinf_line:
@@ -59,7 +70,6 @@ def set_group_title(extinf_line, group_title):
     return f'{extinf_line} group-title="{group_title}"'
 
 def set_tvg_id(extinf_line, channel_name, group_title):
-    """Aggiunge tvg-id se il canale è nel mapping e non è già presente."""
     if 'tvg-id="' in extinf_line:
         return extinf_line
     tvg_id = TVG_ID_MAP.get(channel_name)
@@ -110,7 +120,6 @@ def main():
                 seen_urls.add(stream_url)
                 if block[0].startswith("#EXTINF"):
                     block[0] = set_group_title(block[0], name)
-                    # Estrai il nome del canale dal testo dopo la virgola
                     channel_name = block[0].split(",")[-1].strip()
                     block[0] = set_tvg_id(block[0], channel_name, name)
                 all_lines.extend(block)
@@ -130,7 +139,6 @@ def main():
                 seen_urls.add(stream_url)
                 if block[0].startswith("#EXTINF"):
                     block[0] = set_group_title(block[0], name)
-                    # Estrai il nome del canale dal testo dopo la virgola
                     channel_name = block[0].split(",")[-1].strip()
                     block[0] = set_tvg_id(block[0], channel_name, name)
                 all_lines.extend(block)
