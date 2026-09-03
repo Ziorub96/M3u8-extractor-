@@ -1,6 +1,6 @@
+import re
 import requests
 
-# Fonti EPG da diverse nazioni
 EPG_SOURCES = [
     "https://raw.githubusercontent.com/iptv-org/epg/master/guides/it.xml",
     "https://raw.githubusercontent.com/iptv-org/epg/master/guides/uk.xml",
@@ -32,8 +32,6 @@ def main():
         if not xml_text:
             continue
 
-        # Estrai i blocchi <channel> e <programme>
-        import re
         chan = re.findall(r"<channel .*?</channel>", xml_text, re.DOTALL)
         prog = re.findall(r"<programme .*?</programme>", xml_text, re.DOTALL)
 
@@ -41,9 +39,9 @@ def main():
         programmes.extend(prog)
 
     if not channels:
-        print("❌ Nessun canale EPG trovato.")
-        return
+        print("⚠️ Nessun canale EPG trovato, genero un file EPG vuoto per sicurezza.")
 
+    # Scrive sempre il file, anche se vuoto, per evitare errori nel workflow git
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         f.write("<tv>\n")
