@@ -35,7 +35,6 @@ except FileNotFoundError:
 blocks = parse_m3u(righe)
 print(f"🔍 Flussi totali da testare: {len(blocks)}")
 
-# Deduplicazione per URL
 visti = set()
 blocchi_unici = []
 for block in blocks:
@@ -72,6 +71,9 @@ def controlla_blocco(block):
             check=False
         )
         if r.returncode == 0 and r.stdout.strip():
+            # Verifica presenza audio
+            if "audio" not in r.stdout:
+                return (block, False, "Nessuna traccia audio")
             return (block, True, "")
         else:
             err = r.stderr.strip().splitlines()
@@ -93,19 +95,16 @@ with ThreadPoolExecutor(max_workers=workers) as executor:
         stato = "OK" if ok else "KO"
         if i % 10 == 0 or not ok:
             print(f"[{i}/{len(blocks)}] {stato} | {nome}")
-
         if ok:
             funzionanti.append(block)
         else:
             non_funzionanti.append((block, motivo))
 
-# Salva playlist pulita
 with open("combined_events_checked.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     for block in funzionanti:
         f.write("\n".join(block) + "\n")
 
-# Salva errori con motivo
 with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
     for block, motivo in non_funzionanti:
         nome = block[0].split(",")[-1].strip()
