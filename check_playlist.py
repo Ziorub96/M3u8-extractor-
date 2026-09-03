@@ -4,8 +4,8 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
-workers = 15
-timeout = 5
+workers = 12
+timeout = 8
 
 def parse_m3u(lines):
     blocks = []
