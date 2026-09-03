@@ -72,8 +72,8 @@ def get_headers_for_url(url):
 def controlla_blocco(block):
     url = block[-1]
 
-    # Se il link è YouTube, non testarlo (consideralo valido)
-    if "youtube.com" in url or "youtu.be" in url:
+    # Se il link è YouTube (pagina web o URL diretto googlevideo), non testarlo
+    if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, True, "")
 
     headers_string = get_headers_for_url(url)
