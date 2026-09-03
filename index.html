@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ricerca Canali IPTV</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; padding: 20px; }
+    input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #fff; font-size: 16px; }
+    ul { list-style: none; padding: 0; }
+    li { background: #2a2a2a; margin: 8px 0; padding: 12px; border-radius: 8px; }
+    a { color: #4da3ff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h2>Ricerca canali</h2>
+  <input type="text" id="search" placeholder="Cerca un canale..." oninput="filterChannels()">
+  <ul id="channel-list"></ul>
+
+  <script>
+    const PLAYLIST_URL = "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/combined_events_checked.m3u";
+    let channels = [];
+
+    async function loadPlaylist() {
+      const res = await fetch(PLAYLIST_URL);
+      const text = await res.text();
+      const lines = text.split("\n");
+      let currentName = "";
+      for (const line of lines) {
+        if (line.startsWith("#EXTINF")) {
+          currentName = line.split(",")[1] || "Senza nome";
+        } else if (line.trim() && !line.startsWith("#")) {
+          channels.push({ name: currentName, url: line.trim() });
+        }
+      }
+      renderChannels(channels);
+    }
+
+    function renderChannels(list) {
+      const ul = document.getElementById("channel-list");
+      ul.innerHTML = "";
+      for (const ch of list) {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${ch.name}</strong><br><a href="${ch.url}" target="_blank">${ch.url}</a>`;
+        ul.appendChild(li);
+      }
+    }
+
+    function filterChannels() {
+      const query = document.getElementById("search").value.toLowerCase();
+      const filtered = channels.filter(ch => ch.name.toLowerCase().includes(query));
+      renderChannels(filtered);
+    }
+
+    loadPlaylist();
+  </script>
+</body>
+</html>
