@@ -7,6 +7,19 @@ playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
 workers = 12
 timeout = 8
 
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+DAMITV_REFERER = "https://ondemand.st/"
+DAMITV_ORIGIN = "https://ondemand.st"
+
+# Domini che richiedono header specifici
+DAMITV_DOMAINS = [
+    "ondemand.st",
+    "messi.damitv.st",
+    "embedindia.st",
+    "dokagents.site",
+    "damitv.st",
+]
+
 def parse_m3u(lines):
     blocks = []
     current_block = []
@@ -45,12 +58,25 @@ for block in blocks:
 blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
+def get_headers_for_url(url):
+    """
+    Ritorna la stringa degli header HTTP per ffprobe.
+    Se l'URL appartiene a DAMITV, aggiunge Referer e Origin.
+    Altrimenti restituisce solo User-Agent (che è sempre presente in pratica).
+    """
+    if any(domain in url for domain in DAMITV_DOMAINS):
+        return f"User-Agent: {USER_AGENT}\r\nReferer: {DAMITV_REFERER}\r\nOrigin: {DAMITV_ORIGIN}\r\n"
+    else:
+        return f"User-Agent: {USER_AGENT}\r\n"
+
 def controlla_blocco(block):
     url = block[-1]
 
     # Se il link è YouTube, non testarlo (consideralo valido)
     if "youtube.com" in url or "youtu.be" in url:
         return (block, True, "")
+
+    headers_string = get_headers_for_url(url)
 
     comando = [
         "ffprobe", "-v", "error",
@@ -59,8 +85,10 @@ def controlla_blocco(block):
         "-timeout", str(timeout * 1_000_000),
         "-analyzeduration", "2000000",
         "-probesize", "2000000",
+        "-headers", headers_string,
         "-i", url
     ]
+
     try:
         r = subprocess.run(
             comando,
