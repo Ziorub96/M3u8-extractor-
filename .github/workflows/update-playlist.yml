@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60      # <-- aumentato a 60 minuti per testare più flussi
 
     steps:
       - name: Checkout repository
@@ -34,6 +34,9 @@ jobs:
       # - name: Extract YouTube highlights
       #   run: python youtube_estractor.py
 
+      - name: Extract Daddylive streams
+        run: python daddylive_extractor.py    # <-- nuovo passo
+
       - name: Combine EPG
         run: python epg_combiner.py
 
@@ -47,4 +50,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt fmhy_streams.m3u youtube_highlights.m3u combined_epg.xml"
+          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt fmhy_streams.m3u youtube_highlights.m3u combined_epg.xml daddylive_streams.m3u"
