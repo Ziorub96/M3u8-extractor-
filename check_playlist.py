@@ -15,7 +15,6 @@ DAMITV_DOMAINS = [
     "ondemand.st",
     "messi.damitv.st",
     "embedindia.st",
-    "dokagents.site",
     "damitv.st",
 ]
 
@@ -66,10 +65,14 @@ def get_headers_for_url(url):
 def controlla_blocco(block):
     url = block[-1]
 
+    # 🔴 Nuovo: scarta esplicitamente YouTube (se mai apparisse)
+    if "youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url:
+        return (block, False, "YouTube escluso")
+
     # Domini da saltare (Daddylive, WatchFooty) → considerati validi senza test
     skip_domains = [
         "daddylive", "streamtp-", "domhsd.com",
-        "sportsembed.su", "watchfooty.st"
+        "sportsembed.su", "watchfooty.st", "dokagents.site",
     ]
     if any(domain in url for domain in skip_domains):
         return (block, True, "")
@@ -104,6 +107,7 @@ def controlla_blocco(block):
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
 
+            # ✅ Se il flusso appartiene a DAMITV e riceve 403, consideralo valido
             if any(domain in url for domain in DAMITV_DOMAINS) and "403" in motivo:
                 return (block, True, "")
 
