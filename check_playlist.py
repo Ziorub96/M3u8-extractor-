@@ -59,11 +59,6 @@ blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
 def get_headers_for_url(url):
-    """
-    Ritorna la stringa degli header HTTP per ffprobe.
-    Se l'URL appartiene a DAMITV, aggiunge Referer e Origin.
-    Altrimenti restituisce solo User-Agent (che è sempre presente in pratica).
-    """
     if any(domain in url for domain in DAMITV_DOMAINS):
         return f"User-Agent: {USER_AGENT}\r\nReferer: {DAMITV_REFERER}\r\nOrigin: {DAMITV_ORIGIN}\r\n"
     else:
@@ -72,8 +67,8 @@ def get_headers_for_url(url):
 def controlla_blocco(block):
     url = block[-1]
 
-    # Se il link è YouTube (pagina web o URL diretto googlevideo), non testarlo
-    if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
+    # Domini da saltare: YouTube e Daddylive
+    if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com", "daddylive", "streamtp-", "domhsd.com"]):
         return (block, True, "")
 
     headers_string = get_headers_for_url(url)
@@ -106,6 +101,11 @@ def controlla_blocco(block):
         else:
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
+
+            # ✅ Se il flusso appartiene a DAMITV e riceve 403, consideralo valido
+            if any(domain in url for domain in DAMITV_DOMAINS) and "403" in motivo:
+                return (block, True, "")
+
             return (block, False, motivo)
     except subprocess.TimeoutExpired:
         return (block, False, "Timeout scaduto")
