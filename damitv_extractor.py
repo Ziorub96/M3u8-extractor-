@@ -10,6 +10,9 @@ API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 OUTPUT_FILE = "damitv_events.m3u"
 
+# Finestra temporale per eventi imminenti (in secondi)
+UPCOMING_WINDOW_SECONDS = 3 * 3600   # 3 ore
+
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -145,6 +148,28 @@ def get_live_tv_channels(seen_ids):
     print(f"✅ Canali Live TV aggiunti: {len(lines)//2}")
     return lines
 
+def is_relevant_event(ev, now_ts):
+    """
+    Determina se un evento sportivo è rilevante in base a status e orari.
+    """
+    status = ev.get("status", "").lower()
+    starts_at = ev.get("starts_at")
+    ends_at = ev.get("ends_at")
+
+    # Evento live o in corso
+    if status == "live":
+        return True
+
+    # Evento in procinto di iniziare entro la finestra temporale
+    if starts_at and now_ts <= starts_at <= now_ts + UPCOMING_WINDOW_SECONDS:
+        return True
+
+    # Evento già iniziato ma non ancora finito (in corso)
+    if starts_at and ends_at and starts_at < now_ts < ends_at:
+        return True
+
+    return False
+
 def build_sports_lines(seen_ids):
     print("📡 Recupero eventi sportivi...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
@@ -152,6 +177,7 @@ def build_sports_lines(seen_ids):
         print("❌ API non raggiungibile o dati non validi")
         return []
 
+    now_ts = int(time.time())
     streams = data.get("streams", [])
     lines = []
 
@@ -166,7 +192,12 @@ def build_sports_lines(seen_ids):
             title = ev.get("name", "Sconosciuto")
             sources = ev.get("sources", [])
 
+            # Salta canali 24/7 e sempre live
             if not ev_id or ev_id.startswith("247-") or ev.get("always_live") == 1:
+                continue
+
+            # Applica filtro temporale: se l'evento non è rilevante, salta tutto il resto
+            if not is_relevant_event(ev, now_ts):
                 continue
 
             # Gestione unificata delle sorgenti evitando richieste duplicate
@@ -216,7 +247,7 @@ def main():
     # Canali Live TV
     lines.extend(get_live_tv_channels(seen_ids))
 
-    # Eventi sportivi
+    # Eventi sportivi (con filtro temporale)
     lines.extend(build_sports_lines(seen_ids))
 
     # Scrittura sicura: aggiorna il file solo se ci sono stream effettivi oltre all'intestazione
