@@ -52,6 +52,6 @@ jobs:
             combined_events.m3u
             combined_events_checked.m3u
             flussi_non_funzionanti.txt
-            daddylive_direct.m3u
+            daddylive_streams.m3u
             watchfooty_events.m3u
             combined_epg.xml
