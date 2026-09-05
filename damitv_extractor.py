@@ -10,10 +10,6 @@ API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 OUTPUT_FILE = "damitv_events.m3u"
 
-# Finestra temporale per eventi imminenti (in secondi)
-UPCOMING_WINDOW_SECONDS = 3 * 3600   # 3 ore
-PAST_TOLERANCE_SECONDS = 30 * 60     # 30 minuti di tolleranza nel passato
-
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -22,11 +18,9 @@ FIXED_CHANNELS = [
     ("Match!Ultra", "http://stream.mcquack.net/169/index.m3u8"),
 ]
 
-# Sessione globale per il riutilizzo delle connessioni (Keep-Alive)
 session = requests.Session()
 session.headers.update({"User-Agent": USER_AGENT})
 
-# Cache per evitare chiamate ripetute allo stesso endpoint extract
 _event_cache = {}
 
 def http_get_json(url, referer=None):
@@ -93,7 +87,6 @@ def get_24_7_channels(seen_ids):
             title = ev.get("name", "Sconosciuto")
             logo = ev.get("poster", "")
 
-            # Veri criteri per canali 24/7
             is_always_live = ev.get("always_live") == 1
             is_247_category = any(kw in category_name for kw in ["24/7", "channels"])
 
@@ -150,29 +143,6 @@ def get_live_tv_channels(seen_ids):
     print(f"✅ Canali Live TV aggiunti: {len(lines)//2}")
     return lines
 
-def is_relevant_event(ev, now_ts):
-    """
-    Determina se un evento sportivo è rilevante in base a status e orari.
-    """
-    status = ev.get("status", "").lower()
-    starts_at = ev.get("starts_at")
-    ends_at = ev.get("ends_at")
-
-    # Evento live
-    if status == "live":
-        return True
-
-    # Evento imminente: inizia tra 30 minuti fa e 3 ore da adesso
-    if starts_at:
-        if now_ts - PAST_TOLERANCE_SECONDS <= starts_at <= now_ts + UPCOMING_WINDOW_SECONDS:
-            return True
-
-    # Evento in corso: già iniziato ma non ancora finito
-    if starts_at and ends_at and starts_at < now_ts < ends_at:
-        return True
-
-    return False
-
 def build_sports_lines(seen_ids):
     print("📡 Recupero eventi sportivi...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
@@ -180,7 +150,6 @@ def build_sports_lines(seen_ids):
         print("❌ API non raggiungibile o dati non validi")
         return []
 
-    now_ts = int(time.time())
     streams = data.get("streams", [])
     lines = []
 
@@ -195,15 +164,9 @@ def build_sports_lines(seen_ids):
             title = ev.get("name", "Sconosciuto")
             sources = ev.get("sources", [])
 
-            # Salta canali 24/7 e sempre live
             if not ev_id or ev_id.startswith("247-") or ev.get("always_live") == 1:
                 continue
 
-            # Applica filtro temporale
-            if not is_relevant_event(ev, now_ts):
-                continue
-
-            # Gestione unificata delle sorgenti evitando richieste duplicate
             for src in sources:
                 if not isinstance(src, dict):
                     continue
@@ -239,21 +202,14 @@ def main():
     seen_ids = set()
     lines = ["#EXTM3U"]
 
-    # Canali fissi
     for name, url in FIXED_CHANNELS:
         lines.append(f'#EXTINF:-1 tvg-id="{name}",{name}')
         lines.append(url)
 
-    # Canali 24/7
     lines.extend(get_24_7_channels(seen_ids))
-
-    # Canali Live TV
     lines.extend(get_live_tv_channels(seen_ids))
-
-    # Eventi sportivi (con filtro temporale)
     lines.extend(build_sports_lines(seen_ids))
 
-    # Scrittura sicura: aggiorna il file solo se ci sono stream effettivi oltre all'intestazione
     if len(lines) > 1:
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
