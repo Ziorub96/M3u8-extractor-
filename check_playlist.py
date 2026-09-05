@@ -21,10 +21,10 @@ DAMITV_DOMAINS = [
     "damitv.st",
 ]
 
-# Domini Daddylive (per test HTTP alternativo)
-DADDYLIVE_DOMAINS = [
-    "streamtp-golden1.click",
-    "daddylive",
+# Parole chiave per identificare canali 24/7 (da saltare)
+ALWAYS_ON_KEYWORDS = [
+    "24/7", "24-7", "channel", "tv", "live stream", "always live",
+    "linear", "canale", "canal", "television", "network"
 ]
 
 def parse_m3u(lines):
@@ -72,11 +72,12 @@ def get_headers_for_url(url):
     else:
         return f"User-Agent: {USER_AGENT}\r\n"
 
+def is_always_on(title):
+    """Ritorna True se il titolo sembra un canale 24/7."""
+    title_lower = title.lower()
+    return any(kw in title_lower for kw in ALWAYS_ON_KEYWORDS)
+
 def test_daddylive(url):
-    """
-    Test speciale per Daddylive: verifica che l'endpoint PHP risponda
-    e che contenga un playbackURL (m3u8) nell'HTML.
-    """
     headers = {
         "User-Agent": USER_AGENT,
         "Referer": "https://daddylive.app/",
@@ -94,20 +95,27 @@ def test_daddylive(url):
 
 def controlla_blocco(block):
     url = block[-1]
+    extinf = block[0]
 
-    # YouTube: salta test
+    # 1) Salta YouTube
     if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, True, "")
 
-    # Daddylive: test HTTP alternativo
-    if any(domain in url for domain in DADDYLIVE_DOMAINS):
-        ok, motivo = test_daddylive(url)
-        if ok:
-            return (block, True, "")
-        else:
-            return (block, False, motivo)
+    # 2) Salta canali 24/7 di DAMITV (euristica sul titolo)
+    # Estrai il titolo: di solito è dopo l'ultima virgola dell'EXTINF
+    if "," in extinf:
+        title = extinf.split(",")[-1].strip()
+    else:
+        title = ""
+    if is_always_on(title):
+        return (block, True, "")
 
-    # Tutti gli altri: ffprobe
+    # 3) Daddylive: test HTTP alternativo
+    if any(domain in url for domain in ["streamtp-golden1.click", "daddylive"]):
+        ok, motivo = test_daddylive(url)
+        return (block, ok, motivo)
+
+    # 4) Tutti gli altri: ffprobe
     headers_string = get_headers_for_url(url)
 
     comando = [
@@ -131,7 +139,6 @@ def controlla_blocco(block):
             check=False
         )
         if r.returncode == 0 and r.stdout.strip():
-            # Verifica presenza audio
             if "audio" not in r.stdout:
                 return (block, False, "Nessuna traccia audio")
             return (block, True, "")
@@ -139,7 +146,7 @@ def controlla_blocco(block):
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
 
-            # ✅ Se il flusso appartiene a DAMITV e riceve 403, consideralo valido
+            # ✅ Se DAMITV e 403, consideralo valido
             if any(domain in url for domain in DAMITV_DOMAINS) and "403" in motivo:
                 return (block, True, "")
 
