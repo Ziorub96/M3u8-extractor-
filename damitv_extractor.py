@@ -10,10 +10,6 @@ API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 OUTPUT_FILE = "damitv_events.m3u"
 
-# Finestra temporale per eventi imminenti (in secondi)
-UPCOMING_WINDOW_SECONDS = 3 * 3600   # 3 ore
-PAST_TOLERANCE_SECONDS = 30 * 60     # 30 minuti di tolleranza nel passato
-
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
     ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
@@ -32,7 +28,7 @@ def http_get_json(url, referer=None):
     if referer:
         headers["Referer"] = referer
     try:
-        r = session.get(url, headers=headers, timeout=15)
+        r = session.get(url, headers=headers, timeout=30)
         r.raise_for_status()
         return r.json()
     except Exception as e:
@@ -91,10 +87,10 @@ def get_24_7_channels(seen_ids):
             title = ev.get("name", "Sconosciuto")
             logo = ev.get("poster", "")
 
-            is_always_live = ev.get("always_live") == 1
-            is_247_category = any(kw in category_name for kw in ["24/7", "channels"])
+            is_247_category = any(kw in category_name for kw in ["24/7", "channels", "live"])
+            is_channel_id = "-" in ev_id and not ev_id.isdigit()
 
-            if not is_always_live and not is_247_category:
+            if not ev_id or not (is_247_category or is_channel_id or ev.get("always_live") == 1):
                 continue
 
             if ev_id in seen_ids:
@@ -147,23 +143,6 @@ def get_live_tv_channels(seen_ids):
     print(f"✅ Canali Live TV aggiunti: {len(lines)//2}")
     return lines
 
-def is_relevant_event(ev, now_ts):
-    status = ev.get("status", "").lower()
-    starts_at = ev.get("starts_at")
-    ends_at = ev.get("ends_at")
-
-    if status == "live":
-        return True
-
-    if starts_at:
-        if now_ts - PAST_TOLERANCE_SECONDS <= starts_at <= now_ts + UPCOMING_WINDOW_SECONDS:
-            return True
-
-    if starts_at and ends_at and starts_at < now_ts < ends_at:
-        return True
-
-    return False
-
 def build_sports_lines(seen_ids):
     print("📡 Recupero eventi sportivi...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
@@ -171,11 +150,9 @@ def build_sports_lines(seen_ids):
         print("❌ API non raggiungibile o dati non validi")
         return []
 
-    now_ts = int(time.time())
     streams = data.get("streams", [])
     lines = []
 
-    event_count = 0
     for category in streams:
         if not isinstance(category, dict):
             continue
@@ -190,17 +167,6 @@ def build_sports_lines(seen_ids):
             if not ev_id or ev_id.startswith("247-") or ev.get("always_live") == 1:
                 continue
 
-            if not is_relevant_event(ev, now_ts):
-                continue
-
-            event_count += 1
-            print(f"⚽ Processo evento: {title}")
-
-            # Limita le sorgenti: prima hls, poi sd, poi al massimo 2 dlhd
-            hls_done = False
-            sd_done = False
-            dlhd_count = 0
-
             for src in sources:
                 if not isinstance(src, dict):
                     continue
@@ -211,13 +177,6 @@ def build_sports_lines(seen_ids):
                 if not src_id:
                     continue
 
-                if src_type == "hls" and hls_done:
-                    continue
-                if src_type == "sd" and sd_done:
-                    continue
-                if src_type == "dlhd" and dlhd_count >= 2:
-                    continue
-
                 unique_key = f"{ev_id}_{src_id}"
                 if unique_key in seen_ids:
                     continue
@@ -225,13 +184,10 @@ def build_sports_lines(seen_ids):
                 m3u8_url = None
                 if src_type == "hls":
                     m3u8_url = get_event_m3u8(ev_id)
-                    hls_done = True
                 elif src_type == "sd":
                     m3u8_url = get_event_m3u8(ev_id, sd=True)
-                    sd_done = True
                 elif src_type == "dlhd":
                     m3u8_url = get_channel_m3u8(src_id)
-                    dlhd_count += 1
 
                 if m3u8_url:
                     seen_ids.add(unique_key)
@@ -239,7 +195,7 @@ def build_sports_lines(seen_ids):
                     lines.append(f'#EXTINF:-1 tvg-id="{unique_key}",{display}')
                     lines.append(m3u8_url)
 
-    print(f"✅ Eventi sportivi aggiunti: {len(lines)//2} (da {event_count} eventi)")
+    print(f"✅ Eventi sportivi aggiunti: {len(lines)//2}")
     return lines
 
 def main():
