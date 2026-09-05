@@ -65,14 +65,14 @@ def get_headers_for_url(url):
 def controlla_blocco(block):
     url = block[-1]
 
-    # 🔴 Nuovo: scarta esplicitamente YouTube (se mai apparisse)
-    if "youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url:
+    # 🔴 Scarta esplicitamente YouTube
+    if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, False, "YouTube escluso")
 
-    # Domini da saltare (Daddylive, WatchFooty) → considerati validi senza test
+    # 🟢 Salta test per Daddylive e WatchFooty (considerati validi)
     skip_domains = [
         "daddylive", "streamtp-", "domhsd.com",
-        "sportsembed.su", "watchfooty.st", "dokagents.site",
+        "sportsembed.su", "watchfooty.st", "dokagents.site"
     ]
     if any(domain in url for domain in skip_domains):
         return (block, True, "")
