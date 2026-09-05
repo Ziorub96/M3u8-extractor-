@@ -100,6 +100,7 @@ def controlla_blocco(block):
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
 
+            # ✅ Se DAMITV e 403, consideralo valido
             if any(domain in url for domain in DAMITV_DOMAINS) and "403" in motivo:
                 return (block, True, "")
 
