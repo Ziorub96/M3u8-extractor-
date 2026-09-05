@@ -2,10 +2,8 @@ import re
 import requests
 from pathlib import Path
 
-# URL della guida TV combinata (generata da epg_combiner.py)
 EPG_URL = "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/combined_epg.xml"
 
-# Mapping canale -> tvg-id per nazionalità multiple
 TVG_ID_MAP = {
     "Digi Sport 1": "DigiSport1.it",
     "Digi Sport 2 HD": "DigiSport2.it",
@@ -37,7 +35,6 @@ SOURCES = [
 ]
 
 LOCAL_SOURCES = [
-    ("Daddylive", "daddylive_streams.m3u"),
     ("YouTube Highlights", "youtube_highlights.m3u"),
 ]
 
@@ -105,7 +102,6 @@ def main():
     all_lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
     seen_urls = set()
 
-    # Processa sorgenti remote
     for name, url in SOURCES:
         print(f"📡 Scarico {name}...")
         lines = fetch_playlist(url)
@@ -124,7 +120,6 @@ def main():
                     block[0] = set_tvg_id(block[0], channel_name, name)
                 all_lines.extend(block)
 
-    # Processa sorgenti locali
     for name, path in LOCAL_SOURCES:
         print(f"📂 Leggo file locale {name}...")
         lines = fetch_local_playlist(path)
