@@ -21,12 +21,6 @@ DAMITV_DOMAINS = [
     "damitv.st",
 ]
 
-# Parole chiave per identificare canali 24/7 (da saltare)
-ALWAYS_ON_KEYWORDS = [
-    "24/7", "24-7", "channel", "tv", "live stream", "always live",
-    "linear", "canale", "canal", "television", "network"
-]
-
 def parse_m3u(lines):
     blocks = []
     current_block = []
@@ -72,11 +66,6 @@ def get_headers_for_url(url):
     else:
         return f"User-Agent: {USER_AGENT}\r\n"
 
-def is_always_on(title):
-    """Ritorna True se il titolo sembra un canale 24/7."""
-    title_lower = title.lower()
-    return any(kw in title_lower for kw in ALWAYS_ON_KEYWORDS)
-
 def test_daddylive(url):
     headers = {
         "User-Agent": USER_AGENT,
@@ -101,13 +90,8 @@ def controlla_blocco(block):
     if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, True, "")
 
-    # 2) Salta canali 24/7 di DAMITV (euristica sul titolo)
-    # Estrai il titolo: di solito è dopo l'ultima virgola dell'EXTINF
-    if "," in extinf:
-        title = extinf.split(",")[-1].strip()
-    else:
-        title = ""
-    if is_always_on(title):
+    # 2) Salta canali 24/7 di DAMITV: tvg-id inizia con "247-"
+    if 'tvg-id="247-' in extinf:
         return (block, True, "")
 
     # 3) Daddylive: test HTTP alternativo
