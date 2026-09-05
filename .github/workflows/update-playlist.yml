@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -20,16 +20,17 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Install system deps + Python packages
         run: |
-          pip install requests yt-dlp
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+          pip install requests yt-dlp playwright
+          playwright install --with-deps chromium
 
       - name: Extract Daddylive streams
-        run: python daddylive_extractor.py        # <-- nome vecchio
+        run: python daddylive_extractor.py
 
       - name: Extract WatchFooty events
         run: python watchfooty_direct.py
@@ -47,4 +48,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt daddylive_direct.m3u watchfooty_events.m3u combined_epg.xml"
+          file_pattern: |
+            combined_events.m3u
+            combined_events_checked.m3u
+            flussi_non_funzionanti.txt
+            daddylive_direct.m3u
+            watchfooty_events.m3u
+            combined_epg.xml
