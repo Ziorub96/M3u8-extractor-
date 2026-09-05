@@ -28,6 +28,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+      - name: Extract Daddylive streams
+        run: python daddylive_extractor.py
+
       - name: Extract YouTube highlights
         run: python youtube_estractor.py
 
@@ -44,4 +47,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt youtube_highlights.m3u combined_epg.xml daddylive_direct.m3u"
+          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt daddylive_streams.m3u youtube_highlights.m3u combined_epg.xml"
