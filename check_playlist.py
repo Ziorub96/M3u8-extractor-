@@ -1,6 +1,5 @@
 import subprocess
 import sys
-import requests
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -12,7 +11,6 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 DAMITV_REFERER = "https://ondemand.st/"
 DAMITV_ORIGIN = "https://ondemand.st"
 
-# Domini che richiedono header specifici
 DAMITV_DOMAINS = [
     "ondemand.st",
     "messi.damitv.st",
@@ -60,46 +58,18 @@ blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
 def get_headers_for_url(url):
-    """Header HTTP per ffprobe: aggiunge Referer/Origin per DAMITV."""
     if any(domain in url for domain in DAMITV_DOMAINS):
         return f"User-Agent: {USER_AGENT}\r\nReferer: {DAMITV_REFERER}\r\nOrigin: {DAMITV_ORIGIN}\r\n"
     else:
         return f"User-Agent: {USER_AGENT}\r\n"
 
-def test_daddylive(url):
-    headers = {
-        "User-Agent": USER_AGENT,
-        "Referer": "https://daddylive.app/",
-    }
-    try:
-        r = requests.get(url, headers=headers, timeout=10)
-        if r.status_code != 200:
-            return False, f"HTTP {r.status_code}"
-        if 'playbackURL' in r.text and '.m3u8' in r.text:
-            return True, ""
-        else:
-            return False, "Nessun playbackURL trovato"
-    except Exception as e:
-        return False, str(e)[:200]
-
 def controlla_blocco(block):
     url = block[-1]
-    extinf = block[0]
 
-    # 1) Salta YouTube
+    # Skip YouTube
     if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, True, "")
 
-    # 2) Salta canali 24/7 di DAMITV: tvg-id inizia con "247-"
-    if 'tvg-id="247-' in extinf:
-        return (block, True, "")
-
-    # 3) Daddylive: test HTTP alternativo
-    if any(domain in url for domain in ["streamtp-golden1.click", "daddylive"]):
-        ok, motivo = test_daddylive(url)
-        return (block, ok, motivo)
-
-    # 4) Tutti gli altri: ffprobe
     headers_string = get_headers_for_url(url)
 
     comando = [
@@ -130,7 +100,6 @@ def controlla_blocco(block):
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
 
-            # ✅ Se DAMITV e 403, consideralo valido
             if any(domain in url for domain in DAMITV_DOMAINS) and "403" in motivo:
                 return (block, True, "")
 
