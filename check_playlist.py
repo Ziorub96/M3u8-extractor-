@@ -59,6 +59,7 @@ blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
 def get_headers_for_url(url):
+    """Header HTTP per ffprobe: aggiunge Referer/Origin per DAMITV."""
     if any(domain in url for domain in DAMITV_DOMAINS):
         return f"User-Agent: {USER_AGENT}\r\nReferer: {DAMITV_REFERER}\r\nOrigin: {DAMITV_ORIGIN}\r\n"
     else:
@@ -68,7 +69,11 @@ def controlla_blocco(block):
     url = block[-1]
 
     # Domini da saltare: YouTube e Daddylive
-    if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com", "daddylive", "streamtp-", "domhsd.com"]):
+    skip_domains = [
+        "youtube.com", "youtu.be", "googlevideo.com",
+        "daddylive", "streamtp-", "domhsd.com"
+    ]
+    if any(domain in url for domain in skip_domains):
         return (block, True, "")
 
     headers_string = get_headers_for_url(url)
