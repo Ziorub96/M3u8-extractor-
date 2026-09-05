@@ -28,9 +28,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      # Passo YouTube rimosso
-      # - name: Extract YouTube highlights
-      #   run: python youtube_estractor.py
+      - name: Extract Daddylive streams
+        run: python daddylive_extractor.py        # <-- nome vecchio
+
+      - name: Extract WatchFooty events
+        run: python watchfooty_direct_extractor.py
 
       - name: Combine EPG
         run: python epg_combiner.py
@@ -45,4 +47,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt combined_epg.xml"
+          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt daddylive_direct.m3u watchfooty_events.m3u combined_epg.xml"
