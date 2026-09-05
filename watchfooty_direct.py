@@ -1,170 +1,193 @@
-# watchfooty_direct_extractor.py – estrae URL diretti m3u8 da WatchFooty
-import json
-import time
-import requests
-from urllib.parse import urljoin, urlencode
+#!/usr/bin/env python3
+"""
+WatchFooty → watchfooty_events.m3u
+API pubblica + Playwright (intercetta m3u8 dagli embed).
+Pensato per girare su GitHub Actions.
+"""
+
+from __future__ import annotations
+
+import asyncio
 import re
+import sys
+from pathlib import Path
 
-API_URL = "https://api.watchfooty.st"
-BASE_URL = "https://www.watchfooty.st"
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+import requests
+from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
+
+# ====================== CONFIG ======================
+API_URL = "https://api.watchfooty.st/api/v1/matches/all"
 OUTPUT_FILE = "watchfooty_events.m3u"
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/131.0.0.0 Safari/537.36"
+)
+MAX_MATCHES = 20          # non alzare troppo su Actions (tempo + risorse)
+TIMEOUT_PER_EMBED = 10    # secondi max per embed
+HEADLESS = True
+ONLY_LIVE = False         # True = solo status "in"
+# ====================================================
 
-session = requests.Session()
-session.headers.update({"User-Agent": USER_AGENT})
 
-def build_api_url(live: bool, event_id: str | None = None) -> str:
-    if live:
-        endpoint = "_internal/trpc/sports.getSportsLiveMatchesCount,sports.getPopularMatches,sports.getPopularLiveMatches"
-    else:
-        endpoint = "_internal/trpc/sports.getSportsLiveMatchesCount,sports.getMatchById"
-
-    url = urljoin(API_URL, endpoint)
-
-    now = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
-    end = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() + 86400))
-
-    if live:
-        input_data = {
-            "0": {"json": {"start": now, "end": end}},
-            "1": {"json": None, "meta": {"values": ["undefined"]}},
-            "2": {"json": None, "meta": {"values": ["undefined"]}},
-        }
-    else:
-        input_data = {
-            "0": {"json": {"start": now, "end": end}},
-            "1": {"json": {"id": event_id, "withoutAdditionalInfo": True, "withoutLinks": False}},
-        }
-
-    params = {
-        "batch": "1",
-        "input": json.dumps(input_data, separators=(",", ":")),
-    }
-
-    return f"{url}?{urlencode(params)}"
-
-def get_live_matches():
-    url = build_api_url(live=True)
+def get_matches() -> list[dict]:
+    print("📡 WatchFooty: scarico i match dall'API...")
     try:
-        r = session.get(url, timeout=20)
+        r = requests.get(API_URL, headers={"User-Agent": USER_AGENT}, timeout=20)
         r.raise_for_status()
         data = r.json()
-        api_data = None
-        if isinstance(data, list) and data:
-            for item in reversed(data):
-                result = item.get("result", {}).get("data", {}).get("json")
-                if result is not None:
-                    api_data = result
-                    break
-        if not api_data:
-            print("❌ Nessun dato live trovato")
-            return []
-        if isinstance(api_data, list):
-            return api_data
-        for key in ("matches", "events", "items"):
-            if key in api_data:
-                return api_data[key]
-        return []
     except Exception as e:
-        print(f"❌ Errore API live: {e}")
+        print(f"❌ Errore API WatchFooty: {e}")
         return []
 
-def get_embed_url(event_id: str) -> str | None:
-    url = build_api_url(live=False, event_id=event_id)
+    matches: list[dict] = []
+    for m in data:
+        streams = m.get("streams") or []
+        if not streams:
+            continue
+        status = (m.get("status") or "").lower()
+        if ONLY_LIVE and status not in ("in", "live"):
+            continue
+        matches.append(
+            {
+                "id": str(m.get("matchId") or m.get("id") or ""),
+                "title": m.get("title", "Sconosciuto"),
+                "league": m.get("league", "WatchFooty"),
+                "status": status,
+                "embed": streams[0].get("url"),
+                "quality": streams[0].get("quality") or "",
+            }
+        )
+
+    print(f"✅ WatchFooty: {len(matches)} match con stream (processo max {MAX_MATCHES})")
+    return matches[:MAX_MATCHES]
+
+
+async def extract_m3u8(page, embed_url: str) -> str | None:
+    captured: list[str] = []
+
+    def on_request(request):
+        url = request.url
+        if ".m3u8" not in url.lower():
+            return
+        if url.startswith("blob:"):
+            return
+        low = url.lower()
+        if any(x in low for x in ("ad.", "ads.", "tracker", "analytics", "doubleclick")):
+            return
+        captured.append(url)
+
+    page.on("request", on_request)
+
     try:
-        r = session.get(url, timeout=20)
-        r.raise_for_status()
-        data = r.json()
-        api_data = None
-        if isinstance(data, list) and data:
-            for item in reversed(data):
-                result = item.get("result", {}).get("data", {}).get("json")
-                if result is not None:
-                    api_data = result
-                    break
-        if not api_data:
-            return None
-        links = api_data.get("fixtureData", {}).get("links", [])
-        if not links:
-            return None
-        quality_links = [link for link in links if link.get("wld") and "e" not in link["wld"]]
-        if not quality_links:
-            return None
-        quality_links.sort(key=lambda x: x.get("viewerCount") or -1, reverse=True)
-        best = quality_links[0]
-        parts = [
-            best["gi"],
-            best["t"],
-            best["wld"]["cn"],
-            best["wld"]["sn"],
-        ]
-        embed_path = "/".join(parts)
-        return f"https://sportsembed.su/embed/{embed_path}?player=clappr&autoplay=true"
+        await page.goto(
+            embed_url,
+            wait_until="domcontentloaded",
+            timeout=TIMEOUT_PER_EMBED * 1000,
+        )
+        for _ in range(TIMEOUT_PER_EMBED * 2):
+            if captured:
+                break
+            await asyncio.sleep(0.5)
+    except PlaywrightTimeout:
+        pass
     except Exception as e:
-        print(f"⚠️ Errore dettaglio evento {event_id}: {e}")
+        print(f"   ⚠️  Errore navigazione: {e}")
+        return None
+    finally:
+        try:
+            page.remove_listener("request", on_request)
+        except Exception:
+            pass
+
+    if not captured:
         return None
 
-def resolve_embed_to_m3u8(embed_url: str) -> str | None:
-    headers = {
-        "User-Agent": USER_AGENT,
-        "Referer": BASE_URL,
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    }
-    try:
-        r = session.get(embed_url, headers=headers, timeout=15)
-        if r.status_code != 200:
-            return None
-        match = re.search(r'var playbackURL\s*=\s*["\']([^"\']+)["\']', r.text)
-        if match:
-            return match.group(1).replace('\\/', '/')
-        m3u8_urls = re.findall(r'https?://[^\s"\']+\.m3u8[^\s"\']*', r.text)
-        if m3u8_urls:
-            return m3u8_urls[0]
-        return None
-    except Exception as e:
-        print(f"⚠️ Errore risolvendo embed {embed_url}: {e}")
-        return None
+    for url in captured:
+        if re.search(r"(master|index|playlist|manifest)", url, re.I):
+            return url
+    return captured[0]
 
-def main():
-    print("📡 Recupero match live da WatchFooty...")
-    live_matches = get_live_matches()
-    if not live_matches:
-        print("⚠️ Nessun evento live trovato")
-        return
+
+async def build_playlist() -> int:
+    matches = get_matches()
+    if not matches:
+        # crea comunque un file vuoto valido così il combiner non crasha
+        Path(OUTPUT_FILE).write_text("#EXTM3U\n", encoding="utf-8")
+        print("⚠️  Nessun match WatchFooty, creato file vuoto")
+        return 0
 
     lines = ["#EXTM3U"]
-    count = 0
-    for match in live_matches:
-        if not isinstance(match, dict):
-            continue
-        event_id = match.get("id")
-        title = match.get("title", "Sconosciuto")
-        league = match.get("league", "WatchFooty")
-        if not event_id:
-            continue
+    success = 0
 
-        embed_url = get_embed_url(event_id)
-        if not embed_url:
-            print(f"❌ Nessun embed per {title}")
-            continue
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(
+            headless=HEADLESS,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+            ],
+        )
+        context = await browser.new_context(
+            user_agent=USER_AGENT,
+            viewport={"width": 1280, "height": 720},
+            extra_http_headers={
+                "Referer": "https://www.watchfooty.st/",
+                "Origin": "https://www.watchfooty.st",
+            },
+        )
 
-        m3u8_url = resolve_embed_to_m3u8(embed_url)
-        if not m3u8_url:
-            print(f"❌ Nessun m3u8 per {title}")
-            continue
+        for i, m in enumerate(matches, 1):
+            title = m["title"]
+            embed = m["embed"]
+            print(f"[{i}/{len(matches)}] {title}")
 
-        display = f"[{league}] {title}"
-        lines.append(f'#EXTINF:-1 tvg-id="{event_id}" group-title="WatchFooty",{display}')
-        lines.append(m3u8_url)
-        count += 1
-        print(f"✅ Aggiunto: {title}")
+            if not embed:
+                print("   ❌ Nessun embed")
+                continue
 
-    if count > 0:
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
-        print(f"\n✅ Salvato {OUTPUT_FILE} con {count} eventi")
-    else:
-        print("⚠️ Nessun evento aggiunto alla playlist")
+            page = await context.new_page()
+            try:
+                m3u8 = await extract_m3u8(page, embed)
+            finally:
+                await page.close()
+
+            if not m3u8:
+                print("   ❌ Nessun m3u8")
+                continue
+
+            display = f"[{m['league']}] {title}"
+            if m["quality"]:
+                display += f" ({m['quality']})"
+
+            lines.append(
+                f'#EXTINF:-1 tvg-id="wf-{m["id"]}" group-title="WatchFooty",{display}'
+            )
+            lines.append(m3u8)
+            success += 1
+            print(f"   ✅ OK")
+
+        await browser.close()
+
+    Path(OUTPUT_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"\n✅ WatchFooty: salvato {OUTPUT_FILE} con {success} eventi")
+    return success
+
+
+def main() -> None:
+    try:
+        count = asyncio.run(build_playlist())
+        # non fallire il workflow se 0 stream (il checker gestirà)
+        if count == 0:
+            print("Nessuno stream WatchFooty aggiunto (normale se non ci sono match live)")
+    except Exception as e:
+        print(f"❌ Errore fatale WatchFooty: {e}", file=sys.stderr)
+        # crea file vuoto per non rompere i passi successivi
+        Path(OUTPUT_FILE).write_text("#EXTM3U\n", encoding="utf-8")
+        sys.exit(0)  # non bloccare tutto il workflow
+
 
 if __name__ == "__main__":
     main()
