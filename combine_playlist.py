@@ -35,7 +35,7 @@ SOURCES = [
 ]
 
 LOCAL_SOURCES = [
-    ("Daddylive", "daddylive_direct.m3u"),
+    ("Daddylive", "daddylive_streams.m3u"),
     ("WatchFooty", "watchfooty_events.m3u"),
 ]
 
