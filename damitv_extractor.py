@@ -12,6 +12,7 @@ OUTPUT_FILE = "damitv_events.m3u"
 
 # Finestra temporale per eventi imminenti (in secondi)
 UPCOMING_WINDOW_SECONDS = 3 * 3600   # 3 ore
+PAST_TOLERANCE_SECONDS = 30 * 60     # 30 minuti di tolleranza nel passato
 
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
@@ -92,10 +93,11 @@ def get_24_7_channels(seen_ids):
             title = ev.get("name", "Sconosciuto")
             logo = ev.get("poster", "")
 
-            is_247_category = any(kw in category_name for kw in ["24/7", "channels", "live"])
-            is_channel_id = "-" in ev_id and not ev_id.isdigit()
+            # Veri criteri per canali 24/7
+            is_always_live = ev.get("always_live") == 1
+            is_247_category = any(kw in category_name for kw in ["24/7", "channels"])
 
-            if not ev_id or not (is_247_category or is_channel_id or ev.get("always_live") == 1):
+            if not is_always_live and not is_247_category:
                 continue
 
             if ev_id in seen_ids:
@@ -156,15 +158,16 @@ def is_relevant_event(ev, now_ts):
     starts_at = ev.get("starts_at")
     ends_at = ev.get("ends_at")
 
-    # Evento live o in corso
+    # Evento live
     if status == "live":
         return True
 
-    # Evento in procinto di iniziare entro la finestra temporale
-    if starts_at and now_ts <= starts_at <= now_ts + UPCOMING_WINDOW_SECONDS:
-        return True
+    # Evento imminente: inizia tra 30 minuti fa e 3 ore da adesso
+    if starts_at:
+        if now_ts - PAST_TOLERANCE_SECONDS <= starts_at <= now_ts + UPCOMING_WINDOW_SECONDS:
+            return True
 
-    # Evento già iniziato ma non ancora finito (in corso)
+    # Evento in corso: già iniziato ma non ancora finito
     if starts_at and ends_at and starts_at < now_ts < ends_at:
         return True
 
@@ -196,7 +199,7 @@ def build_sports_lines(seen_ids):
             if not ev_id or ev_id.startswith("247-") or ev.get("always_live") == 1:
                 continue
 
-            # Applica filtro temporale: se l'evento non è rilevante, salta tutto il resto
+            # Applica filtro temporale
             if not is_relevant_event(ev, now_ts):
                 continue
 
