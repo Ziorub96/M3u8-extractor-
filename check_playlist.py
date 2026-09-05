@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import requests
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -18,6 +19,12 @@ DAMITV_DOMAINS = [
     "embedindia.st",
     "dokagents.site",
     "damitv.st",
+]
+
+# Domini Daddylive (per test HTTP alternativo)
+DADDYLIVE_DOMAINS = [
+    "streamtp-golden1.click",
+    "daddylive",
 ]
 
 def parse_m3u(lines):
@@ -65,17 +72,42 @@ def get_headers_for_url(url):
     else:
         return f"User-Agent: {USER_AGENT}\r\n"
 
+def test_daddylive(url):
+    """
+    Test speciale per Daddylive: verifica che l'endpoint PHP risponda
+    e che contenga un playbackURL (m3u8) nell'HTML.
+    """
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Referer": "https://daddylive.app/",
+    }
+    try:
+        r = requests.get(url, headers=headers, timeout=10)
+        if r.status_code != 200:
+            return False, f"HTTP {r.status_code}"
+        if 'playbackURL' in r.text and '.m3u8' in r.text:
+            return True, ""
+        else:
+            return False, "Nessun playbackURL trovato"
+    except Exception as e:
+        return False, str(e)[:200]
+
 def controlla_blocco(block):
     url = block[-1]
 
-    # Domini da saltare: YouTube e Daddylive
-    skip_domains = [
-        "youtube.com", "youtu.be", "googlevideo.com",
-        "daddylive", "streamtp-", "domhsd.com"
-    ]
-    if any(domain in url for domain in skip_domains):
+    # YouTube: salta test
+    if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, True, "")
 
+    # Daddylive: test HTTP alternativo
+    if any(domain in url for domain in DADDYLIVE_DOMAINS):
+        ok, motivo = test_daddylive(url)
+        if ok:
+            return (block, True, "")
+        else:
+            return (block, False, motivo)
+
+    # Tutti gli altri: ffprobe
     headers_string = get_headers_for_url(url)
 
     comando = [
