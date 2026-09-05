@@ -32,7 +32,7 @@ jobs:
         run: python daddylive_extractor.py        # <-- nome vecchio
 
       - name: Extract WatchFooty events
-        run: python watchfooty_direct_extractor.py
+        run: python watchfooty_direct.py
 
       - name: Combine EPG
         run: python epg_combiner.py
