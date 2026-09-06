@@ -51,4 +51,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "damitv_events.m3u combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt daddylive_unified.m3u watchfooty_events.m3u combined_epg.xml"
+          file_pattern: "damitv_events.m3u combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt daddylive_streams.m3u watchfooty_events.m3u combined_epg.xml"
