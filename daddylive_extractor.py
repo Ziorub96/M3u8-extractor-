@@ -1,20 +1,26 @@
-# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive (canali sportivi)
-# Versione finale ottimizzata: multithreading + circuit breaker ridotto
+# daddylive_extractor.py
+# Estrae flussi m3u8 da player2 + player5 + player6 + player14
+# Pure Python + requests → funziona su Carnets e GitHub Actions
+# Output: daddylive_streams.m3u (compatibile con combine_playlist.py)
+
 import re
 import json
 import base64
+import math
 import time
 import random
+from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from curl_cffi import requests as curl_requests
+import requests
 
-BASE_URL = "https://daddylive.app"
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+# ===================== CONFIG =====================
+
+BASE_CANDIDATES = [
+    "https://daddylive.app",
+    "https://dlhd.so",
+    "https://daddylive.sx",
+    "https://daddylive.li",
 ]
 
 PLAYER_FILES = [
@@ -24,187 +30,288 @@ PLAYER_FILES = [
     "player14.json",
 ]
 
+ONLY_SPORT = True
+MAX_WORKERS = 5
+REQUEST_DELAY = (0.4, 1.0)
+OUTPUT_FILE = "daddylive_streams.m3u"
+
+USER_AGENTS = [
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+]
+
 SPORT_KEYWORDS = [
     "sport", "espn", "sky sports", "premier league", "nfl", "nba", "nhl", "mlb",
     "ufc", "boxing", "football", "calcio", "soccer", "tennis", "golf", "rugby",
     "cricket", "f1", "motogp", "bundesliga", "serie a", "la liga", "champions",
     "europa league", "dazn", "bein", "movistar", "canale sport", "sport tv",
-    "fox sports", "win sports", "dsports", "eleven", "premier", "nascar", "indycar",
-    "nba tv", "nfl network", "red bull tv", "wwe", "aew", "afl", "nrl", "mls"
+    "fox sports", "eleven", "premier", "nba tv", "nfl network", "wwe", "aew",
+    "tnt sports", "rai sport", "ziggo sport", "polsat sport",
+    "sky sport", "canal sport", "rmc sport", "v sport", "match football",
 ]
 
-MAX_WORKERS = 5
-MAX_FAILURES_BEFORE_BREAK = 10
-PAUSA_CIRCUIT_BREAKER = 25  # secondi
+# ===================== UTILS =====================
 
-def get_session():
-    """Crea una sessione con fingerprint Chrome, ruotando User-Agent."""
-    session = curl_requests.Session(impersonate="chrome120")
-    session.headers.update({"User-Agent": random.choice(USER_AGENTS)})
-    return session
-
-def fetch_url(url, headers=None, timeout=15, retries=2, backoff=12.0):
-    """
-    Scarica URL usando curl_cffi con fingerprint Chrome.
-    Gestisce rate limiting e backoff esponenziale.
-    Non applica pause globali: il jitter è gestito dai worker.
-    """
-    for attempt in range(retries):
-        session = get_session()
-        if headers:
-            session.headers.update(headers)
-
-        try:
-            r = session.get(url, timeout=timeout)
-            if r.status_code == 429:
-                wait_time = backoff * (2 ** attempt) + random.uniform(1, 3)
-                print(f"⚠️ 429 Rate limited. Attendo {wait_time:.1f}s... (tentativo {attempt+1}/{retries})")
-                time.sleep(wait_time)
-                continue
-            r.raise_for_status()
-            return r
-        except Exception as e:
-            if attempt == retries - 1:
-                return None
-            time.sleep(3)
-    return None
-
-def base64_decode_padded(s):
+def b64d(s: str) -> bytes:
     s = s.replace('-', '+').replace('_', '/')
-    padding = '=' * (-len(s) % 4)
-    s += padding
-    decoded_bytes = base64.b64decode(s)
-    try:
-        return decoded_bytes.decode('utf-8')
-    except UnicodeDecodeError:
-        return decoded_bytes.decode('latin-1')
+    s += '=' * (-len(s) % 4)
+    return base64.b64decode(s)
 
-def is_sport_channel(name):
-    name_lower = name.lower()
+def is_sport(name: str) -> bool:
+    if not ONLY_SPORT:
+        return True
+    n = name.lower()
     for kw in SPORT_KEYWORDS:
         if len(kw) <= 4:
-            pattern = rf'\b{re.escape(kw)}\b'
-            if re.search(pattern, name_lower):
+            if re.search(rf'\b{re.escape(kw)}\b', n):
                 return True
-        else:
-            if kw in name_lower:
-                return True
+        elif kw in n:
+            return True
     return False
 
-def extract_m3u8_url_channel(html):
-    src_match = re.search(r"source:\{src:([A-Za-z_$][A-Za-z0-9_$]*),format:'hls'\}", html)
-    if not src_match:
-        return None
-    var_name = src_match.group(1)
+def get_headers(referer: str | None = None) -> dict:
+    h = {"User-Agent": random.choice(USER_AGENTS)}
+    if referer:
+        h["Referer"] = referer
+    return h
 
-    pattern = rf"var\s+{re.escape(var_name)}\s*=\s*(.+?);"
-    match = re.search(pattern, html, re.DOTALL)
-    if not match:
-        return None
-    expr = match.group(1)
-
-    func_match = re.match(r'\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\(', expr)
-    if not func_match:
-        return None
-    func_name = func_match.group(1)
-
-    args = re.findall(rf"{re.escape(func_name)}\(([A-Za-z_$][A-Za-z0-9_$]*)\)", expr)
-    if not args:
-        return None
-
-    decoded_parts = []
-    for arg in args:
-        var_def = re.search(rf"var\s+{re.escape(arg)}\s*=\s*'([^']*)';", html)
-        if not var_def:
-            return None
-        val = var_def.group(1)
-        dec = base64_decode_padded(val)
-        decoded_parts.append(dec)
-
-    return ''.join(decoded_parts)
-
-def resolve_channel_stream(php_url):
-    headers = {"Referer": BASE_URL}
-    # Jitter leggero prima di ogni richiesta per distribuire il carico
-    time.sleep(random.uniform(0.3, 0.8))
-    r = fetch_url(php_url, headers=headers)
-    if not r:
-        return None
-    return extract_m3u8_url_channel(r.text)
-
-def process_entry(entry):
-    """Processa un singolo canale: ritorna (name, stream_url) o None."""
-    if not isinstance(entry, dict):
-        return None
-    name = entry.get('name') or entry.get('title') or 'Senza nome'
-    if not is_sport_channel(name):
-        return None
-
-    php_url = None
-    for key in ['url', 'url1', 'url2', 'url3']:
-        val = entry.get(key)
-        if val and isinstance(val, str) and val.startswith('http'):
-            php_url = val
-            break
-    if not php_url:
-        return None
-
-    stream_url = resolve_channel_stream(php_url)
-    if stream_url:
-        return (name, stream_url, "Sport")
+def find_working_base() -> str | None:
+    for base in BASE_CANDIDATES:
+        try:
+            r = requests.get(
+                f"{base}/player/player5.json",
+                headers=get_headers(),
+                timeout=12,
+            )
+            if r.status_code == 200 and r.text.strip().startswith('['):
+                print(f"✅ Dominio attivo: {base}")
+                return base
+        except Exception:
+            continue
+    print("❌ Nessun dominio base funzionante trovato")
     return None
 
-def main():
-    all_entries = []
+# ===================== EXTRACTORS =====================
 
-    print("📡 Estraggo canali sportivi...")
+def extract_player2(html: str) -> str | None:
+    """streamtp / global1.php → var playbackURL"""
+    m = re.search(r'var\s+playbackURL\s*=\s*"([^"]+)"', html)
+    if m:
+        return m.group(1).replace('\\/', '/')
+    return None
 
-    for pfile in PLAYER_FILES:
-        url = f"{BASE_URL}/player/{pfile}"
-        data = fetch_url(url)
-        if not data:
-            continue
+def extract_player5(html: str) -> str | None:
+    """cdnlivetv.tv → pezzi Base64 con nomi variabili random"""
+    join_match = re.search(
+        r'[A-Za-z_$][\w$]*\s*=\s*((?:[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*\)\s*\+\s*)+[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*\))',
+        html,
+    )
+    if not join_match:
+        return None
+    args = re.findall(r'[A-Za-z_$][\w$]*\(([A-Za-z_$][\w$]*)\)', join_match.group(1))
+    vars_dict = dict(re.findall(r"var\s+([A-Za-z_$][\w$]*)\s*=\s*'([^']*)'", html))
+    parts = []
+    for arg in args:
+        if arg not in vars_dict:
+            return None
         try:
-            entries = data.json()
-        except:
-            continue
-        print(f"\n📁 {pfile}: {len(entries)} voci")
+            parts.append(b64d(vars_dict[arg]).decode('utf-8', errors='replace'))
+        except Exception:
+            return None
+    return ''.join(parts) if parts else None
 
-        # Filtra solo canali sportivi con URL
-        candidates = []
-        for entry in entries:
-            if isinstance(entry, dict) and is_sport_channel(entry.get('name') or entry.get('title') or ''):
-                candidates.append(entry)
+def extract_player6(html: str, page_url: str, session: requests.Session) -> str | None:
+    """bolaloca.my → iframe cuttingfame → _econfig"""
+    iframe_m = re.search(r'<iframe[^>]+src=["\']([^"\']+)["\']', html, re.I)
+    if not iframe_m:
+        return None
 
-        print(f"   ➡️ {len(candidates)} canali sportivi da processare")
+    iframe_url = iframe_m.group(1)
+    if iframe_url.startswith('//'):
+        iframe_url = 'https:' + iframe_url
+    elif iframe_url.startswith('/'):
+        iframe_url = urljoin(page_url, iframe_url)
 
-        # Processa in parallelo con ThreadPoolExecutor
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            future_to_entry = {executor.submit(process_entry, entry): entry for entry in candidates}
-            for future in as_completed(future_to_entry):
-                result = future.result()
-                if result:
-                    all_entries.append(result)
+    time.sleep(random.uniform(*REQUEST_DELAY))
+    try:
+        r = session.get(iframe_url, headers=get_headers(page_url), timeout=15)
+        if r.status_code != 200:
+            return None
+    except Exception:
+        return None
+
+    econfig_m = re.search(r"window\._econfig='([^']+)'", r.text)
+    if not econfig_m:
+        return None
+
+    try:
+        decoded = b64d(econfig_m.group(1)).decode('utf-8', errors='replace')
+        length = len(decoded)
+        chunk = math.ceil(length / 4)
+        parts = []
+        pos = 0
+        for _ in range(4):
+            part = decoded[pos:pos + chunk]
+            pos += chunk
+            parts.append(part[:3] + part[4:])
+        ordered = [parts[i] for i in [1, 3, 0, 2]]
+        joined = ''.join(ordered)
+        d2 = b64d(joined).decode('utf-8', errors='replace')
+        d3 = b64d(d2).decode('utf-8', errors='replace')
+
+        m = re.search(r'"stream_url(?:_nop2p)?"\s*:\s*"([^"]+)"', d3)
+        if m:
+            return m.group(1).replace('\\/', '/')
+    except Exception:
+        return None
+    return None
+
+def extract_player14(html: str) -> str | None:
+    """epiembeds.online → array interi + XOR (chiavi dinamiche)"""
+    arr_m = re.search(r'var\s+_qb8\s*=\s*\[([^\]]+)\]', html)
+    if not arr_m:
+        return None
+
+    nums = []
+    for x in arr_m.group(1).split(','):
+        x = x.strip()
+        if x.lstrip('-').isdigit():
+            nums.append(int(x))
+
+    sx_m = re.search(r'_sx8\s*=\s*(\d+)', html)
+    vq_m = re.search(r'_vq9\s*=\s*(\d+)', html)
+    sx8 = int(sx_m.group(1)) if sx_m else 61
+    vq9 = int(vq_m.group(1)) if vq_m else 9
+
+    try:
+        decoded = ''.join(chr(((n ^ sx8) - vq9 + 256) & 255) for n in nums)
+    except Exception:
+        return None
+
+    m = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', decoded)
+    return m.group(0) if m else None
+
+# ===================== RESOLVER =====================
+
+def resolve_stream(name: str, url: str, base_url: str) -> tuple | None:
+    """Sessione locale → thread-safe."""
+    session = requests.Session()
+    time.sleep(random.uniform(*REQUEST_DELAY))
+
+    try:
+        r = session.get(url, headers=get_headers(base_url), timeout=15)
+        if r.status_code != 200:
+            return None
+        html = r.text
+    except Exception:
+        return None
+
+    stream = None
+
+    if "cdnlivetv.tv" in url:
+        stream = extract_player5(html)
+    elif "streamtp-golden" in url or "global1.php" in url:
+        stream = extract_player2(html)
+    elif "bolaloca.my" in url:
+        stream = extract_player6(html, url, session)
+    elif "epiembeds.online" in url:
+        stream = extract_player14(html)
+    else:
+        stream = (
+            extract_player5(html)
+            or extract_player2(html)
+            or extract_player14(html)
+            or extract_player6(html, url, session)
+        )
+
+    if stream and stream.startswith("http"):
+        return (name, stream)
+    return None
+
+# ===================== MAIN =====================
+
+def main():
+    print("🔍 Cerco dominio attivo...")
+    base_url = find_working_base()
+    if not base_url:
+        return
+
+    all_candidates = []
+
+    print("\n📡 Scarico le liste player...")
+    for pfile in PLAYER_FILES:
+        try:
+            r = requests.get(
+                f"{base_url}/player/{pfile}",
+                headers=get_headers(),
+                timeout=20,
+            )
+            entries = r.json()
+            count_sport = 0
+            for e in entries:
+                if not isinstance(e, dict):
+                    continue
+                name = e.get("name") or e.get("title") or "Senza nome"
+                if not is_sport(name):
+                    continue
+                php_url = next(
+                    (
+                        e.get(k)
+                        for k in ("url", "url1", "url2", "url3")
+                        if e.get(k) and str(e.get(k)).startswith("http")
+                    ),
+                    None,
+                )
+                if php_url:
+                    all_candidates.append((name, php_url))
+                    count_sport += 1
+            print(f"   {pfile}: {len(entries)} totali → {count_sport} sport")
+        except Exception as ex:
+            print(f"   ❌ {pfile}: {ex}")
+
+    print(f"\n🎯 Canali da risolvere: {len(all_candidates)}")
+    print(f"🚀 Avvio con {MAX_WORKERS} worker...\n")
+
+    results = []
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(resolve_stream, name, url, base_url): name
+            for name, url in all_candidates
+        }
+        done = 0
+        total = len(futures)
+        for fut in as_completed(futures):
+            done += 1
+            name = futures[fut]
+            try:
+                res = fut.result()
+                if res:
+                    results.append(res)
+                    print(f"[{done}/{total}] ✅ {res[0]}")
+                else:
+                    print(f"[{done}/{total}] ❌ {name}")
+            except Exception:
+                print(f"[{done}/{total}] ❌ {name}")
 
     # Deduplica
-    seen_urls = set()
-    unique_entries = []
-    for name, stream_url, group in all_entries:
-        if stream_url not in seen_urls:
-            seen_urls.add(stream_url)
-            unique_entries.append((name, stream_url, group))
+    seen = set()
+    unique = []
+    for name, url in results:
+        if url not in seen:
+            seen.add(url)
+            unique.append((name, url))
 
-    print(f"\n🔗 Totale flussi trovati: {len(unique_entries)}")
+    print(f"\n🔗 Flussi unici trovati: {len(unique)}")
 
-    output_file = "daddylive_streams.m3u"
-    with open(output_file, "w", encoding="utf-8") as f:
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for name, stream_url, group in unique_entries:
-            clean_name = name.replace('"', '').replace('\n', '').replace(',', '-')
-            f.write(f'#EXTINF:-1 group-title="{group}",{clean_name}\n')
-            f.write(stream_url + "\n")
+        for name, url in unique:
+            clean = name.replace('"', "").replace(",", " -").replace("\n", "")
+            f.write(f'#EXTINF:-1 group-title="Sport",{clean}\n')
+            f.write(url + "\n")
 
-    print(f"✅ Salvato {output_file} con {len(unique_entries)} canali")
+    print(f"✅ Salvato → {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     main()
