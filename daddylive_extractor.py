@@ -1,4 +1,7 @@
-# daddylive_direct_extractor.py – estrae URL diretti m3u8 da Daddylive (canali sportivi + eventi live)
+# daddylive_mixed_extractor.py
+# player5.json  -> solo whitelist top calcio
+# player2/6/14  -> tutti i canali
+# eventi live   -> opzionale
 import requests
 import re
 import json
@@ -16,37 +19,58 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ]
 
-# File canali da estrarre (player2.json rimosso perché il suo host streamtp-golden1.click non risponde)
-PLAYER_FILES = [
-    "player5.json",
-    "player6.json",
-    "player14.json",
+# Canali da estrarre da player5.json (whitelist)
+WHITELIST_CHANNELS = [
+    "CBS Sports Golazo US", "Canale 5 IT", "Italia 1 IT", "Rai 1 IT", "Rai Sport IT",
+    "RSI La 1 CH", "RSI La 2 CH", "Starzplay Sports 1 AE", "Starzplay Sports 2 AE",
+    "LaLiga TV GB", "Premier Sports 1 GB", "Premier Sports 2 GB", "Sky Sports Football GB",
+    "Sky Sports Main Event GB", "Sky Sports Premier League GB", "TNT Sports 1 GB",
+    "TNT Sports 2 GB", "TNT Sports 3 GB", "TNT Sports 4 GB", "TNT Sports 5 GB",
+    "TNT Sports 6 GB", "Viaplay Sports 1 GB", "Viaplay Sports 2 GB",
+    "Canal FR", "Canal Foot FR", "Canal Live 3 FR", "Canal Live 4 FR", "Canal Live 5 FR",
+    "Canal Premier League FR", "Canal Sport FR", "Canal Sport360 FR", "RMC Sport 1 FR",
+    "RMC Sport 2 FR", "beIN SPORTS 1 FR", "beIN SPORTS 2 FR", "beIN SPORTS 3 FR",
+    "beIN SPORTS MAX 4 FR", "beIN SPORTS MAX 5 FR",
+    "DAZN F1 ES", "DAZN LaLiga ES", "DAZN LaLiga 2 ES", "Real Madrid TV ES",
+    "DAZN 1 DE", "DAZN 2 DE", "Sky Sport 1 DE", "Sky Sport 1 AT", "Sky Sport 2 AT",
+    "Sky Sport 2 DE", "Sky Sport Bundesliga 1 DE", "Sky Sport Bundesliga 2 DE",
+    "Sky Sport Bundesliga 3 DE", "Sky Sport Bundesliga 4 DE", "Sky Sport Bundesliga 5 DE",
+    "Sky Sport Premier League DE", "SportDigital Fussball DE",
+    "Canal Sport 2 PL", "Canal Sport 3 PL", "Canal Sport 4 PL", "Canal Sport 5 PL",
+    "Eleven Sports 1 PL", "Eleven Sports 2 PL", "Eleven Sports 3 PL", "Eleven Sports 4 PL",
+    "Polsat Sport Premium 1 PL", "Polsat Sport Premium 2 PL", "TVP Sport PL",
+    "Benfica TV PT", "Canal 11 PT", "DAZN 2 PT", "DAZN 3 PT", "DAZN 4 PT", "DAZN 5 PT",
+    "DAZN 6 PT", "Sport TV 1 PT", "Sport TV 2 PT", "Sport TV 3 PT", "Sport TV 4 PT", "Sport TV 5 PT",
+    "ESPN NL", "ESPN 2 NL", "ESPN 3 NL", "Ziggo Sport 2 NL", "Ziggo Sport 3 NL",
+    "Ziggo Sport 4 NL", "Ziggo Sport 5 NL", "Ziggo Sport 6 NL",
+    "ESPN Deportes US", "ESPN Premium AR", "FOX Deportes US", "FOX Soccer Plus US",
+    "Premiere 1 BR", "Premiere 2 BR", "Premiere 3 BR", "Premiere 4 BR",
+    "TNT Sports CL", "TUDN US", "TyC Sports AR", "Univision US", "beIN SPORTS US",
+    "Abu Dhabi Sports 1 AE", "Match Football 1 RU", "Match Football 2 RU", "Match Football 3 RU",
+    "Match Premier RU", "V Sport Football SE", "beIN SPORTS 1 TR", "beIN SPORTS 2 TR",
+    "beIN SPORTS 3 TR", "beIN SPORTS 4 SA", "beIN SPORTS 5 SA", "beIN SPORTS 6 SA",
+    "beIN SPORTS 7 SA", "beIN SPORTS 8 SA", "beIN SPORTS 9 SA"
 ]
 
-SPORT_KEYWORDS = [
-    "sport", "espn", "sky sports", "premier league", "nfl", "nba", "nhl", "mlb",
-    "ufc", "boxing", "football", "calcio", "soccer", "tennis", "golf", "rugby",
-    "cricket", "f1", "motogp", "bundesliga", "serie a", "la liga", "champions",
-    "europa league", "dazn", "bein", "movistar", "canale sport", "sport tv",
-    "fox sports", "win sports", "dsports", "eleven", "premier", "nascar", "indycar",
-    "nba tv", "nfl network", "red bull tv", "wwe", "aew", "afl", "nrl", "mls"
-]
+# File da processare
+PLAYER_FILES_FULL = ["player2.json", "player6.json", "player14.json"]   # tutti i canali
+PLAYER_FILE_WHITELIST = "player5.json"                                   # solo whitelist
 
-# Sessione HTTP riusabile e contatore globale richieste
+# Includi eventi live?
+INCLUDE_EVENTS = True
+
+# Session e contatore globale
 session = requests.Session()
 TOTAL_REQUESTS = 0
 
 def fetch_url(url, headers=None, timeout=15, retries=2, backoff=12.0):
-    """Scarica URL con gestione rate limiting, backoff e rotazione User-Agent."""
     global TOTAL_REQUESTS
     TOTAL_REQUESTS += 1
 
-    # Pausa preventiva ogni 15 richieste per evitare burst
     if TOTAL_REQUESTS % 15 == 0:
         print(f"⏸️ Pausa preventiva di 12 secondi (tot richieste: {TOTAL_REQUESTS})...")
         time.sleep(12)
     else:
-        # Jitter casuale per simulare comportamento umano
         time.sleep(random.uniform(0.8, 1.5))
 
     if headers is None:
@@ -73,7 +97,6 @@ def fetch_url(url, headers=None, timeout=15, retries=2, backoff=12.0):
     return None
 
 def base64_decode_padded(s):
-    """Decodifica base64 gestendo URL-safe e padding."""
     s = s.replace('-', '+').replace('_', '/')
     padding = '=' * (-len(s) % 4)
     s += padding
@@ -83,23 +106,7 @@ def base64_decode_padded(s):
     except UnicodeDecodeError:
         return decoded_bytes.decode('latin-1')
 
-def is_sport_channel(name):
-    """Verifica se un nome è sportivo, con controllo dei confini parola per keyword brevi."""
-    name_lower = name.lower()
-    for kw in SPORT_KEYWORDS:
-        if len(kw) <= 4:
-            pattern = rf'\b{re.escape(kw)}\b'
-            if re.search(pattern, name_lower):
-                return True
-        else:
-            if kw in name_lower:
-                return True
-    return False
-
-# ---------- RISOLUZIONE CANALI TV (cdnlivetv) ----------
-
 def extract_m3u8_url_channel(html):
-    """Estrae l'URL m3u8 da una pagina player di cdnlivetv."""
     src_match = re.search(r"source:\{src:([A-Za-z_$][A-Za-z0-9_$]*),format:'hls'\}", html)
     if not src_match:
         return None
@@ -132,17 +139,13 @@ def extract_m3u8_url_channel(html):
     return ''.join(decoded_parts)
 
 def resolve_channel_stream(php_url):
-    """Risolve un URL di canale TV (cdnlivetv.tv) restituendo l'URL m3u8."""
     headers = {"User-Agent": random.choice(USER_AGENTS), "Referer": BASE_URL}
     r = fetch_url(php_url, headers=headers)
     if not r:
         return None
     return extract_m3u8_url_channel(r.text)
 
-# ---------- RISOLUZIONE EVENTI LIVE (embed -> nontongo -> dlive -> barecrop) ----------
-
 def decode_econfig(econfig_str):
-    """Decodifica la stringa _econfig di barecrop.net."""
     decoded = base64_decode_padded(econfig_str)
     length = len(decoded)
     chunk_size = math.ceil(length / 4)
@@ -151,17 +154,16 @@ def decode_econfig(econfig_str):
     for _ in range(4):
         part = decoded[pos:pos+chunk_size]
         pos += chunk_size
-        part_modified = part[:3] + part[4:]   # rimuove carattere all'indice 3
+        part_modified = part[:3] + part[4:]
         parts.append(part_modified)
     order = [1, 3, 0, 2]
     ordered_parts = [parts[i] for i in order]
     joined = ''.join(ordered_parts)
     decoded_joined = base64_decode_padded(joined)
-    json_str = base64_decode_padded(decoded_joined)   # terza decodifica
+    json_str = base64_decode_padded(decoded_joined)
     return json.loads(json_str)
 
 def resolve_event_stream(embed_url):
-    """Risolve un URL embed.php?id=NN fino al m3u8 diretto."""
     headers = {"User-Agent": random.choice(USER_AGENTS), "Referer": BASE_URL}
     r1 = fetch_url(embed_url, headers=headers)
     if not r1:
@@ -218,28 +220,34 @@ def resolve_event_stream(embed_url):
     except:
         return None
 
-# ---------- FUNZIONE PRINCIPALE ----------
+def process_entry(name, php_url, group_title):
+    print(f"   ⏳ {name}")
+    stream_url = resolve_channel_stream(php_url)
+    if stream_url:
+        print("      ✅")
+        return (name, stream_url, group_title)
+    else:
+        print("      ❌ non risolto")
+        return None
 
 def main():
-    all_entries = []  # (name, stream_url, group_title)
+    all_entries = []
 
-    # === CANALI SPORTIVI ===
-    print("📡 Estraggo canali sportivi...")
-    for pfile in PLAYER_FILES:
-        url = f"{BASE_URL}/player/{pfile}"
-        data = fetch_url(url)
-        if not data:
-            continue
+    # === PLAYER5 (whitelist) ===
+    print("📡 Estraggo canali whitelist da player5.json...")
+    data = fetch_url(f"{BASE_URL}/player/{PLAYER_FILE_WHITELIST}")
+    if data:
         try:
             entries = data.json()
         except:
-            continue
-        print(f"\n📁 {pfile}: {len(entries)} voci")
-        for idx, entry in enumerate(entries):
+            entries = []
+        whitelist_set = set(WHITELIST_CHANNELS)
+        print(f"📁 {PLAYER_FILE_WHITELIST}: {len(entries)} voci")
+        for entry in entries:
             if not isinstance(entry, dict):
                 continue
-            name = entry.get('name') or entry.get('title') or 'Senza nome'
-            if not is_sport_channel(name):
+            name = entry.get('name') or ''
+            if name not in whitelist_set:
                 continue
             php_url = None
             for key in ['url', 'url1', 'url2', 'url3']:
@@ -249,66 +257,86 @@ def main():
                     break
             if not php_url:
                 continue
-            print(f"   [{idx+1}/{len(entries)}] {name}")
-            # Il throttling è gestito dentro fetch_url, quindi nessun sleep qui
-            stream_url = resolve_channel_stream(php_url)
-            if stream_url:
-                all_entries.append((name, stream_url, "Sport"))
-                print(f"      ✅")
-            else:
-                print(f"      ❌ non risolto")
-
-    # === EVENTI LIVE SPORTIVI ===
-    print("\n🎯 Estraggo eventi live sportivi...")
-    events_data = fetch_url(f"{BASE_URL}/api/events")
-    if events_data:
+            result = process_entry(name, php_url, "Top Calcio")
+            if result:
+                all_entries.append(result)
+    
+    # === PLAYER2/6/14 (tutti i canali) ===
+    for pfile in PLAYER_FILES_FULL:
+        print(f"\n📡 Estraggo tutti i canali da {pfile}...")
+        data = fetch_url(f"{BASE_URL}/player/{pfile}")
+        if not data:
+            continue
         try:
-            events_json = events_data.json()
-            popular = events_json.get('popular_events', [])
-            print(f"   Trovati {len(popular)} eventi popolari")
-            for ev in popular:
-                event_name = ev.get('event', 'Evento sconosciuto')
-                category = ev.get('category', '')
-                # Controlla sia categoria sia nome evento per non scartare eventi sportivi
-                if not (is_sport_channel(category) or is_sport_channel(event_name)):
-                    continue
-                channels = ev.get('channels', [])
-                for ch in channels:
-                    ch_name = ch.get('channel_name', 'Link')
-                    embed_url = ch.get('url')
-                    if not embed_url:
+            entries = data.json()
+        except:
+            continue
+        print(f"📁 {pfile}: {len(entries)} voci")
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            name = entry.get('name') or entry.get('title') or 'Senza nome'
+            php_url = None
+            for key in ['url', 'url1', 'url2', 'url3']:
+                val = entry.get(key)
+                if val and isinstance(val, str) and val.startswith('http'):
+                    php_url = val
+                    break
+            if not php_url:
+                continue
+            result = process_entry(name, php_url, "Altri Canali")
+            if result:
+                all_entries.append(result)
+
+    # === EVENTI LIVE (opzionale) ===
+    if INCLUDE_EVENTS:
+        print("\n🎯 Estraggo eventi live...")
+        events_data = fetch_url(f"{BASE_URL}/api/events")
+        if events_data:
+            try:
+                events_json = events_data.json()
+                popular = events_json.get('popular_events', [])
+                print(f"   Trovati {len(popular)} eventi popolari")
+                for ev in popular:
+                    event_name = ev.get('event', 'Evento')
+                    category = ev.get('category', '')
+                    # Includi tutti gli eventi? Meglio filtrare sportivi per coerenza
+                    if not any(k in category.lower() for k in ['sport', 'football', 'soccer', 'tennis', 'basket', 'fight', 'ufc', 'boxing']):
                         continue
-                    print(f"   ⏳ {event_name} - {ch_name}")
-                    # Throttling già in fetch_url
-                    stream_url = resolve_event_stream(embed_url)
-                    if stream_url:
-                        display_name = f"{event_name} [{ch_name}]"
-                        all_entries.append((display_name, stream_url, "Eventi Sportivi"))
-                        print(f"      ✅")
-                    else:
-                        print(f"      ❌ non risolto")
-        except Exception as e:
-            print(f"❌ Errore parsing eventi: {e}")
+                    for ch in ev.get('channels', []):
+                        embed_url = ch.get('url')
+                        if not embed_url:
+                            continue
+                        ch_name = ch.get('channel_name', 'Link')
+                        print(f"   ⏳ {event_name} - {ch_name}")
+                        stream_url = resolve_event_stream(embed_url)
+                        if stream_url:
+                            all_entries.append((f"{event_name} [{ch_name}]", stream_url, "Eventi Live"))
+                            print("      ✅")
+                        else:
+                            print("      ❌ non risolto")
+            except Exception as e:
+                print(f"❌ Errore eventi: {e}")
 
     # === DEDUPLICA ===
-    seen_urls = set()
-    unique_entries = []
-    for name, stream_url, group in all_entries:
-        if stream_url not in seen_urls:
-            seen_urls.add(stream_url)
-            unique_entries.append((name, stream_url, group))
+    seen = set()
+    unique = []
+    for name, url, group in all_entries:
+        if url not in seen:
+            seen.add(url)
+            unique.append((name, url, group))
 
-    print(f"\n🔗 Totale flussi trovati: {len(unique_entries)}")
+    print(f"\n🔗 Totale flussi: {len(unique)}")
 
-    output_file = "daddylive_streams.m3u"
+    output_file = "daddylive_mixed.m3u"
     with open(output_file, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for name, stream_url, group in unique_entries:
-            clean_name = name.replace('"', '').replace('\n', '').replace(',', '-')
-            f.write(f'#EXTINF:-1 group-title="{group}",{clean_name}\n')
-            f.write(stream_url + "\n")
+        for name, url, group in unique:
+            clean = name.replace('"','').replace('\n','').replace(',','-')
+            f.write(f'#EXTINF:-1 group-title="{group}",{clean}\n')
+            f.write(url + "\n")
 
-    print(f"✅ Salvato {output_file} con {len(unique_entries)} canali/eventi")
+    print(f"✅ Salvato {output_file} con {len(unique)} canali/eventi")
 
 if __name__ == "__main__":
     main()
