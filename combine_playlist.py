@@ -37,8 +37,9 @@ SOURCES = [
 ]
 
 LOCAL_SOURCES = [
-    ("Daddylive", "daddylive_streams.m3u"),
+    ("YouTube Highlights", "youtube_highlights.m3u"),
     ("WatchFooty", "watchfooty_events.m3u"),
+    ("Daddylive Unified", "daddylive_unified.m3u"),
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
@@ -115,11 +116,9 @@ def main():
             all_lines.append(f"# ===== SORGENTE: {name} =====")
             for block in blocks:
                 stream_url = block[-1]
-
-                # 🔴 Filtro YouTube: non includere mai URL di YouTube
+                # 🔴 Filtra YouTube
                 if any(domain in stream_url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
                     continue
-
                 if stream_url in seen_urls:
                     continue
                 seen_urls.add(stream_url)
@@ -139,11 +138,9 @@ def main():
             all_lines.append(f"# ===== SORGENTE: {name} =====")
             for block in blocks:
                 stream_url = block[-1]
-
-                # 🔴 Filtro YouTube: non includere mai URL di YouTube
+                # 🔴 Filtra YouTube
                 if any(domain in stream_url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
                     continue
-
                 if stream_url in seen_urls:
                     continue
                 seen_urls.add(stream_url)
