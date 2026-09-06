@@ -37,7 +37,6 @@ SOURCES = [
 ]
 
 LOCAL_SOURCES = [
-    ("YouTube Highlights", "youtube_highlights.m3u"),
     ("WatchFooty", "watchfooty_events.m3u"),
     ("Daddylive Unified", "daddylive_unified.m3u"),
 ]
