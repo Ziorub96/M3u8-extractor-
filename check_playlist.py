@@ -18,6 +18,27 @@ DAMITV_DOMAINS = [
     "damitv.st",
 ]
 
+PROBLEMATIC_DOMAINS = {
+    "dokagents.site": {
+        "Referer": "https://dokagents.site/",
+        "Origin": "https://dokagents.site",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+    },
+    "xameleon.phantemlis.top": {
+        "Referer": "https://xameleon.phantemlis.top/",
+        "Origin": "https://xameleon.phantemlis.top",
+        "Accept": "*/*",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+    },
+    "p13.usnlive.com": {
+        "Referer": "https://p13.usnlive.com/",
+        "Origin": "https://p13.usnlive.com",
+        "Accept": "*/*",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+    },
+}
+
 def parse_m3u(lines):
     blocks = []
     current_block = []
@@ -57,19 +78,49 @@ blocks = blocchi_unici
 print(f"🔍 Flussi unici da testare: {len(blocks)}")
 
 def get_headers_for_url(url):
+    """Costruisce header HTTP per ffprobe in base al dominio."""
+    for domain, extra_headers in PROBLEMATIC_DOMAINS.items():
+        if domain in url:
+            headers = [f"User-Agent: {USER_AGENT}"]
+            for key, value in extra_headers.items():
+                headers.append(f"{key}: {value}")
+            return "\r\n".join(headers) + "\r\n"
+
     if any(domain in url for domain in DAMITV_DOMAINS):
         return f"User-Agent: {USER_AGENT}\r\nReferer: {DAMITV_REFERER}\r\nOrigin: {DAMITV_ORIGIN}\r\n"
-    else:
-        return f"User-Agent: {USER_AGENT}\r\n"
+
+    return f"User-Agent: {USER_AGENT}\r\n"
+
+def format_url_with_pipe_headers(url):
+    """Aggiunge header HTTP in coda all'URL con la sintassi pipe '|' per app Smart TV e iOS."""
+    headers = [f"http-user-agent={USER_AGENT}"]
+
+    referer = None
+    for domain, extra in PROBLEMATIC_DOMAINS.items():
+        if domain in url:
+            referer = extra.get("Referer")
+            break
+    if not referer and any(domain in url for domain in DAMITV_DOMAINS):
+        referer = DAMITV_REFERER
+
+    if referer:
+        headers.append(f"http-referrer={referer}")
+
+    headers_str = "&".join(headers)
+    return f"{url}|{headers_str}"
+
+def enrich_block_for_mobile_and_smarttv(block, url):
+    """Sostituisce l'URL semplice con l'URL formattato con i parametri Pipe."""
+    enriched = list(block[:-1])
+    url_con_header = format_url_with_pipe_headers(url)
+    enriched.append(url_con_header)
+    return enriched
 
 def controlla_blocco(block):
     url = block[-1]
 
-    # 🔴 Scarta esplicitamente YouTube (non deve entrare nella checked)
     if any(domain in url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
         return (block, False, "YouTube escluso")
-
-    # Ora Daddylive verrà testato normalmente: nessuno skip per i suoi domini
 
     headers_string = get_headers_for_url(url)
 
@@ -96,15 +147,10 @@ def controlla_blocco(block):
         if r.returncode == 0 and r.stdout.strip():
             if "audio" not in r.stdout:
                 return (block, False, "Nessuna traccia audio")
-            return (block, True, "")
+            return (enrich_block_for_mobile_and_smarttv(block, url), True, "")
         else:
             err = r.stderr.strip().splitlines()
             motivo = err[-1][:200] if err else f"Errore sconosciuto (codice {r.returncode})"
-
-            # ✅ Se il flusso appartiene a DAMITV e riceve 403, consideralo valido
-            if any(domain in url for domain in DAMITV_DOMAINS) and "403" in motivo:
-                return (block, True, "")
-
             return (block, False, motivo)
     except subprocess.TimeoutExpired:
         return (block, False, "Timeout scaduto")
