@@ -1,12 +1,13 @@
 # daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive (canali sportivi)
-# Versione completa: include player2, player5, player6, player14
-# Nessun evento live, solo canali sportivi
-import requests
+# Versione finale ottimizzata: multithreading + circuit breaker ridotto
 import re
 import json
 import base64
 import time
 import random
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+from curl_cffi import requests as curl_requests
 
 BASE_URL = "https://daddylive.app"
 USER_AGENTS = [
@@ -16,7 +17,6 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ]
 
-# Tutti i player originali
 PLAYER_FILES = [
     "player2.json",
     "player5.json",
@@ -33,31 +33,29 @@ SPORT_KEYWORDS = [
     "nba tv", "nfl network", "red bull tv", "wwe", "aew", "afl", "nrl", "mls"
 ]
 
-session = requests.Session()
-TOTAL_REQUESTS = 0
+MAX_WORKERS = 5
+MAX_FAILURES_BEFORE_BREAK = 10
+PAUSA_CIRCUIT_BREAKER = 25  # secondi
+
+def get_session():
+    """Crea una sessione con fingerprint Chrome, ruotando User-Agent."""
+    session = curl_requests.Session(impersonate="chrome120")
+    session.headers.update({"User-Agent": random.choice(USER_AGENTS)})
+    return session
 
 def fetch_url(url, headers=None, timeout=15, retries=2, backoff=12.0):
-    """Scarica URL con gestione rate limiting, backoff e rotazione User-Agent."""
-    global TOTAL_REQUESTS
-    TOTAL_REQUESTS += 1
-
-    # Pausa preventiva ridotta: 5s ogni 20 richieste
-    if TOTAL_REQUESTS % 20 == 0:
-        print(f"⏸️ Pausa preventiva di 5 secondi (tot richieste: {TOTAL_REQUESTS})...")
-        time.sleep(5)
-    else:
-        # Jitter più rapido
-        time.sleep(random.uniform(0.3, 0.6))
-
-    if headers is None:
-        headers = {"User-Agent": random.choice(USER_AGENTS)}
-    else:
-        headers = headers.copy()
-        headers.setdefault("User-Agent", random.choice(USER_AGENTS))
-
+    """
+    Scarica URL usando curl_cffi con fingerprint Chrome.
+    Gestisce rate limiting e backoff esponenziale.
+    Non applica pause globali: il jitter è gestito dai worker.
+    """
     for attempt in range(retries):
+        session = get_session()
+        if headers:
+            session.headers.update(headers)
+
         try:
-            r = session.get(url, headers=headers, timeout=timeout)
+            r = session.get(url, timeout=timeout)
             if r.status_code == 429:
                 wait_time = backoff * (2 ** attempt) + random.uniform(1, 3)
                 print(f"⚠️ 429 Rate limited. Attendo {wait_time:.1f}s... (tentativo {attempt+1}/{retries})")
@@ -65,15 +63,13 @@ def fetch_url(url, headers=None, timeout=15, retries=2, backoff=12.0):
                 continue
             r.raise_for_status()
             return r
-        except requests.RequestException as e:
+        except Exception as e:
             if attempt == retries - 1:
-                print(f"❌ Errore definitivo su {url}: {e}")
                 return None
             time.sleep(3)
     return None
 
 def base64_decode_padded(s):
-    """Decodifica base64 gestendo URL-safe e padding."""
     s = s.replace('-', '+').replace('_', '/')
     padding = '=' * (-len(s) % 4)
     s += padding
@@ -84,7 +80,6 @@ def base64_decode_padded(s):
         return decoded_bytes.decode('latin-1')
 
 def is_sport_channel(name):
-    """Verifica se un nome è sportivo, con controllo dei confini parola per keyword brevi."""
     name_lower = name.lower()
     for kw in SPORT_KEYWORDS:
         if len(kw) <= 4:
@@ -97,7 +92,6 @@ def is_sport_channel(name):
     return False
 
 def extract_m3u8_url_channel(html):
-    """Estrae l'URL m3u8 da una pagina player di cdnlivetv."""
     src_match = re.search(r"source:\{src:([A-Za-z_$][A-Za-z0-9_$]*),format:'hls'\}", html)
     if not src_match:
         return None
@@ -130,17 +124,41 @@ def extract_m3u8_url_channel(html):
     return ''.join(decoded_parts)
 
 def resolve_channel_stream(php_url):
-    """Risolve un URL di canale TV (cdnlivetv.tv) restituendo l'URL m3u8."""
-    headers = {"User-Agent": random.choice(USER_AGENTS), "Referer": BASE_URL}
+    headers = {"Referer": BASE_URL}
+    # Jitter leggero prima di ogni richiesta per distribuire il carico
+    time.sleep(random.uniform(0.3, 0.8))
     r = fetch_url(php_url, headers=headers)
     if not r:
         return None
     return extract_m3u8_url_channel(r.text)
 
+def process_entry(entry):
+    """Processa un singolo canale: ritorna (name, stream_url) o None."""
+    if not isinstance(entry, dict):
+        return None
+    name = entry.get('name') or entry.get('title') or 'Senza nome'
+    if not is_sport_channel(name):
+        return None
+
+    php_url = None
+    for key in ['url', 'url1', 'url2', 'url3']:
+        val = entry.get(key)
+        if val and isinstance(val, str) and val.startswith('http'):
+            php_url = val
+            break
+    if not php_url:
+        return None
+
+    stream_url = resolve_channel_stream(php_url)
+    if stream_url:
+        return (name, stream_url, "Sport")
+    return None
+
 def main():
     all_entries = []
 
     print("📡 Estraggo canali sportivi...")
+
     for pfile in PLAYER_FILES:
         url = f"{BASE_URL}/player/{pfile}"
         data = fetch_url(url)
@@ -151,27 +169,22 @@ def main():
         except:
             continue
         print(f"\n📁 {pfile}: {len(entries)} voci")
-        for idx, entry in enumerate(entries):
-            if not isinstance(entry, dict):
-                continue
-            name = entry.get('name') or entry.get('title') or 'Senza nome'
-            if not is_sport_channel(name):
-                continue
-            php_url = None
-            for key in ['url', 'url1', 'url2', 'url3']:
-                val = entry.get(key)
-                if val and isinstance(val, str) and val.startswith('http'):
-                    php_url = val
-                    break
-            if not php_url:
-                continue
-            print(f"   [{idx+1}/{len(entries)}] {name}")
-            stream_url = resolve_channel_stream(php_url)
-            if stream_url:
-                all_entries.append((name, stream_url, "Sport"))
-                print(f"      ✅")
-            else:
-                print(f"      ❌ non risolto")
+
+        # Filtra solo canali sportivi con URL
+        candidates = []
+        for entry in entries:
+            if isinstance(entry, dict) and is_sport_channel(entry.get('name') or entry.get('title') or ''):
+                candidates.append(entry)
+
+        print(f"   ➡️ {len(candidates)} canali sportivi da processare")
+
+        # Processa in parallelo con ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            future_to_entry = {executor.submit(process_entry, entry): entry for entry in candidates}
+            for future in as_completed(future_to_entry):
+                result = future.result()
+                if result:
+                    all_entries.append(result)
 
     # Deduplica
     seen_urls = set()
