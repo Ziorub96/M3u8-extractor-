@@ -300,7 +300,7 @@ def main():
 
     print(f"\n🔗 Totale flussi trovati: {len(unique_entries)}")
 
-    output_file = "daddylive_direct.m3u"
+    output_file = "daddylive_streams.m3u"
     with open(output_file, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         for name, stream_url, group in unique_entries:
