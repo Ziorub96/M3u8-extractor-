@@ -1,5 +1,6 @@
-# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive
-# Versione ultra-veloce: SOLO canali sportivi da player5.json, NO eventi live
+# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive (canali sportivi)
+# Versione completa: include player2, player5, player6, player14
+# Nessun evento live, solo canali sportivi
 import requests
 import re
 import json
@@ -15,9 +16,12 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ]
 
-# Solo player5.json, come richiesto
+# Tutti i player originali
 PLAYER_FILES = [
+    "player2.json",
     "player5.json",
+    "player6.json",
+    "player14.json",
 ]
 
 SPORT_KEYWORDS = [
