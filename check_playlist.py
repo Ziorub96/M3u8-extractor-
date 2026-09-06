@@ -167,7 +167,7 @@ def controlla_blocco(block):
         if r.returncode == 0 and r.stdout.strip():
             if "audio" not in r.stdout:
                 return (block, False, "Nessuna traccia audio")
-            # Ritorna il blocco originale con URL pulito
+            # Ritorna il blocco originale con URL pulito (nessuna pipe)
             return (block, True, "")
         else:
             err = r.stderr.strip().splitlines()
