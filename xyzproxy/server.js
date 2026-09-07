@@ -4,13 +4,15 @@ import vm from "vm";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Disabilita la verifica TLS per superare il certificato non valido
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 // ================== CONFIGURAZIONE ==================
 const STREAM_REFERER = "https://xyzstreams-6h9.pages.dev/worldcup26-1-0710";
 const STREAM_ORIGIN = "https://xyzstreams-6h9.pages.dev";
 const PLAYER_REFERER = "https://player.xyzstreams.st/";
 const PLAYER_ORIGIN = "https://player.xyzstreams.st";
 
-// Mappa dei canali ai rispettivi ID embed su player.xyzstreams.st
 const EMBED_MAP = {
   "fox": "fox-xyz-waUvqaAA",
   "fox4k": "fox4k-usa",
@@ -25,7 +27,6 @@ const EMBED_MAP = {
   "fussball4k": "fussballtv1uhd-de"
 };
 
-// Fallback statici (usati se lo scraping non trova nulla)
 const FALLBACK_MAP = {
   "fox": "https://xyzstreams.st/wc-1-embed.html",
   "fox4k": "https://xyzstreams.st/wc-5-embed.html",
@@ -40,21 +41,16 @@ const FALLBACK_MAP = {
   "fussball4k": "https://xyzstreams.st/wc-14-embed.html"
 };
 
-// Cache per le URL risolte (10 minuti)
 const resolvedUrlsCache = {};
 const CACHE_DURATION = 10 * 60 * 1000;
 
-// Cache per i canali live (3 minuti)
 let cachedLiveMap = {};
 let lastScrapeTime = 0;
 let isScraping = false;
 const CACHE_TTL = 3 * 60 * 1000;
 
-// Cache per Hindi
 let cachedHindiUrl = "https://mpd26wc64.blogspot.com/p/matchday01.html";
 let lastHindiScrape = 0;
-
-// ================== FUNZIONI ==================
 
 async function resolveStreamUrl(channel) {
   const embedId = EMBED_MAP[channel];
@@ -62,11 +58,8 @@ async function resolveStreamUrl(channel) {
     throw new Error(`Canale ${channel} non mappato`);
   }
 
-  // Usa cache se valida
   const cached = resolvedUrlsCache[channel];
-  if (cached && Date.now() < cached.expiresAt) {
-    return cached.url;
-  }
+  if (cached && Date.now() < cached.expiresAt) return cached.url;
 
   let lastError = null;
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -82,7 +75,6 @@ async function resolveStreamUrl(channel) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const html = await res.text();
 
-      // Trova lo script offuscato
       const scriptStart = html.indexOf("(function(_0x");
       if (scriptStart === -1) throw new Error("Pattern script non trovato");
       const openTagIndex = html.lastIndexOf("<script", scriptStart);
@@ -257,7 +249,13 @@ async function getHindiUrl() {
 app.get("/api/proxy/stream/:channel", async (req, res) => {
   try {
     const channel = req.params.channel.replace('.m3u8', '');
-    const streamUrl = await resolveStreamUrl(channel);
+    let streamUrl;
+    if (channel === 'hindi') {
+      streamUrl = await getHindiUrl();
+    } else {
+      streamUrl = await resolveStreamUrl(channel);
+    }
+
     const response = await fetch(streamUrl, {
       headers: {
         "Referer": PLAYER_REFERER,
