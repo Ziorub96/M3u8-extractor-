@@ -2,8 +2,7 @@
 """
 WatchFooty → watchfooty_events.m3u
 API pubblica + Playwright (intercetta m3u8 dagli embed).
-Versione rafforzata: solo live, multi-source, iframe embedindia, stealth.
-Pensato per GitHub Actions.
+Pensato per girare su GitHub Actions.
 """
 
 from __future__ import annotations
@@ -24,28 +23,23 @@ USER_AGENT = (
     "AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/131.0.0.0 Safari/537.36"
 )
-
-MAX_MATCHES = 12          # live only → 12 è sensato su Actions
-MAX_SOURCES_PER_MATCH = 3 # prova più embed per lo stesso match
-TIMEOUT_GOTO = 25         # secondi
-WAIT_AFTER_LOAD = 12      # attesa dopo load / click
-ONLY_LIVE = True          # obbligatorio: i "post" quasi mai danno m3u8
+MAX_MATCHES = 20          # non alzare troppo su Actions (tempo + risorse)
+TIMEOUT_PER_EMBED = 15    # secondi max per embed
 HEADLESS = True
+ONLY_LIVE = True          # True = solo status "in"
 # ====================================================
-
-STEALTH_JS = """
-Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
-window.chrome = { runtime: {}, loadTimes: function(){}, csi: function(){} };
-Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });
-Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
-Object.defineProperty(navigator, 'platform', { get: () => 'Win32' });
-"""
-
 
 def get_matches() -> list[dict]:
     print("📡 WatchFooty: scarico i match dall'API...")
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer": "https://www.watchfooty.st/",
+        "Origin": "https://www.watchfooty.st",
+    }
     try:
-        r = requests.get(API_URL, headers={"User-Agent": USER_AGENT}, timeout=20)
+        r = requests.get(API_URL, headers=headers, timeout=30)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
@@ -61,121 +55,71 @@ def get_matches() -> list[dict]:
         if ONLY_LIVE and status not in ("in", "live"):
             continue
 
-        # deduplica URL embed, tieni i migliori prima (deluxe/hd/sigma)
-        seen = set()
-        ordered = []
-        priority = {"deluxe": 0, "hd": 1, "sigma": 2, "prime": 3, "delta": 4}
-        for s in sorted(streams, key=lambda x: priority.get((x.get("source") or "").lower(), 99)):
-            url = s.get("url")
-            if not url or url in seen:
-                continue
-            seen.add(url)
-            ordered.append(s)
-
-        if not ordered:
-            continue
-
-        matches.append(
-            {
-                "id": str(m.get("matchId") or m.get("id") or ""),
-                "title": m.get("title", "Sconosciuto"),
-                "league": m.get("league", "WatchFooty"),
-                "status": status,
-                "streams": ordered[:MAX_SOURCES_PER_MATCH],
-            }
+        # Ordina gli stream per qualità (deluxe, hd, sigma, sd, auto)
+        quality_order = ["deluxe", "hd", "sigma", "sd", "auto"]
+        streams_sorted = sorted(
+            streams,
+            key=lambda s: quality_order.index(s.get("quality", "auto").lower())
+                if s.get("quality", "auto").lower() in quality_order else len(quality_order)
         )
 
-    print(f"✅ WatchFooty: {len(matches)} match live con stream (max {MAX_MATCHES})")
+        matches.append({
+            "id": str(m.get("matchId") or m.get("id") or ""),
+            "title": m.get("title", "Sconosciuto"),
+            "league": m.get("league", "WatchFooty"),
+            "status": status,
+            "streams": streams_sorted[:3],  # al massimo 3 stream per match
+        })
+
+    print(f"✅ WatchFooty: {len(matches)} match live con stream (processo max {MAX_MATCHES})")
     return matches[:MAX_MATCHES]
 
 
-def is_good_m3u8(url: str) -> bool:
-    low = url.lower()
-    if not url.startswith("http"):
-        return False
-    if url.startswith("blob:"):
-        return False
-    if any(x in low for x in ("ad.", "ads.", "tracker", "analytics", "doubleclick", "pagead")):
-        return False
-    return (".m3u8" in low) or ("playlist" in low) or ("manifest" in low) or ("/hls/" in low)
-
-
-async def extract_m3u8_from_page(page, embed_url: str) -> str | None:
+async def extract_m3u8(page, embed_url: str) -> str | None:
+    """Apre embed_url e cattura tutte le richieste .m3u8."""
     captured: list[str] = []
 
     def on_request(request):
         url = request.url
-        if is_good_m3u8(url):
-            captured.append(url)
-
-    def on_response(response):
-        url = response.url
-        ct = (response.headers.get("content-type") or "").lower()
-        if is_good_m3u8(url) or "mpegurl" in ct or "application/vnd.apple.mpegurl" in ct:
-            captured.append(url)
+        if ".m3u8" not in url.lower():
+            return
+        if url.startswith("blob:"):
+            return
+        low = url.lower()
+        if any(x in low for x in ("ad.", "ads.", "tracker", "analytics", "doubleclick")):
+            return
+        captured.append(url)
 
     page.on("request", on_request)
-    page.on("response", on_response)
 
     try:
-        await page.goto(embed_url, wait_until="domcontentloaded", timeout=TIMEOUT_GOTO * 1000)
-    except PlaywrightTimeout:
-        pass
-    except Exception as e:
-        print(f"   ⚠️  goto: {e}")
-        return None
-
-    # attesa iniziale + click sul player
-    await page.wait_for_timeout(3000)
-    try:
-        await page.mouse.click(640, 360)
-    except Exception:
-        pass
-    await page.wait_for_timeout(WAIT_AFTER_LOAD * 500)
-
-    # se c'è iframe (embedindia), entra lì
-    try:
-        iframe_src = await page.evaluate(
-            "() => document.querySelector('iframe')?.src || ''"
+        await page.goto(
+            embed_url,
+            wait_until="domcontentloaded",
+            timeout=TIMEOUT_PER_EMBED * 1000,
         )
-    except Exception:
-        iframe_src = ""
-
-    if iframe_src and iframe_src.startswith("http"):
+        # Attendi fino a 30 secondi che appaia un m3u8
+        for _ in range(30):
+            if captured:
+                break
+            await asyncio.sleep(1)
+    except PlaywrightTimeout:
+        print(f"   ⚠️  Timeout navigando su {embed_url}")
+    except Exception as e:
+        print(f"   ⚠️  Errore navigazione: {e}")
+        return None
+    finally:
         try:
-            await page.goto(iframe_src, wait_until="domcontentloaded", timeout=TIMEOUT_GOTO * 1000)
-            await page.wait_for_timeout(3000)
-            try:
-                await page.mouse.click(640, 360)
-            except Exception:
-                pass
-            await page.wait_for_timeout(WAIT_AFTER_LOAD * 500)
-            try:
-                await page.evaluate(
-                    """() => {
-                        const v = document.querySelector('video');
-                        if (v) { v.muted = true; v.play().catch(()=>{}); }
-                    }"""
-                )
-            except Exception:
-                pass
-            await page.wait_for_timeout(4000)
-        except Exception as e:
-            print(f"   ⚠️  iframe: {e}")
-
-    # cleanup listener
-    try:
-        page.remove_listener("request", on_request)
-        page.remove_listener("response", on_response)
-    except Exception:
-        pass
+            page.remove_listener("request", on_request)
+        except Exception:
+            pass
 
     if not captured:
         return None
 
-    # preferisci master/index/playlist
+    # Preferisci playlist master o index
     for url in captured:
-        if re.search(r"(master|index|playlist|manifest|mono)", url, re.I):
+        if re.search(r"(master|index|playlist|manifest)", url, re.I):
             return url
     return captured[0]
 
@@ -183,8 +127,9 @@ async def extract_m3u8_from_page(page, embed_url: str) -> str | None:
 async def build_playlist() -> int:
     matches = get_matches()
     if not matches:
+        # crea comunque un file vuoto valido così il combiner non crasha
         Path(OUTPUT_FILE).write_text("#EXTM3U\n", encoding="utf-8")
-        print("⚠️  Nessun match live WatchFooty, creato file vuoto")
+        print("⚠️  Nessun match WatchFooty live, creato file vuoto")
         return 0
 
     lines = ["#EXTM3U"]
@@ -198,57 +143,50 @@ async def build_playlist() -> int:
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
                 "--disable-gpu",
-                "--disable-web-security",
             ],
         )
         context = await browser.new_context(
             user_agent=USER_AGENT,
             viewport={"width": 1280, "height": 720},
-            locale="en-US",
-            timezone_id="America/New_York",
-            ignore_https_errors=True,
             extra_http_headers={
                 "Referer": "https://www.watchfooty.st/",
                 "Origin": "https://www.watchfooty.st",
-                "Accept-Language": "en-US,en;q=0.9",
             },
         )
-        await context.add_init_script(STEALTH_JS)
 
-        for i, m in enumerate(matches, 1):
-            title = m["title"]
-            print(f"[{i}/{len(matches)}] {title}")
+        for i, match in enumerate(matches, 1):
+            title = match["title"]
+            streams = match["streams"]
+            print(f"\n[{i}/{len(matches)}] {title} ({len(streams)} stream)")
 
-            m3u8 = None
-            for j, stream in enumerate(m["streams"], 1):
-                embed = stream.get("url")
-                if not embed:
+            for j, stream in enumerate(streams, 1):
+                embed_url = stream.get("url")
+                quality = stream.get("quality", "")
+                if not embed_url:
+                    print(f"   ❌ Stream {j}: nessun URL")
                     continue
-                src = stream.get("source") or "?"
-                quality = stream.get("quality") or ""
-                print(f"   → try {j}/{len(m['streams'])} [{src} {quality}]")
+                print(f"   ⏳ Stream {j} ({quality}): {embed_url[:80]}...")
 
                 page = await context.new_page()
                 try:
-                    m3u8 = await extract_m3u8_from_page(page, embed)
+                    m3u8 = await extract_m3u8(page, embed_url)
                 finally:
                     await page.close()
 
-                if m3u8:
-                    print(f"   ✅ OK ({src})")
-                    break
-                else:
-                    print(f"   ❌ no m3u8 ({src})")
+                if not m3u8:
+                    print(f"   ❌ Stream {j}: nessun m3u8 trovato")
+                    continue
 
-            if not m3u8:
-                continue
-
-            display = f"[{m['league']}] {title}"
-            lines.append(
-                f'#EXTINF:-1 tvg-id="wf-{m["id"]}" group-title="WatchFooty",{display}'
-            )
-            lines.append(m3u8)
-            success += 1
+                display = f"[{match['league']}] {title}"
+                if quality:
+                    display += f" ({quality})"
+                lines.append(
+                    f'#EXTINF:-1 tvg-id="wf-{match["id"]}-{j}" group-title="WatchFooty",{display}'
+                )
+                lines.append(m3u8)
+                success += 1
+                print(f"   ✅ Stream {j}: OK")
+                break  # passa al match successivo se almeno uno stream ha funzionato
 
         await browser.close()
 
@@ -260,15 +198,14 @@ async def build_playlist() -> int:
 def main() -> None:
     try:
         count = asyncio.run(build_playlist())
+        # non fallire il workflow se 0 stream (il checker gestirà)
         if count == 0:
-            print(
-                "Nessuno stream WatchFooty estratto. "
-                "Normale se non ci sono live o se l'embed blocca headless."
-            )
+            print("Nessuno stream WatchFooty aggiunto (normale se non ci sono match live)")
     except Exception as e:
         print(f"❌ Errore fatale WatchFooty: {e}", file=sys.stderr)
+        # crea file vuoto per non rompere i passi successivi
         Path(OUTPUT_FILE).write_text("#EXTM3U\n", encoding="utf-8")
-        sys.exit(0)  # non bloccare il workflow
+        sys.exit(0)  # non bloccare tutto il workflow
 
 
 if __name__ == "__main__":
