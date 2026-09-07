@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-check_playlist.py — versione ottimizzata per GitHub Actions
-Riduce i falsi negativi: HTTP 200 + body #EXTM3U = valido anche se ffprobe fallisce.
-"""
-
 import re
 import subprocess
 import sys
@@ -27,12 +21,10 @@ USER_AGENT = (
 
 # Header per famiglia di domini
 DOMAIN_HEADERS = {
-    # DAMITV
     "ondemand.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "messi.damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "embedindia.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    # dokagents / altri
     "dokagents.site": {
         "Referer": "https://dokagents.site/",
         "Origin": "https://dokagents.site",
@@ -41,19 +33,23 @@ DOMAIN_HEADERS = {
     "xameleon.phantemlis.top": {
         "Referer": "https://xameleon.phantemlis.top/",
         "Origin": "https://xameleon.phantemlis.top",
+        "Accept": "*/*",
     },
     "p13.usnlive.com": {
         "Referer": "https://p13.usnlive.com/",
         "Origin": "https://p13.usnlive.com",
+        "Accept": "*/*",
     },
-    # Daddylive / player CDN (approssimativi ma utili)
     "cdnlivetv.tv": {
         "Referer": "https://cdnlivetv.tv/",
         "Origin": "https://cdnlivetv.tv",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9",
     },
     "daddylive.app": {
         "Referer": "https://daddylive.app/",
         "Origin": "https://daddylive.app",
+        "Accept": "*/*",
     },
     "dlhd.so": {
         "Referer": "https://dlhd.so/",
@@ -62,14 +58,15 @@ DOMAIN_HEADERS = {
     "cuttingfame.net": {
         "Referer": "https://cuttingfame.net/",
         "Origin": "https://cuttingfame.net",
+        "Accept": "*/*",
     },
     "bolaloca.my": {
         "Referer": "https://bolaloca.my/",
         "Origin": "https://bolaloca.my",
+        "Accept": "*/*",
     },
 }
 
-# Host che sembrano CDN HLS Daddylive (porte 8443 / path /hls/)
 def is_daddylive_cdn(url: str) -> bool:
     u = url.lower()
     return (
@@ -78,7 +75,6 @@ def is_daddylive_cdn(url: str) -> bool:
         or "stream_url" in u
         or bool(re.search(r"https?://[a-z0-9.-]+\.[a-z0-9.-]+/(hls|live)/", u))
     )
-
 
 def parse_m3u(lines):
     blocks = []
@@ -99,7 +95,6 @@ def parse_m3u(lines):
         blocks.append(current)
     return blocks
 
-
 def get_headers_dict(url: str) -> dict:
     headers = {
         "User-Agent": USER_AGENT,
@@ -112,11 +107,9 @@ def get_headers_dict(url: str) -> dict:
             return headers
 
     if is_daddylive_cdn(url):
-        # Referer generico “player” — meglio di niente su Actions
         headers["Referer"] = "https://daddylive.app/"
         headers["Origin"] = "https://daddylive.app"
     return headers
-
 
 def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
     h = get_headers_dict(url)
@@ -124,66 +117,64 @@ def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
         h["Cookie"] = cookie_str
     return "\r\n".join(f"{k}: {v}" for k, v in h.items()) + "\r\n"
 
-
 def http_check_m3u8(url: str) -> tuple[bool, str, str]:
     """
-    Soft check: GET con fingerprint Chrome.
-    OK se status < 400 e body sembra playlist HLS.
-    Ritorna (ok, motivo_se_ko, cookie_str).
+    Soft check con richiesta HTTP e backoff su 502/503/429.
+    Ritorna (ok, motivo, cookie_str).
     """
     headers = get_headers_dict(url)
-    try:
-        session = curl_requests.Session(impersonate="chrome120")
-        r = session.get(url, headers=headers, timeout=timeout, allow_redirects=True)
-        cookies = session.cookies.get_dict()
-        cookie_str = "; ".join(f"{k}={v}" for k, v in cookies.items())
 
-        if r.status_code >= 400:
-            return False, f"HTTP {r.status_code}", cookie_str
+    # Delay extra per domini sensibili al rate limiting
+    sensitive_domains = ("cdnlivetv.tv", "bolaloca.my", "epiembeds.online", "cuttingfame.net")
+    if any(domain in url for domain in sensitive_domains):
+        time.sleep(random.uniform(1.0, 2.5))
 
-        # leggiamo un pezzo di testo
+    attempt = 0
+    max_retries = 3
+    while attempt < max_retries:
         try:
+            session = curl_requests.Session(impersonate="chrome120")
+            r = session.get(url, headers=headers, timeout=timeout, allow_redirects=True)
+            cookies = session.cookies.get_dict()
+            cookie_str = "; ".join(f"{k}={v}" for k, v in cookies.items())
+
+            if r.status_code in (429, 502, 503):
+                wait = 5 * (2 ** attempt) + random.uniform(0, 2)
+                print(f"   ⚠️ {r.status_code} su {url[:80]} → retry in {wait:.1f}s")
+                time.sleep(wait)
+                attempt += 1
+                continue
+
+            if r.status_code >= 400:
+                return False, f"HTTP {r.status_code}", cookie_str
+
             text = r.content[:4096].decode("utf-8", errors="ignore")
-        except Exception:
-            text = ""
+            text_l = text.lower().lstrip()
+            if text_l.startswith("#extm3u") or "#extinf" in text_l or "#ext-x-" in text_l:
+                return True, "soft-ok", cookie_str
+            if len(text) > 20:
+                return True, "soft-ok-weak", cookie_str
+            return False, "Body non sembra m3u8", cookie_str
 
-        text_l = text.lower().lstrip()
-        if text_l.startswith("#extm3u") or "#extinf" in text_l or "#ext-x-" in text_l:
-            return True, "soft-ok", cookie_str
+        except Exception as e:
+            if attempt == max_retries - 1:
+                return False, f"HTTP error: {str(e)[:120]}", ""
+            time.sleep(3)
+            attempt += 1
 
-        if "<html" in text_l:
-            return False, "Risposta HTML invece di m3u8", cookie_str
-
-        # alcuni CDN rispondono 200 con body corto ma valido dopo redirect
-        if r.status_code == 200 and len(r.content) > 20:
-            # dubbio: non scartare subito, lasciare a ffprobe
-            return True, "soft-ok-weak", cookie_str
-
-        return False, "Body non sembra m3u8", cookie_str
-    except Exception as e:
-        return False, f"HTTP error: {str(e)[:120]}", ""
-
+    return False, "Max retries superati", ""
 
 def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
     headers_string = headers_for_ffprobe(url, cookie_str)
     cmd = [
-        "ffprobe",
-        "-v",
-        "error",
-        "-show_entries",
-        "stream=codec_type",
-        "-of",
-        "default=noprint_wrappers=1:nokey=1",
-        "-timeout",
-        str(timeout * 1_000_000),
-        "-analyzeduration",
-        "2500000",
-        "-probesize",
-        "2500000",
-        "-headers",
-        headers_string,
-        "-i",
-        url,
+        "ffprobe", "-v", "error",
+        "-show_entries", "stream=codec_type",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        "-timeout", str(timeout * 1_000_000),
+        "-analyzeduration", "2000000",
+        "-probesize", "2000000",
+        "-headers", headers_string,
+        "-i", url
     ]
     try:
         r = subprocess.run(
@@ -198,7 +189,6 @@ def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
         err = (r.stderr or "").strip()
 
         if r.returncode == 0 and out:
-            # audio O video vanno bene (prima scartavi solo senza audio)
             if "audio" in out or "video" in out:
                 return True, "ffprobe-ok"
             return False, "Nessuna traccia audio/video"
@@ -209,7 +199,6 @@ def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
     except Exception as e:
         return False, str(e)[:200]
 
-
 def controlla_blocco(block):
     url = block[-1]
 
@@ -218,28 +207,22 @@ def controlla_blocco(block):
 
     time.sleep(random.uniform(0.2, 0.7))
 
-    # 1) Soft HTTP check (principale anti falso-negativo)
     soft_ok, soft_msg, cookie_str = http_check_m3u8(url)
 
     if soft_ok:
-        # 2) Prova ffprobe (opzionale). Se fallisce, teniamo comunque soft-ok
         hard_ok, hard_msg = ffprobe_check(url, cookie_str)
         if hard_ok:
             return block, True, ""
-        # soft ok ma ffprobe no → comunque VALIDO su Actions
         return block, True, f"soft-only ({hard_msg})"
 
-    # Soft fallito: ultimo tentativo solo ffprobe (casi strani)
     hard_ok, hard_msg = ffprobe_check(url, cookie_str)
     if hard_ok:
         return block, True, ""
 
-    # Entrambi falliti
     motivo = soft_msg if soft_msg != "soft-ok" else hard_msg
     if soft_msg and hard_msg and soft_msg != hard_msg:
         motivo = f"{soft_msg} | {hard_msg}"
     return block, False, motivo[:250]
-
 
 def main():
     try:
@@ -295,7 +278,6 @@ def main():
     print(f"\n✅ Funzionanti: {len(funzionanti)} (di cui soft-only: {soft_only})")
     print(f"❌ Non funzionanti: {len(non_funzionanti)}")
     print(f"📄 {out_ok} | {out_ko}")
-
 
 if __name__ == "__main__":
     main()
