@@ -14,9 +14,52 @@ OUTPUT_FILE = "damitv_events.m3u"
 PAST_MINUTES = 30
 UPCOMING_MINUTES = 180
 
-# Rimossa la lista FIXED_CHANNELS. Ora i canali dokagents vengono scoperti dinamicamente.
+# ==================== CANALI SPORTIVI McQUACK (statici) ====================
+MCQUACK_SPORT_CHANNELS = [
+    ("Eurosport 1", "http://stream.mcquack.net/176/index.m3u8"),
+    ("Eurosport 2", "http://stream.mcquack.net/192/index.m3u8"),
+    ("Match! Football 1", "http://stream.mcquack.net/130/index.m3u8"),
+    ("Match! Football 2", "http://stream.mcquack.net/142/index.m3u8"),
+    ("Match! Football 3", "http://stream.mcquack.net/185/index.m3u8"),
+    ("Match! Igra", "http://stream.mcquack.net/188/index.m3u8"),
+    ("Match! Strana", "http://stream.mcquack.net/143/index.m3u8"),
+    ("Match! Arena", "http://stream.mcquack.net/163/index.m3u8"),
+    ("Match TV", "http://stream.mcquack.net/169/index.m3u8"),
+    ("Match! Boets", "http://stream.mcquack.net/112/index.m3u8"),
+    ("Match Premier", "http://stream.mcquack.net/193/index.m3u8"),
+    ("Setanta Sports 1", "http://stream.mcquack.net/234/index.m3u8"),
+    ("Setanta Sports 2", "http://stream.mcquack.net/235/index.m3u8"),
+    ("Setanta Sports UA", "http://stream.mcquack.net/313/index.m3u8"),
+    ("Setanta Sports+", "http://stream.mcquack.net/390/index.m3u8"),
+    ("Sport 1 Baltic", "http://stream.mcquack.net/461/index.m3u8"),
+    ("Sport 1", "http://stream.mcquack.net/391/index.m3u8"),
+    ("Sport 2", "http://stream.mcquack.net/392/index.m3u8"),
+    ("Sport 3", "http://stream.mcquack.net/393/index.m3u8"),
+    ("Sport 4", "http://stream.mcquack.net/394/index.m3u8"),
+    ("Sport 5", "http://stream.mcquack.net/212/index.m3u8"),
+    ("Dynamo Kyiv TV", "http://stream.mcquack.net/396/index.m3u8"),
+    ("Trace Sports", "http://stream.mcquack.net/256/index.m3u8"),
+    ("Suspilne Sport", "http://stream.mcquack.net/444/index.m3u8"),
+    ("DiVi Sport", "http://stream.mcquack.net/457/index.m3u8"),
+    ("Maincast Cybersport", "http://stream.mcquack.net/487/index.m3u8"),
+    ("Maincast Sport", "http://stream.mcquack.net/490/index.m3u8"),
+    ("KHL TV", "http://stream.mcquack.net/166/index.m3u8"),
+    ("KHL Prime", "http://stream.mcquack.net/178/index.m3u8"),
+    ("Viju+ Sport", "http://stream.mcquack.net/333/index.m3u8"),
+    ("TV3 Sport LT", "http://stream.mcquack.net/416/index.m3u8"),
+    ("Box TV", "http://stream.mcquack.net/154/index.m3u8"),
+    ("Belarus 5", "http://stream.mcquack.net/33/index.m3u8"),
+    ("Extreme Sports", "http://stream.mcquack.net/148/index.m3u8"),
+    ("UDAR", "http://stream.mcquack.net/279/index.m3u8"),
+    ("Qazsport", "http://stream.mcquack.net/72/index.m3u8"),
+    ("Equalympic", "http://stream.mcquack.net/485/index.m3u8"),
+    ("OKKO Football", "http://stream.mcquack.net/491/index.m3u8"),
+    ("OKKO Sport", "http://stream.mcquack.net/492/index.m3u8"),
+    ("OKKO Prime Sport", "http://stream.mcquack.net/493/index.m3u8"),
+]
 
-# Lista di possibili nomi canale su dokagents.site/live
+# ==================== CANALI DOKAGENTS (dinamici) ====================
+DOKAGENTS_BASE = "http://dokagents.site/live"
 DOKAGENTS_CANDIDATES = [
     "digisport1", "digisport2", "digisport3", "digisport4",
     "digisport5", "digisport6", "digisportplus", "digisportnews",
@@ -37,9 +80,6 @@ DOKAGENTS_CANDIDATES = [
     "la-liga", "ligue1", "bundesliga", "championsleague", "europaleague",
     "copa", "libertadores", "sudamericana", "concacaf", "afc", "uefa", "fifa"
 ]
-
-DOKAGENTS_BASE = "http://dokagents.site/live"   # uso HTTP per compatibilità TV
-DOKAGENTS_USER_AGENT = USER_AGENT
 
 session = requests.Session()
 session.headers.update({"User-Agent": USER_AGENT})
@@ -244,7 +284,7 @@ def get_dokagents_channels():
     """Scopre canali disponibili su dokagents.site/live (HTTP) e restituisce lista di tuple (nome, url)."""
     print("📡 Ricerca canali su dokagents.site/live (HTTP)...")
     channels = []
-    headers = {"User-Agent": DOKAGENTS_USER_AGENT}
+    headers = {"User-Agent": USER_AGENT}
     patterns = ["mono.m3u8", "index.m3u8"]
 
     for nome in DOKAGENTS_CANDIDATES:
@@ -258,7 +298,7 @@ def get_dokagents_channels():
                     break
             except Exception:
                 pass
-            time.sleep(0.2)  # piccolo ritardo
+            time.sleep(0.2)
 
     print(f"   Trovati {len(channels)} canali dokagents.")
     return channels
@@ -267,14 +307,24 @@ def main():
     seen_ids = set()
     lines = ["#EXTM3U"]
 
-    # Invece di canali fissi, aggiungiamo i canali dokagents scoperti dinamicamente
+    # 1) McQuack Sport (statici)
+    for name, url in MCQUACK_SPORT_CHANNELS:
+        lines.append(f'#EXTINF:-1 tvg-id="mcq-{name}" group-title="McQuack Sport",{name}')
+        lines.append(url)
+
+    # 2) DokAgents (dinamici)
     dokagents_channels = get_dokagents_channels()
     for name, url in dokagents_channels:
         lines.append(f'#EXTINF:-1 tvg-id="dok-{name}" group-title="DokAgents Sport",{name}')
         lines.append(url)
 
+    # 3) DAMITV 24/7
     lines.extend(get_24_7_channels(seen_ids))
+
+    # 4) DAMITV Live TV
     lines.extend(get_live_tv_channels(seen_ids))
+
+    # 5) Eventi sportivi live/imminenti
     lines.extend(build_sports_lines(seen_ids))
 
     if len(lines) > 1:
