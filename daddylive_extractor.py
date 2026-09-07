@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive
-# Versione unificata con retry su 502/503, blacklist URL obsoleti, multithreading
-# Ora include anche player9.json con filtro sportivo più selettivo
-# e le partite di calcio da CDN Live TV API.
-
+# daddylive_extractor_github.py – Versione ottimizzata per GitHub Workflows
 import re
 import json
 import base64
@@ -30,11 +26,9 @@ PLAYER_FILES = [
 ]
 
 PLAYER9_FILE = "player9.json"
-MAX_PLAYER9_SPORT = 350
 
 ONLY_SPORT = True
-MAX_WORKERS = 5
-REQUEST_DELAY = (0.4, 1.0)
+MAX_WORKERS = 16  # Elevato per completare in pochi minuti su GitHub Actions
 OUTPUT_FILE = "daddylive_streams.m3u"
 
 BLOCKED_URLS = [
@@ -57,30 +51,20 @@ SPORT_KEYWORDS = [
     "sky sport", "canal sport", "rmc sport", "v sport", "match football",
 ]
 
-SPORT_KEYWORDS_PLAYER9 = [
-    "sport", "espn", "sky sports", "nba", "nfl", "nhl", "mlb", "ufc", "boxing",
-    "football", "soccer", "tennis", "golf", "rugby", "cricket", "f1", "motogp",
-    "premier league", "serie a", "la liga", "champions", "europa league",
-    "bundesliga", "dazn", "bein", "movistar", "canale sport", "sport tv",
-    "fox sports", "win sports", "dsports", "eleven", "nascar", "indycar",
-    "nba tv", "nfl network", "red bull tv", "wwe", "aew", "fight", "wrc",
-    "motoamerica", "supercross", "extreme", "outdoor", "fishing", "hunting",
-    "poker", "darts", "snooker", "pool", "bowling", "cycling", "triathlon",
-    "marathon", "olympics", "world cup", "euro", "copa", "libertadores",
-    "sudamericana", "concacaf", "afc", "uefa", "fifa", "nba g league",
-    "wnba", "nhl network", "mlb network", "golf", "tennis", "motorsport",
-    "formula", "racing"
+SPORT_KEYWORDS_PLAYER9 = SPORT_KEYWORDS + [
+    "win sports", "dsports", "nascar", "indycar", "red bull tv", "fight", "wrc",
+    "motoamerica", "supercross", "extreme", "outdoor", "poker", "darts", "snooker",
+    "pool", "cycling", "triathlon", "marathon", "olympics", "world cup", "euro",
+    "copa", "libertadores", "sudamericana", "concacaf", "afc", "uefa", "fifa",
+    "wnba", "nhl network", "mlb network", "motorsport", "formula", "racing"
 ]
 
 BLACKLIST_WORDS_PLAYER9 = [
-    "news", "europe", "europa", "cinema", "movie", "film", "kids", "music",
-    "religion", "shalom", "vogue", "velvet", "fashion", "makeover", "conflict",
-    "spiegel", "jimjam", "inazuma", "rakuten viki", "myzen", "bloomberg",
-    "bbc news", "cctv-4", "ewtn", "tv5monde", "tv5 monde", "rtve", "tve internacional",
-    "animation", "cartoon", "anime", "comedy", "drama", "entertainment",
-    "documentary", "history", "nature", "wild", "travel", "food", "cooking",
-    "reality", "talk", "lifestyle", "wellness", "yoga", "meditation"
+    "news", "cinema", "movie", "film", "kids", "music", "religion", "fashion",
+    "bloomberg", "bbc news", "cartoon", "anime", "comedy", "drama", "documentary"
 ]
+
+resolved_cache = {}
 
 def b64d(s: str) -> bytes:
     s = s.replace('-', '+').replace('_', '/')
@@ -118,7 +102,7 @@ def find_working_base() -> str | None:
             r = requests.get(
                 f"{base}/player/player5.json",
                 headers=get_headers(),
-                timeout=12
+                timeout=8
             )
             if r.status_code == 200 and r.text.strip().startswith('['):
                 print(f"✅ Dominio attivo: {base}")
@@ -128,7 +112,8 @@ def find_working_base() -> str | None:
     print("❌ Nessun dominio base funzionante trovato")
     return None
 
-def fetch_url(url, headers=None, timeout=15, retries=3, backoff=12.0):
+def fetch_url(url, headers=None, timeout=10, retries=2):
+    """Fetch senza lunghi intervalli di sleep per mantenere la velocita."""
     for attempt in range(retries):
         session = requests.Session()
         if headers is None:
@@ -137,17 +122,15 @@ def fetch_url(url, headers=None, timeout=15, retries=3, backoff=12.0):
 
         try:
             r = session.get(url, timeout=timeout)
-            if r.status_code in (429, 502, 503):
-                wait_time = backoff * (2 ** attempt) + random.uniform(1, 3)
-                print(f"⚠️ {r.status_code} su {url[:80]} → attendo {wait_time:.1f}s (tentativo {attempt+1}/{retries})")
-                time.sleep(wait_time)
+            if r.status_code == 200:
+                return r
+            elif r.status_code in (429, 502, 503):
+                time.sleep(1.0)
                 continue
-            r.raise_for_status()
-            return r
-        except requests.RequestException as e:
+        except requests.RequestException:
             if attempt == retries - 1:
                 return None
-            time.sleep(3)
+            time.sleep(0.5)
     return None
 
 def extract_player2(html: str) -> str | None:
@@ -186,9 +169,8 @@ def extract_player6(html: str, page_url: str, session: requests.Session) -> str 
     elif iframe_url.startswith('/'):
         iframe_url = urljoin(page_url, iframe_url)
 
-    time.sleep(random.uniform(*REQUEST_DELAY))
     try:
-        r = session.get(iframe_url, headers=get_headers(page_url), timeout=15)
+        r = session.get(iframe_url, headers=get_headers(page_url), timeout=10)
         if r.status_code != 200:
             return None
     except Exception:
@@ -244,20 +226,27 @@ def extract_player14(html: str) -> str | None:
     m = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', decoded)
     return m.group(0) if m else None
 
-def resolve_stream(name: str, url: str) -> tuple | None:
+def generic_m3u8_fallback(html: str) -> str | None:
+    """Fallback generico con Regex: cattura l'm3u8 anche se l'estrattore JS specifico fallisce."""
+    m = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', html)
+    return m.group(0) if m else None
+
+def resolve_stream(name: str, url: str) -> tuple:
+    if url in resolved_cache:
+        return (name, resolved_cache[url], "cached")
+
     session = requests.Session()
-    time.sleep(random.uniform(*REQUEST_DELAY))
-
     try:
-        r = session.get(url, headers=get_headers(BASE_URL), timeout=15)
-        if r.status_code != 200:
-            return None
-        html = r.text
-    except Exception:
-        return None
+        r = session.get(url, headers=get_headers(BASE_URL), timeout=10)
+    except Exception as e:
+        return (name, None, f"network error: {e}")
 
-    stream = None
+    if r.status_code != 200:
+        return (name, None, f"HTTP {r.status_code}")
 
+    html = r.text
+
+    # Estrattori mirati
     if "cdnlivetv.tv" in url:
         stream = extract_player5(html)
     elif "streamtp-golden" in url or "global1.php" in url:
@@ -272,45 +261,47 @@ def resolve_stream(name: str, url: str) -> tuple | None:
                   extract_player14(html) or
                   extract_player6(html, url, session))
 
+    # Recovers m3u8 direct links if JS logic was modified
+    if not stream:
+        stream = generic_m3u8_fallback(html)
+
     if stream and stream.startswith("http"):
-        return (name, stream)
-    return None
+        resolved_cache[url] = stream
+        return (name, stream, "OK")
+    else:
+        return (name, None, "no stream found in HTML")
 
 def fetch_cdnlivetv_events():
-    """Scarica eventi sportivi (calcio) da API cdnlivetv.is."""
     url = "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan=free"
     try:
-        r = fetch_url(url, headers=get_headers("https://cdnlivetv.is/"), timeout=20)
+        r = fetch_url(url, headers=get_headers("https://cdnlivetv.is/"), timeout=10)
         if r is None:
             return []
         data = r.json()
         events = data if isinstance(data, list) else data.get("events", [])
-        football_events = []
-        for ev in events:
-            if ev.get("homeTeam") and ev.get("awayTeam"):
-                football_events.append(ev)
-        return football_events
-    except Exception as ex:
-        print(f"❌ Errore scaricando eventi CDN Live TV: {ex}")
+        return [ev for ev in events if ev.get("homeTeam") and ev.get("awayTeam")]
+    except Exception:
         return []
 
 def extract_event_streams(event_obj):
-    """Estrae URL stream da un evento sportivo."""
     streams = []
     channels = event_obj.get("channels") or []
     for ch in channels:
-        for key in ("url", "stream_url", "link"):
+        for key in ("url", "stream_url", "link", "embed_url", "embed"):
             val = ch.get(key)
-            if val and val.startswith("http"):
+            if val and str(val).startswith("http"):
                 streams.append(val)
                 break
-        if not streams:
-            for key in ("embed_url", "embed"):
-                val = ch.get(key)
-                if val and val.startswith("http"):
-                    streams.append(val)
-                    break
     return streams
+
+def download_player_json(pfile, base_url):
+    r = fetch_url(f"{base_url}/player/{pfile}", headers=get_headers(), timeout=12)
+    if r is None:
+        return (pfile, None)
+    try:
+        return (pfile, r.json())
+    except Exception:
+        return (pfile, None)
 
 def main():
     global BASE_URL
@@ -321,27 +312,23 @@ def main():
         return
 
     all_candidates = []
-    # Risultati diretti (canali risolti da Daddylive)
     results = []
 
-    print("\n📡 Scarico le liste player standard...")
-    for pfile in PLAYER_FILES:
-        try:
-            r = fetch_url(
-                f"{BASE_URL}/player/{pfile}",
-                headers=get_headers(),
-                timeout=20
-            )
-            if r is None:
-                print(f"   ❌ {pfile}: fetch fallito")
+    player_files_to_download = PLAYER_FILES + [PLAYER9_FILE]
+    print("\n📡 Scarico le liste player in parallelo...")
+    with ThreadPoolExecutor(max_workers=len(player_files_to_download)) as pool:
+        futures = [pool.submit(download_player_json, pf, BASE_URL) for pf in player_files_to_download]
+        for future in as_completed(futures):
+            pfile, entries = future.result()
+            if entries is None:
                 continue
-            entries = r.json()
             count_sport = 0
             for e in entries:
                 if not isinstance(e, dict):
                     continue
                 name = e.get("name") or e.get("title") or "Senza nome"
-                if not is_sport(name):
+                use_p9 = (pfile == PLAYER9_FILE)
+                if not is_sport(name, use_player9_filter=use_p9):
                     continue
                 php_url = next(
                     (e.get(k) for k in ("url", "url1", "url2", "url3")
@@ -352,92 +339,60 @@ def main():
                     all_candidates.append((name, php_url))
                     count_sport += 1
             print(f"   {pfile}: {len(entries)} totali → {count_sport} sport")
-        except Exception as ex:
-            print(f"   ❌ {pfile}: {ex}")
 
-    # ===== PLAYER9 CON FILTRO MIGLIORATO =====
-    print(f"\n📡 Scarico {PLAYER9_FILE} (limite {MAX_PLAYER9_SPORT} sportivi)...")
-    try:
-        r = fetch_url(f"{BASE_URL}/player/{PLAYER9_FILE}", headers=get_headers(), timeout=30)
-        if r:
-            entries = r.json()
-            sport9 = []
-            for e in entries:
-                if not isinstance(e, dict):
-                    continue
-                name = e.get("name") or ""
-                if is_sport(name, use_player9_filter=True):
-                    url = e.get("url")
-                    if url and url.startswith("http"):
-                        sport9.append((name, url))
-            sport9 = sport9[:MAX_PLAYER9_SPORT]
-            all_candidates.extend(sport9)
-            print(f"   player9: {len(entries)} totali → {len(sport9)} sport aggiunti")
-        else:
-            print("   ❌ player9: fetch fallito")
-    except Exception as ex:
-        print(f"   ❌ player9: {ex}")
-
-    # ===== EVENTI CALCIO DA CDN LIVE TV API =====
     print("\n📡 Scarico partite di calcio da CDN Live TV API...")
     football_events = fetch_cdnlivetv_events()
     print(f"   Partite di calcio trovate: {len(football_events)}")
     for ev in football_events:
-        home = ev.get("homeTeam", "?")
-        away = ev.get("awayTeam", "?")
+        home, away = ev.get("homeTeam", "?"), ev.get("awayTeam", "?")
         tournament = ev.get("tournament", "Calcio")
         status = (ev.get("status") or "").lower()
         if status not in ("live", "upcoming"):
             continue
         streams = extract_event_streams(ev)
         if streams:
-            display = f"[{tournament}] {home} vs {away}"
-            for i, url in enumerate(streams[:1]):  # prendi solo il primo stream
-                results.append((display, url))
-                print(f"   ✅ {display}")
-        else:
-            print(f"   ❌ {home} vs {away}: nessuno stream")
+            results.append((f"[{tournament}] {home} vs {away}", streams[0]))
 
-    all_candidates = [
+    candidates_to_resolve = [
         (name, url) for name, url in all_candidates
         if not any(blocked in url for blocked in BLOCKED_URLS)
     ]
 
-    print(f"\n🎯 Canali da risolvere: {len(all_candidates)}")
+    print(f"\n🎯 Canali da risolvere: {len(candidates_to_resolve)}")
     print(f"🚀 Avvio con {MAX_WORKERS} worker...\n")
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
-            executor.submit(resolve_stream, name, url): name
-            for name, url in all_candidates
+            executor.submit(resolve_stream, name, url): (name, url)
+            for name, url in candidates_to_resolve
         }
         done = 0
         total = len(futures)
         for fut in as_completed(futures):
             done += 1
-            name = futures[fut]
+            name, _ = futures[fut]
             try:
                 res = fut.result()
-                if res:
-                    results.append(res)
+                if res[1]:  # Stream OK
+                    results.append((res[0], res[1]))
                     print(f"[{done}/{total}] ✅ {res[0]}")
                 else:
-                    print(f"[{done}/{total}] ❌ {name}")
-            except Exception:
-                print(f"[{done}/{total}] ❌ {name}")
+                    print(f"[{done}/{total}] ❌ {res[0]} ({res[2]})")
+            except Exception as e:
+                print(f"[{done}/{total}] ❌ {name} (error: {e})")
 
-    seen = set()
-    unique = []
-    for name, url in results:
-        if url not in seen:
-            seen.add(url)
-            unique.append((name, url))
+    final_entries = []
+    seen_streams = set()
+    for name, stream in results:
+        if stream not in seen_streams:
+            seen_streams.add(stream)
+            final_entries.append((name, stream))
 
-    print(f"\n🔗 Flussi unici trovati: {len(unique)}")
+    print(f"\n🔗 Flussi unici trovati: {len(final_entries)}")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for name, url in unique:
+        for name, url in final_entries:
             clean = name.replace('"', '').replace(',', ' -').replace('\n', '')
             f.write(f'#EXTINF:-1 group-title="DaddyLive Sport",{clean}\n')
             f.write(url + "\n")
