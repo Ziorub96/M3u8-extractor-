@@ -2,7 +2,7 @@ name: Combine and Check M3U Playlists
 
 on:
   schedule:
-    - cron: "15 * * * *"   # ogni ora al minuto 15
+    - cron: "15 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 90   # aumentato per sicurezza
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-          pip install requests yt-dlp playwright
+          pip install requests yt-dlp playwright curl_cffi
           playwright install --with-deps chromium
 
       - name: Extract DAMITV streams
