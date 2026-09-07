@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# daddylive_extractor_github.py – Versione ottimizzata per GitHub Workflows
+# daddylive_extractor_github.py – Versione Definitiva (Massima Resa / Anti-Timeout)
 import re
 import json
 import base64
@@ -28,8 +28,11 @@ PLAYER_FILES = [
 PLAYER9_FILE = "player9.json"
 
 ONLY_SPORT = True
-MAX_WORKERS = 16  # Elevato per completare in pochi minuti su GitHub Actions
+MAX_WORKERS = 16  # Ottimale per l'I/O bound su GitHub Actions
 OUTPUT_FILE = "daddylive_streams.m3u"
+
+# Timeout bilanciati: (timeout_connessione, timeout_lettura)
+FAST_TIMEOUT = (5, 10)
 
 BLOCKED_URLS = [
     "http://41.205.93.154",
@@ -41,14 +44,16 @@ USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
 ]
 
+# Ampliata per non perdere nessun broadcaster sportivo importante
 SPORT_KEYWORDS = [
     "sport", "espn", "sky sports", "premier league", "nfl", "nba", "nhl", "mlb",
     "ufc", "boxing", "football", "calcio", "soccer", "tennis", "golf", "rugby",
     "cricket", "f1", "motogp", "bundesliga", "serie a", "la liga", "champions",
     "europa league", "dazn", "bein", "movistar", "canale sport", "sport tv",
     "fox sports", "eleven", "premier", "nba tv", "nfl network", "wwe", "aew",
-    "tnt sports", "rai sport", "ziggo sport", "polsat sport", "sport tv",
-    "sky sport", "canal sport", "rmc sport", "v sport", "match football",
+    "tnt sports", "rai sport", "ziggo sport", "polsat sport", "sky sport", 
+    "canal sport", "rmc sport", "v sport", "match football", "supersport", 
+    "arena sport", "optus", "tsn", "sportsnet", "bally", "viaplay", "setanta"
 ]
 
 SPORT_KEYWORDS_PLAYER9 = SPORT_KEYWORDS + [
@@ -102,7 +107,7 @@ def find_working_base() -> str | None:
             r = requests.get(
                 f"{base}/player/player5.json",
                 headers=get_headers(),
-                timeout=8
+                timeout=FAST_TIMEOUT
             )
             if r.status_code == 200 and r.text.strip().startswith('['):
                 print(f"✅ Dominio attivo: {base}")
@@ -112,8 +117,8 @@ def find_working_base() -> str | None:
     print("❌ Nessun dominio base funzionante trovato")
     return None
 
-def fetch_url(url, headers=None, timeout=10, retries=2):
-    """Fetch senza lunghi intervalli di sleep per mantenere la velocita."""
+def fetch_url(url, headers=None, timeout=FAST_TIMEOUT, retries=2):
+    """Fetch con doppio tentativo per micro-down del server."""
     for attempt in range(retries):
         session = requests.Session()
         if headers is None:
@@ -124,9 +129,12 @@ def fetch_url(url, headers=None, timeout=10, retries=2):
             r = session.get(url, timeout=timeout)
             if r.status_code == 200:
                 return r
-            elif r.status_code in (429, 502, 503):
-                time.sleep(1.0)
+            # Se è un errore temporaneo, riprova
+            elif r.status_code in (429, 500, 502, 503, 504) and attempt == 0:
+                time.sleep(0.5)
                 continue
+            else:
+                return None # Per 404, 403, ecc. scarta subito
         except requests.RequestException:
             if attempt == retries - 1:
                 return None
@@ -170,7 +178,7 @@ def extract_player6(html: str, page_url: str, session: requests.Session) -> str 
         iframe_url = urljoin(page_url, iframe_url)
 
     try:
-        r = session.get(iframe_url, headers=get_headers(page_url), timeout=10)
+        r = session.get(iframe_url, headers=get_headers(page_url), timeout=FAST_TIMEOUT)
         if r.status_code != 200:
             return None
     except Exception:
@@ -227,26 +235,54 @@ def extract_player14(html: str) -> str | None:
     return m.group(0) if m else None
 
 def generic_m3u8_fallback(html: str) -> str | None:
-    """Fallback generico con Regex: cattura l'm3u8 anche se l'estrattore JS specifico fallisce."""
-    m = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', html)
-    return m.group(0) if m else None
+    """Fallback generico con filtro anti-spam/ads."""
+    candidates = re.findall(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', html)
+    for candidate in candidates:
+        if not any(bad in candidate.lower() for bad in ["doubleclick", "google", "ads", "analytics"]):
+            return candidate
+    return None
 
 def resolve_stream(name: str, url: str) -> tuple:
     if url in resolved_cache:
         return (name, resolved_cache[url], "cached")
 
     session = requests.Session()
-    try:
-        r = session.get(url, headers=get_headers(BASE_URL), timeout=10)
-    except Exception as e:
-        return (name, None, f"network error: {e}")
+    time.sleep(random.uniform(0, 0.1))  # Micro-delay anti-burst
 
-    if r.status_code != 200:
-        return (name, None, f"HTTP {r.status_code}")
+    r = None
+    error_reason = "unknown"
+
+    # Doppio tentativo per recuperare i canali lenti/bloccati
+    for attempt in range(2):
+        try:
+            r_temp = session.get(url, headers=get_headers(BASE_URL), timeout=FAST_TIMEOUT)
+            if r_temp.status_code == 200:
+                r = r_temp
+                break
+            elif r_temp.status_code in (429, 500, 502, 503, 504) and attempt == 0:
+                error_reason = f"HTTP {r_temp.status_code}"
+                time.sleep(0.5)
+                continue
+            else:
+                return (name, None, f"HTTP {r_temp.status_code}")
+        except requests.Timeout:
+            error_reason = "timeout"
+            if attempt == 0:
+                time.sleep(0.5)
+                continue
+        except requests.ConnectionError:
+            error_reason = "connection error"
+            if attempt == 0:
+                time.sleep(0.5)
+                continue
+        except Exception as e:
+            return (name, None, f"error: {type(e).__name__}")
+
+    if not r:
+        return (name, None, error_reason)
 
     html = r.text
 
-    # Estrattori mirati
     if "cdnlivetv.tv" in url:
         stream = extract_player5(html)
     elif "streamtp-golden" in url or "global1.php" in url:
@@ -261,7 +297,6 @@ def resolve_stream(name: str, url: str) -> tuple:
                   extract_player14(html) or
                   extract_player6(html, url, session))
 
-    # Recovers m3u8 direct links if JS logic was modified
     if not stream:
         stream = generic_m3u8_fallback(html)
 
@@ -272,30 +307,40 @@ def resolve_stream(name: str, url: str) -> tuple:
         return (name, None, "no stream found in HTML")
 
 def fetch_cdnlivetv_events():
-    url = "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan=free"
-    try:
-        r = fetch_url(url, headers=get_headers("https://cdnlivetv.is/"), timeout=10)
-        if r is None:
-            return []
-        data = r.json()
-        events = data if isinstance(data, list) else data.get("events", [])
-        return [ev for ev in events if ev.get("homeTeam") and ev.get("awayTeam")]
-    except Exception:
-        return []
+    api_endpoints = [
+        "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan=free",
+        "https://cdnlivetv.is/api/events/sports",
+        "https://daddylive.mp/schedule/schedule-stream.json"
+    ]
+    
+    for url in api_endpoints:
+        try:
+            r = fetch_url(url, headers=get_headers("https://cdnlivetv.is/"), timeout=FAST_TIMEOUT, retries=2)
+            if r is None:
+                continue
+            data = r.json()
+            events = data if isinstance(data, list) else data.get("events", [])
+            valid_events = [ev for ev in events if isinstance(ev, dict) and (ev.get("homeTeam") or ev.get("channels") or ev.get("event"))]
+            if valid_events:
+                return valid_events
+        except Exception:
+            continue
+    return []
 
 def extract_event_streams(event_obj):
     streams = []
     channels = event_obj.get("channels") or []
     for ch in channels:
-        for key in ("url", "stream_url", "link", "embed_url", "embed"):
-            val = ch.get(key)
-            if val and str(val).startswith("http"):
-                streams.append(val)
-                break
+        if isinstance(ch, dict):
+            for key in ("url", "stream_url", "link", "embed_url", "embed"):
+                val = ch.get(key)
+                if val and str(val).startswith("http"):
+                    streams.append(val)
+                    break
     return streams
 
 def download_player_json(pfile, base_url):
-    r = fetch_url(f"{base_url}/player/{pfile}", headers=get_headers(), timeout=12)
+    r = fetch_url(f"{base_url}/player/{pfile}", headers=get_headers(), timeout=FAST_TIMEOUT, retries=2)
     if r is None:
         return (pfile, None)
     try:
@@ -340,18 +385,18 @@ def main():
                     count_sport += 1
             print(f"   {pfile}: {len(entries)} totali → {count_sport} sport")
 
-    print("\n📡 Scarico partite di calcio da CDN Live TV API...")
+    print("\n📡 Scarico eventi sportivi da API Live TV...")
     football_events = fetch_cdnlivetv_events()
-    print(f"   Partite di calcio trovate: {len(football_events)}")
+    print(f"   Eventi sportivi trovati: {len(football_events)}")
     for ev in football_events:
-        home, away = ev.get("homeTeam", "?"), ev.get("awayTeam", "?")
-        tournament = ev.get("tournament", "Calcio")
-        status = (ev.get("status") or "").lower()
-        if status not in ("live", "upcoming"):
-            continue
+        home = ev.get("homeTeam") or ev.get("event") or "?"
+        away = ev.get("awayTeam", "")
+        tournament = ev.get("tournament") or ev.get("category") or "Calcio/Sport"
+        title = f"[{tournament}] {home} vs {away}" if away else f"[{tournament}] {home}"
+        
         streams = extract_event_streams(ev)
         if streams:
-            results.append((f"[{tournament}] {home} vs {away}", streams[0]))
+            results.append((title, streams[0]))
 
     candidates_to_resolve = [
         (name, url) for name, url in all_candidates
@@ -359,7 +404,7 @@ def main():
     ]
 
     print(f"\n🎯 Canali da risolvere: {len(candidates_to_resolve)}")
-    print(f"🚀 Avvio con {MAX_WORKERS} worker...\n")
+    print(f"🚀 Avvio con {MAX_WORKERS} worker (Timeout {FAST_TIMEOUT}s, 1 retry per channel)...\n")
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
@@ -381,21 +426,20 @@ def main():
             except Exception as e:
                 print(f"[{done}/{total}] ❌ {name} (error: {e})")
 
-    final_entries = []
-    seen_streams = set()
+    # Deduplicazione pulita: associa l'URL allo stream (scartando i duplicati invisibili)
+    final_entries = {}
     for name, stream in results:
-        if stream not in seen_streams:
-            seen_streams.add(stream)
-            final_entries.append((name, stream))
+        if stream not in final_entries:
+            final_entries[stream] = name
 
     print(f"\n🔗 Flussi unici trovati: {len(final_entries)}")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        for name, url in final_entries:
+        for stream, name in final_entries.items():
             clean = name.replace('"', '').replace(',', ' -').replace('\n', '')
             f.write(f'#EXTINF:-1 group-title="DaddyLive Sport",{clean}\n')
-            f.write(url + "\n")
+            f.write(stream + "\n")
 
     print(f"✅ Salvato → {OUTPUT_FILE}")
 
