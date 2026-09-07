@@ -11,7 +11,6 @@ API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 OUTPUT_FILE = "damitv_events.m3u"
 
-# Finestra temporale per eventi imminenti
 PAST_MINUTES = 30
 UPCOMING_MINUTES = 180
 
