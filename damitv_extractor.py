@@ -12,8 +12,8 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 OUTPUT_FILE = "damitv_events.m3u"
 
 # Finestra temporale per eventi imminenti
-PAST_MINUTES = 120          # eventi già iniziati da non più di 30 minuti
-UPCOMING_MINUTES = 180     # eventi che iniziano entro 3 ore
+PAST_MINUTES = 30
+UPCOMING_MINUTES = 180
 
 FIXED_CHANNELS = [
     ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
@@ -32,13 +32,23 @@ def http_get_json(url, referer=None):
     headers = {}
     if referer:
         headers["Referer"] = referer
-    try:
-        r = session.get(url, headers=headers, timeout=30)
-        r.raise_for_status()
-        return r.json()
-    except Exception as e:
-        print(f"❌ Errore richiesta {url}: {e}")
-        return None
+
+    for attempt in range(3):
+        try:
+            r = session.get(url, headers=headers, timeout=30)
+            if r.status_code in (502, 503):
+                wait = 5 * (attempt + 1)
+                print(f"⚠️ {r.status_code} su {url[:80]} → riprovo tra {wait}s")
+                time.sleep(wait)
+                continue
+            r.raise_for_status()
+            return r.json()
+        except requests.RequestException as e:
+            if attempt == 2:
+                print(f"❌ Errore richiesta {url}: {e}")
+                return None
+            time.sleep(3)
+    return None
 
 def get_event_m3u8(event_id, sd=False):
     cache_key = (event_id, sd)
@@ -48,12 +58,12 @@ def get_event_m3u8(event_id, sd=False):
     url = API_EXTRACT + event_id
     if sd:
         url += "?sd=1"
-    
+
     data = http_get_json(url, referer=f"{BASE_URL}/embed/?id={event_id}")
     result = None
     if data and data.get("success"):
         result = data.get("hlsUrl") or data.get("sdUrl")
-    
+
     _event_cache[cache_key] = result
     return result
 
@@ -66,7 +76,7 @@ def get_channel_m3u8(ch_id):
     result = None
     if data and (data.get("stream") or data.get("url")):
         result = data.get("stream") or data.get("url")
-    
+
     _event_cache[cache_key] = result
     return result
 
@@ -149,21 +159,13 @@ def get_live_tv_channels(seen_ids):
     return lines
 
 def is_relevant_event(event, now_ts):
-    """
-    Verifica se un evento sportivo è rilevante in base all'orario.
-    event: dict con 'date' (timestamp in secondi o millisecondi)
-    """
     start_raw = event.get("date")
     if not start_raw:
         return False
-
-    # Gestisce timestamp in secondi o millisecondi
     if len(str(start_raw)) > 10:
-        start_ts = int(str(start_raw)[:-3])   # da millisecondi a secondi
+        start_ts = int(str(start_raw)[:-3])
     else:
         start_ts = int(start_raw)
-
-    # Finestra temporale: da PAST_MINUTES fa a UPCOMING_MINUTES futuro
     return (now_ts - PAST_MINUTES * 60) <= start_ts <= (now_ts + UPCOMING_MINUTES * 60)
 
 def build_sports_lines(seen_ids):
@@ -173,7 +175,6 @@ def build_sports_lines(seen_ids):
         print("❌ API non raggiungibile o dati non validi")
         return []
 
-    # L'API restituisce una lista di eventi
     if not isinstance(data, list):
         print("❌ Formato dati inaspettato")
         return []
@@ -186,32 +187,26 @@ def build_sports_lines(seen_ids):
         if not isinstance(ev, dict):
             continue
 
-        # Campi attesi: title, league, date, id
         title = ev.get("title", "Sconosciuto")
         sport = ev.get("league", "")
         stream_id = ev.get("id", "")
-        start_raw = ev.get("date")
 
         if not title or not stream_id:
             continue
 
-        # Salta canali 24/7 e alcuni ID particolari
         if stream_id.startswith("247") or sport.startswith("24/7"):
             continue
         if stream_id.lower().startswith("dl-"):
             continue
 
-        # Applica filtro temporale
         if not is_relevant_event(ev, now_ts):
             continue
 
         event_count += 1
         print(f"⚽ Processo evento: {title}")
 
-        # Estrai URL m3u8 (preferisce HLS, poi SD)
         m3u8_url = get_event_m3u8(stream_id)
         if not m3u8_url:
-            # Prova con SD
             m3u8_url = get_event_m3u8(stream_id, sd=True)
 
         if m3u8_url:
@@ -231,21 +226,14 @@ def main():
     seen_ids = set()
     lines = ["#EXTM3U"]
 
-    # Canali fissi
     for name, url in FIXED_CHANNELS:
         lines.append(f'#EXTINF:-1 tvg-id="{name}",{name}')
         lines.append(url)
 
-    # Canali 24/7
     lines.extend(get_24_7_channels(seen_ids))
-
-    # Canali Live TV
     lines.extend(get_live_tv_channels(seen_ids))
-
-    # Eventi sportivi live/imminenti
     lines.extend(build_sports_lines(seen_ids))
 
-    # Scrittura sicura
     if len(lines) > 1:
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
