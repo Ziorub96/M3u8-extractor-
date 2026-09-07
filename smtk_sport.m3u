@@ -1,0 +1,113 @@
+#EXTM3U
+#EXTINF:-1 group-title="Спорт" tvg-id="match-premier" tvg-logo="https://epgx.site/p/match-premiere.png",Матч Премьер
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/mp/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-premier" tvg-logo="https://epgx.site/p/match-premiere.png",Матч Премьер HD
+http://185.37.150.40:8092/Nash_futbol_HD/playlist.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="football-ru" tvg-logo="https://epgx.site/p/football-ru.png",Футбол
+https://strm.yandex.ru/kal/futbol_belarus/futbol_belarus0.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="football-ru" tvg-logo="https://epgx.site/p/football-ru.png",Футбол HD
+http://api.peers.tv/timeshift/futbol_hd/16/playlist.m3u8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhY2Nlc3MiLCJleHAiOjE3MDkxNTEwNjcsImlhdCI6MTcwOTA2NDY2NywiY2lkIjo2LCJ1aWQiOjc0NDc1OTUyMCwicmVnIjpmYWxzZSwiaXAiOjE3NDY3MjgwNzgsInByb2ZpbGUiOiJhZHVsdCIsImFkdWx0IjpmYWxzZX0.5EQl6WCnbNV1nkDDXhU-QEUvpRW4b7A6vOs220-q1_A&offset=10
+#EXTINF:-1 group-title="Спорт" tvg-id="match-football1" tvg-logo="https://epgx.site/p/match-football1.png",МАТЧ! Футбол 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/m1/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-football1" tvg-logo="https://epgx.site/p/match-football1.png",МАТЧ! Футбол 1 HD
+http://95.181.17.6/7nvenc/NTVplusfut1HD/71/fhd/chunks.m3u8?&wmsAuthSign=c2VydmVyX3RpbWU9Mi8yNy8yMDI0IDg6MTE6MDggUE0maGFzaF92YWx1ZT0wV2VuVHdyeWphYkdTT3dEUWVxT1dRPT0mdmFsaWRtaW51dGVzPTcyMCZpZD03Nzc=
+#EXTINF:-1 group-title="Спорт" tvg-id="match-football2" tvg-logo="https://epgx.site/p/match-football2.png",МАТЧ! Футбол 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/m2/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-football2" tvg-logo="https://epgx.site/p/match-football2.png",МАТЧ! Футбол 2 HD
+http://95.181.17.26/7nvenc/NTVplusfut2HD/71/fhd/chunks.m3u8?&wmsAuthSign=c2VydmVyX3RpbWU9Mi8yNy8yMDI0IDg6MTE6MDggUE0maGFzaF92YWx1ZT0wV2VuVHdyeWphYkdTT3dEUWVxT1dRPT0mdmFsaWRtaW51dGVzPTcyMCZpZD03Nzc=
+#EXTINF:-1 group-title="Спорт" tvg-id="match-football3" tvg-logo="https://epgx.site/p/match-football3.png",МАТЧ! Футбол 3
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/m3/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-football3" tvg-logo="https://epgx.site/p/match-football3.png",МАТЧ! Футбол 3 HD
+http://95.181.17.14/dvr02/mobile1/NTVplusfut3HD/chunks.m3u8?&wmsAuthSign=c2VydmVyX3RpbWU9Mi8yNy8yMDI0IDg6MTE6MDggUE0maGFzaF92YWx1ZT0wV2VuVHdyeWphYkdTT3dEUWVxT1dRPT0mdmFsaWRtaW51dGVzPTcyMCZpZD03Nzc=
+#EXTINF:-1 group-title="Спорт" tvg-id="match-tv" tvg-logo="https://epgx.site/p/match-tv.png",Матч ТВ
+http://31.148.6.9:10003/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-tv" tvg-logo="https://epgx.site/p/match-tv.png",Матч ТВ HD
+https://livetv.mylifeisgood.net.ru/channels/matchhd_nocensored.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-igra" tvg-logo="https://epgx.site/p/match-igra.png",Матч! Игра
+http://94.232.104.237:8000/play/108/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-igra" tvg-logo="https://epgx.site/p/match-igra.png",Матч! Игра HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=251&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="match-arena" tvg-logo="https://epgx.site/p/match-arena.png",Матч! Арена
+http://194.143.148.28:8080/MatchArena/mpegts
+#EXTINF:-1 group-title="Спорт" tvg-id="match-arena" tvg-logo="https://epgx.site/p/match-arena.png",Матч! Арена HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=748&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="match-nash-sport" tvg-logo="https://epgx.site/p/match-strana.png",Матч! Страна
+http://94.232.104.237:8000/play/059/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-nash-sport" tvg-logo="https://epgx.site/p/match-strana.png",Матч! Страна HD
+http://95.181.17.6/4nvenc/ntvsport/chunks.m3u8?&wmsAuthSign=c2VydmVyX3RpbWU9Mi8yNy8yMDI0IDg6MTE6MDggUE0maGFzaF92YWx1ZT0wV2VuVHdyeWphYkdTT3dEUWVxT1dRPT0mdmFsaWRtaW51dGVzPTcyMCZpZD03Nzc=
+#EXTINF:-1 group-title="Спорт" tvg-id="start" tvg-logo="https://epgx.site/p/start.png",Старт HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=1314&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="kxl" tvg-logo="https://epgx.site/p/kxl.png",KHL
+https://strm.yandex.ru/kal/khl_belarus/khl_belarus0.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="kxl-hd" tvg-logo="https://epgx.site/p/kxl-hd.png",KHL Prime HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=265&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="xokkejny" tvg-logo="https://epgx.site/p/xokkejny.png",Хоккейный HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=1698&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="footbolny" tvg-logo="https://epgx.site/p/footbolny.png",Футбольный HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=1805&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="sportivny" tvg-logo="https://epgx.site/p/sportivny.png",Спортивный HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=1759&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="viasat-sport" tvg-logo="https://epgx.site/p/viasat-sport.png",Viju+ sport
+http://94.232.104.237:8000/play/063/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="viasat-sport" tvg-logo="https://epgx.site/p/viasat-sport.png",Viju+ sport HD
+http://arbiter.bolshoe.tv/?path=abr2/viasat_sport_hd/71/copy/playlist.m3u8&wmsAuthSign=c2VydmVyX3RpbWU9Mi8yNy8yMDI0IDg6MTE6MDggUE0maGFzaF92YWx1ZT0wV2VuVHdyeWphYkdTT3dEUWVxT1dRPT0mdmFsaWRtaW51dGVzPTcyMCZpZD03Nzc=
+#EXTINF:-1 group-title="Спорт" tvg-id="eurosport1" tvg-logo="https://epgx.site/p/eurosport1.png",Eurosport 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/Eurosport1/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="eurosport1" tvg-logo="https://epgx.site/p/eurosport1.png",Eurosport 1 HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=2611&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="eurosport2" tvg-logo="https://epgx.site/p/eurosport2.png",Eurosport 2
+http://94.232.104.237:8000/play/062/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="eurosport2" tvg-logo="https://epgx.site/p/eurosport2.png",Eurosport 2 HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=2612&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="setanta-sports" tvg-logo="https://epgx.site/p/setanta-sports.png",Setanta Sports 1 HD
+https://bkm.beetv.kz/btv/live/hls/000004498.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="setanta-sports-plus" tvg-logo="https://epgx.site/p/setanta-sports-plus.png",Setanta Sports 2 HD
+https://bkm.beetv.kz/btv/live/hls/000004499.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="setanta-ua" tvg-logo="https://epgx.site/p/setanta-ua.png",Setanta Sports UA HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/setantasport/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="setanta-plus-ua" tvg-logo="https://epgx.site/p/setanta-plus-ua.png",Setanta Sports + UA HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/setantaplusukraina/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="setanta-kz" tvg-logo="https://epgx.site/p/setanta-kz.png",Setanta Qazaqstan HD
+https://e6.varcdn.top/rpl1/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="qsport-kz" tvg-logo="https://epgx.site/p/qsport-kz.png",QSport HD
+http://89.254.128.5:22280/qsport/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="sport1-ua" tvg-logo="https://epgx.site/p/sport1ua.png",Спорт 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/sport1/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="sport2-ua" tvg-logo="https://epgx.site/p/sport2ua.png",Спорт 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/sport2/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт",MMA-TV
+http://1MIR-IPTV.RU/hhh/view55.php?id=1032&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт",MMA-TV HD
+http://1mir-iptv.ru/hhh/testx.php?channel_id=245&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="ufc" tvg-logo="https://epgx.site/p/ufc.png",UDAR HD
+https://strm.yandex.ru/kal/udar/udar0.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-boets" tvg-logo="https://epgx.site/p/match-boec.png",МАТЧ! Боец
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0
+https://e6.varcdn.top/matchboec/tracks-v1a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="match-boets" tvg-logo="https://epgx.site/p/match-boec.png",Матч! Боец HD
+http://185.37.150.40:8092/Boec/playlist.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="tochka-otryva" tvg-logo="https://epgx.site/p/tochka-otryva.png",Точка Отрыва
+http://109.239.208.82:80/tochka/index.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="russky-ekstrim" tvg-logo="https://epgx.site/p/russky-ekstrim.png",Русский Экстрим HD
+http://1MIR-IPTV.RU/hhh/view55.php?id=429&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="extreme-sports" tvg-logo="https://epgx.site/p/extreme-sports.png",Extreme Sports
+http://62.231.191.65:8888/66
+#EXTINF:-1 group-title="Спорт" tvg-id="konny-mir" tvg-logo="https://epgx.site/p/konny-mir.png",Конный Мир HD
+http://176.113.48.221:8986/145
+#EXTINF:-1 group-title="Спорт" tvg-id="avto-plus" tvg-logo="https://epgx.site/p/avto-plus.png",Авто Плюс
+http://1mir-iptv.ru/hhh/www.php?id=n364bdfc3&token=RGltb25vdmljaDoxOTgyMTk4Mg==
+#EXTINF:-1 group-title="Спорт" tvg-id="avto-plus" tvg-logo="https://epgx.site/p/avto-plus.png",Авто Плюс HD
+https://mhd116.iptv2022.com/p/Qxd8HekSBLv_wsAr6E3BGQ,1709154010/streaming/avtoplus/324/1/tracks-v5a1/mono.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="avto24" tvg-logo="https://epgx.site/p/avto24.png",Авто 24 HD
+https://bkm.beetv.kz/btv/live/hls/000000815.m3u8
+#EXTINF:-1 group-title="Спорт" tvg-id="drive" tvg-logo="https://epgx.site/p/drive.png",Драйв
+http://109.239.208.82:80/drive/index.m3u8
