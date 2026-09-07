@@ -14,13 +14,32 @@ OUTPUT_FILE = "damitv_events.m3u"
 PAST_MINUTES = 30
 UPCOMING_MINUTES = 180
 
-FIXED_CHANNELS = [
-    ("Digi Sport 1", "https://dokagents.site/live/digisport1/mono.m3u8"),
-    ("Digi Sport 2 HD", "https://dokagents.site/live/digisport2/mono.m3u8"),
-    ("Digi Sport 3", "https://dokagents.site/live/digisport3/mono.m3u8"),
-    ("Digi Sport 4", "https://dokagents.site/live/digisport4/mono.m3u8"),
-    ("Match!Ultra", "http://stream.mcquack.net/169/index.m3u8"),
+# Rimossa la lista FIXED_CHANNELS. Ora i canali dokagents vengono scoperti dinamicamente.
+
+# Lista di possibili nomi canale su dokagents.site/live
+DOKAGENTS_CANDIDATES = [
+    "digisport1", "digisport2", "digisport3", "digisport4",
+    "digisport5", "digisport6", "digisportplus", "digisportnews",
+    "eurosport", "eurosport1", "eurosport2", "eurosport2hd",
+    "sportklub1", "sportklub2", "sportklub3", "sportklub4", "sportklub5", "sportklub6",
+    "arenasport1", "arenasport2", "arenasport3", "arenasport4", "arenasport5", "arenasport6",
+    "maxsport1", "maxsport2", "maxsport3", "maxsport4",
+    "matchtv", "matchfutbol1", "matchfutbol2", "matchfutbol3",
+    "setantasport", "setantasport1", "setantasport2",
+    "sport1", "sport2", "sport3", "sport4", "sport5",
+    "skysport1", "skysport2", "skysport3", "skysport4", "skysport5",
+    "movistar", "dazn1", "dazn2", "dazn3", "dazn4",
+    "canalsport", "canalplus", "canalplus1", "canalplus2",
+    "nbatv", "nflnetwork", "nhl", "mlb", "ufc", "boxing", "fight",
+    "golf", "tennis", "racing", "motorsport", "extreme",
+    "redbulltv", "f1", "motoamerica", "supercross",
+    "futbol", "football", "soccer", "calcio", "seriea", "premierleague",
+    "la-liga", "ligue1", "bundesliga", "championsleague", "europaleague",
+    "copa", "libertadores", "sudamericana", "concacaf", "afc", "uefa", "fifa"
 ]
+
+DOKAGENTS_BASE = "http://dokagents.site/live"   # uso HTTP per compatibilità TV
+DOKAGENTS_USER_AGENT = USER_AGENT
 
 session = requests.Session()
 session.headers.update({"User-Agent": USER_AGENT})
@@ -221,12 +240,37 @@ def build_sports_lines(seen_ids):
     print(f"✅ Eventi sportivi aggiunti: {len(lines)//2} (da {event_count} eventi)")
     return lines
 
+def get_dokagents_channels():
+    """Scopre canali disponibili su dokagents.site/live (HTTP) e restituisce lista di tuple (nome, url)."""
+    print("📡 Ricerca canali su dokagents.site/live (HTTP)...")
+    channels = []
+    headers = {"User-Agent": DOKAGENTS_USER_AGENT}
+    patterns = ["mono.m3u8", "index.m3u8"]
+
+    for nome in DOKAGENTS_CANDIDATES:
+        for pattern in patterns:
+            url = f"{DOKAGENTS_BASE}/{nome}/{pattern}"
+            try:
+                r = requests.get(url, headers=headers, timeout=8, verify=False)
+                if r.status_code == 200 and r.text.strip().startswith("#EXTM3U"):
+                    channels.append((nome, url))
+                    print(f"   ✅ {nome} -> {url}")
+                    break
+            except Exception:
+                pass
+            time.sleep(0.2)  # piccolo ritardo
+
+    print(f"   Trovati {len(channels)} canali dokagents.")
+    return channels
+
 def main():
     seen_ids = set()
     lines = ["#EXTM3U"]
 
-    for name, url in FIXED_CHANNELS:
-        lines.append(f'#EXTINF:-1 tvg-id="{name}",{name}')
+    # Invece di canali fissi, aggiungiamo i canali dokagents scoperti dinamicamente
+    dokagents_channels = get_dokagents_channels()
+    for name, url in dokagents_channels:
+        lines.append(f'#EXTINF:-1 tvg-id="dok-{name}" group-title="DokAgents Sport",{name}')
         lines.append(url)
 
     lines.extend(get_24_7_channels(seen_ids))
