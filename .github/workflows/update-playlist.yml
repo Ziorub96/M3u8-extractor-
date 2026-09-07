@@ -2,7 +2,7 @@ name: Combine and Check M3U Playlists
 
 on:
   schedule:
-    - cron: "15 * * * *"
+    - cron: "15 * * * *"   # ogni ora al minuto 15
   workflow_dispatch:
 
 permissions:
@@ -39,7 +39,10 @@ jobs:
         run: python watchfooty_direct.py
 
       - name: Extract xyzstreams live channels
-        run: python xyzstreams_proxy.py
+        run: |
+          # Attendi qualche secondo per il risveglio di Render (piano gratuito)
+          sleep 10
+          python xyzstreams_proxy.py
         env:
           XYZPROXY_URL: ${{ secrets.XYZPROXY_URL }}
 
