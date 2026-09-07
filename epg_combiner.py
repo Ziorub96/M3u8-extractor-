@@ -1,6 +1,7 @@
 import concurrent.futures
 import re
 import requests
+from threading import local
 
 HEADERS = {
     "User-Agent": (
@@ -18,32 +19,30 @@ FALLBACK_COUNTRIES = [
     "hu", "hr", "rs", "si",
 ]
 
-MAX_WORKERS = 15
+MAX_WORKERS = 10
+INDEX_URL = "https://iptv-org.github.io/epg/guides.json"
 
-# URL base corretto: GitHub Pages del progetto EPG
-EPG_BASE_URL = "https://iptv-org.github.io/epg/guides/{country}.xml"
+thread_local = local()
 
-def fetch_epg_single(country, session):
-    """Scarica il file EPG per un singolo paese usando l'URL corretto."""
-    url = EPG_BASE_URL.format(country=country)
+def get_session():
+    if not hasattr(thread_local, "session"):
+        thread_local.session = requests.Session()
+        thread_local.session.headers.update(HEADERS)
+    return thread_local.session
+
+def fetch_guide_xml(guide_url):
+    """Scarica un singolo file XML dato il suo URL esatto."""
+    session = get_session()
     try:
-        r = session.get(url, timeout=20)
+        r = session.get(guide_url, timeout=20)
         if r.status_code == 200 and r.text.strip():
-            return country, r.text
+            return r.text
     except Exception:
         pass
-    # Fallback secondario (alcuni paesi potrebbero avere percorso diverso)
-    url_alt = f"https://iptv-org.github.io/epg/guides/{country}/{country}.xml"
-    try:
-        r = session.get(url_alt, timeout=20)
-        if r.status_code == 200 and r.text.strip():
-            return country, r.text
-    except Exception:
-        pass
-    return country, None
+    return None
 
 def extract_channels_and_programmes(xml_text):
-    """Estrae i blocchi <channel> e <programme> usando regex efficienti."""
+    """Estrae i blocchi <channel> e <programme>."""
     channels = re.findall(
         r"<channel\b[^>]*>.*?</channel>|<channel\b[^>]*/>",
         xml_text,
@@ -57,34 +56,52 @@ def extract_channels_and_programmes(xml_text):
     return channels, programmes
 
 def main():
-    sources = FALLBACK_COUNTRIES.copy()
-    all_channels = []
-    all_programmes = []
-    successful_countries = 0
-
-    print(f"\n📡 Avvio scaricamento EPG per {len(sources)} paesi (in parallelo)...")
-
     session = requests.Session()
     session.headers.update(HEADERS)
 
+    print("🔍 Recupero indice guide da iptv-org...")
+    try:
+        r = session.get(INDEX_URL, timeout=15)
+        r.raise_for_status()
+        guides_data = r.json()
+    except Exception as e:
+        print(f"❌ Impossibile scaricare l'indice delle guide: {e}")
+        return
+
+    # Mappa gli URL delle guide relativi ai paesi richiesti
+    # L'indice contiene oggetti con campi tipo 'lang', 'site', 'url', 'country'
+    urls_to_download = []
+    countries_set = set(c.lower() for c in FALLBACK_COUNTRIES)
+    # Mappa 'uk' -> 'gb'
+    if "uk" in countries_set:
+        countries_set.add("gb")
+
+    for guide in guides_data:
+        guide_country = guide.get("country", "").lower()
+        if guide_country in countries_set and "url" in guide:
+            urls_to_download.append(guide["url"])
+
+    print(f"📡 Trovate {len(urls_to_download)} guide XML per i paesi selezionati. Avvio scaricamento...")
+
+    all_channels = []
+    all_programmes = []
+    successful_downloads = 0
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(fetch_epg_single, country, session): country
-            for country in sources
-        }
+        futures = [
+            executor.submit(fetch_guide_xml, url)
+            for url in urls_to_download
+        ]
 
         for future in concurrent.futures.as_completed(futures):
-            country, xml_text = future.result()
+            xml_text = future.result()
             if xml_text:
                 channels, programmes = extract_channels_and_programmes(xml_text)
-                print(f"  ✓ {country.upper()}: {len(channels)} canali, {len(programmes)} programmi")
                 all_channels.extend(channels)
                 all_programmes.extend(programmes)
-                successful_countries += 1
-            else:
-                print(f"  ❌ {country.upper()}: nessun file XML trovato")
+                successful_downloads += 1
 
-    print(f"\n📊 Completato! Scaricati con successo {successful_countries}/{len(sources)} paesi.")
+    print(f"\n📊 Completato! Scaricate con successo {successful_downloads}/{len(urls_to_download)} guide.")
 
     output_filename = "combined_epg.xml"
     if all_channels or all_programmes:
@@ -98,9 +115,7 @@ def main():
             f.write("</tv>\n")
         print(f"✅ Salvato `{output_filename}` con {len(all_channels)} canali e {len(all_programmes)} programmi.")
     else:
-        with open(output_filename, "w", encoding="utf-8") as f:
-            f.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv/>\n')
-        print("⚠️ Nessun dato trovato, generato file XML vuoto.")
+        print("⚠️ Nessun dato scaricato.")
 
 if __name__ == "__main__":
     main()
