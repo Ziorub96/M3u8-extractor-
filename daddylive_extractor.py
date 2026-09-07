@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive
 # Versione unificata con retry su 502/503, blacklist URL obsoleti, multithreading
-# Ora include anche player9.json con filtro sportivo più selettivo.
+# Ora include anche player9.json con filtro sportivo più selettivo
+# e le partite di calcio da CDN Live TV API.
 
 import re
 import json
@@ -28,10 +29,8 @@ PLAYER_FILES = [
     "player14.json",
 ]
 
-# Nuovo: player9 con filtro specifico
 PLAYER9_FILE = "player9.json"
-MAX_PLAYER9_SPORT = 350          # limitiamo il numero di canali da processare
-ONLY_PLAYER9_SPORT = True        # estrai solo sportivi da player9
+MAX_PLAYER9_SPORT = 350
 
 ONLY_SPORT = True
 MAX_WORKERS = 5
@@ -58,7 +57,6 @@ SPORT_KEYWORDS = [
     "sky sport", "canal sport", "rmc sport", "v sport", "match football",
 ]
 
-# Keyword più selettive per player9
 SPORT_KEYWORDS_PLAYER9 = [
     "sport", "espn", "sky sports", "nba", "nfl", "nhl", "mlb", "ufc", "boxing",
     "football", "soccer", "tennis", "golf", "rugby", "cricket", "f1", "motogp",
@@ -74,7 +72,6 @@ SPORT_KEYWORDS_PLAYER9 = [
     "formula", "racing"
 ]
 
-# Blacklist per evitare falsi positivi in player9
 BLACKLIST_WORDS_PLAYER9 = [
     "news", "europe", "europa", "cinema", "movie", "film", "kids", "music",
     "religion", "shalom", "vogue", "velvet", "fashion", "makeover", "conflict",
@@ -94,7 +91,6 @@ def is_sport(name: str, use_player9_filter: bool = False) -> bool:
     if not ONLY_SPORT:
         return True
     n = name.lower()
-    # Blacklist per player9
     if use_player9_filter:
         if any(bad in n for bad in BLACKLIST_WORDS_PLAYER9):
             return False
@@ -280,6 +276,42 @@ def resolve_stream(name: str, url: str) -> tuple | None:
         return (name, stream)
     return None
 
+def fetch_cdnlivetv_events():
+    """Scarica eventi sportivi (calcio) da API cdnlivetv.is."""
+    url = "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan=free"
+    try:
+        r = fetch_url(url, headers=get_headers("https://cdnlivetv.is/"), timeout=20)
+        if r is None:
+            return []
+        data = r.json()
+        events = data if isinstance(data, list) else data.get("events", [])
+        football_events = []
+        for ev in events:
+            if ev.get("homeTeam") and ev.get("awayTeam"):
+                football_events.append(ev)
+        return football_events
+    except Exception as ex:
+        print(f"❌ Errore scaricando eventi CDN Live TV: {ex}")
+        return []
+
+def extract_event_streams(event_obj):
+    """Estrae URL stream da un evento sportivo."""
+    streams = []
+    channels = event_obj.get("channels") or []
+    for ch in channels:
+        for key in ("url", "stream_url", "link"):
+            val = ch.get(key)
+            if val and val.startswith("http"):
+                streams.append(val)
+                break
+        if not streams:
+            for key in ("embed_url", "embed"):
+                val = ch.get(key)
+                if val and val.startswith("http"):
+                    streams.append(val)
+                    break
+    return streams
+
 def main():
     global BASE_URL
 
@@ -289,6 +321,8 @@ def main():
         return
 
     all_candidates = []
+    # Risultati diretti (canali risolti da Daddylive)
+    results = []
 
     print("\n📡 Scarico le liste player standard...")
     for pfile in PLAYER_FILES:
@@ -336,7 +370,6 @@ def main():
                     url = e.get("url")
                     if url and url.startswith("http"):
                         sport9.append((name, url))
-            # Limitiamo il numero
             sport9 = sport9[:MAX_PLAYER9_SPORT]
             all_candidates.extend(sport9)
             print(f"   player9: {len(entries)} totali → {len(sport9)} sport aggiunti")
@@ -344,6 +377,26 @@ def main():
             print("   ❌ player9: fetch fallito")
     except Exception as ex:
         print(f"   ❌ player9: {ex}")
+
+    # ===== EVENTI CALCIO DA CDN LIVE TV API =====
+    print("\n📡 Scarico partite di calcio da CDN Live TV API...")
+    football_events = fetch_cdnlivetv_events()
+    print(f"   Partite di calcio trovate: {len(football_events)}")
+    for ev in football_events:
+        home = ev.get("homeTeam", "?")
+        away = ev.get("awayTeam", "?")
+        tournament = ev.get("tournament", "Calcio")
+        status = (ev.get("status") or "").lower()
+        if status not in ("live", "upcoming"):
+            continue
+        streams = extract_event_streams(ev)
+        if streams:
+            display = f"[{tournament}] {home} vs {away}"
+            for i, url in enumerate(streams[:1]):  # prendi solo il primo stream
+                results.append((display, url))
+                print(f"   ✅ {display}")
+        else:
+            print(f"   ❌ {home} vs {away}: nessuno stream")
 
     all_candidates = [
         (name, url) for name, url in all_candidates
@@ -353,7 +406,6 @@ def main():
     print(f"\n🎯 Canali da risolvere: {len(all_candidates)}")
     print(f"🚀 Avvio con {MAX_WORKERS} worker...\n")
 
-    results = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
             executor.submit(resolve_stream, name, url): name
