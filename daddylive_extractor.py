@@ -13,8 +13,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 
-# ===================== CONFIG =====================
-
 BASE_CANDIDATES = [
     "https://daddylive.app",
     "https://dlhd.so",
@@ -34,7 +32,6 @@ MAX_WORKERS = 5
 REQUEST_DELAY = (0.4, 1.0)
 OUTPUT_FILE = "daddylive_unified.m3u"
 
-# URL obsoleti da ignorare (es. canale CNBC con IP statico 404)
 BLOCKED_URLS = [
     "http://41.205.93.154",
 ]
@@ -54,8 +51,6 @@ SPORT_KEYWORDS = [
     "tnt sports", "rai sport", "ziggo sport", "polsat sport", "sport tv",
     "sky sport", "canal sport", "rmc sport", "v sport", "match football",
 ]
-
-# ===================== UTILS =====================
 
 def b64d(s: str) -> bytes:
     s = s.replace('-', '+').replace('_', '/')
@@ -81,7 +76,6 @@ def get_headers(referer: str | None = None) -> dict:
     return h
 
 def find_working_base() -> str | None:
-    """Prova i domini finché uno risponde con un player json valido."""
     for base in BASE_CANDIDATES:
         try:
             r = requests.get(
@@ -97,10 +91,7 @@ def find_working_base() -> str | None:
     print("❌ Nessun dominio base funzionante trovato")
     return None
 
-# ===================== FETCH CON RETRY =====================
-
 def fetch_url(url, headers=None, timeout=15, retries=3, backoff=12.0):
-    """Scarica URL con retry su 429/502/503 e backoff esponenziale."""
     for attempt in range(retries):
         session = requests.Session()
         if headers is None:
@@ -122,17 +113,13 @@ def fetch_url(url, headers=None, timeout=15, retries=3, backoff=12.0):
             time.sleep(3)
     return None
 
-# ===================== EXTRACTORS =====================
-
 def extract_player2(html: str) -> str | None:
-    """streamtp / global1.php → var playbackURL"""
     m = re.search(r'var\s+playbackURL\s*=\s*"([^"]+)"', html)
     if m:
         return m.group(1).replace('\\/', '/')
     return None
 
 def extract_player5(html: str) -> str | None:
-    """cdnlivetv.tv → pezzi Base64 con nomi variabili random"""
     join_match = re.search(
         r'[A-Za-z_$][\w$]*\s*=\s*((?:[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*\)\s*\+\s*)+[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*\))',
         html
@@ -152,7 +139,6 @@ def extract_player5(html: str) -> str | None:
     return ''.join(parts) if parts else None
 
 def extract_player6(html: str, page_url: str, session: requests.Session) -> str | None:
-    """bolaloca.my → iframe cuttingfame → _econfig (3 livelli)"""
     iframe_m = re.search(r'<iframe[^>]+src=["\']([^"\']+)["\']', html, re.I)
     if not iframe_m:
         return None
@@ -184,7 +170,7 @@ def extract_player6(html: str, page_url: str, session: requests.Session) -> str 
         for _ in range(4):
             part = decoded[pos:pos + chunk]
             pos += chunk
-            parts.append(part[:3] + part[4:])          # toglie il 4° carattere
+            parts.append(part[:3] + part[4:])
         ordered = [parts[i] for i in [1, 3, 0, 2]]
         joined = ''.join(ordered)
         d2 = b64d(joined).decode('utf-8', errors='replace')
@@ -198,7 +184,6 @@ def extract_player6(html: str, page_url: str, session: requests.Session) -> str 
     return None
 
 def extract_player14(html: str) -> str | None:
-    """epiembeds.online → array interi + XOR (chiavi lette dinamicamente)"""
     arr_m = re.search(r'var\s+_qb8\s*=\s*\[([^\]]+)\]', html)
     if not arr_m:
         return None
@@ -222,10 +207,7 @@ def extract_player14(html: str) -> str | None:
     m = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', decoded)
     return m.group(0) if m else None
 
-# ===================== RESOLVER =====================
-
 def resolve_stream(name: str, url: str) -> tuple | None:
-    """Ogni chiamata crea la propria sessione → thread-safe."""
     session = requests.Session()
     time.sleep(random.uniform(*REQUEST_DELAY))
 
@@ -248,7 +230,6 @@ def resolve_stream(name: str, url: str) -> tuple | None:
     elif "epiembeds.online" in url:
         stream = extract_player14(html)
     else:
-        # fallback generico
         stream = (extract_player5(html) or
                   extract_player2(html) or
                   extract_player14(html) or
@@ -257,8 +238,6 @@ def resolve_stream(name: str, url: str) -> tuple | None:
     if stream and stream.startswith("http"):
         return (name, stream)
     return None
-
-# ===================== MAIN =====================
 
 def main():
     global BASE_URL
@@ -301,7 +280,6 @@ def main():
         except Exception as ex:
             print(f"   ❌ {pfile}: {ex}")
 
-    # Filtra URL obsoleti
     all_candidates = [
         (name, url) for name, url in all_candidates
         if not any(blocked in url for blocked in BLOCKED_URLS)
@@ -331,7 +309,6 @@ def main():
             except Exception:
                 print(f"[{done}/{total}] ❌ {name}")
 
-    # Deduplica per URL
     seen = set()
     unique = []
     for name, url in results:
