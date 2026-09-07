@@ -5,13 +5,13 @@ import time
 import random
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlparse
 
 from curl_cffi import requests as curl_requests
 
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
-workers = 6
-timeout = 10
+workers = 10
+timeout = 5
+HTTP_TIMEOUT = 8
 
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -19,7 +19,6 @@ USER_AGENT = (
     "Chrome/131.0.0.0 Safari/537.36"
 )
 
-# Header per famiglia di domini
 DOMAIN_HEADERS = {
     "ondemand.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "messi.damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
@@ -119,7 +118,8 @@ def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
 
 def http_check_m3u8(url: str) -> tuple[bool, str, str]:
     """
-    Soft check con richiesta HTTP e backoff su 502/503/429.
+    Soft check: GET con fingerprint Chrome.
+    OK se status < 400 e il body sembra una playlist HLS valida.
     Ritorna (ok, motivo, cookie_str).
     """
     headers = get_headers_dict(url)
@@ -127,20 +127,19 @@ def http_check_m3u8(url: str) -> tuple[bool, str, str]:
     # Delay extra per domini sensibili al rate limiting
     sensitive_domains = ("cdnlivetv.tv", "bolaloca.my", "epiembeds.online", "cuttingfame.net")
     if any(domain in url for domain in sensitive_domains):
-        time.sleep(random.uniform(1.0, 2.5))
+        time.sleep(random.uniform(0.4, 1.0))
 
     attempt = 0
-    max_retries = 3
+    max_retries = 2
     while attempt < max_retries:
         try:
             session = curl_requests.Session(impersonate="chrome120")
-            r = session.get(url, headers=headers, timeout=timeout, allow_redirects=True)
+            r = session.get(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True)
             cookies = session.cookies.get_dict()
             cookie_str = "; ".join(f"{k}={v}" for k, v in cookies.items())
 
             if r.status_code in (429, 502, 503):
-                wait = 5 * (2 ** attempt) + random.uniform(0, 2)
-                print(f"   ⚠️ {r.status_code} su {url[:80]} → retry in {wait:.1f}s")
+                wait = 4 * (2 ** attempt) + random.uniform(0, 1)
                 time.sleep(wait)
                 attempt += 1
                 continue
@@ -149,17 +148,35 @@ def http_check_m3u8(url: str) -> tuple[bool, str, str]:
                 return False, f"HTTP {r.status_code}", cookie_str
 
             text = r.content[:4096].decode("utf-8", errors="ignore")
-            text_l = text.lower().lstrip()
-            if text_l.startswith("#extm3u") or "#extinf" in text_l or "#ext-x-" in text_l:
+            text_l = text.lower()
+
+            # 1) Blacklist parole chiave → scarto immediato
+            blacklist = ("offline", "error", "denied", "invalid", "not found", "expired", "maintenance")
+            if any(word in text_l for word in blacklist):
+                return False, "Contenuto di errore nel manifest", cookie_str
+
+            # 2) Lunghezza minima
+            if len(text.strip()) < 200:
+                return False, "Manifest troppo corto", cookie_str
+
+            # 3) Controllo struttura HLS
+            has_extm3u = "#extm3u" in text_l
+            has_segment_ref = bool(re.search(r"#extinf:\s*[\d.]+.*?\.(ts|m4s|aac|mp3)", text_l, re.DOTALL))
+            has_targetduration = "#ext-x-targetduration" in text_l
+            has_streaminf = "#ext-x-stream-inf" in text_l
+
+            if has_extm3u and (has_segment_ref or has_targetduration or has_streaminf):
                 return True, "soft-ok", cookie_str
-            if len(text) > 20:
-                return True, "soft-ok-weak", cookie_str
+
+            if has_extm3u:
+                return False, "Manifest HLS incompleto", cookie_str
+
             return False, "Body non sembra m3u8", cookie_str
 
         except Exception as e:
             if attempt == max_retries - 1:
                 return False, f"HTTP error: {str(e)[:120]}", ""
-            time.sleep(3)
+            time.sleep(2)
             attempt += 1
 
     return False, "Max retries superati", ""
@@ -171,8 +188,8 @@ def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
         "-show_entries", "stream=codec_type",
         "-of", "default=noprint_wrappers=1:nokey=1",
         "-timeout", str(timeout * 1_000_000),
-        "-analyzeduration", "2000000",
-        "-probesize", "2000000",
+        "-analyzeduration", "1000000",
+        "-probesize", "1000000",
         "-headers", headers_string,
         "-i", url
     ]
@@ -182,7 +199,7 @@ def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            timeout=timeout + 4,
+            timeout=timeout + 2,
             check=False,
         )
         out = (r.stdout or "").strip().lower()
@@ -205,11 +222,13 @@ def controlla_blocco(block):
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
         return block, False, "YouTube escluso"
 
-    time.sleep(random.uniform(0.2, 0.7))
+    time.sleep(random.uniform(0.1, 0.3))
 
     soft_ok, soft_msg, cookie_str = http_check_m3u8(url)
 
     if soft_ok:
+        if soft_msg == "soft-ok":
+            return block, True, "soft-ok"
         hard_ok, hard_msg = ffprobe_check(url, cookie_str)
         if hard_ok:
             return block, True, ""
@@ -219,7 +238,7 @@ def controlla_blocco(block):
     if hard_ok:
         return block, True, ""
 
-    motivo = soft_msg if soft_msg != "soft-ok" else hard_msg
+    motivo = soft_msg if soft_msg else hard_msg
     if soft_msg and hard_msg and soft_msg != hard_msg:
         motivo = f"{soft_msg} | {hard_msg}"
     return block, False, motivo[:250]
@@ -255,9 +274,9 @@ def main():
             nome = block[0].split(",")[-1].strip() if "," in block[0] else "?"
             if ok:
                 funzionanti.append(block)
-                if motivo.startswith("soft-only"):
+                if motivo.startswith("soft-"):
                     soft_only += 1
-                if i % 15 == 0:
+                if i % 20 == 0:
                     print(f"[{i}/{len(blocks)}] OK | {nome}")
             else:
                 non_funzionanti.append((block, motivo))
