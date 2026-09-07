@@ -12,7 +12,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 OUTPUT_FILE = "damitv_events.m3u"
 
 # Finestra temporale per eventi imminenti
-PAST_MINUTES = 30          # eventi già iniziati da non più di 30 minuti
+PAST_MINUTES = 120          # eventi già iniziati da non più di 30 minuti
 UPCOMING_MINUTES = 180     # eventi che iniziano entro 3 ore
 
 FIXED_CHANNELS = [
