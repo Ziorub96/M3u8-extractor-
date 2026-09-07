@@ -30,7 +30,7 @@ PLAYER_FILES = [
 ONLY_SPORT = True
 MAX_WORKERS = 5
 REQUEST_DELAY = (0.4, 1.0)
-OUTPUT_FILE = "daddylive_unified.m3u"
+OUTPUT_FILE = "daddylive_streams.m3u"
 
 BLOCKED_URLS = [
     "http://41.205.93.154",
