@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive (player2+5+6+14)
-# Versione unificata con retry su 502/503, blacklist URL obsoleti e multithreading
+# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive
+# Versione unificata con retry su 502/503, blacklist URL obsoleti, multithreading
+# Ora include anche player9.json con filtro sportivo più selettivo.
 
 import re
 import json
@@ -27,6 +28,11 @@ PLAYER_FILES = [
     "player14.json",
 ]
 
+# Nuovo: player9 con filtro specifico
+PLAYER9_FILE = "player9.json"
+MAX_PLAYER9_SPORT = 350          # limitiamo il numero di canali da processare
+ONLY_PLAYER9_SPORT = True        # estrai solo sportivi da player9
+
 ONLY_SPORT = True
 MAX_WORKERS = 5
 REQUEST_DELAY = (0.4, 1.0)
@@ -52,16 +58,51 @@ SPORT_KEYWORDS = [
     "sky sport", "canal sport", "rmc sport", "v sport", "match football",
 ]
 
+# Keyword più selettive per player9
+SPORT_KEYWORDS_PLAYER9 = [
+    "sport", "espn", "sky sports", "nba", "nfl", "nhl", "mlb", "ufc", "boxing",
+    "football", "soccer", "tennis", "golf", "rugby", "cricket", "f1", "motogp",
+    "premier league", "serie a", "la liga", "champions", "europa league",
+    "bundesliga", "dazn", "bein", "movistar", "canale sport", "sport tv",
+    "fox sports", "win sports", "dsports", "eleven", "nascar", "indycar",
+    "nba tv", "nfl network", "red bull tv", "wwe", "aew", "fight", "wrc",
+    "motoamerica", "supercross", "extreme", "outdoor", "fishing", "hunting",
+    "poker", "darts", "snooker", "pool", "bowling", "cycling", "triathlon",
+    "marathon", "olympics", "world cup", "euro", "copa", "libertadores",
+    "sudamericana", "concacaf", "afc", "uefa", "fifa", "nba g league",
+    "wnba", "nhl network", "mlb network", "golf", "tennis", "motorsport",
+    "formula", "racing"
+]
+
+# Blacklist per evitare falsi positivi in player9
+BLACKLIST_WORDS_PLAYER9 = [
+    "news", "europe", "europa", "cinema", "movie", "film", "kids", "music",
+    "religion", "shalom", "vogue", "velvet", "fashion", "makeover", "conflict",
+    "spiegel", "jimjam", "inazuma", "rakuten viki", "myzen", "bloomberg",
+    "bbc news", "cctv-4", "ewtn", "tv5monde", "tv5 monde", "rtve", "tve internacional",
+    "animation", "cartoon", "anime", "comedy", "drama", "entertainment",
+    "documentary", "history", "nature", "wild", "travel", "food", "cooking",
+    "reality", "talk", "lifestyle", "wellness", "yoga", "meditation"
+]
+
 def b64d(s: str) -> bytes:
     s = s.replace('-', '+').replace('_', '/')
     s += '=' * (-len(s) % 4)
     return base64.b64decode(s)
 
-def is_sport(name: str) -> bool:
+def is_sport(name: str, use_player9_filter: bool = False) -> bool:
     if not ONLY_SPORT:
         return True
     n = name.lower()
-    for kw in SPORT_KEYWORDS:
+    # Blacklist per player9
+    if use_player9_filter:
+        if any(bad in n for bad in BLACKLIST_WORDS_PLAYER9):
+            return False
+        keywords = SPORT_KEYWORDS_PLAYER9
+    else:
+        keywords = SPORT_KEYWORDS
+
+    for kw in keywords:
         if len(kw) <= 4:
             if re.search(rf'\b{re.escape(kw)}\b', n):
                 return True
@@ -249,7 +290,7 @@ def main():
 
     all_candidates = []
 
-    print("\n📡 Scarico le liste player...")
+    print("\n📡 Scarico le liste player standard...")
     for pfile in PLAYER_FILES:
         try:
             r = fetch_url(
@@ -279,6 +320,30 @@ def main():
             print(f"   {pfile}: {len(entries)} totali → {count_sport} sport")
         except Exception as ex:
             print(f"   ❌ {pfile}: {ex}")
+
+    # ===== PLAYER9 CON FILTRO MIGLIORATO =====
+    print(f"\n📡 Scarico {PLAYER9_FILE} (limite {MAX_PLAYER9_SPORT} sportivi)...")
+    try:
+        r = fetch_url(f"{BASE_URL}/player/{PLAYER9_FILE}", headers=get_headers(), timeout=30)
+        if r:
+            entries = r.json()
+            sport9 = []
+            for e in entries:
+                if not isinstance(e, dict):
+                    continue
+                name = e.get("name") or ""
+                if is_sport(name, use_player9_filter=True):
+                    url = e.get("url")
+                    if url and url.startswith("http"):
+                        sport9.append((name, url))
+            # Limitiamo il numero
+            sport9 = sport9[:MAX_PLAYER9_SPORT]
+            all_candidates.extend(sport9)
+            print(f"   player9: {len(entries)} totali → {len(sport9)} sport aggiunti")
+        else:
+            print("   ❌ player9: fetch fallito")
+    except Exception as ex:
+        print(f"   ❌ player9: {ex}")
 
     all_candidates = [
         (name, url) for name, url in all_candidates
