@@ -39,6 +39,8 @@ SOURCES = [
 LOCAL_SOURCES = [
     ("WatchFooty", "watchfooty_events.m3u"),
     ("Daddylive Unified", "daddylive_streams.m3u"),
+    ("XYZStreams", "xyzstreams_events.m3u"),          # aggiunto
+    ("SMTK Sport", "smtk_sport.m3u"),                 # aggiunto
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
