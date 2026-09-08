@@ -2,7 +2,7 @@ name: Combine and Check M3U Playlists
 
 on:
   schedule:
-    - cron: "15 * * * *"
+    - cron: "42 * * * *"
   workflow_dispatch:
 
 permissions:
