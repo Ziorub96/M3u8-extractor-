@@ -31,16 +31,16 @@ TVG_ID_MAP = {
 }
 
 SOURCES = [
-    ("DAMITV", "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/damitv_events.m3u"),
     ("doms9", "https://s.id/d9M3U8"),
     ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u"),
 ]
 
 LOCAL_SOURCES = [
+    ("DAMITV", "damitv_events.m3u"),
     ("WatchFooty", "watchfooty_events.m3u"),
     ("Daddylive Unified", "daddylive_streams.m3u"),
-    ("XYZStreams", "xyzstreams_events.m3u"),          # aggiunto
-    ("SMTK Sport", "smtk_sport.m3u"),                 # aggiunto
+    ("XYZStreams", "xyzstreams_events.m3u"),
+    ("SMTK Sport", "smtk_sport.m3u"),
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
