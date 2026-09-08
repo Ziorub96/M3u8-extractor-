@@ -21,6 +21,7 @@ FALLBACK_COUNTRIES = [
 
 MAX_WORKERS = 10
 INDEX_URL = "https://iptv-org.github.io/epg/guides.json"
+BASE_URL = "https://iptv-org.github.io/epg/"
 
 thread_local = local()
 
@@ -31,7 +32,6 @@ def get_session():
     return thread_local.session
 
 def fetch_guide_xml(guide_url):
-    """Scarica un singolo file XML dato il suo URL esatto."""
     session = get_session()
     try:
         r = session.get(guide_url, timeout=20)
@@ -42,7 +42,6 @@ def fetch_guide_xml(guide_url):
     return None
 
 def extract_channels_and_programmes(xml_text):
-    """Estrae i blocchi <channel> e <programme>."""
     channels = re.findall(
         r"<channel\b[^>]*>.*?</channel>|<channel\b[^>]*/>",
         xml_text,
@@ -68,18 +67,35 @@ def main():
         print(f"❌ Impossibile scaricare l'indice delle guide: {e}")
         return
 
-    # Mappa gli URL delle guide relativi ai paesi richiesti
-    # L'indice contiene oggetti con campi tipo 'lang', 'site', 'url', 'country'
-    urls_to_download = []
     countries_set = set(c.lower() for c in FALLBACK_COUNTRIES)
-    # Mappa 'uk' -> 'gb'
     if "uk" in countries_set:
         countries_set.add("gb")
 
+    urls_to_download = []
+
     for guide in guides_data:
-        guide_country = guide.get("country", "").lower()
-        if guide_country in countries_set and "url" in guide:
-            urls_to_download.append(guide["url"])
+        # 1. Recupera il percorso da 'url', 'file' o 'site'
+        raw_path = guide.get("url") or guide.get("file") or ""
+        lang = (guide.get("lang") or "").lower()
+        site = (guide.get("site") or "").lower()
+
+        # 2. Determina se la guida appartiene ai paesi selezionati
+        # Verifica tramite lang, codice paese nel dominio (es. .it) o percorso (/it/)
+        is_matched = (
+            lang in countries_set or
+            any(f"/guides/{c}/" in raw_path.lower() or f"/{c}/" in raw_path.lower() for c in countries_set) or
+            any(site.endswith(f".{c}") for c in countries_set)
+        )
+
+        if is_matched and raw_path:
+            # 3. Trasforma in URL assoluto valido
+            if raw_path.startswith("http://") or raw_path.startswith("https://"):
+                full_url = raw_path
+            else:
+                full_url = f"{BASE_URL}{raw_path.lstrip('/')}"
+
+            if full_url not in urls_to_download:
+                urls_to_download.append(full_url)
 
     print(f"📡 Trovate {len(urls_to_download)} guide XML per i paesi selezionati. Avvio scaricamento...")
 
