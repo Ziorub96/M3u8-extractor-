@@ -1,621 +1,817 @@
 #EXTM3U
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN 1
-https://7.domhsd.com:443/global/espn/index.m3u8?token=6de07a3fb7765c09c5f189002cc595caa69df2c1-60-1789010634-1788956634&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN 5
-https://99.domhsd.com:443/global/espn5/index.m3u8?token=484e3bd4475a92cae85e67c4296d90573df3c608-18-1789010634-1788956634&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN 4
-https://98.domhsd.com:443/global/espn4/index.m3u8?token=0cb476a949f5d91eb5dc325a30d1793fa7cc7a1e-f1-1789010634-1788956634&ip=52.159.139.250
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 3
-https://14.domhsd.com:443/global/espn3/index.m3u8?token=7ebb386b5ed8b4538fa34a61a3a636d1bddb0510-b3-1789010634-1788956634&ip=52.159.139.250
+https://93.domhsd.com:443/global/espn3/index.m3u8?token=ed95c1971b7d4fa6e6f3b893bec8c9484e2f46da-db-1789025089-1788971089&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN 5
+https://47.domhsd.com:443/global/espn5/index.m3u8?token=8d516497e0fda469b6deea433149184117f5f3bb-95-1789025089-1788971089&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN 4
+https://193.domhsd.com:443/global/espn4/index.m3u8?token=8d5631c65b9c3205402405998e6ffdc511b5b30a-0a-1789025090-1788971090&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN 1
+https://17.domhsd.com:443/global/espn/index.m3u8?token=598597fef29c4f255c70b83c843f43f3be985b89-19-1789025090-1788971090&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 2
-https://85.domhsd.com:443/global/espn2/index.m3u8?token=3e0c15d6234784e36afce2fd3af972911b188a49-82-1789010634-1788956634&ip=52.159.139.250
+https://193.domhsd.com:443/global/espn2/index.m3u8?token=110c2b6b9a70711803edb90b2783e1f85f696630-92-1789025090-1788971090&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 6
-https://193.domhsd.com:443/global/espn6/index.m3u8?token=f329d47f255770e78b0f24ccd1ef25a7783933a5-f9-1789010635-1788956635&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",Win Sports
-https://193.domhsd.com:443/global/winsports/index.m3u8?token=2e8c3026c379af2576785caf8dc71cba4894da82-45-1789010635-1788956635&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN 7
-https://17.domhsd.com:443/global/espn7/index.m3u8?token=fc16306dbee0fa437a9f74543166f671a1c6c4f8-e2-1789010635-1788956635&ip=52.159.139.250
+https://17.domhsd.com:443/global/espn6/index.m3u8?token=dd2a2479988ba08eefff43daa841b7f883f29d35-85-1789025090-1788971090&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 1 (Argentina)
-https://17.domhsd.com:443/global/fox1ar/index.m3u8?token=128d1bc38c0068e699270096bd89c0fbae6488d6-20-1789010636-1788956636&ip=52.159.139.250
+https://7.domhsd.com:443/global/fox1ar/index.m3u8?token=934244aed11acf93de1ed831a3caeeec72e11602-c1-1789025091-1788971091&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN 7
+https://93.domhsd.com:443/global/espn7/index.m3u8?token=17bd111b5d3ab089b141a9f56bb8dfd6cb7661b7-94-1789025091-1788971091&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Win Sports +
-https://85.domhsd.com:443/global/winplus/index.m3u8?token=1fadb5efff8aa9d50419ee82ea970a015eb671ed-5f-1789010636-1788956636&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 3 (Argentina)
-https://98.domhsd.com:443/global/fox3ar/index.m3u8?token=d04181c23bf43ad1dadaacf60b0cf6bedd157cb6-e1-1789010636-1788956636&ip=52.159.139.250
+https://7.domhsd.com:443/global/winplus/index.m3u8?token=7eec0a3dc3bddea4cff4a892905a72b3a939e2ed-19-1789025091-1788971091&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",Win Sports
+https://99.domhsd.com:443/global/winsports/index.m3u8?token=cbab645d0c51f4c036ab7cf2d32b1fc6309f892d-63-1789025091-1788971091&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 2 (Argentina)
-https://14.domhsd.com:443/global/fox2ar/index.m3u8?token=e69afbcf3e488a8d9a110d703ef323b4a2fd7755-b8-1789010636-1788956636&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",Dsports
-https://99.domhsd.com:443/global/dsports/index.m3u8?token=2947db5786a40aec5bfff832ee07ac541a8b4964-ea-1789010637-1788956637&ip=52.159.139.250
+https://193.domhsd.com:443/global/fox2ar/index.m3u8?token=365389e266579359b1ddb959ec13079bd8a25a14-3d-1789025091-1788971091&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Dsports 2
-https://98.domhsd.com:443/global/dsports2/index.m3u8?token=87ef16ba18eec54a9022f3d03513f15a3cde6678-a3-1789010637-1788956637&ip=52.159.139.250
+https://47.domhsd.com:443/global/dsports2/index.m3u8?token=b1d8a0a82debcbcda2c88bdad3c3a8227ebda1c9-15-1789025092-1788971092&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 3 (Argentina)
+https://85.domhsd.com:443/global/fox3ar/index.m3u8?token=8bf83f21b00986cc09480600528f895a97cad4d8-53-1789025092-1788971092&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",Dsports
+https://85.domhsd.com:443/global/dsports/index.m3u8?token=628dd9a10f81389f250889ffd8d6fc95911661a7-02-1789025092-1788971092&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Dsports +
-https://98.domhsd.com:443/global/dsportsplus/index.m3u8?token=eed580e61c43d954f7c009ca3ad183a7ad167626-03-1789010637-1788956637&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",TNT Sports Argentina
-https://93.domhsd.com:443/global/tntsports/index.m3u8?token=7d44573c5693bc7e0af1f5b5ce8353444b570163-57-1789010637-1788956637&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN Premium Argentina
-https://14.domhsd.com:443/global/espnpremium/index.m3u8?token=2a1bfa795b0998a93f91dc5ba089816743a3a94c-29-1789010638-1788956638&ip=52.159.139.250
+https://93.domhsd.com:443/global/dsportsplus/index.m3u8?token=a562831d43e398f9f59587daaf011db0c5f942a1-80-1789025092-1788971092&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports Chile
-https://193.domhsd.com:443/global/tntsportschile/index.m3u8?token=0520d8d0d59000a3aafce309409427bb1545aa12-37-1789010638-1788956638&ip=52.159.139.250
+https://99.domhsd.com:443/global/tntsportschile/index.m3u8?token=dd1b043118678f0672ecb98b15a67b739ba679e9-47-1789025093-1788971093&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",TNT Sports Argentina
+https://85.domhsd.com:443/global/tntsports/index.m3u8?token=3aacdb9f93238334b8eb39b4cf450b90087a8f6b-56-1789025093-1788971093&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN Premium Argentina
+https://85.domhsd.com:443/global/espnpremium/index.m3u8?token=9c7c2881e8769c5bafd06c03da4092dd07a746c7-46-1789025093-1788971093&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN Deportes USA
-https://17.domhsd.com:443/global/espndeportes/index.m3u8?token=b7a705c254d93c33feeb21c314df26b25191c2fc-f7-1789010638-1788956638&ip=52.159.139.250
+https://47.domhsd.com:443/global/espndeportes/index.m3u8?token=ac99003f999469cb0da9980f0533edb3dfa8fa94-30-1789025094-1788971094&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",TyC Sports
-https://14.domhsd.com:443/global/tycsports/index.m3u8?token=2b2591bce134069fafa13d0bfaf7e37b580c43b3-9a-1789010638-1788956638&ip=52.159.139.250
+https://93.domhsd.com:443/global/tycsports/index.m3u8?token=a1d6963ea7a621132a6ef7508fa84d89e94b385a-e3-1789025094-1788971094&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 1 USA
-https://98.domhsd.com:443/global/fox_1_usa/index.m3u8?token=e7d361e44a5f1c796de0ca8b4897350ed366e953-91-1789010639-1788956639&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 1 MX
-https://93.domhsd.com:443/global/foxsportsmx/index.m3u8?token=9ef84e549f56eef69bff05c97dcd238468cffe2d-e0-1789010639-1788956639&ip=52.159.139.250
+https://193.domhsd.com:443/global/fox_1_usa/index.m3u8?token=957feb74243e55101f8339df303da0179afda2e5-e7-1789025094-1788971094&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 2 USA
-https://17.domhsd.com:443/global/fox_2_usa/index.m3u8?token=cc60b7bbbe78da3724956739eef32f796a86d2c6-63-1789010639-1788956639&ip=52.159.139.250
+https://17.domhsd.com:443/global/fox_2_usa/index.m3u8?token=866b6ddcafd7f38b8d3781be3ba5b9ed35b52806-6c-1789025094-1788971094&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 1 MX
+https://85.domhsd.com:443/global/foxsportsmx/index.m3u8?token=d5a165c8320dc9219a0dc531672cb9f62849ec38-1a-1789025094-1788971094&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 2 MX
-https://17.domhsd.com:443/global/foxsports2mx/index.m3u8?token=65837f351b4e5932fdd84734f72dc771b078b750-b0-1789010639-1788956639&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN MX
-https://193.domhsd.com:443/global/espnmx/index.m3u8?token=b1671733b2a558e162cca3437816b4559fdf09b7-ac-1789010640-1788956640&ip=52.159.139.250
+https://93.domhsd.com:443/global/foxsports2mx/index.m3u8?token=0537e5ffc06c554db7fb556c936ba4a356e4bfa6-a0-1789025095-1788971095&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 3 MX
-https://85.domhsd.com:443/global/foxsports3mx/index.m3u8?token=63997c59551868d50a7153288980b547b81fe9c7-e1-1789010640-1788956640&ip=52.159.139.250
+https://17.domhsd.com:443/global/foxsports3mx/index.m3u8?token=a2e6b7f2196d56d1241e8b944e0b95459c9f14da-90-1789025095-1788971095&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports Premium
-https://99.domhsd.com:443/global/foxsportspremium/index.m3u8?token=67060be05c6faace5fcea1fc34290d83b063130d-7b-1789010640-1788956640&ip=52.159.139.250
+https://193.domhsd.com:443/global/foxsportspremium/index.m3u8?token=806b3f797122f5cbd1ec56b229bc8470552f7ab0-a4-1789025095-1788971095&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN MX
+https://14.domhsd.com:443/global/espnmx/index.m3u8?token=82a87d8f95882152f5e25ccadc43d8f0a237aa23-5f-1789025096-1788971096&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 2 MX
-https://7.domhsd.com:443/global/espn2mx/index.m3u8?token=6fe0858553679ff4d8c320b3f3f04ff2af78982d-22-1789010640-1788956640&ip=52.159.139.250
+https://7.domhsd.com:443/global/espn2mx/index.m3u8?token=8796c7857a25817fcc2d932d37b16ce88af6e89a-15-1789025096-1788971096&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 3 MX
-https://7.domhsd.com:443/global/espn3mx/index.m3u8?token=ccc6355557ffc50f1f6f15edd41c3b85830d239e-a8-1789010641-1788956641&ip=52.159.139.250
+https://98.domhsd.com:443/global/espn3mx/index.m3u8?token=2630be02643e396f9d13f00d52dda25dbe3cb954-ad-1789025096-1788971096&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 1 BR
-https://93.domhsd.com:443/global/sporttvbr1/index.m3u8?token=ca7a49b690d478a4f8105d660d8452b811f426ea-6e-1789010641-1788956641&ip=52.159.139.250
+https://98.domhsd.com:443/global/sporttvbr1/index.m3u8?token=e34b4b58e5674e301d869570cd425fe8e2818450-94-1789025096-1788971096&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 2 BR
-https://14.domhsd.com:443/global/sporttvbr2/index.m3u8?token=30239b5474252e0c7f28c35e475eb54043eb0e31-76-1789010641-1788956641&ip=52.159.139.250
+https://14.domhsd.com:443/global/sporttvbr2/index.m3u8?token=6aa9fb2fb370f2d037e012071107011ad55778fb-5e-1789025096-1788971096&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 3 BR
-https://98.domhsd.com:443/global/sporttvbr3/index.m3u8?token=90da45874af1e9646eb7651b6c179599deb469e3-4e-1789010642-1788956642&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",Premiere 1 BR
-https://85.domhsd.com:443/global/premiere1/index.m3u8?token=90de8fcbe6ddf8a519e38f4bdab42f8cb986b796-07-1789010642-1788956642&ip=52.159.139.250
+https://7.domhsd.com:443/global/sporttvbr3/index.m3u8?token=893a86d24405b5ebff73fc3440dd747c078c9f12-4c-1789025096-1788971096&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Premiere 2 BR
-https://193.domhsd.com:443/global/premiere2/index.m3u8?token=e12958cc4fa9346bc743e3fc716fb40a5399a5e9-f7-1789010642-1788956642&ip=52.159.139.250
+https://85.domhsd.com:443/global/premiere2/index.m3u8?token=6e4517b331cee1e732b3ad311d36b4d0bae12f39-76-1789025097-1788971097&ip=64.236.141.218
+#EXTINF:-1 group-title="DaddyLive Sport",Premiere 1 BR
+https://47.domhsd.com:443/global/premiere1/index.m3u8?token=c138195e2e1218cbcb2835c407c731360a40bb1c-dc-1789025097-1788971097&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Premiere 3 BR
-https://98.domhsd.com:443/global/premiere3/index.m3u8?token=ed22196d1fe12d8d6b489ca9aff839cb96e632bf-82-1789010642-1788956642&ip=52.159.139.250
+https://93.domhsd.com:443/global/premiere3/index.m3u8?token=a8f864dbea5ea6aedcc9ab3931fd78d477ed1fb3-44-1789025097-1788971097&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",TyC Sports Internacional
-https://99.domhsd.com:443/global/tycinternacional/index.m3u8?token=c58165e26c6c1c53970edb1e33d61b8b3b95e487-a3-1789010643-1788956643&ip=52.159.139.250
-#EXTINF:-1 group-title="DaddyLive Sport",Abu Dhabi Sports 1 AE
-https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb0e0/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMGUwOjE3ODg5ODAwNDM0NTc6Y2RubGl2ZXR2LnR2OmYzNzUxNWY5YzIzN2FhYzYuYTcwY2YxNWI1YjNmMDBjOWQ0ZDk4NmZkMGQ1MzFlMDQ4ZmIzZWM1YTI3NWIzNGJmNjY3YjM1ZjgzNzE1MzEyZg
+https://85.domhsd.com:443/global/tycinternacional/index.m3u8?token=82541b7cf552a5559089683889aa50605bda9b2d-7f-1789025097-1788971097&ip=64.236.141.218
 #EXTINF:-1 group-title="DaddyLive Sport",Astro Cricket US
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf242/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjQyOjE3ODg5ODAwNDM1NTM6Y2RubGl2ZXR2LnR2OjM4NWM1YjhlMTEwN2VlYzEuMTYzNGM3NmJhMDYzM2NiOTRmOWQxMjFmNGMwNWM0YjlhNDczNjI3MTU5ZmNjOTA0Y2Q2YjY0ZWVjM2Y4ZTE2OQ
-#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1fa/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWZhOjE3ODg5ODAwNDQyOTE6Y2RubGl2ZXR2LnR2OjFkYzNlNTA3OTlmYTQwYjAuMTU5OWJiYzJkNmNhNjU5NDYxYjgzZjZmMzc3ODRlM2U3ODM1NWFkNjI4YjY1NzgxMzQ1MDMyZDVmZDNmYTlmNA
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf242/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjQyOjE3ODg5OTQ0OTgxNjE6Y2RubGl2ZXR2LnR2OjY1ZjgyZGEwMTU1OGMxNmEuMTUzYzcxMDY3MTc2ZTc5ZmU3MjgzZGNjODgwNTMyMTY0NjZkZmJjM2U2NzQxMDJiZGZmMzJiNjlhNzc5MGJmZg
+#EXTINF:-1 group-title="DaddyLive Sport",Abu Dhabi Sports 1 AE
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb0e0/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMGUwOjE3ODg5OTQ0OTgyNjI6Y2RubGl2ZXR2LnR2OmY1NmRhZDg2OGU5MWRhOWYuNTA2ZDJmMTA5ZGQ0ZmFjZDViZWU2ZTRlZjFmMTc4MTFiZmY0ZGZjM2E5N2NiMjg5Y2U5NmY5OThhZmY0M2E0Nw
 #EXTINF:-1 group-title="DaddyLive Sport",CBS Sports Golazo US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb598/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTk4OjE3ODg5ODAwNDQyOTk6Y2RubGl2ZXR2LnR2OmE1MGI0MDQ0YTE4MzNkNmUuM2NhYzQ2MzgwNDg1MDRhYzdmNDYwOTJlYzkwOTJiYWI0ZGEwNDQ1ZDdlODhjZTdmYjE2NTM5NTQwNmNlZTg2Zg
-#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport CZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd303/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzAzOjE3ODg5ODAwNDQ0OTE6Y2RubGl2ZXR2LnR2OmVlYmJkNWVmM2UxZGZhM2YuMzkzYWNhN2ZjZDkxZWVmNjc3OTkxNjk2NWUzZGNhMDJhZmJlMzRjM2NhYzRjOGVmNGRmNzdjZDE4OWI3YjQ5OA
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb598/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTk4OjE3ODg5OTQ0OTg3MDA6Y2RubGl2ZXR2LnR2Ojk5NWFjYmQ0ZmNiOGY4YjkuMjUyZTlhNmQ3YjZjMWE2ODUyOGRkMWY5MDgwZjAyM2E1NWE4M2FkYzI3M2M2OTdjODE0ZjdiYzg1MjIyOTgyOA
+#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport FR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1fa/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWZhOjE3ODg5OTQ0OTkxMTQ6Y2RubGl2ZXR2LnR2OmNiNzA3MDdiMDg0MGEzYWIuMDc4MDM1MWJmYmIzMmQxNDFhYzJmOGY1MDIzNzI3ODRiZGNkM2E5ZmZjMzY2NjJhYjgzOGRiZjAxY2ZjODE4NQ
 #EXTINF:-1 group-title="DaddyLive Sport",Canal Premier League FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1f2/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWYyOjE3ODg5ODAwNDQ1MjY6Y2RubGl2ZXR2LnR2OjJiYTI5MjJjOWE1MjEzZDAuMjY1MjIwNjNkZTAwZDc5NTU2MTE2MTk3M2VjNTQ4NWEyMTk0YWMxOTBlNmU1MWNjZjMyOGYxMjhlYWUyZjlhZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1f2/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWYyOjE3ODg5OTQ0OTkyNjI6Y2RubGl2ZXR2LnR2OjhmYTE3YTI0MjcwMTExOTguMmMyZDMwYjgzOTIxMDRjMjRiNTA0NTBhNmVkNzk5YzM0OTg2YzA1NDA1ZjczMzcyZTBlYmUxZDBiMmQ3MDc4MA
 #EXTINF:-1 group-title="DaddyLive Sport",Canal Sport 2 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd304/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA0OjE3ODg5ODAwNDQ4ODc6Y2RubGl2ZXR2LnR2OjY1YTFiNTAxZmYwMzE1ZWMuZTYyMTE3OGZiZGY3MjM4ZmRlMmFlMTExYWFhYzZiYWFhNjRmOTIyOWExNWIyNzM3MjkxYjE4YzkxNWY3Y2NlMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd304/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA0OjE3ODg5OTQ0OTkzNTc6Y2RubGl2ZXR2LnR2OjY4YTI4ZDQ0NDZlODllOTUuZGJiNDJlZGE2ZWVlM2EwNTgyZjZkYWQ1YTc1Mzc2OWQxMjI0NTE0YTk0NGU0ZTY5YjJmYWNmMWZlY2NlNzE2Yw
+#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport CZ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd303/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzAzOjE3ODg5OTQ0OTk0MjA6Y2RubGl2ZXR2LnR2OmUwNmRiMDJlNjMyM2EwNjguOThjNzFlYzY3NmY5ZTNhYmRjY2NkYjhmY2MwMzA5Nzc4NTdhZmRiOWYwNDk5MjUxMzBkZGFlMDhiYTU4MDc3MA
 #EXTINF:-1 group-title="DaddyLive Sport",Canal Sport 3 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd305/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA1OjE3ODg5ODAwNDU1NjQ6Y2RubGl2ZXR2LnR2OmNlMzI5OTA3MGVkMzhlMWQuNmQ2ZjBhZWE2MTViZDA5YWY3ZWIyM2RjZmIwOGY2Y2VjOTU1YmQyYzQ2M2Q3OTMzNWUzZmVmNmY1NzcwNGFlZg
-#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport 5 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd307/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA3OjE3ODg5ODAwNDU1OTA6Y2RubGl2ZXR2LnR2OmU5MDY5YmE4NGY4ODNkYjcuNTZkY2EwMzkxZTMxOTM3MTMzYjY2ZmE2YWQ1OWYwZmI4ZmYyMzg5NzA2N2JkYTJmMDg0OTk3MGJjY2E3OTNkYg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd305/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA1OjE3ODg5OTQ0OTk2OTU6Y2RubGl2ZXR2LnR2OmQ4N2IzY2Y0MmQ2YjBlYTkuNDliOWY5YjA3YzdiYTU4ZGYyY2JlNmY4OWY0NTk0NTRmZjVjNzM0MDM2MTQyM2QzZjEzNTkzZWZjZTM4NTAwMA
 #EXTINF:-1 group-title="DaddyLive Sport",Canal Sport 4 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd306/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA2OjE3ODg5ODAwNDU3MDQ6Y2RubGl2ZXR2LnR2OjNhMmRjZjkyZGFiZTQ4MmEuZGNhZmMwNDA2MGE0YmFjNjQ2YzhhMDg4MjI1OThmNmIyZmFiNjI2Zjc1MDE0NmFiM2I0ZWVjNjhiZjYzNWZhZA
-#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport360 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1f7/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWY3OjE3ODg5ODAwNDU4NTI6Y2RubGl2ZXR2LnR2OmQ5ZDJkN2JmNjk5NWZmZjcuNjk5YTUyNGY3NzhkYjM2MGFiYWI0ZmU2NzdhMjg2NzI3MTk2NDkwOTY2MDA1OWIxMzA5ZGJhZWRjOTU4MWU5Ng
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd306/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA2OjE3ODg5OTQ1MDAxNjQ6Y2RubGl2ZXR2LnR2OjBiMDA3YzNhNDA1MDE4MTAuM2RmNDBjYzU4YzliODRjMGMxMzg3Mzk0ZDc5ZDkyMGZlMzJhYzBmZWVlYjRmZDRkMjBiNGI2YWRhYzc2MTdkZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Chicago Sports Network US
-https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb311/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzExOjE3ODg5ODAwNDYyMzM6Y2RubGl2ZXR2LnR2OjQ0NDg5YzY1ODQ3YWM4MzguMjA1NWRlNjQ0OTliMjIyOGZiMDRhY2Y3YzZjY2E3NmZhODY4NWNiZjYwMjYyYjg2NzQ4MzZlY2JlMzBkZThkMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb311/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzExOjE3ODg5OTQ1MDAzNTg6Y2RubGl2ZXR2LnR2OjlmYTA2NWMyNzgzM2MzZjEuOGI0NGQzN2M5OWNkMjZhMjIzNzk1ZWZiN2NjYWU0NzI1ODNkOGRlMzFlNzg4YmIxOGQzYTkyYzRhMGQ1NWUyZA
+#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport360 FR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1f7/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWY3OjE3ODg5OTQ1MDAzNjE6Y2RubGl2ZXR2LnR2Ojc3ZDBlZWRhZTdjMGI2ODYuZTkxMDc3OWFmOGZkZGY0NTMzOGQ0Yjk4MjM2MTEwOTc2NmUxZDliYzYyZDc3NTdiNjgxNzkzN2ZmYTkwMWEwYg
+#EXTINF:-1 group-title="DaddyLive Sport",Canal Sport 5 PL
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd307/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzA3OjE3ODg5OTQ1MDAzOTk6Y2RubGl2ZXR2LnR2OmY2OGQwODQ2NjE3MDk2YmYuYmQ5MzFmMTllMjU2NTgzZDViZWE2ODU4ZGEyNWMyYTk5N2YwOWE2MjNhZTQ3ZTI5OTU2ZmMyYTA0OTQzZTI2OA
 #EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 4 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd60f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjBmOjE3ODg5ODAwNDY2MzY6Y2RubGl2ZXR2LnR2OjBjNDIxNTU2YTgzZmJjNGQuNzJkZTBkOTdkZGQzMWZkNGNlZjEzNjI3YTg5M2ZmYjJmYjhhZjVkZGJiYWNmOTRmMGE0Njg4ZGM5OGE4ZjZhNQ
-#EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 6 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd611/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjExOjE3ODg5ODAwNDY5Njc6Y2RubGl2ZXR2LnR2OmNjMGM5MjBhOWYxZWQyOWUuYWE5OGI4MGQyOGU2ZWEyNDZjY2ExMDVkODFkODdmOWFlYzQxYmYzMGYzOTNmZGE0ZDU2ZDQzOWVhNTI3ZDg4Yw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd60f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjBmOjE3ODg5OTQ1MDEwNTI6Y2RubGl2ZXR2LnR2OjRhZWVmYjc2ZjAyOGE3ZmMuOGI2N2ViNmNhODg5YzcyNTVhM2Q2M2JkNzBmNGY2MDczY2M3NGViN2QxMTY3ODc1ZGE4N2EwZWJjMmM4ZjYxNw
 #EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 1 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd60c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjBjOjE3ODg5ODAwNDcwNDY6Y2RubGl2ZXR2LnR2OmZlYWUwZGRkOWI0MDI3ZjQuYTMxNjcxM2ZhNmViODNlYzlkMmYxODBiZmMwMjU5ZjA3Y2M0NTY1Y2FkZTZjNTVhZTc3M2U4OTIzOGZkNzRiMg
-#EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 5 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd610/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjEwOjE3ODg5ODAwNDcyMzc6Y2RubGl2ZXR2LnR2OmQwMjFmZmEwZTM3MjI4ZTYuMGEwNzExMjQ3OWQyYjYwNDI3OWE3ZDA2NzA1YzQ2MDhkYTg1MWU5NmY4ZGM5MTQ2ZDEyYjBmNDcyMzIwNDFmMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd60c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjBjOjE3ODg5OTQ1MDEwNDk6Y2RubGl2ZXR2LnR2OjdjMjgyMzc5YzcxNWZhNDYuMmIxYWY3NmY3MzlkMjNiNzM3MTE5YTMzOWQwMTA0YmM2NmRlZTU3OGMzMWIxZjE4MzdlNzBiZWI5ZWM4Y2Y1Ng
+#EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 6 GR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd611/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjExOjE3ODg5OTQ1MDExOTU6Y2RubGl2ZXR2LnR2OjY4NGRjM2U0MDg3OTE5ZWIuYTAwYzc0YzJiYWFhNDY0MWMwYTQzNGJiNmQ4MTM5N2JmZmJkZDlhZmM3Nzc0OTQzYjkzM2M3ODMyNGJhOGVkMg
 #EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 7 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd612/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjEyOjE3ODg5ODAwNDcyODg6Y2RubGl2ZXR2LnR2OjI5YzJjYTdkODgxOTYzMGEuNWNlMzhlNGViMDE2MDUzMTc4ODJjODU0OTAxYzczYzkzOTk4OGM5OTQ1YzY0MTUwNzY3N2FhYmVmZjI1YzFjMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd612/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjEyOjE3ODg5OTQ1MDEyMzA6Y2RubGl2ZXR2LnR2OjdlNGU0ZjczMmFhNWI2MjkuMTRkYjVkNzAxMDFjMTA5N2EzN2JkNDI0Y2NmZDAxZjU1MWY1MWQ5MDliMmM3OGZjNDgzNzkzYjdmY2Q1OWEyYw
+#EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 5 GR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd610/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjEwOjE3ODg5OTQ1MDEyNTY6Y2RubGl2ZXR2LnR2OmM3YjQ4YThkZWQzYTU1YjMuNTA2M2JhMzM1M2M2YTIzYzIxMDlkYWE2NzIwOTJhMDY5NTI5ZTAyMzBiYWM3MDQ2M2ZmMDMyY2IyNGUzMDMwMg
 #EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 8 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd613/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjEzOjE3ODg5ODAwNDc4MDg6Y2RubGl2ZXR2LnR2OmMyMGNhYjFhM2NlNzFlMmMuMDBiODg5ZWI2NGQyMzAzMzZmYmY5ZjBkZjhkMjU3ZDEwNTI4Zjc1NjI5YzhkMTE5MGJlMGFiMDk5ZWExMWQ0NQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd613/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjEzOjE3ODg5OTQ1MDE4NzA6Y2RubGl2ZXR2LnR2OmYzOWI1ZjE2YzM1OTcxY2IuMzU4ODNhNjM5OGIzYjJlNmU1ODVjMjk0ODMxZjFlMzBjZWFlZThkZDdhOTAwNTM5YTA0YmY1NmYyYjU0ZWRmZg
 #EXTINF:-1 group-title="DaddyLive Sport",Cosmote Sport 9 GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd614/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjE0OjE3ODg5ODAwNDgwMzI6Y2RubGl2ZXR2LnR2OjkxMzIxMDE5MGQxNWIwMWMuMmY0ZTE1Njc4MDljMGQ0NDM4YmE5MjBiNTZlYTdhMWM1MTdlOWU1ZjIxZGE3ZDRmYTc0YTgyODI5ZDY4NmE2NA
-#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 1 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd72d/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzJkOjE3ODg5ODAwNDgyMjQ6Y2RubGl2ZXR2LnR2OjhmNzVhYzE2ZTc3NGIzNjEuZjRhNjBlNDcwNjdjYjA1NTkzNDgwMTcyYzlkZTIyZjhkZWZiNjc1NjZiMTk2Mjk5ZmY2Mzg2MWI4NTRhZTNiMA
-#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 2 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd738/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzM4OjE3ODg5ODAwNDg0Njg6Y2RubGl2ZXR2LnR2OjdlYThiYjNkYjc2YThlMmIuMzMwZGYyMzI3YmJhNjI0YTE1MDc2ZmU2OTc2OTljMjI2NjFkYzkzMzM5ZTU5OTBiMmQ4Y2MwODNkNjMwNjM1Yw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd614/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjE0OjE3ODg5OTQ1MDIxMjc6Y2RubGl2ZXR2LnR2OmMzZjQ3ODExNTUwNTE1OGEuYjBlN2M4NmU0OTA3NGY5ZWVhMmZhNWQ3NDM3M2ZjOTgxZjMzNzA0YzE3M2VmMzNjNGU0YTJkMmMwZGI0NjkxYQ
 #EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 3 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd743/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzQzOjE3ODg5ODAwNDg4ODg6Y2RubGl2ZXR2LnR2OjVlZDc4ZGZhNTViMjJmOTMuZTAzMDFjODA4M2QxYzJlNDFhNTI4MGJhMDgzOGQ2Yjk0ODA0MjJkYzAyNDBlNTRiOTljYzgwNjY3MDQyMGU2YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 4 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd74e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzRlOjE3ODg5ODAwNDg4OTA6Y2RubGl2ZXR2LnR2OjM5OGZlY2ZmNzI3M2NjNDcuOWMyYTZkMjNhNjc0ZGE2ZDg3YTk1Mjk5MDE5YjcyOGI1MzY1YWI3MDJlYmJiOGZkNTgxMjA1MDBhMWYyOTc5Mg
-#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 6 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd765/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzY1OjE3ODg5ODAwNDkyMTA6Y2RubGl2ZXR2LnR2OjI0MjFjMTk3MjZmMzgxZGQuYWEwNGNiYWUzYzgwZjVhMGViZDFjOGVlMTcyNjM1MzNiZmIwOGVmY2JlOGU0N2QzYTdlMTY0ZGJlNDBhODk4ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd743/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzQzOjE3ODg5OTQ1MDI0NTM6Y2RubGl2ZXR2LnR2OmI0NDJmMjIyN2JhNmI0OGMuZjIzZGE2MjFhZjU5ZDk3ZDYwYzVlM2NjMWJlMGFkMmM4NWQzN2U2MzUxNGJhYTYwNWMxMDBjMTRiYTYyZTM5NA
+#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 2 CY
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd738/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzM4OjE3ODg5OTQ1MDI2NDE6Y2RubGl2ZXR2LnR2OmI5N2Y3NmI2YjM3NWZlMzUuNzEyZjk3ZDJkNzI1NDg1OTRjNGQwMzVjMTUyYzI2ZDU2MDVjOTVkMzA1OWJiMWQzMGRjOWI2ZTFmYzQ4MDdkMg
+#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 1 CY
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd72d/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzJkOjE3ODg5OTQ1MDI2MjU6Y2RubGl2ZXR2LnR2OmVjMDUyZTFjOTQ3MGFlZDguNTYxY2IxYjk1NGMwNGU2ZDQ0YjEyMmViMjQxYTUwYWE0MDdmNTJmZjU0ZjRjMDk4MjM0MzU2NGJkNjM0YjJmYw
 #EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 5 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd759/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzU5OjE3ODg5ODAwNDk0MDQ6Y2RubGl2ZXR2LnR2OmU3NzNjMjFmMDY4ZGNjYjcuM2UxMDAyZjFhYjgxNjQ2MjkyMmI4OGEyNTIzNGQ1OTdiMDNlNmM0OGJmOTI4ZGIyZjk0MTRmODY0MjE5NTg1Ng
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd759/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzU5OjE3ODg5OTQ1MDMwNDI6Y2RubGl2ZXR2LnR2OmRiNDEyMzU4MTU1ZWVmN2QuNGI4NTc0MzZhZjMxYTEzZGY2Y2NmYjM1MjM3ODcxODY2NGI0NmQ3MDg1NTkzOGMwYmQ4OGM1NWRkNDNkY2JiMA
+#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 4 CY
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd74e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzRlOjE3ODg5OTQ1MDMyODI6Y2RubGl2ZXR2LnR2OjQ4MzFlNTdiZDUyZTgwYjkuZDI2YzFkMTAyOWM2OTE1NTM5Y2NkNDU2MGU4MWVjODg4ZTkzMzA5YmMyM2UwNGU5NDkwM2FjZjBmY2UxNTFlZg
+#EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 6 CY
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd765/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzY1OjE3ODg5OTQ1MDM0NDE6Y2RubGl2ZXR2LnR2OjFjYmUzYjRjOGM0Y2U0ZTQuZmRhOWYxYjAwNGM4MzNmYTc0Njc4MWNmYjg2OWI3OGUzMDk1YTY5N2I2ZDNjMTE5OTA3Yzc0NzcyNzFkODc2YQ
 #EXTINF:-1 group-title="DaddyLive Sport",Cytavision Sports 7 CY
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd770/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzcwOjE3ODg5ODAwNDk0NzA6Y2RubGl2ZXR2LnR2OjIyM2RjNGEwMGJhNTk0NTQuZGYxMWJiZTM0Y2Y4NzAwMzM3YmQ0YzJlMzJmN2RhMWZhZmI2MTc2ZDMxY2Q3YTM2ZGU2ZTJjNTkwMWEzM2VkNg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd770/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzcwOjE3ODg5OTQ1MDM2NTk6Y2RubGl2ZXR2LnR2OmExYjVhMTBhNzIzODE3YmEuZTI0MzkyNzQ1YjU1YTI5MTg4ZDI2ZTc0ZDA4MzAyMWQ1NzM4MTIwYTRmMGQ4Y2VjMTNkZWViMzhmZDUwMzEyNQ
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN 1 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccca0/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2EwOjE3ODg5ODAwNDk4NzM6Y2RubGl2ZXR2LnR2OmI2ZDc4OTdmNjMwOWUyZGEuNDM3NDk1N2YzYTMyMzc1MzYzMjVkNDEzMzBkNDZiZDFiZGYxMmM1YmI3NDdlYjc2NWU5NTE0MWU5Y2Q2Yjg3OQ
-#EXTINF:-1 group-title="DaddyLive Sport",DAZN 1 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd447/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQ3OjE3ODg5ODAwNTAwNTE6Y2RubGl2ZXR2LnR2OjA0NWQxYjA1N2YwNjk3MTEuMDFkMGQ0ZTBjNDZhM2ViNmYyNjk0NGIyZGI1MTVjZjUwOTBjMmZhYTJiZGUzNTkxYzhjNGYxNGVhY2I5YTZmYQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccca0/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2EwOjE3ODg5OTQ1MDM5Nzc6Y2RubGl2ZXR2LnR2OjQyZDdlNTM0YWI2MDA1OGEuODQ2YzRiZjYzMTAzZGE1N2I2MWIyM2ExYzNhNmExOTY5NzRhYzkwYjE0YmVlYWQ0Y2MxNDdhNzY5NTA3ZjYzYQ
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN 2 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccca2/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2EyOjE3ODg5ODAwNTA0NDA6Y2RubGl2ZXR2LnR2OjBmMmY1Nzc2ZDQzYjZhMGIuOThkM2M5NjU0NzJlYWVlNGViOWQ1ODMzZjhjZGUwMDMyMjYzMWUzYmZhMjdlYmUzZGI1ZTk2MmY0ZmRkNDQ3Nw
-#EXTINF:-1 group-title="DaddyLive Sport",DAZN 3 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd449/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQ5OjE3ODg5ODAwNTA0ODM6Y2RubGl2ZXR2LnR2OjMwY2RjN2FmNjkyOThlNzEuMjc1MmFjY2QwN2UxN2YxN2ZhNzc1NTM1Zjk1MGQzNTE4NzA2MzEzZGMwNmU2NjNkN2Y2MTU2OTg3ZDk0Y2RkMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccca2/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2EyOjE3ODg5OTQ1MDQ0NDI6Y2RubGl2ZXR2LnR2OjQ3YWM2Y2ExMGY0MDVjNTQuNDY5YmM2Y2UyYjkwNzg4NTU1OTI2OWMzMTA2MDI5ZmY1ZGQ4OTkwZGIwODAyYmUyMmIxNDMzOGM4OWNiYmU4Mw
+#EXTINF:-1 group-title="DaddyLive Sport",DAZN 1 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd447/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQ3OjE3ODg5OTQ1MDQ0NDI6Y2RubGl2ZXR2LnR2OmFhYTdiMDkyZDM0NGYzZjkuYmJhMTU2ODNlYWFhMmU4MzQ4MWJhZGM2MmQyN2EwZGQ2NGZlODRjZTNkNWNiMTc1YTgzZmI5NjE4MzBjNTEwZQ
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN 2 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd448/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQ4OjE3ODg5ODAwNTA2NjQ6Y2RubGl2ZXR2LnR2OjkzYmQ1ZjVmMWYyZDE1YjEuYzcwNDNmNDE2NWU3YThjYWU2ZDU4NzFkNWYxOTcyODQzNWNkNzQxZGE3Yzg2ZDJlNThkNmUyOTU4OWEwMjc5Ng
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd448/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQ4OjE3ODg5OTQ1MDQ3Njk6Y2RubGl2ZXR2LnR2OmE0YTkxZGUxYWFjMjNjOTMuOTM1NjcyZmYxNTE0MWYyODY0NWE5ZGExOThmNTQ4N2IzN2M0Y2UyNzI0NzI2NzY5YjgyYjk4MTI1OThmZDhhNw
+#EXTINF:-1 group-title="DaddyLive Sport",DAZN 3 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd449/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQ5OjE3ODg5OTQ1MDQ4MTM6Y2RubGl2ZXR2LnR2OjdlYmU3NzYzZjJjZDUzNmUuODcwY2RjMmE2YTEzNWQ2MWU0NTUzOTFjMzQ1Mjc3YTYyNmU4Y2NkMjY5MDFjMmQyZDg2ZmY1YmIzNTBhNjdjOA
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN 4 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd44a/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDRhOjE3ODg5ODAwNTA4NjQ6Y2RubGl2ZXR2LnR2OmUyZGZkYjcwODE1YTQxOGIuN2VmMTRjODg0MWE0NzQwYTM0MzFhZmFjN2Q3OWZjMTM5YTBmMTQxNGJkZGFlODg5Mjc4MTIxMDA0MWRlOGY2YQ
-#EXTINF:-1 group-title="DaddyLive Sport",DAZN 5 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd44b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDRiOjE3ODg5ODAwNTEwOTQ6Y2RubGl2ZXR2LnR2Ojg3YWMwZGEwNzVmMmZiOTIuNzA3NTdiMDk2OGJkYjAwNjFkOTY1ZDYxOTZiZmYwNTY5YjRhYjI5ZThmYjEwNjMyZDYwMTRmMjE3NWY0ZGFiNA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd44a/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDRhOjE3ODg5OTQ1MDUxNzc6Y2RubGl2ZXR2LnR2OjkzOTM2YTcwZDRjZjcyNzEuNjAyNzZlZDJmOGNkZTgwNTBhNDU4YWExODUxNWFhMmU0YzIyMWJmMGMyZGUzMzhkYTVjYjg3MWExOWM4MmQ2NQ
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN 6 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd44c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDRjOjE3ODg5ODAwNTE0Nzk6Y2RubGl2ZXR2LnR2OjljM2I1NzQxZmQ4YmM1MWIuZDcyYWE2NWUyMDA3ZmZlZThjZTE5YWJiNjc2N2E3YTk2ZjhjZDlmZTM1ZDUxMjMxNTY3MjA0YjIxY2Q0YTFiYg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd44c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDRjOjE3ODg5OTQ1MDUzODU6Y2RubGl2ZXR2LnR2OmZkMGFlNDM0ODAxMWFjNDYuOTg5ZjJlYTg3Y2UyOTEyYjhkNjdhYzM3OTQwM2Y1YjAwNTJkYWNlZGZlM2Y3YTNkYWQyODZjNGE0MWExYzU3Mw
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN F1 ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc87a/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjODdhOjE3ODg5ODAwNTE1NjM6Y2RubGl2ZXR2LnR2OjBjZWIzNzg2YTNjOWM0OWUuYzhjNGFmMmE1ZTk4MmM2N2Y3NWE3MTI0MGIwZTEwMWY0MTMwYTdlMzZkMzc5MWRjNjE3ODY3ZmY2YWJiZjk5Mw
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc87a/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjODdhOjE3ODg5OTQ1MDU2NzI6Y2RubGl2ZXR2LnR2OmI0N2M5NTZiOWZiYmExMTguNDFiMzcyNTYxYWQ3YzFiNWY5OGM1NDA0MmY3ZGQ2Nzc4NGEwZGViNzgyZGUzNWM0YzFkZjgzNzlmMjFjZmE0NQ
+#EXTINF:-1 group-title="DaddyLive Sport",DAZN 5 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd44b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDRiOjE3ODg5OTQ1MDU3NTk6Y2RubGl2ZXR2LnR2OmY0MzYxZGNlMTgwYzY5NDkuNmQ3MjE2ZGVhNWVjMWJiNDFjZmI4ODNjMzc1ZDkzOTA3NjU2ZDBlNzYwYjBlOTRiNmRlNmYzMzVlMjc2ZDRmNw
 #EXTINF:-1 group-title="DaddyLive Sport",DAZN LaLiga ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc883/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjODgzOjE3ODg5ODAwNTE4MjQ6Y2RubGl2ZXR2LnR2Ojc1M2JhMzAzMDkyYTk4OTQuYzc3NjgxNGYyNzkzZjQ2YWFlZTI3Yjc1ZGEyYzZjZjViYzZmYWE4MzBkNTRjNjk5MWE2NTM3ZTVjZmM1MDk3MQ
-#EXTINF:-1 group-title="DaddyLive Sport",DAZN LaLiga 2 ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc886/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjODg2OjE3ODg5ODAwNTE4OTg6Y2RubGl2ZXR2LnR2OjRhZjE4ZGQ2NTQxNTRhN2QuMWQwMDM5Y2ZhYTU5YmY1YjZhZjIwMzI4YTVlZWEzMjdhMDczZmViM2Y2MThkODRlOWE4ZWNjOTM0MGQ4NWQzNw
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc883/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjODgzOjE3ODg5OTQ1MDYxMDE6Y2RubGl2ZXR2LnR2OjgzYzA1NGQyNTMxZThkMWEuNDM1NDIwNTM4ZGI4MDBkM2ZhMDlhZWE1ODdmYjE3YTQ3NDdmZTBlMjU4MTkzY2YxMzNmYjdjMjZmNjcwNjQwNw
 #EXTINF:-1 group-title="DaddyLive Sport",Diema Sport 2 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf09/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjA5OjE3ODg5ODAwNTIxNTI6Y2RubGl2ZXR2LnR2OmJhOWJiZGMwMzkyYmExODYuYzYzYjRhMDhlMWM3YmIwMTYxNjhiOWNiMzg3NTA4OTc4ZTY0OWFhZjhmMjZlOTRjMzc0MzgxYTk3MDkwZjg4Yw
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf09/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjA5OjE3ODg5OTQ1MDY0NjI6Y2RubGl2ZXR2LnR2OmNiNWEzYzk4ZTY2NDMzYTEuOTdkOGM3Y2IyNjQyZWQ0MzA2M2Y5ZWUwNWRlYWI2NGI3Njc3NDMzODczMjdlODJjNzUwYzZkNGJiNjRlOTQ2Nw
+#EXTINF:-1 group-title="DaddyLive Sport",DAZN LaLiga 2 ES
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc886/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjODg2OjE3ODg5OTQ1MDY0ODU6Y2RubGl2ZXR2LnR2OjEyZjA1OWMyNGYzMjcyYjQuYzA5ODZiODYzMWFjZjJlMTllOWU2MjcxMDhjYmU1MGE1MTVkODY3YzM2NTllNTEyNjg3YzhhODIwZGE3N2ExNA
 #EXTINF:-1 group-title="DaddyLive Sport",Diema Sport 3 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf0a/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjBhOjE3ODg5ODAwNTI1MTM6Y2RubGl2ZXR2LnR2OmRjYjAwZDg0Y2M1YjU4MjAuOGQ3NDIxNWEwZDBkZjgxYjdhZDk3NDkxY2EzNWM1OTg0NGM2NmNjYzA0MTAzODZjNGFmODUxODEyYTViMTdkMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf0a/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjBhOjE3ODg5OTQ1MDY3NDk6Y2RubGl2ZXR2LnR2OjAxN2UxYmJiYTRlYTU1NjYuMDFlNzk1MjczYzRhMzY0ZDM5NmYwYWY0Zjk5MzU0NTEyZmQzMTQxODBhMjY3MWNhZDVhYzRmMmU5N2I2Njg0ZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Digi Sport 1 RO
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd566/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY2OjE3ODg5ODAwNTI2Njk6Y2RubGl2ZXR2LnR2OmM1MWI3NjZlOTE2MTViNDUuMTkxMGEyYTNmMjJlZTA4ZWZkMjk4ZDJlYmE4YTlkMzMzNTc5NGM4MWFjMDU5Yjg2MTg1MjkwMjg5YmRkYjIxMw
-#EXTINF:-1 group-title="DaddyLive Sport",Digi Sport 3 RO
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd568/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY4OjE3ODg5ODAwNTI5MzA6Y2RubGl2ZXR2LnR2OmM5OGRiZTc3MDY2YTUyOGIuNzAzMjM2YTQ1ZWE5ZTU0OWE0MzY0YjAzN2FhNzIyNDYzMThlMjdmNjUyZjllNzUyYmFlM2QxM2Q5NjNjNjRhMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd566/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY2OjE3ODg5OTQ1MDY5MDQ6Y2RubGl2ZXR2LnR2OjEzOGQ4NjMzYmE5ZTY0ODEuMTU2MDRkMmViMmY0MjY2OWQzOTk0ZjJmN2ZhMDFiODQ4MThhNGRjMjE0NWNjOTUzMWU2YWE0MzRkMzUxZDU1YQ
 #EXTINF:-1 group-title="DaddyLive Sport",Digi Sport 2 RO
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd567/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY3OjE3ODg5ODAwNTMxMTc6Y2RubGl2ZXR2LnR2OmVjYTVkODNjNmM0NDYwZWEuMTllOTliMTVkYzI5OWVkNjUwYWZmMWQ4ZTViYjc1MTE4YWI2MzRjYTU5ZDEzMDI2MmQ2Y2ZjMDQ2ZDNiODY1Mw
-#EXTINF:-1 group-title="DaddyLive Sport",Digi Sport 4 RO
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd569/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY5OjE3ODg5ODAwNTMzNzA6Y2RubGl2ZXR2LnR2OmQyNTFlN2E2NGM2Y2M5OTkuMzBjMzJiMjM3ZjZiYmQ0YTkzYzY3MWNkZWI5OGM4NjU5Y2M5Y2JkZGZiZTlhNzUwMDQwMTFkY2YxMTQyMjg3Yg
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce889/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg5OjE3ODg5ODAwNTM4MDk6Y2RubGl2ZXR2LnR2OjIzNzVlNjVkMDhmNzg5MDMuMWJlOWRiM2ExNTkwOWU5OWNhZWJjNTU4Y2Y1NDdjNDZiN2JiOTY2NmIyMTg4YTk1MzU2NzlhY2ExNmRlMWUzZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd567/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY3OjE3ODg5OTQ1MDcxNzg6Y2RubGl2ZXR2LnR2OmEyMjY0NjM2OWE0YmI3YjYuYWE2ZWYwM2NlNThiNzY4YjU1MWJjYTc5MTU0YTcxYjM3YzRlMWJkMmE0Y2FkZjMxZWYxOGQ0NDQ3MGI4NjM4NA
+#EXTINF:-1 group-title="DaddyLive Sport",Digi Sport 3 RO
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd568/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY4OjE3ODg5OTQ1MDc2NTE6Y2RubGl2ZXR2LnR2OjUwNjBhNzVkNmNkMjY5YTQuODUxNzM2Y2QwYWQ3Yjk1NTllYzhmMDM2YmZjODNjMGY0YmZlZWFlZTVkN2NkNDE0ZGYzOWNjNzUyNjA4OWIxMw
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce44/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTQ0OjE3ODg5ODAwNTM4Nzg6Y2RubGl2ZXR2LnR2OjVkNDEwMTQ0ZWRkMDczY2EuODRhNTE1MzJkYjJlOWNmYTZmODdhYzc2ZTc5ZDk3ZDA1ZWQzYjE5NGVhYzE4OTQzNmZjYmIxOWExMTNjNjJmZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce44/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTQ0OjE3ODg5OTQ1MDc2NzQ6Y2RubGl2ZXR2LnR2OmFhY2RmY2EwOTBjMWI1NzUuMDY5YmFhYTJmNDZmMGEzYjgwNDRhYjVhYTdiYzVhNDhjZDg1YmJiOTM4M2NiMDhmMjY1YTFkNWM3N2YwY2Y4YQ
+#EXTINF:-1 group-title="DaddyLive Sport",Digi Sport 4 RO
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd569/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTY5OjE3ODg5OTQ1MDc2OTA6Y2RubGl2ZXR2LnR2OmZhZjBjMzc1ODQwZWE5MWMuNmJlODEzOTlmMmJhNDZkMWIwYzhhM2EwNGU0MjYyOTRiMTgwOWQxMGE2NmU3Zjg5YTg1NmEyN2ExM2FkM2U2Ng
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce889/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg5OjE3ODg5OTQ1MDgyMTU6Y2RubGl2ZXR2LnR2OjRlZDk5M2Y0ZjA4OGM0MzkuOWJiNjhmZGQ2M2M5MjYwYTE1MjdhY2ZkNmFkMTY0MjdiZGQ4N2Q0ODA5ZGIzMWViN2E4MDI2MDBiYTM4NDM5MA
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN AR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce94c/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOTRjOjE3ODg5ODAwNTQzMjc6Y2RubGl2ZXR2LnR2OmQzZjYxZDE3MWJmMzllODQuYjRiMDU5ZmIwZGNlOGIzYTZjMmQ0MzQwMjJkN2FkZWM2MDAzNDc4MjY3MDFjYzAyNWQ2NWM0ODQwYjk2ZTg0NQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce94c/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOTRjOjE3ODg5OTQ1MDgyOTQ6Y2RubGl2ZXR2LnR2OmRhN2FlZDk5MDFmZDJiM2EuYmUzMzA4ODkwNjk2ZTI1Yjc2YjQ4YmYzOWNlODBhOTk5Yjc0NWJjMWUyYjZhYjc4N2EzNzhkZmM4YmUwY2Y3Mw
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 2 US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb59c/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTljOjE3ODg5ODAwNTQ1MzM6Y2RubGl2ZXR2LnR2OjRmMzk4Y2E4M2U4MjZmZTMuNmQyNGM5MDI1NDEwYjcxMzU0ZjJiOGI3ZTdhNWUyZGM1YzE1YmU3ODk2N2QzYWRiNTZiOTU4MjVhOTVhMDlmOA
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb59c/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTljOjE3ODg5OTQ1MDg1ODI6Y2RubGl2ZXR2LnR2OmJjODZmYzczMWY1MzExZjEuNzAwNzk4MDMxZDM4NDcxNzFjNGZiOWU4MTJjZWQ4MGU2MGQ3NjI5NjRlZjNiODNjZTkzZjJhOWFkZTFlNDIyNQ
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 2 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce4a/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTRhOjE3ODg5ODAwNTQ2Mzk6Y2RubGl2ZXR2LnR2OmQwY2E3ZTk0NGI3NzBmNTAuMTBiMGE5MmI2YjQ1YmQwYWVhNzU3YzVjOGM3MGRiZDQyNjdmODA4ODRiMzg0MDAyOTE0M2RiMzAxNzVkNTRkNw
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN 2 MX
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3c9/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2M5OjE3ODg5ODAwNTQ4MjE6Y2RubGl2ZXR2LnR2OjJhMGU0MTA3NzUyYTBiZjUuYmM5NDA0NzFhNDc5NjQ1M2Y4MDVkZWUwNGQ5ZWI4OThlMThmOTNhZTYyYjViOWNkNjIwN2I5OWI1MTE2Y2Y4MQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce4a/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTRhOjE3ODg5OTQ1MDg3NzE6Y2RubGl2ZXR2LnR2OjU0N2FjZTIyMmZjZGI1MjguYzI3OGIzMmM4NjljZjBiMDI3YTdmZTI3ZWNlZGJlZDQxZTFhMjg0ZmE4ZjJhZGZjNDdhYjJkZThjZjRiOGUxOQ
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 2 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce884/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg0OjE3ODg5ODAwNTUzMzE6Y2RubGl2ZXR2LnR2Ojg2YTU2Y2ViMTUzNWI0N2EuNmUxOTM2NDI3ODlmOGQ2Y2I4NjNjZDg1ZDQ5ZmZkMGI3Njc0Zjk4YTI4ZjZhN2EwNDc1MTllNGQzOTczMzkxMA
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN 3 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce48/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTQ4OjE3ODg5ODAwNTU2MTQ6Y2RubGl2ZXR2LnR2OjM5ZDQ0NzgwNThhNTVjYzIuOTIwYjZiMDAwMGM2ZTVlMzhlYWFiOTZkMjQyNmM2ZWQxYTczYjY3MWUxMDFmM2M3OTQ2NTkwZTNmMzEzMTA3Mw
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce884/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg0OjE3ODg5OTQ1MDg5MzM6Y2RubGl2ZXR2LnR2OjQ1ODM5ZGJlZjk0NGYxZjcuNTBlYWEyN2ZlODViYmY5NTI3ZDg0YzFhYzg4OWJlNzhmZTJjZDVhODM5MDdiZTc0MzE4NWJiYzZlZWVhZmY4ZA
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 3 MX
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce886/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg2OjE3ODg5ODAwNTU3MjA6Y2RubGl2ZXR2LnR2OjM4Y2U3ZWQ3NjYzNzU2NmIuOTdjNWQyMDA4NjEyZTdhYjU2NGEyYzM0MGM5MDQ0NmUzNzliNjY0MTg3YmEzMDI4YTMxMmVjMTVkZDliYjhjOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce886/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg2OjE3ODg5OTQ1MDk1MDU6Y2RubGl2ZXR2LnR2OjE1YjVhYmNjZjdmNjJkYmMuMDg1NDZiYzdmOTkwNzRjN2RmMDZiOTc0YjhmNTEwMDAwNjE2ZGZkMGU3YTBlMjQ1MjAwOWNiMzNmMzhlYTZkZA
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN 3 NL
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce48/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTQ4OjE3ODg5OTQ1MDk1NDg6Y2RubGl2ZXR2LnR2OmQ1ZjY3NDNjNDNlYzMyOTMuZmEwNWMzNDAyMDg0ZTkzNWZhMDZlMTI5MTVjMDA1ZDQ0ZmFhMjE0MzJhYmM1MDU3NTEwZWYwYjllMDEwMDBjYw
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN 2 MX
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3c9/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2M5OjE3ODg5OTQ1MDk1OTg6Y2RubGl2ZXR2LnR2OjJlYjg5OTBhOGJhNWFkZmYuMTQ4NzNmODA2ZTlmNDcxMmVjZDM1NzM5NmI1MTUxZDc4YTIxMDEwZDJjYjJhODFiMzNkYTJlYzM2NjU0MTYyYg
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 4 MX
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce46/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTQ2OjE3ODg5ODAwNTU3NjM6Y2RubGl2ZXR2LnR2OjI1MTkzYmMxMjc1MTNlODQuOWNjMGU3YjEyODJlN2YyNWY0NzUxM2QwYjk2MmZmNWYwOWY3NDc2ZDUzNzYyYjUyYzcxODdkYmI5NTViN2RiYQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce46/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTQ2OjE3ODg5OTQ1MDk2MzA6Y2RubGl2ZXR2LnR2OjU0NmMyNGUwYzAzZDI1NWEuNGVmYTZmOWU5OGM4MmIwMDgwMDE5MjNmNjM1MjYyZDExNTdlODMxN2ZiMzU1YWI2MjA5NTEyNjliNjViYjViNA
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN 4 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce888/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg4OjE3ODg5ODAwNTYwOTc6Y2RubGl2ZXR2LnR2OjliNWVlNjUwYTIwNzlhYjguYTE4YmFmMDUzNDhmYjI1ODU2YjEwMWQzYmEzODQ0M2I5NzBiM2Y5NThjMjBhZjQyYTdlZGE3MTRhOTQyN2VmNw
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN Deportes US
-https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb34c/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzRjOjE3ODg5ODAwNTYzNTk6Y2RubGl2ZXR2LnR2OmQ4ZWQyODYxMDBkZGM3ODguZTUzZmVhMzRhZmQ4NWU5NmIyNDk1ZGNiYjIxMGE0NDU5NTUzYTMxOTIxMWRlZWE3ZTk5MzRjYjEzMGI3MmE4OA
-#EXTINF:-1 group-title="DaddyLive Sport",ESPN News US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5a0/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWEwOjE3ODg5ODAwNTY2MTM6Y2RubGl2ZXR2LnR2OmQ1YmUyYTg1NjIxMmI0NmIuMTdhMmEzZDNiY2U5ZGY3Y2FkMjFkYjIxZWE1MzM4MzkyMzM5ZjViYWQzZWM0NzA4ZWQ5MmE3YjI1N2NmMzM3YQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce888/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg4OjE3ODg5OTQ1MTAwMTc6Y2RubGl2ZXR2LnR2OmZlNmU0NzFmN2IyMTVhMzAuNWM3NWRkZGI2MmQyNGExYjMzOWQxYTUzYWQ1MmM2ZmYwYTg4MDk5MTQxM2VmNTNkNDRhZGY4NTk4ZGQ5YWUxNg
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN U US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5a2/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWEyOjE3ODg5ODAwNTY5Mzk6Y2RubGl2ZXR2LnR2OmQ1OWYwNTIyM2ZkYWU4NTMuNzcwNjBlNWU1OGNhOGU4NjQ4ZjZlNjA3Y2NkZWMyZDRhYTg3ZThhMmYwNzNkZmRlZGNmZDFjZDk4MzFlNDQwYg
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5a2/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWEyOjE3ODg5OTQ1MTA0NzY6Y2RubGl2ZXR2LnR2OjBhNDYyZTNkYmRhOTYzOWQuOTJmY2UyYjQxZjE1MmI0MjM5NGYzODMwZTQ5ODA5YjZiN2U5OWVlMzk2ODQ2ZTI4ZDBjNjZlN2JiNjcyZDUwMw
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN Deportes US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb34c/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzRjOjE3ODg5OTQ1MTA1MTQ6Y2RubGl2ZXR2LnR2OjkwMDgxYjk5ZjlmMmVmZTUuNzAzNjY1MWI2MWVjNzdiODdhOTEzYmNjMDZhMGMwOTQzNTY3ZTIyOTdiNTVkMjFlM2MxNjFiNGY2OWVhMmY5NA
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN News US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5a0/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWEwOjE3ODg5OTQ1MTA2Njg6Y2RubGl2ZXR2LnR2OmU1ZjcxYzcyNjBhZmM3ODguNzcxMzk5NDViMzJkODlkZDU5NmVmZWE1OTAxZjA5NWQwMjJhZDg2YjRhMzQ3N2I5NjVkZTgxYTA3N2E1NmU4OA
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN Premium AR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce94e/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOTRlOjE3ODg5ODAwNTcxMjA6Y2RubGl2ZXR2LnR2OjM3Mzk2NDY0N2JiYmU1NDAuZDliZTU2ZDRiMTY3M2ExNDY0ZTIwZjUzYmMyYTRmMTliMmE4YmM3MzYzNmJmNTVmNjhlMmJmZTBkMDA4NjFkMg
-#EXTINF:-1 group-title="DaddyLive Sport",Eleven Sports 1 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd328/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzI4OjE3ODg5ODAwNTc0ODY6Y2RubGl2ZXR2LnR2OjExODYwM2E1YTA3YmY1ZGEuZjlhN2M3YTE5NTE5YWFiZTA1NGU2NDhmOTYxMjA0OGQwMTgyNDI0YzhjMGRmZmNjOTliMWFjNzI1Yjc0NzNlZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce94e/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOTRlOjE3ODg5OTQ1MTA5NTI6Y2RubGl2ZXR2LnR2OjJhY2RhNDIyNzg4MDM2ZWQuNDJmODIwM2UxOGRkOGZmYzMzZDhhODY4NTNjMTlmZGJkZmZkNzU4ZDgwZDhmN2UxZjMwYTdhM2JmNjdkMjBmZA
 #EXTINF:-1 group-title="DaddyLive Sport",ESPN+ USA US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb59f/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTlmOjE3ODg5ODAwNTc2Mzg6Y2RubGl2ZXR2LnR2OjIzMTVkYTBkMmI2ODdhZjAuZTg3NDIwZDYxM2NiNGE3MWMxMmRjNzkxNGYxM2E5M2VjOGI1Y2Y1MGM4OTQzZDQ3Mzk0YTBiNjU4MDhjNWI5MQ
-#EXTINF:-1 group-title="DaddyLive Sport",Eleven Sports 3 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd32c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzJjOjE3ODg5ODAwNTc5NTg6Y2RubGl2ZXR2LnR2OjE0NjkxNmNjMmE1MWVjYzguZDI2MWEwNjRiMmIwOTNlZDQ1NzZkMGJkN2VjOGJlMjM4MjcyYWU4Y2MyYzdkMTdjNGEzZTIxMTU5MDBiOTEwMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb59f/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTlmOjE3ODg5OTQ1MTEyMzA6Y2RubGl2ZXR2LnR2OjkyNjZkMzQ1MjM5Y2ZmZGIuMmYxMmUzZjlhY2RlNjI3YTEwNmUwYTU1ZWY5YzQwMWU0Yjc2ZWI3YjI3NjA0NjYyODExNDcwMTBjZDNlOTU2Yg
 #EXTINF:-1 group-title="DaddyLive Sport",Eleven Sports 2 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd32a/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzJhOjE3ODg5ODAwNTgxMjA6Y2RubGl2ZXR2LnR2OmFhOGJhZDk5ODkxYTE3YTUuMDIyNDEyNTUzMDI5NzljZTkyNGUzNGVhNWU3M2FlYjg5YmRiYzU1MjEwMGE1OWM5Y2VlMmM0ZTY1NjcwODBjYw
-#EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 1 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc35a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzVhOjE3ODg5ODAwNTg0NjU6Y2RubGl2ZXR2LnR2OmQ4ODIxYjFjZjYzYjI4ZWIuMjJmYmNiZDE4NzFhMmI2MzhiYmNjNmQ0NzZmNTZjYjE0NjZjY2EzZmU2ZTExZWY2OGY4MWYyMWI3OTgyZDhhMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd32a/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzJhOjE3ODg5OTQ1MTE2ODU6Y2RubGl2ZXR2LnR2OjBmZTZiOWZlM2M5YjE2YjguNTlmOTkxZGVlZDA0YzU5MTllMTM4YjE2YmZiODlhMTMzZmNkMmIyMGZjOWY0OTM0YmNiYWI0NmJkYjVhNmQ3Nw
+#EXTINF:-1 group-title="DaddyLive Sport",Eleven Sports 1 PL
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd328/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzI4OjE3ODg5OTQ1MTE2OTg6Y2RubGl2ZXR2LnR2OjhhZGVmYzYyODBjZDA1OTYuYmY4ZDg1MGEyN2NkM2NjZDRkMzhkMzFlNzMxMWI0OTY0ZWM5ZWUwN2I2ODAwYWRjMTJhMzVkY2MxNDlkYjYzYg
+#EXTINF:-1 group-title="DaddyLive Sport",Eleven Sports 3 PL
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd32c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzJjOjE3ODg5OTQ1MTE4OTU6Y2RubGl2ZXR2LnR2OjkzYzc2YzcwYTUzZDgxMzEuODI2NWRkMzdjNThmNTA5MzY2NmExZmIyMzE5YWEwYmJlOTlhNzM0Y2M0NDM1MDA4Njc4NGM4ZTViM2U1NDlhZg
 #EXTINF:-1 group-title="DaddyLive Sport",Eleven Sports 4 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd32e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzJlOjE3ODg5ODAwNTg1MDQ6Y2RubGl2ZXR2LnR2OjMwMTEyNWE5ZTZjNWM2MWUuOGQ1ZjAxMjEyNTk0MTQwNDVkYTg1YWMxMTFiNzIwNzEzZTkzOTNmNWY1ZmZhNjdiNWI1ZTY1OWRlZDNmYzc5OA
-#EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 1 IT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd331/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzMxOjE3ODg5ODAwNTg4NTQ6Y2RubGl2ZXR2LnR2OjhiYzdjY2U3MTYyNWQzY2EuZjMzNWRiYzQ2OWE5YzNmYTRmNzU2ODY1NjhmZjJjZWVlZDNjZmVkZGU1NTQwMTk5NjFmOWM2YWQ3NmM1Nzg4Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd32e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzJlOjE3ODg5OTQ1MTE5Nzg6Y2RubGl2ZXR2LnR2OjJhNDQ5M2Q0NTkwMWVjOGQuYmQ3MTBiMzVmMjM5NjUwN2MyNTZmMGY3OWU3ZjA0MjBmN2VkOTc4MDBjZDY0MjMyYzRmNmViMjI4YmZkOGUzYw
+#EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 1 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc35a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzVhOjE3ODg5OTQ1MTIwODg6Y2RubGl2ZXR2LnR2OjI5N2YzOTlkNTIxNDBmNWQuODQ5Y2Q3YTg4YjRkZTg3ZDUxYWMwMmU2ZmU2NTU2YWEzMGNjZTRkN2RhMGRhNWQzYzE1NDZiOWUwZWFiOTBjYg
 #EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 1 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf1e/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjFlOjE3ODg5ODAwNTkxOTY6Y2RubGl2ZXR2LnR2OjdjYzBhZGU1OTRjNmYyODYuMGUwMDA2NmNmOGQwN2RhYjVmMDEwMzhmMDA3NmJiNmJlNTU1NmNiODNiZTE1Yjk2ZGY0MTRhNDA5OTkxYThmMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf1e/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjFlOjE3ODg5OTQ1MTI1ODA6Y2RubGl2ZXR2LnR2OjM2ZmM5ZTA1YjQwOWE0ZWYuMTQxN2U1MTRmY2ZkMWRmM2JkOTFhNjQ3MDJkNjFmZTVkNzFkNzJhNGMzNmM5NWJkZmI2ZWRlMmNkYTk3Yjg3YQ
+#EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 1 IT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd331/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzMxOjE3ODg5OTQ1MTI3NjA6Y2RubGl2ZXR2LnR2OjUyYjVjNTg2YTZkYWU1YTYuNjcwYzgxNTNhZTlhYmE3OWMwZWY1NmRiY2FmOGVkYTExODM2NDU1NWViODZjMDhjZTc0M2EyYTQwM2UzYzJiMg
 #EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 2 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc35b/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzViOjE3ODg5ODAwNTkyMjQ6Y2RubGl2ZXR2LnR2OjJkOTQxOTI5OTQ5YWYxZTMuMjNjYzIyZmE2MDFmNjg2ZTNhMjE5MjdkNmU5NmNlNWE2ODYwY2JmNzY3MTZiNzMxZGZkZjFjZGRiMzA1ZTMwMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc35b/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzViOjE3ODg5OTQ1MTMwNDk6Y2RubGl2ZXR2LnR2OmE4YzlhMDBlOWU2YmVmNGQuMDI2YzcwNDgyNzhjMjVmYzk0YzBlY2YzODc1ZjE5YzViOTQ1MDUyMzBmOTFmMTFhMDg5N2ZjYjZhNGNmYmMxOA
 #EXTINF:-1 group-title="DaddyLive Sport",FOX Soccer Plus US
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cbe68/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNiZTY4OjE3ODg5ODAwNTk3NDQ6Y2RubGl2ZXR2LnR2OjA1NGQ0MWI1YWZmNmZmYTQuNGRiYmJmNDNmZWI2YWE1Nzg4ODJmODM5MzRlYmFlMGU0YmQxMjIwNjZlMGRiMjBhNjZmZGZhNjU1YzI0ODVmZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cbe68/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNiZTY4OjE3ODg5OTQ1MTMzNjM6Y2RubGl2ZXR2LnR2OjYyMWM1MmE5NDZkMzdjNDYuNWEwMTFlYTQ2ZWZlNjg1ZDAwMjA5Mjc3NjY5M2IxNDI0ZDg2OTlmNjM2ZjFjZjE2OWU0MzRlOTQ3NmQxN2JmOA
 #EXTINF:-1 group-title="DaddyLive Sport",Euro Sport 2 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf1f/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjFmOjE3ODg5ODAwNTk5Mzg6Y2RubGl2ZXR2LnR2OjVlZDlmMmFkYzMxMWY3MWEuMGUzNTMyMTMxYmRjMDg4NWU1MDY3MmI0YTZmNzE5ZDk4MDA4ODJlYzQ1YmVlYzIzODI2ODc5YmI2MzNmZTEyOA
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf1f/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjFmOjE3ODg5OTQ1MTMzNjI6Y2RubGl2ZXR2LnR2OjAyMTkxNzNjOWMxM2EyMWIuMjY2NDEzNGE3NDFiN2VlZGJkNzRkODkzMmE3MWRjYWU3YjZkOGUxOWI0NDk1OTM4Yzk2NTU1ZTQ3OWEwMTFhNg
 #EXTINF:-1 group-title="DaddyLive Sport",FOX Sports 1 US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c3/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWMzOjE3ODg5ODAwNjAzOTk6Y2RubGl2ZXR2LnR2OjdjMGFlYWU5Yzk1MDRhMDguZDYxNTliY2YwYWM0NTBlZjU1MjE5NjU1Y2I2Y2RjZmQ5NTZlMzk2YWYyNmM3NzhmYTZhMTNlZTMxZTM5NDA2YQ
-#EXTINF:-1 group-title="DaddyLive Sport",FOX Sports 2 MX
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c5/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWM1OjE3ODg5ODAwNjAzOTk6Y2RubGl2ZXR2LnR2OmU2ZGMwZmRlNTBiNjRjMjAuMmQxZDJmZWY0MGFiN2I2OWQ3OGMwNWQwNTc3ZmU3ODcxOTM3ZjQ0Y2JiOTA3YmE4ODc1Yzc1N2E2ODM5MGI1ZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c3/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWMzOjE3ODg5OTQ1MTM1MjE6Y2RubGl2ZXR2LnR2OjBmYzAwYzI0MGJmOTc5OWYuYWYxZjhlOTc5ZDc5OGNlMGY0YjRhYjUyMmVmNGMyNDA4ZGNlNGExYWM1OGNiMGY5ZjFhMjhkOGNiZjI2ZmVhOA
 #EXTINF:-1 group-title="DaddyLive Sport",FOX Sports 2 AR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce95c/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOTVjOjE3ODg5ODAwNjA2MTc6Y2RubGl2ZXR2LnR2OmFhNzI0MGM4ZDhjYjgxMTcuZmI1MjQ0YTNlYmE2ZWY2Y2Y4MGY0ZDU1ZjY5YzE2ZmY5NzMzZGI1ZGU2MzljNzQ4YWRlMjcyYTYwNWEyNjljOA
-#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 501 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f8/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWY4OjE3ODg5ODAwNjA3NTc6Y2RubGl2ZXR2LnR2Ojg3OWQzNGIwMzU4YWQzNTQuMzMyZTY4OGU4N2FmNDQxYzYyMWUyYmE4NDI0OGMwMzI3YzM1MTMyNTQyZjEyYjE3OTE5Nzk5ZGZjNzEwMWFhOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce95c/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOTVjOjE3ODg5OTQ1MTM5MzI6Y2RubGl2ZXR2LnR2OmM2ZmRmZWE4Y2QzZjhlMWIuOGMyNTc0ZWU1YzQ5MzhjNjg0YzUyZmQ1Zjk1MjcwOGE3YWY3MGVlYTZiMTAxOWExMjNhOWU2MjIxMjYxMTYxOA
+#EXTINF:-1 group-title="DaddyLive Sport",FOX Sports 2 MX
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c5/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWM1OjE3ODg5OTQ1MTQwNTU6Y2RubGl2ZXR2LnR2OjQ2YzI1NzM1ODQyOTQ5NWQuNGM1YTgwMGMwYzZiYzYxZTFjN2M3NGYwMWE2Yzk2MTkzNTgwNWUwMWVmZTQ0MTc4NDkwYTY4ZDM5ZGRiNzBkOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 501 Cricket AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf203/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjAzOjE3ODg5ODAwNjE0NzQ6Y2RubGl2ZXR2LnR2OjYzM2IzNmZkYzdmZmVmYjMuMjA1NjFkNzllMDM0ZGRiZWI3MWMyYzQ2ZmI5MTk4YTczYzc2ODFmMGZjZTBhYmVhZTQ4OWU3MDdkZGMzNGQwMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf203/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjAzOjE3ODg5OTQ1MTQyODM6Y2RubGl2ZXR2LnR2OjQ2MDZkM2MxODIxZjMwZGUuYzA3NjZkMjJiZGVhMWYzNWVjYTgyZTMyYTIyZjEzZGYwM2E0NjAwMzk5NDk4NmRkYjA1N2RhODQ3MjBlZjViZg
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 502 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf20e/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjBlOjE3ODg5ODAwNjE0ODU6Y2RubGl2ZXR2LnR2OjIyNjlhNTk2YWE3YjlkNmEuYTE3YjA2NDU0MTdiMjkyYjQ3YzFkYTcyODBiOTdmNjQyZDg1ZmM2NGZmNmUwMzAyMjVhYjhhMDU1OGFmMmNlYw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf20e/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjBlOjE3ODg5OTQ1MTQ1MTc6Y2RubGl2ZXR2LnR2OjE4NGMyOTM5ZDIzNzczY2UuMWZhYmJkZTkyZjZjODI1ZTE5ZmExZDVmZjg3Yjk3NDhiOTI1NjQyMmE3ZWMxY2M4MGExODg2MGYzZGQ0ODgyNw
+#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 501 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f8/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWY4OjE3ODg5OTQ1MTQ3ODQ6Y2RubGl2ZXR2LnR2OjVjYzRjMTk0NTY4NzJkZGUuOGU5NzMyZDVmMDAzY2Q0MjBhMWMwNmJhOGNlYWEyZWFhODcxNjRhZjg3ZmVkMGYyMTQzODJmMWU4NGNhZDYyZg
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 503 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22f/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJmOjE3ODg5ODAwNjE3NTA6Y2RubGl2ZXR2LnR2OmUyZmU5NDZiZTA0ZWRhM2IuZTIyNGY5MzA1Mzk4MjgyNzVjZTVkZGZhOWVhOWI2MzEzM2ZjYzU0NDIyZTMxN2VmYjBiZjIyOGNhNzk2MTI5YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 506 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf272/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjcyOjE3ODg5ODAwNjE3ODQ6Y2RubGl2ZXR2LnR2Ojc3ZjYwOWNkMjk5NDRhNWIuMDY3ZGEzOTNmNzQzMmQwZGYxOTk5Njk3YzlmODMxZjgxYWEyYzhiYWUxYjE1YTY2YzQxZTJhOWUwYmIxN2FkNA
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22f/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJmOjE3ODg5OTQ1MTQ3ODI6Y2RubGl2ZXR2LnR2OjU3ZmY1ZmM0MjA0YmI5MTQuNDRhYzRkNjgwMWViYWIzZWIxMGQ5ODQ4MjZiNWU2MDY5ZmM0NDU5ZDQwNGU2NjljMjI0ZGU5ZTlhYWQxMTM3Ng
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 505 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf25c/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjVjOjE3ODg5ODAwNjE5ODY6Y2RubGl2ZXR2LnR2OjNjZTNkNWVhOTU4YzVhMWEuMTZhMzU2ZjEyMjA4ZDY5MzUzM2MzNmYwOTFkODBlOWVkYTQyNjBmOWE0MTJlN2YyMWQ4ZmVhNWE1ZTgzZGMxMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf25c/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjVjOjE3ODg5OTQ1MTU0NDI6Y2RubGl2ZXR2LnR2OjMyODNkYmY5YzU0NzU0NzguMDFhMTE1NThjNTA4Nzg5OTgyYmFhNTIzNWZhN2M5YmY2OWNlNDgzNjIwMTlmMDVlYzcwZGE3ZmRlZTMxMjFhNg
+#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 506 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf272/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjcyOjE3ODg5OTQ1MTU0NTg6Y2RubGl2ZXR2LnR2OjQ2NDg5ZGI4MDhjYjQyMjIuZjcyNzI3NzY1YTdhMDUxZmFiYmQzYjczYzViYzE2YTk4YzE1NTFlYjM0NTMyZWY2N2Q4YjlkM2ExYzhjNjg3NA
 #EXTINF:-1 group-title="DaddyLive Sport",Fox Sports 507 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf288/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjg4OjE3ODg5ODAwNjI3NjY6Y2RubGl2ZXR2LnR2OjMzZTEyMzE4YTFlNzZmNmQuN2U2ZjMyMTM0ZWE0NzgzZmIxZGEwZGU5YzU3NTdiMGY2YTBkYzYxZGU4NTdkMmVmMThkODIyZGU1ODBlODM3Mw
-#EXTINF:-1 group-title="DaddyLive Sport",MLB Network US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cf/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNmOjE3ODg5ODAwNjI4NzA6Y2RubGl2ZXR2LnR2OjAxODg1MGFkMmFhMmE1YTkuNWM1NTUwMjk1NWY2ZDgxNWU4ZjA5MzExN2IxMDM3Y2U4YWZhZWNmYWQ1YmY0Y2UwOTlkODU0Mzg4YjYxMGUzOQ
-#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports News AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf29e/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjllOjE3ODg5ODAwNjI4Nzc6Y2RubGl2ZXR2LnR2OjM2ZmRlOTYwNWIxNGExMDguMTVhODUwZDQ4OTJlOWViOWE4ZjM3N2IyMmM2M2NlYmYxMDIxZWI1ODkxYThjMDk3Y2ZmODZiYzk0MDQ1NDhmNw
-#EXTINF:-1 group-title="DaddyLive Sport",Marquee Sports Network US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5ce/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNlOjE3ODg5ODAwNjMwNzg6Y2RubGl2ZXR2LnR2OmNhMzE5OTgwMmIzZDg0ZDIuYzYzYjlkNmU2ZWM3ZjczZTRjMTM4NzA1YTJkZTVjZjkwZDVjNjMzNzY5ZTU0ZTFhNjVhNjdiNmE3NmNhNTFhNg
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf288/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjg4OjE3ODg5OTQ1MTU1MTI6Y2RubGl2ZXR2LnR2OmZjYzllYzVkNmQwNzhhYzUuMWI4MzAzYzFiNTAwYmZhZGI1MWFiYWE1N2I2NjdmNTE4OTNhOThmMmZmMWU5Y2M5OTgxNjUwYzhhMWE0MzY2OQ
 #EXTINF:-1 group-title="DaddyLive Sport",GOLF TV US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cc/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNjOjE3ODg5ODAwNjMyNTk6Y2RubGl2ZXR2LnR2OmVjNzMzYmE4MTEwOGU3YzAuMzE2YTYzZTRhZTBmMTVmMjg4Y2FjMjBhYjNmZTBmYzA0NmE4MWFkODY1ZTg4N2FjZTllOWYxZDJhZmZmNzE4NA
-#EXTINF:-1 group-title="DaddyLive Sport",Match Football 2 RU
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce168/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTY4OjE3ODg5ODAwNjM4OTE6Y2RubGl2ZXR2LnR2Ojg3OGQ1YWE5MWY0NWMzMDIuYmRkYzFiZGZlYTRlMWJhNDFiZGFiYjE1MDE4ZGM1ODI0NDljMmM4ZmIyZDI4NmRmODJlOWY1M2E0OTkwZjFhMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cc/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNjOjE3ODg5OTQ1MTU5NTk6Y2RubGl2ZXR2LnR2OjVkYWM2ODZmYjNmYWFiNDQuZDAwNmQzMjE5OWE0ZjJhOWZiOTAwZDMyNjk5MjRiNTliYWQ4YmQ1ODU3ODYwYTQxMDMzMmM3OTZmZTQ0Y2MzYw
+#EXTINF:-1 group-title="DaddyLive Sport",Fox Sports News AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf29e/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjllOjE3ODg5OTQ1MTYxNTI6Y2RubGl2ZXR2LnR2OmFkOTVjYTQ0ODE2MTFhN2IuMjE3YWI3YjYyY2JkZmViZDU5ZmYzYTUyODExMjA1ZWZhMjczZjRhNjJlYTk1YjAyNjc0NjY1ZGI5MDQyMTA2ZA
+#EXTINF:-1 group-title="DaddyLive Sport",MLB Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cf/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNmOjE3ODg5OTQ1MTYyNzA6Y2RubGl2ZXR2LnR2OjBiYmVhZmQ1ZWM0ODA3ZGMuYzRmYjlhZTNkMDE4YjY3MDE0MmU4YzRiMDRkZGQzY2I0ZTVmZTRiMTU4NDZiNDA2YjBhMDYxMTlhN2IzMmU5Yw
 #EXTINF:-1 group-title="DaddyLive Sport",Match Football 1 RU
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce167/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTY3OjE3ODg5ODAwNjQwMDE6Y2RubGl2ZXR2LnR2OjcwOWU4Nzg5ZGQ5MThmZDcuYzBhZTJiNmU5NGY5ODg1YjM1Y2QzZGY0NDdiNDlhMDk4YzhlOTdhYTM2NTBjYmMxZmExM2VmYTJlNzJiMjg2Yg
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce167/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTY3OjE3ODg5OTQ1MTY3Mzg6Y2RubGl2ZXR2LnR2OjY4Mzg3ZmJiNDZhZjU2NzMuMjA5YTkzY2FmM2E2Zjk2ZDNiMDcxNjA4ODNjYzEwZjQ1MjMxMTBkNDNmYzRlMDI2NDQ4MjMwMTBjYTI3ZjI3Ng
+#EXTINF:-1 group-title="DaddyLive Sport",Marquee Sports Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5ce/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNlOjE3ODg5OTQ1MTY3NzA6Y2RubGl2ZXR2LnR2OjM4YjIzMjc2YWNiNWY1ZTAuYTNjMDU0YmZhZmM3Yjc1OTBkNTc5OGJlZDdkZjk2OGU0ODI0MzRlODhiZmU4YzdmMjk2NzIzYjVlMDllYzM1ZA
+#EXTINF:-1 group-title="DaddyLive Sport",Match Football 2 RU
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce168/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTY4OjE3ODg5OTQ1MTcyMDQ6Y2RubGl2ZXR2LnR2OjBiOWEyZDIwNDZjZDA1ODkuM2Q1M2Y2ZWZhZWExMWYzOWFiZjU3MzY1NTlmNDZkZjMwZTNhMzBmYTZhZWJjN2E1NDNhNTMzYWQ2YmNkYTBkYQ
 #EXTINF:-1 group-title="DaddyLive Sport",Match Football 3 RU
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce169/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTY5OjE3ODg5ODAwNjQ0MDE6Y2RubGl2ZXR2LnR2OjJlMmJkZmQ5ZDllMjkxYTkuYjUzMjQzZGI2ZTE4ZmI1YWY3NmU1ZWQ3ODhiYmEwZWU2Y2ViM2YxOThmMjkyNjM4MTg1NGMzYWIzMmFkMzQ3OA
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce169/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTY5OjE3ODg5OTQ1MTc0OTY6Y2RubGl2ZXR2LnR2OjJhNDA2ZjU5NDM3ZTdlOGEuMjk1YWQxOTNhMzFjMTRiYjVkMzY1YmMxYzNiYWI1ZDBjZTBmNGM2MDEzZmI1ZjBmYjY0YjQ1ZmY1ZTFmNzZhYg
 #EXTINF:-1 group-title="DaddyLive Sport",Match Premier RU
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce16b/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTZiOjE3ODg5ODAwNjQ0Mjk6Y2RubGl2ZXR2LnR2OjJjZjFhZDE1NWQ1NTMzNDIuOWVlOGMyY2U3NmI0ZjczYWNjZDVmMWZjMDI5ZmIyNTk1NzQ5OWQxYTA4YTJkZDM2ZmQ1ZTEyYzFiZjVkY2ZkNw
-#EXTINF:-1 group-title="DaddyLive Sport",Max Sport 1 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf48/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjQ4OjE3ODg5ODAwNjQ1OTM6Y2RubGl2ZXR2LnR2OmNlNDQxNzcxZDM3NTYxNzQuZDJhMjI5YzIzNzc1ZDgzNzNjM2U2YjlkOWY0YzdhMGU3MzBiNjdjZjc1YWE2NDIwMGU0YWYwNjFlNTRhNzAwYg
-#EXTINF:-1 group-title="DaddyLive Sport",Max Sport 3 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf4c/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjRjOjE3ODg5ODAwNjUxMDA6Y2RubGl2ZXR2LnR2Ojg3MWI4ZmFiYWMxMzIxMzMuZGYzMDhiODg4ZjA1NjU1ODkwMjMxOWU2ODNkZjVjNDI0MWJiZDdjNmJjNzRkNTY3ODE3MTlhMGZmNmRlZGFjOA
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76ce16b/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNlMTZiOjE3ODg5OTQ1MTc2MTA6Y2RubGl2ZXR2LnR2OmFkNzBkNGNlYjYwZTMxOTUuNzRjNWZlOTMzZjVlN2NlNTJiMTFlODYyZjUyYWUwZmMwZmRjMTAzODExOTNlYjljMDRmNzBiOWYwY2I4MTU0Yw
 #EXTINF:-1 group-title="DaddyLive Sport",Max Sport 2 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf4a/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjRhOjE3ODg5ODAwNjU0MjE6Y2RubGl2ZXR2LnR2OjBkNzQxMTBhZDJiNDYxNTUuY2QwMjhjNDkzMzYzNTNkNWIxYTBkNGY1NTlhOTVmY2VlMTkxYzA5NDY5NTE4YjQxMTRmYmM3M2MxYjE0NTVhOA
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf4a/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjRhOjE3ODg5OTQ1MTc2MDU6Y2RubGl2ZXR2LnR2OmEzZmM1OTQ4ZjM1NmJlNTMuMmFjMTBmZjkwNTNlYzlhOWVhZDBjMGU2MTRjMTQ5MmNlOGQ1ZDk5YjVmYjFjYjJjMDVmNzIxZTQ0YzE5NzNlNw
+#EXTINF:-1 group-title="DaddyLive Sport",Max Sport 1 BG
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf48/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjQ4OjE3ODg5OTQ1MTc5NzQ6Y2RubGl2ZXR2LnR2OmZlZTliMjA3YzI3YzZkZDkuNDg1ZDMwOGY0OGE2ZGQzOGVjY2U4NDdhMDZjZDU4YTVjNDlhNzg0OWZjNDE3NjdhMzczN2FlMTIwNWQzNmM1OA
+#EXTINF:-1 group-title="DaddyLive Sport",Max Sport 3 BG
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf4c/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjRjOjE3ODg5OTQ1MTg1ODM6Y2RubGl2ZXR2LnR2OjkxOTRkNGNhYjAxY2IyMmYuYzViYmEyMDU1MGFlNWZjMzc5YmM4YjhkOTVjZWRjMWYzOTlkMGJlYzI1ZTgyODMzMGNiNDgzNWZkN2ZlZWFhYg
 #EXTINF:-1 group-title="DaddyLive Sport",Movistar Deportes 1 ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc798/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzk4OjE3ODg5ODAwNjU2MDE6Y2RubGl2ZXR2LnR2OjhmNjVhNzdiOWQ2ODdmZDMuMWFiZTk2NDk3ZGEzNTk1NDdjZDE0YzJjMzFhNjBmM2E5NWQxMzI5YmIwYzE2MGRkY2RiNjg4MDc4YzEwODllMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc798/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzk4OjE3ODg5OTQ1MTg3MzA6Y2RubGl2ZXR2LnR2Ojk0NDNhNGU5ZDM5Y2VhYWEuNzcwMDk4OGY3YzYzMjEwM2YzNzMxMjVkZDc5YjExYTI4ZTVkMjY3YjIxNzEyMTM0YzE4MDkwYjVlNTFiMDNjMA
 #EXTINF:-1 group-title="DaddyLive Sport",Monumental Sports Network US
-https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb509/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTA5OjE3ODg5ODAwNjU2MzY6Y2RubGl2ZXR2LnR2OjNmYzk0YjczZWZiYzY5MjUuOWQ5ZDY3NjczOGI1MzU4MzkxODU4ZDgzNWVjZGNiMDdmNmM3OTBlODBjZTQxYmNkN2RkYjAwZjE5ZWI2NzEzNA
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb509/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTA5OjE3ODg5OTQ1MTg4MTY6Y2RubGl2ZXR2LnR2OjViZWRjNDVmNmQ4MmUwMTIuMTUxOTg1NWNjOTIxYjdlYzgyZTI4MzhiYTBlNDFjNTk4YzMwODJkODFlZWI4YTE5M2Y0ZWU5NDQ4OTRmYWY1Ng
 #EXTINF:-1 group-title="DaddyLive Sport",Max Sport 4 BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf4e/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjRlOjE3ODg5ODAwNjU5NDc6Y2RubGl2ZXR2LnR2OmU4ZTk1ZDY1NTZlYjA1ZGYuODJmZGY3YmU1MGNmNjk0ZjBhYzM4Y2I2NTRhNGE5ZDczODdhZGRhYzc2NmJlY2UxNzhmZWMwNjRhYmZmZDg3MA
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf4e/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjRlOjE3ODg5OTQ1MTg4NTU6Y2RubGl2ZXR2LnR2OjVhN2QxNGJiN2EwNjM3OWEuNzNiNjkwMzc4OTU5NzU1ZWI1MjU5NWVmMDllYzk3MjNiOTVkNWNjODFjNDcyODU2Yzk2MDUxMWI5M2NkYTc4YQ
 #EXTINF:-1 group-title="DaddyLive Sport",Movistar Deportes 2 ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc79c/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzljOjE3ODg5ODAwNjYxMzQ6Y2RubGl2ZXR2LnR2OmVjOTA5NGNkZTJkNjJiM2MuYmNiZGJjNWE5NjQxYWQ0OGVlOGQ3YTkyOTg4MjkyOGUyYTcxZjE0Zjc2ZmUyMDM0YjFkMDM3ZWQyMTJkYjc4NA
-#EXTINF:-1 group-title="DaddyLive Sport",Movistar Deportes 4 ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc7a1/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjN2ExOjE3ODg5ODAwNjY3MjI6Y2RubGl2ZXR2LnR2OjU5MGFjMWUzYTcyZjhiNGMuNmI1MWE3Yzc4ZDg0NWVhOGI4Y2ZhZDE0MTM4NTJmZmY1ZmJlMzAyZTRjZWY5OTM4MmZkZTg3Y2ExODJlN2I3ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc79c/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzljOjE3ODg5OTQ1MTkwMDQ6Y2RubGl2ZXR2LnR2OjZmZGNmNmM1NDI1MTkzMTMuZmQzMTczMTQ5YjdlZDE1YjZmN2ZmMzJkMTBmZGUwMWNmMjA1MGRjOTM4NDg2NjQ2MmQzMzc3YWZjMzcxOTAyYg
 #EXTINF:-1 group-title="DaddyLive Sport",NBA TV US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5d3/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWQzOjE3ODg5ODAwNjY5Mjc6Y2RubGl2ZXR2LnR2OjYyMTNiNzIzNGFhNWU5NTguNzI3NjVlMzY0YzNjODVlNTQ0ZmM1OTViZTVhNDA5YjQxMTg2NWZhZTUwY2JjZWIzZjc1ZTUwM2E4ZDhiZTQwNw
-#EXTINF:-1 group-title="DaddyLive Sport",NFL Network US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb65d/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNjVkOjE3ODg5ODAwNjcwMDU6Y2RubGl2ZXR2LnR2OmQwZWIwMTk3YTIzZjE0YWYuMGRlOTRlMDBhMGFmZDZiN2ZkYjQzMWQ4NzgyYzk2NWJhM2ZlNGViNzQwZGVmYTIxMzIyN2RiZDI0OWU2NzZmMA
-#EXTINF:-1 group-title="DaddyLive Sport",Movistar Golf ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc775/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzc1OjE3ODg5ODAwNjcwNDU6Y2RubGl2ZXR2LnR2OjM1YTAxYTQzMTlmNDI4MzAuMDczZDc2NGJmZTljMzZkYjI1YTIzMjAwMGE2MDZjMDg2MTQ2MTM3M2Q2YjllOTUxNzY0NDdiMzc1ZjMzYTgwOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5d3/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWQzOjE3ODg5OTQ1MTk3MzI6Y2RubGl2ZXR2LnR2Ojk3NDg4MDE3MTZiMjVkZDEuMzkwOTU0YTYxODU4OWExNTNmYTJlYjQwZmRmNTUzMDMxYWVlNTA4NjRjN2NjZWIwMzQ4NDAwYmM2Nzg2MzZkMQ
+#EXTINF:-1 group-title="DaddyLive Sport",Movistar Deportes 4 ES
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc7a1/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjN2ExOjE3ODg5OTQ1MTk4MjI6Y2RubGl2ZXR2LnR2OjhkMTFmNmIxMTI0ZTVlMGUuYWFkZjc3ZGZiMDRiOTVjNGYzMDdiYmEyYjA3N2NlNGMwNjAyZWUwYjE3N2UxNjVhNzRiNmE3ZWQxYWYyOGE4YQ
 #EXTINF:-1 group-title="DaddyLive Sport",NHL Network US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb69d/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNjlkOjE3ODg5ODAwNjc0MjY6Y2RubGl2ZXR2LnR2OmY4Zjg5ZGQ2NzQxZTQ1MzYuNGMyZjNkMTgwNmQxYTZhZjVlNDJjMDlkM2UwNDA3ZGRmMTJlNmJmZmZhNWU0Mzk3ZmUwNjFkYjkxMDVjOTkxMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb69d/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNjlkOjE3ODg5OTQ1MjAwMzE6Y2RubGl2ZXR2LnR2OjdjNDM4YzBkYzBiZGEyNjQuYTA5ZGFiMDg2N2M0ZmJlNWEwZGIzZmE0Njc2NzBjNmRkZWIxNzBiNmIwNjFlYzMyMzllYWQ3ZTdjYTJkMTU0MA
+#EXTINF:-1 group-title="DaddyLive Sport",Movistar Golf ES
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc775/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzc1OjE3ODg5OTQ1MjAxNTg6Y2RubGl2ZXR2LnR2OmE5MzAwZDM5ZDA1NjU3ZGUuNTM0ZTcyMWZlY2JiZmJlODMyODIxMDBkYTVhZWU4MTU4ZTRjNjUwMGRkY2Q0MTNiZWEzNTMwMThjZWMxYmYzMA
+#EXTINF:-1 group-title="DaddyLive Sport",NFL Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb65d/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNjVkOjE3ODg5OTQ1MjAyMzM6Y2RubGl2ZXR2LnR2OjU2N2QyMjFmOWMzNDM4OWQuN2ZkZDEwYWFlODM5NjNjMjg1ZjBhYjk5MTM2OWUwZDQxZmI3ZGFhMTY3ZWNlYTYxYzJjNWJiMTE4MzU5MzcwNw
 #EXTINF:-1 group-title="DaddyLive Sport",Nova Sport BG
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf61/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjYxOjE3ODg5ODAwNjgxMTI6Y2RubGl2ZXR2LnR2OjI1ZWY0MmM4MGMyM2ZhY2EuZmViMTc5YTVmNDRkNjkzMWZlODAxMzIyZmNlODhjY2NiODk0ZDhmN2IzNGJhMTI3ZWM3NjI3YWU3Y2ViZWQ0ZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf61/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjYxOjE3ODg5OTQ1MjA2ODE6Y2RubGl2ZXR2LnR2OmViMDAyNDFlYWMzYWFmZGYuODE2YjA0NGNjN2ZiZjJjODlkOTUwNzRjMTBlNzBkOTgwZWE4YTRkYjE1N2UzYzNiOWY3NzM0M2RjMDMxMTZjYw
 #EXTINF:-1 group-title="DaddyLive Sport",Nova Sport 3 CZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd6f5/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNmY1OjE3ODg5ODAwNjg0MDU6Y2RubGl2ZXR2LnR2OjU5M2E2MTI2MDBlNzZkYjAuMWY5NzEwM2MzMzczOTM4NGZiMzcwYTc1NjZjMDQyMjk0NWEyYzg4MDUxZWU1NWM0OTczM2ZlN2NmNDFiNjk4MA
-#EXTINF:-1 group-title="DaddyLive Sport",Nova Sports News GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf60/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjYwOjE3ODg5ODAwNjg0NDM6Y2RubGl2ZXR2LnR2OjFiMjY4ZDlmNzY5ZTkwZDIuYmEyZjY1MzMxMzE4NDQ3NDkyZTI0MTQwZmNkODFmNjEwMjhhOGM5N2YxMWU1MThlMWFkZjgyMzVhMThmNGFkZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd6f5/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNmY1OjE3ODg5OTQ1MjA4NDk6Y2RubGl2ZXR2LnR2OmMzNzEwNjA5Nzk5Y2Q2MDEuYzc2NjkwMGUzY2U5YTMxMDFlNmZmZTFhOTZjNGZjODYzNWE2YTcwNjk2MGEzMzc4YTNiMWVjOWI0ZjdiNTA3YQ
 #EXTINF:-1 group-title="DaddyLive Sport",Nova Sport 5 CZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd7d3/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkN2QzOjE3ODg5ODAwNjg0ODY6Y2RubGl2ZXR2LnR2Ojc4NzkwZDA2YjBmODlhNTEuNTgxMDYwMTBmNjMwNGY1NDQ3OGUxMTY1ZjU1MWFkNDU5Y2ZkMzcxOWNhZjMzNWFkYWQwMTllODYzNmUwMDI0Yw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd7d3/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkN2QzOjE3ODg5OTQ1MjEwOTY6Y2RubGl2ZXR2LnR2OmEzNTQ3YTcyMDMyOWFmYmUuYjVmOWRiYjIzMGJkNjJmYWNhMmYwYWUyMTY5YzIwNDZhZmRhZjQ1YTVjZDY2ZDI2MTU1YmM1NjJkMzNjNjJkMA
 #EXTINF:-1 group-title="DaddyLive Sport",Nova Sports Prime GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd842/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkODQyOjE3ODg5ODAwNjg4NjY6Y2RubGl2ZXR2LnR2OjZjOTgwODFhZTgyN2Y1Y2EuOWZiZDRhMGRmZTFlNzgyN2YyMWNiMjkzZWQ3YzQ2OGIxMTkzNGM2ZTQ1NmNiMWE1OTRjZmRkNTYyMmI2NzAxMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd842/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkODQyOjE3ODg5OTQ1MjEzNDc6Y2RubGl2ZXR2LnR2OjhlMzBmYmU0YWVmMTY0MDYuZjA4NGU1Y2Y2NTAwN2I3MjRhMmRkNWNlZjQ2ZmE5NGQzNGM5Y2E2YmFhNGE1Y2Q5MGVlYjRmOTkxYTkxYmEyNg
+#EXTINF:-1 group-title="DaddyLive Sport",Nova Sports News GR
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf60/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjYwOjE3ODg5OTQ1MjE0OTg6Y2RubGl2ZXR2LnR2OjQ5NjEyNjc3Njg0YTI3NWIuNjZiN2NhNTg5YmNiZTI3ODg2M2I2OGNjZDkwYmEwNDZiMWRkMGNhNDRhNjM2ODVmMDg1MWMzOWZlYWQ3MmI2MQ
 #EXTINF:-1 group-title="DaddyLive Sport",Nova Sports Start GR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd64c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjRjOjE3ODg5ODAwNjkyNzY6Y2RubGl2ZXR2LnR2OmM0M2NkNmViNjZhYWUzMGQuZjM2ZTdjNjQ1MzRjNDkyNDg4YjI1ZDU2OWM4ODAxZTUwMTRkMzk0OTM3ZGI3ZDBmMTA5NzEzZmY3Y2I1NmJhMA
-#EXTINF:-1 group-title="DaddyLive Sport",Polsat Sport Premium 1 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd378/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzc4OjE3ODg5ODAwNjk2NDA6Y2RubGl2ZXR2LnR2OjM2MjA5YjE5Mjg5NjUwZWEuZTJmNWI4NTBjMDM3YmVlMTQ4MmEzOWE3ZmUzYmIzNGU3Mjc1N2JkMzliMTVmNzExZjAwNTUyYzA1OWRkMDc3YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Polsat Sport 3 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd375/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzc1OjE3ODg5ODAwNjk3OTc6Y2RubGl2ZXR2LnR2OjQ1NTg3MTJjNmJlMTUzZWYuNzI3ZTMzODllM2Y5MDk2NTA3MTliN2ZjZmQ5OGU5NDM5Y2FjZjkyNWIyOGI1YzVkOWJmNzMxOGM5NWU3MzQ3ZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd64c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjRjOjE3ODg5OTQ1MjE4NDg6Y2RubGl2ZXR2LnR2OjE2ZTFkNTMxZDA4MjlhMGMuZWMwNTY4ODliYjY2ZDIxODQ1NmRkZGZmOTc1NjBmMTM4ODIwZDA4MGEyMDRkNjEzODE3NDFlMTA0Y2U1N2M3NQ
 #EXTINF:-1 group-title="DaddyLive Sport",Polsat Sport 2 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd376/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzc2OjE3ODg5ODAwNjk4NDA6Y2RubGl2ZXR2LnR2OmNmZTU3MTA5YTQwZDJmNGEuNmM5MzVlY2U0ZWIyYmU2ZWY3ZTNiMTY4ZWY5MTA4NjQ5MjU1NDRjMTU5YTFkZTRkMjkzOTYzYWM0ZjE4ZmQ3Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd376/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzc2OjE3ODg5OTQ1MjIxOTY6Y2RubGl2ZXR2LnR2Ojk3YjUzMWFkZjZmNzNhNTguNWUwMTI4OWQwMTU0NzA5ZGY4NDQ1N2VkMjVkMjk5NDdhY2ZjNzVkNmEzMGQ5ZmVkMTIyMDEwOTUxM2YxMDE1Mw
+#EXTINF:-1 group-title="DaddyLive Sport",Polsat Sport 3 PL
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd375/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzc1OjE3ODg5OTQ1MjIzOTg6Y2RubGl2ZXR2LnR2OjRlMDM5OTIzNjAxZTljNzkuODIyODE4ZjU2MTgyNjEyM2Y5NTA1Yjk1OWEwNWM4OTExYjBjNjEwY2Y4ZmZjNGQ4ODU5NWRkNzMxNDYxNThhZA
+#EXTINF:-1 group-title="DaddyLive Sport",Polsat Sport Premium 1 PL
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd378/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzc4OjE3ODg5OTQ1MjI0MTI6Y2RubGl2ZXR2LnR2OjBkMzA1Mjc1Zjg3NWYxNmYuNWVjZWNkZjY0MDk5ZTI0MTBmODhiMTljMDdkNDNhMWRmYTAxZWI2MzI5NWU0ODQ3YTk3MGQ0YmY5YmI1ZTNjZg
 #EXTINF:-1 group-title="DaddyLive Sport",Polsat Sport Premium 2 PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd37c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzdjOjE3ODg5ODAwNzAyOTg6Y2RubGl2ZXR2LnR2OmYxZDUwM2NkNGExNTBiMzAuYzhkNWQ5ODhmODY0MmUyMzMzY2Q0YzlkYWY3Yzc2ZWIzY2E5MGUxOWFiZDA2Y2FiYzYzZGY0N2E3MWMzYjVlNw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd37c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMzdjOjE3ODg5OTQ1MjI2MTg6Y2RubGl2ZXR2LnR2OmQxOWMxZmYxMzQ4ZGNjZmQuYjk1NzAxYmQ0OTM1ZjhiOGJjYWRiYTY3YTZlNzIwMDM5NzVkOWVmOWQ5ZDg0YWE3Zjk5N2I0Mzg4MDI5ZDI4Ng
 #EXTINF:-1 group-title="DaddyLive Sport",Premier Sports 1 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc35e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzVlOjE3ODg5ODAwNzA3MTM6Y2RubGl2ZXR2LnR2OjQ1MDZlYmE3M2E2ZDQ0NzYuM2UwYjZhNzA3OGQxMzcxY2Y3NDViOGU0MjQwNTY5ZTE1MGI4ZTY5MjI4YjhkYzk3N2Q5MmUyMTg0YzM1ZGYwNA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc35e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzVlOjE3ODg5OTQ1MjI5NTI6Y2RubGl2ZXR2LnR2OjBjYmMyMDU4ZWM3MTI4NTEuYjRjYmRlYWJlMWJlZjVjNjQ3MWZjNWY4YWNiNjI1MmJlMGRhNGY3NTE1YjE3NjdmNTE0MTY4OTZlMmIzODkyOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Premier Sports 2 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc361/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzYxOjE3ODg5ODAwNzA5NjQ6Y2RubGl2ZXR2LnR2OjZiNzdlYWU2NzEwYmQ2ZWIuNGE4Nzk0ZjY5Yzg5MWVlNDNlMzcwNDYxNTFlMWRhNTBkYTc5M2Q5MmRkYjRhYTdlNjVjMGFlNjY0ODc2Zjc0MQ
-#EXTINF:-1 group-title="DaddyLive Sport",Premiere 2 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce897/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODk3OjE3ODg5ODAwNzEwMDU6Y2RubGl2ZXR2LnR2OjJhZGViNTE0Yjk2MjQ4ZWUuOTE0NzIzNGM0NTgwYTY5NDhmOTU5YTdjMjRhN2NkMjBiNGRlYjFmNTU0MjRlMzM4YmY0OTQxMzE5NTY0Mzc2YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Premiere 1 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce75e/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNzVlOjE3ODg5ODAwNzEyOTU6Y2RubGl2ZXR2LnR2OjUyODZmYjYxZTA4YjNlYTguNzM5ODFlZGJiYmRjZDRlYTYyMTMzMTBmMDU5Mjc4ODBhYzliYjk5ZGQzZWI5YmI4ODVhZmM2YWMwY2NkZGNjMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc361/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzYxOjE3ODg5OTQ1MjMzOTU6Y2RubGl2ZXR2LnR2OjQ1NTQwNWY3ZGQyODFkYWIuNjk0MzU3NjIzZGY4ZDc1NjIxYjI2ZThlMDE4NTY5NDBiYjZlMjQ3MjQxNDA3ODZiYzQ0NDc4ZTNlZmY4OWFjZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Premiere 3 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce898/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODk4OjE3ODg5ODAwNzE2MDI6Y2RubGl2ZXR2LnR2OjEwNjgzYTJmZGJhZTY5NTkuYTAzYzI0OTQxNzNkNmM1ZDJhNTg0ZTA0OWYyYzI4Njg1ZDg0ZmM0NzEwYzBiNWRhNmE1M2VmMTE3NjkxMTM4OQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce898/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODk4OjE3ODg5OTQ1MjM1MTM6Y2RubGl2ZXR2LnR2OjI1Zjk5YmYzZmFkZmE5YzIuY2EyN2YwYjhlZDEwNGUwZmE3ZDE1NTFiMDg5MTFjYzk2NDE2MTBmZTRkMTRjNGEzMjU5YjA2NWFlZWY5ZDE2ZA
+#EXTINF:-1 group-title="DaddyLive Sport",Premiere 2 BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce897/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODk3OjE3ODg5OTQ1MjM1NzE6Y2RubGl2ZXR2LnR2OjQwMDNkYzFhOTVlMzA0ZDguOTg4ODNmYzVlMTc2OTlkZjZhZDVjMmM5YzExNDNhZjFmYmE5M2VkNTFhMTczZDdmOTA5YzVmN2Q0NzhhZTQ4YQ
+#EXTINF:-1 group-title="DaddyLive Sport",Premiere 1 BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce75e/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNzVlOjE3ODg5OTQ1MjM3NTM6Y2RubGl2ZXR2LnR2OmQ4Yjg3MzYxMzZkODZmZTAuNjhmNjg2MDllOTJmNGY1NzgwMzBlMmE4MzBiZDgxMzAzNDM5ZTg1N2Y2NjcxYjlkNDBlNWU3ZWU0NmI1MDFhMg
 #EXTINF:-1 group-title="DaddyLive Sport",Premiere 4 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce899/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODk5OjE3ODg5ODAwNzE4MDA6Y2RubGl2ZXR2LnR2OmEzMDZiZGFiZTNhMDRiOGQuOTRiOTQyOTIzZDc0Zjk0ZWM3YmNhODVlNmE5OTdlNDc0NmY5ZmY0OWMwNGRiZjExZDhmYTFjMzIxODg0ZjNkMg
-#EXTINF:-1 group-title="DaddyLive Sport",Premiere 6 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89b/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODliOjE3ODg5ODAwNzIyODE6Y2RubGl2ZXR2LnR2OjUyNjA5MGUyMDY1YzQwYWIuN2I1NzA0YzIzOThjY2M3MzJhZTgyNTllZjU5Yzc3ZmU2N2Y1YzE5YWU4ZTU0ZTkzODU1ZDQ5YTQzMWIyNTY2Yw
-#EXTINF:-1 group-title="DaddyLive Sport",Premiere 7 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89c/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODljOjE3ODg5ODAwNzIzMjY6Y2RubGl2ZXR2LnR2OjJiZTkxNGM0ZGY4NWI3NWMuY2RmODg5YjExNjVjZmY5YzNhODE2OWQwY2FhNTJjNmQyODRiNWQ0OGNmYzUzODU1NTQzMTM1MmUwMjM5OWY0Yw
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce899/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODk5OjE3ODg5OTQ1MjQxOTI6Y2RubGl2ZXR2LnR2OjM5NDAzM2YyODdhYzlmODYuZDZiNjFlM2JiYzM5MGZmMzVmZGE0NGYzMzQxNGI1YzdjM2M2ODBkNTY4OWU0NWNjM2VmY2IwOThjZWUyM2Y5OA
 #EXTINF:-1 group-title="DaddyLive Sport",Premiere 5 BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89a/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlhOjE3ODg5ODAwNzI0MDU6Y2RubGl2ZXR2LnR2OmQ2ZmNkZDY3ZWI1NWY4ZTYuOGYxNjQ5ZGU0ZGNjNDE5OWQ3ODJiNmViMzYwMzlmOTFhZjBlM2MyYmZkMjVlYjgzMzMwOGNhZTExZTM0Yzk4ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89a/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlhOjE3ODg5OTQ1MjQyOTg6Y2RubGl2ZXR2LnR2OjA1MzBlZTQxN2ZkMzVjMDYuNGRlNDI3MjEyYzYxYWNhZjc0NGVkMjRkNzViNjQxYmU2YTk0MTU4ZDZhMmU2ZDgxMmZmZTkyMmZjNjEyZTM5Mg
+#EXTINF:-1 group-title="DaddyLive Sport",Premiere 7 BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89c/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODljOjE3ODg5OTQ1MjQ3MTc6Y2RubGl2ZXR2LnR2OjY5YTk4ZjFiNzFiODJiYjMuYzIxNmEzNDVkMTY0MWYxOWM3MGM5MGFiZTJhNWNkMzM4NTgyZTI5ODc3MTUxNTkyM2RkOTYyZmIwNjEzYzM1ZQ
+#EXTINF:-1 group-title="DaddyLive Sport",Premiere 6 BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89b/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODliOjE3ODg5OTQ1MjQ3MjE6Y2RubGl2ZXR2LnR2OmI3MjdhMWI5ZGNlNDdhZTEuNTdkNjU2YjcxY2ZmZmVkNDJjYzZkYmNlNWQyODRkOTgzZjdhN2E3NGQzNGM4MTNmMTBjMTQ5NWU3YzA1MjUxNg
 #EXTINF:-1 group-title="DaddyLive Sport",Prima Sport 1 RO
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd560/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTYwOjE3ODg5ODAwNzI2ODc6Y2RubGl2ZXR2LnR2OmM2ZjJlNDk0MDAzNTEyNTYuZjllOTI0ZGZjOGI4ZjE4NmIwMTMzNTVlODdiODgzNmIzNTY1M2RhMDBmYWM2MzQ3Zjg1NWQ4MmMwYzE2NjExZg
-#EXTINF:-1 group-title="DaddyLive Sport",Prima Sport 4 RO
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd563/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTYzOjE3ODg5ODAwNzI5OTQ6Y2RubGl2ZXR2LnR2OjZmMjlhZDA2NTQ1YmNiOWEuZTFiNDhiOTdkMjFiMzU2NjViYTFhNWIzMzU5ZGNmN2IyNDJmNTEzYWNiY2U1YTQ5MDk1NDRkN2VlOGEzMGU3NA
-#EXTINF:-1 group-title="DaddyLive Sport",RMC Sport 2 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1d6/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWQ2OjE3ODg5ODAwNzM0NTA6Y2RubGl2ZXR2LnR2OmU1ODA5ZWI3NmRkZDAwMmEuYWU5MzMyYjE2YTUxMmQxODEzNGIwM2VkYTEwNTc5ODZkZGVmOWM1NWI3OTBkY2JlNmU4YWViMmUzYjY2NWI2MQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 1 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccacd/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWNkOjE3ODg5ODAwNzM0NjE6Y2RubGl2ZXR2LnR2OjMwZmQxYjlhMzI4ODMzMzEuZGQwMDQ2MDc0ZjE0YmExOWM1MGUwODVjN2FhZTY1OTNiOTNiNjcwODc1NWNhNzMxOGJmOGM2MDcwNGRhZWRjYw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd560/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTYwOjE3ODg5OTQ1MjUwOTk6Y2RubGl2ZXR2LnR2OjY2OTMwNTM4NWZhMjJhY2EuZDBhOTYwNTc0YjlmOTAyYzAwMTYxOGZlYWM4ZTNhMjhkYThlY2M2ODAwOGM3ZGY3ODVkYzYwMTk2MWYwYTI1ZA
 #EXTINF:-1 group-title="DaddyLive Sport",RMC Sport 1 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1d2/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWQyOjE3ODg5ODAwNzM3MTg6Y2RubGl2ZXR2LnR2OjJiMWVkMTNkYjkyZmZmNjEuOTkzZThkMzZmNjc1YzNjODM3Y2FkYzMxM2I5ZDI3MGU0YzQwM2FiOGZjYjg0NzgyMGM5NzE2YjE2YThiNGVjMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1d2/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWQyOjE3ODg5OTQ1MjUzOTQ6Y2RubGl2ZXR2LnR2OjQ0MzU4OWIyZmQ4MzEwZmYuOTdhOWM5YjkzNzY0MzI4Nzg1ZGMxZWFlZmQ1NzI3OTJlY2IzNmU1OTdiZTEzODRlNjIyZmZlZGY5NDhiZTYwZA
+#EXTINF:-1 group-title="DaddyLive Sport",Prima Sport 4 RO
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd563/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNTYzOjE3ODg5OTQ1MjU1NzQ6Y2RubGl2ZXR2LnR2OmRlOGM3Y2ZjODg2N2UxNTYuNGFhNDQ5YWMwNGRlOWQ4MmZjMGQ4MzA0MTJmMzI0OGNjZjkzMmZkZjZlMmZmNDgwODc4OWI2MzJhNTAzMzcyMQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 1 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccd41/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZDQxOjE3ODg5ODAwNzQxMzg6Y2RubGl2ZXR2LnR2OjI5NGIwMTE1MzMxNjdlN2UuYmIxZmI0NDQ1MDVlYWU5MzhmOWU2YmYwNzAzMjMxM2Q1YjRmMWY0MGQ1Mzk2ZmMzODhjZTdhZTNiNWY5YTQ5YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 10 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccae1/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWUxOjE3ODg5ODAwNzQ0MjY6Y2RubGl2ZXR2LnR2OjI4NmI0YmJkMzlmZjhkNWQuOGNmNzE3MjY2YTEyMjMxZGQ5NTJhMTIxODQ3NDE4OTYxNWY1NGMzOTFmMGJjM2Q4ZWVkNDk1M2UyMWYxYzk0NQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccd41/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZDQxOjE3ODg5OTQ1MjU5NTU6Y2RubGl2ZXR2LnR2OjYyODhhMTcwMTQ2ZTExMGUuZWRiYWM3ZmYxYWI1MTJjZmU3NWE5MTFjMzY1ODY3MWUxOWE3OWU4ZTliZWNjYWVlYzM4YzVhNDZiMjBlMjI3Yw
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 1 DE
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccacd/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWNkOjE3ODg5OTQ1MjYwNzA6Y2RubGl2ZXR2LnR2OjM1ZWRkMDRlZGMwN2JiNjAuYzI3OGQ2Y2NkYzBhYzQwOWM3MzgyOWE2YjA1NDk2NmVjYTQyZjYxZTg1OWM0MTgwYzg3NTc1ZGRiNTI0NGI4ZA
+#EXTINF:-1 group-title="DaddyLive Sport",RMC Sport 2 FR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd1d6/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMWQ2OjE3ODg5OTQ1MjYwOTQ6Y2RubGl2ZXR2LnR2OjE1ZGZmYzE5Y2M0NTBhMGIuNDhiNmJhZjk0ODc0MTVmODA1NjMwYTM1ZDM4Y2JlNjcwYTk3MzMwMmM5MjVjZjJjZmU4MTU3ZjZkMjNkNDgwOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 1 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf222/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjIyOjE3ODg5ODAwNzQ1NTg6Y2RubGl2ZXR2LnR2OmM0YTNmYmRkZWM0ODRjODQuMzc2OGYzNDBiZmEzMWM3ODc3ZTdkNmQ5ZmM2YWE0MjZhYjYxYWZmMzA1NmJjMjljMzU2Y2E1ZGJmYTYyMzc1Nw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf222/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjIyOjE3ODg5OTQ1MjYzMDI6Y2RubGl2ZXR2LnR2OjdmMGZhMjQwMWRjOGIzNTYuN2M0YWY3NDdlYzhkOTZiN2Y3MTBmMDdjZDI2YWYzNTRlYWEyNDE3NWFiMWU4ZjU5MjY4NjM4YmNhN2M4Y2FkYQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 10 AT
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccae1/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWUxOjE3ODg5OTQ1MjY3OTE6Y2RubGl2ZXR2LnR2OmEwZjE4NWEwMWY0YTZiZGIuZThkMDYxOGNhYjU5OWE1NjQzM2M4Y2ZhMGQyMDlhNGQxOTlhNWY2NDcyNzZmM2MzY2Q2MWI1MjZlZTc2N2VjNQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 2 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccacf/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWNmOjE3ODg5ODAwNzQ3Nzc6Y2RubGl2ZXR2LnR2OjQyZjJjMTdhNmEwMzI5ZTUuMjAyMWQ1OGM5NjVhYzhmZjg0MzUwOWIxOGZkMzQ1YjcyNGZhYWMxMGVjNTg3ZjI5YTVlN2U5NWRmODM5NGIxYQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 2 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccd42/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZDQyOjE3ODg5ODAwNzQ4MjE6Y2RubGl2ZXR2LnR2OjVjNjBlMGQ0NTQ3MzdlMTIuNzVmN2UzODFhOGFiOTZhMWIyNGY4NmIzYWE1YWZkMzY5NjU4YjQ3NTVlOWFjODcyM2EyMmM0MGFkZTY3ZTY0OQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccacf/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWNmOjE3ODg5OTQ1MjY4NjI6Y2RubGl2ZXR2LnR2OmVhZjRiYjY1NWI3YTc4OTQuZmI5OTZhMTJkNWMzMjNhYTE2ZmFmOWJlMmMzZDVlNzRkMzJlOWZkZWRhMTIxM2JmMTZlNDU4YTNhNjVmZDVmYQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 2 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf223/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjIzOjE3ODg5ODAwNzUxNzc6Y2RubGl2ZXR2LnR2OmI5MGNkZTBmMjI2NWI1N2QuNDY3OTZmNDU3ZjE5ZGNhMmZjNDMyYjg0NTgwOTRkYjEwNGVkNzU1NThjNTRkMDcwYzQyZjE2OTcwMmYwZjZjMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf223/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjIzOjE3ODg5OTQ1MjcwMjE6Y2RubGl2ZXR2LnR2OjEwNTBiYzRmZDk2MDRkMTguNmFiOWU2NTA4ODcxMjliNzgwZDQ4ODViMjA3N2UyMWM1MzhiYzZiMDBkNGQxM2IzY2RiM2UwMzFkYzhkMDVmNQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 2 AT
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccd42/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZDQyOjE3ODg5OTQ1Mjc0MzY6Y2RubGl2ZXR2LnR2OjJmYzI0MmIwMjdkMjUwNDAuMjE0ZjVmZDgyOTA0Njk2NTg1ZDU5ODU4NDM4YjczM2Q3M2JjMTFjNWVhMTg1NmJiMWZhMGQwMmQ3YzM1MDA5Yw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 3 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad1/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQxOjE3ODg5ODAwNzU2MzU6Y2RubGl2ZXR2LnR2OjIyY2I2ZTlhNmVmYWRlNmIuMmYxYzNiMTMyNDVhNjk1MjViM2Y5Y2UxMzdhZGFiY2M5OGE5ZmFjNDI3NDRjZWI0Nzc5ZGNlMDYzOGVkNmE3OQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad1/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQxOjE3ODg5OTQ1Mjc3MjM6Y2RubGl2ZXR2LnR2OjkwMGFiZmZhZGJiNjU4NDMuMmE0YjNiNGVkOTRkMzU4OWMyZDY2ZjVmMGU5MGRiOWZkZmQ0N2NkYTJhOGIwOWNkNTFhZWU3YTBkZGMzNWE3Mg
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 3 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccb1a/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYjFhOjE3ODg5ODAwNzU3OTA6Y2RubGl2ZXR2LnR2OjVmYjU1NDkyZWZkZDcxYjUuOTg1MWZkMzRhZmI4ZWZjYTFjNzdlN2E3OGIxMTZkMDM1ZTI5YTg3ZjE0YTY1NWMyYmRkOTc0M2NkNmNlYzBhNw
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccb1a/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYjFhOjE3ODg5OTQ1Mjc3NTA6Y2RubGl2ZXR2LnR2OjFlYjAzMTkwYThmOTBiZDQuZGMyMzU4YmEyMzk5NTY1ZjFjNmRkYmFjZTM0OWUxZDI3YWU0YWQyYjgyYzg4M2VhMTE3Y2U4ZjI0MzFiMjIyNA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 3 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf225/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI1OjE3ODg5ODAwNzYxNTU6Y2RubGl2ZXR2LnR2Ojc1YmNmZGNkMzMzOGNlYzMuYjdkNDVlZjNhZjQ5OWI5NDk1M2QxMzVjM2E4MmMyNTc1YWVhMTA0OTgxMmU4ODI4OWVmZDg2YmU0NmRiZTBmMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf225/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI1OjE3ODg5OTQ1Mjc3OTY6Y2RubGl2ZXR2LnR2OjFhNjE2ODBmMWY1ZjY1MDAuM2JlMDQ4NTMwYzZhMTg5ZTZjZGUzN2UzODA2NjhlMmZiNWNlMTRmNzE5NTJmY2U4NmY5MjE1MmZiODliYjZkMA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 4 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad3/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQzOjE3ODg5ODAwNzYyNDc6Y2RubGl2ZXR2LnR2OmY2OWExMjZkNzY3NTJlMzAuZDdiYTgyNTc2YmY0MTQ5NzQwM2YzYTUyZWM4OWYzZWQ3OGMyZjYyNDdlMGM1MDQwZDEyNTQxNmVmYTg2N2M0MA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad3/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQzOjE3ODg5OTQ1MjgxMzI6Y2RubGl2ZXR2LnR2OjU4ZDA1YjIzOGUzNGZiYWQuNzhkZWJhMzY2OTcyYTBhNDE4Mjk3MzRlNTdiZDM2NmQxNjU1ZTE1MDEyMDdmZWQzMGQ2MmViODg5MmEyYWI4MQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 4 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccb1b/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYjFiOjE3ODg5ODAwNzY1Njc6Y2RubGl2ZXR2LnR2OmNhOWZiNTY1ODU3OGQ4OTIuZjk5YzI4Yjk2YTU5ZjdmNDYwODg3MDVmYTk1OGViMzEzOGQ3NDYyMzAwMjY0ZWI0YTU1OTU1NTlhMTk4OGJiOA
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 4 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf226/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI2OjE3ODg5ODAwNzcwMDY6Y2RubGl2ZXR2LnR2OjEwZDU2YWY0MjU2ZDVkZmUuMDcwODdhZTFhZjc5MzA3ZGFjZTY0MjRiNzA4ZmRlNWU2MmI2MTYxYTM1ODQ4YmY4YWNkYTQ3YmNjOTgzMjlmOQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 5 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad6/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQ2OjE3ODg5ODAwNzcwODA6Y2RubGl2ZXR2LnR2OjU3MzAzNDdlZmEyYjQzMDYuYTkwZGQyYzkzNzZmZjVkYWQ2ODg2M2Y3M2QwNGYyMGI4ZGRmOTU1NWQ5ZGI1N2U0MTBiYTY3NjljYjljNDlkMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccb1b/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYjFiOjE3ODg5OTQ1MjgzMjU6Y2RubGl2ZXR2LnR2OjM5ZGVkNjc2MjNhMzhmOWMuYzBiYWNlOWM1MWY5NDNlMDlhMGZiYzlhNzBjZjEwZTFjNTk1ZThkZjQxN2NhY2NlMjY0YTVhMGVhOGYzNWY0ZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 5 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccd46/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZDQ2OjE3ODg5ODAwNzczMTA6Y2RubGl2ZXR2LnR2OmE2N2ExMjg0OGY0NGVlZmYuOWYyNmNlMzc1NWJjNWZiMzVhYTljOTAyNmIyZjA3M2I5YmE2OTQzMzJlNjllMTVhNjU1MmY5N2I1MmI4MzU2Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccd46/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZDQ2OjE3ODg5OTQ1Mjg3Mzc6Y2RubGl2ZXR2LnR2Ojc0ZDNiODE5NTk2N2U3NGQuNjYyMjMzZTI3NzM2ZDNhMjA4MTNhNGVlNzc4NjE3MTc5NDUzMTFmZWNhMDg3MTVkZmRiNjdjMzVkNDE4MjU1Nw
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 4 NZ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf226/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI2OjE3ODg5OTQ1Mjg4MTM6Y2RubGl2ZXR2LnR2OjEwMDIxNzVhMTFiMDVmNzYuZjc0MTE1NzJlYjYyMjg4N2I0Y2FkMmQ0MjE3NmE3ZTdmOTMwOGI1YWU2ODcyODIwODg1YWQ3NWY1OWIyZWJmYw
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 5 DE
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad6/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQ2OjE3ODg5OTQ1Mjg4Mzg6Y2RubGl2ZXR2LnR2OjE0Zjk3MGZjMzkwYWJhYWUuMWMwYzk2OTZjMDZmMTY2YzNlZWQ2MGJmYzc4MDRhM2QxMzVjOGE5OTczZWY0YzIxZGRlNmI0YWYyZTQxMzI3OA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 5 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf227/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI3OjE3ODg5ODAwNzc1MzQ6Y2RubGl2ZXR2LnR2OjNjNjhjZWJhMjFiNWM4ZTguNTQwZDg5Y2E0Y2QzZTU3NzFhNzJkZTYxZjFkNTViNWE2Y2UwNjIwZGRmODc4NDhmMjA1ODNiMjM3NmU4NWZlMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf227/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI3OjE3ODg5OTQ1MjkyODg6Y2RubGl2ZXR2LnR2OmJjMzVlNWZiMDI5ODAwMGEuYjg0N2IwYThlOTIyYWQwMjhkNzA4MjU4OTJmYTgxZGE3ZDNiNDNhZmM4OWY4OTM5MzFmYzllNGM5ZjE0MGExNw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 6 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad8/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQ4OjE3ODg5ODAwNzgwNzg6Y2RubGl2ZXR2LnR2OjcxZWEyNWQwMDJiMDU5ZGUuMjdjMWIyYzk4MzNlYzZjZWY2Nzk0ZDA5YzBkMzZmNTgzYzY0Y2IzNjFjMTAzMTI2NTYxYTU4NmJmNWZmZTI1NQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccad8/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWQ4OjE3ODg5OTQ1Mjk0MTE6Y2RubGl2ZXR2LnR2OmQ3ZmY5MDBjMDExZWM3NzAuMGEwOWJkMmFlM2JjNjZhZGM2ZGY5OGJjMmU2M2ExNDRlYTk2NDYzNTM1N2RhMjA1ODNjZDUyMWE0YTM0MjZiZA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 6 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf228/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI4OjE3ODg5ODAwNzgxNDU6Y2RubGl2ZXR2LnR2OjljY2M1NThjZjFjYzY4OWYuYWRiODUzNmRmMDg1OGRkYjE2YWMzNWM2ZTU4MmI0NmYzNDIyOGM3ZTkzNTRjYTI1MTk5ODZmNDQ5OTQyODllNA
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf228/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI4OjE3ODg5OTQ1Mjk2MjE6Y2RubGl2ZXR2LnR2OmQ4NzVmZTI2ODk0NTMyZjcuYWI3NmViMDM3NjUyN2Y1OTc5NzY5YmRmY2VhM2U4N2IyOTY1YTRjMWVmNTQ2Y2ZmZDM1OGQ3MTc2ZjJjODBlOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 7 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccada/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWRhOjE3ODg5ODAwNzgyNDI6Y2RubGl2ZXR2LnR2OjlmNTIxMTYyNTFkZTk4NGIuYTExOTRlYmM1MWE3MjYxNzBhM2RkYTMzOTg1MGQ4NTc3NDM1MWUzMmEzZjgxNmRkMDg3NDA4Y2U0NjE4Mzg0Ng
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccada/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWRhOjE3ODg5OTQ1Mjk5MTY6Y2RubGl2ZXR2LnR2OmMzMDg3MjA0ZjY0Y2MzYTUuNWY0YTFjMzFkYjIzZmE4NGU0OWU4MDRlODU3ZTU0ZmRkODY0NzBmNDk1MDA3OWYzN2FhZGM0YjNjOTBjZjgwMA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 7 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf229/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI5OjE3ODg5ODAwNzg3NjY6Y2RubGl2ZXR2LnR2OjBhMTQ2MDFjNTU1ZmRjNjguYjQ4ZDcwOWU3YjJlYmE2ZDdjMzQwMTI0N2FjZGMzNTBlNGY1ODNmMGRiYTE2ZDg0NWY5MjYxMmQzMTNkY2Y2ZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf229/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjI5OjE3ODg5OTQ1Mjk5MzQ6Y2RubGl2ZXR2LnR2OmMxNGRiMjIwYTg5ZjVjNGQuYzczYmM2ZTdiOTBiMDg1MTBlNDYwY2I0ZmJjMGQyM2RjZGYwNzcyYzc5NGU5ZDE4YzUzNDc1YjZmMjZjMTdlYw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 8 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccadc/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWRjOjE3ODg5ODAwNzkwOTQ6Y2RubGl2ZXR2LnR2OjBjNmJhY2E3YWEzZWZkNTYuNTJhNDY3OGQ3ZjYzZThhY2E5Yzk4NTcyMWM4N2RkYWE5ZjM3ZmU4YWU4OWMwMzMwMzNlNDMzN2EwZTEyMDlhMg
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 8 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22a/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJhOjE3ODg5ODAwNzkyMzU6Y2RubGl2ZXR2LnR2OmYzZjc5NWQyMDRjMzc3MTEuNDgzOWYyYzZlMzFlZjg4NWZjMDlmYmZlNmJhY2FmOGI2YWMyY2U3MWIzMjk3NTBmMjkxMmJjNDYzYjIyODM5YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 9 NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22b/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJiOjE3ODg5ODAwNzk1MTk6Y2RubGl2ZXR2LnR2OmZlOTQ1MmJiMWZkNTQ5MTAuZGE2ZmJmOTRlZjZkN2ZiY2ZjNGQ1MzEzZTVjYWY2NDhlOGMwMjUxYTQzMjdjYmVhMGYwODFkYzA0ZmFmNWUxMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccadc/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWRjOjE3ODg5OTQ1MzAxMzE6Y2RubGl2ZXR2LnR2OjMyOWZjZWFkNTY3N2RiMmEuZmJjOTIxNTJlZDNhMGMzYWI0OTRhZjMzMjQ5NjcyNDlmZWNmODU1YTNmOTZjOTI5NzhmYmQ1MzdhMzYyZTIwOA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 9 AT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccade/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWRlOjE3ODg5ODAwNzk2NzQ6Y2RubGl2ZXR2LnR2OmQ5NDFhMGQ5MzFhMjEzODAuOWM0OGFjY2E5OWFlY2RlYjI2Nzg1ZTZkMzY2ODI4ODNkYTE2MDdjZDRiYTM2OTMwOTJiYWM4NzQ0ZmQ3MTI3ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccade/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWRlOjE3ODg5OTQ1MzA3MTE6Y2RubGl2ZXR2LnR2OmYyNDkxMzA3MDZiNzVjNDQuZmU4MDE3YTlhMDZiNzI1YzAxYzQ3MTlhYjk5OWYwNmNiMDIxNmRkOGY0NDdhNjZlNGNhYzIwZDI4NzliMTM4ZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 1 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccca9/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2E5OjE3ODg5ODAwODAwNDQ6Y2RubGl2ZXR2LnR2OjM2MjIxY2Y5NWUzYjA3MDIuZTYzMzg2NWZlYzFkN2IxOTYyMDBkOTAwNDYyYTI2OTg1M2M0ODk5YzQ0YjgxOGZmMTdjNzRmMWY0ZTgzODk4Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccca9/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2E5OjE3ODg5OTQ1MzA3NjU6Y2RubGl2ZXR2LnR2Ojg4YTRiZGU4ZThmMjgzNjIuYTY5YjgxY2NkMmU3MmI1OWY0ZDNkN2U2YjRkMjNlN2U4YWZmMWUyMmY3OWM0MzZkNTY4MzNkMDhhNDIwZDRjOA
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 8 NZ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22a/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJhOjE3ODg5OTQ1MzA3OTU6Y2RubGl2ZXR2LnR2OjhiM2YxOGM1ZWY2MWU5NTYuZTVhNTY5MjJkNjBhNWVjNzIzNTcwNmYyMmQ0ZDQ4ZGRjNzE3YjYyZjBmYmJlYzc3ZTlkYzE1ZDEzZWEzMmRmNA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 10 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaca/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWNhOjE3ODg5ODAwODA0Mzk6Y2RubGl2ZXR2LnR2OjliZDc1N2FmMzZiMmQ3MDMuZDg5NDIwZDZhZmNkNDFjN2E2MjAyN2ExNTY3ZDUwMmQyZDljZWY3OWJlYjdlYTIyZjY0NWFjNTUwZDljZDAyMA
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 2 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccab/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2FiOjE3ODg5ODAwODA3MjE6Y2RubGl2ZXR2LnR2OjQ3YzQzMDllMWViZDg3MzMuZWU0NmZjYzY0ZmUzZjRmODkwNjM5MWI0NzFlMDk2YzE4ZGMyOWY0ZjQyOWNhNWY4MjlkYThmNzE0ZjcxNmI3MQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 3 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccad/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2FkOjE3ODg5ODAwODA4Nzk6Y2RubGl2ZXR2LnR2OjZiODcyYThiZmVkN2RjNmEuY2IyOTZmN2Q2NWVkODU0YTA4ZDhhNzM3ZjgwNDNiOTI0NDZlODFmNTI2MTY3NzYxMGE0ZGYyNjYyMWFhNzE1Yg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaca/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWNhOjE3ODg5OTQ1MzEyOTM6Y2RubGl2ZXR2LnR2OmVhZDlhOWM0OTVlMjg0OGEuNzE2ZGNkNDQ4Yjg2ZTc2ZWQwMzIzYzI2MzhlZGRhMjM3ZDIxNDRkYzY5ZDQyZjE2NmI2OGQ4MGI5M2Q2ZDk5OQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport 9 NZ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22b/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJiOjE3ODg5OTQ1MzEyOTQ6Y2RubGl2ZXR2LnR2OmY0ZWIxY2JkZWU4MjMxOWQuNjUwYmI5MjY1OWViN2Y3OTUxMWM4YzAzMjQ5ZmEyOGRiOWVkN2MzMmEyZjI4NjkzNDZlNTNjYjdmMzlhYWIwYQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 4 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccaf/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2FmOjE3ODg5ODAwODA5ODI6Y2RubGl2ZXR2LnR2Ojg3M2JjYWZjYTI3MTg4Y2YuMTQ0MGZmODliNjg5NmY1MTc1ZWMxNWQxOTg2Mjk1OWQ5ODJjMWU0ZjFmZDNlMDU0ODM4MDcyYjNiOGE5MzU3Yw
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 5 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb2/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2IyOjE3ODg5ODAwODE0Mjc6Y2RubGl2ZXR2LnR2OjEwZjhmYTlhOTQ0Yjg3OGIuNTY1ZTY0MjRiMjdkOTg4MGM0NTc2NDcyMjdhZmMzZTZlZDgzODdlMjFkOTU5MGQ4NzQ4ODBkZWQ1MTdlMThiZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccaf/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2FmOjE3ODg5OTQ1MzE3MTM6Y2RubGl2ZXR2LnR2OmYxNDQ1YjcxMWNhNTUwMDQuYzFiMmE0ZTBhNmRmYWFhOTJmZmRkZmE2MGVhMDZiZjUxNWZkMmFhZGJlYThkNjRmMmQ0MGY5MzZhM2MxYTczNQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 2 DE
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccab/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2FiOjE3ODg5OTQ1MzE5ODc6Y2RubGl2ZXR2LnR2OjhiYjQ3N2Y3NDQ3ZTkwNDMuMGMyZjE4NGFiMDM2MGFmMWU5MWIyZGY0ODU0OWUwMzRmNDJiNzEwZDE1ZjJiMmI3YmVkYjlmMzQ4YWY4YzhlOA
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 3 DE
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccad/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2FkOjE3ODg5OTQ1MzIxNjg6Y2RubGl2ZXR2LnR2OjdlZjYwMTkxZjQyOTM5ZjcuNGUwYjhiYzY1NjcyODNhYjhhNTRhNDA3NDgyNzYwMjk4ZDQ4YjE2Mzg1ZTgwODE1MzJjZDk3MjEzNzZmMjJkMg
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 6 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb4/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I0OjE3ODg5ODAwODE1OTc6Y2RubGl2ZXR2LnR2Ojc2NjBkYjA0NGI0OTY3MTYuMWM3NmUzODMyMDMzNjg5NjdmOTRmYTEwMTU5NDE5NjY5YmNlMGFjZTUxYWY1YjBhZmVmODQ0YzVkOGJmNjlmMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb4/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I0OjE3ODg5OTQ1MzI1NzY6Y2RubGl2ZXR2LnR2OjI2NTVhN2I1OWNhM2ZmNjMuMGVhNmRmNzAyZjc1MjUwNTYxOTJiYTZlYTBjNmViYWYwN2Y3M2U1MTgzNDM0YWE4ZDQ4N2I1MTEyYWZlOGIyYw
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 5 DE
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb2/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2IyOjE3ODg5OTQ1MzI2MjQ6Y2RubGl2ZXR2LnR2OmJkODlmMTM3OTQ2MzYyODMuOWEyZTZiYWJmNjEwZjdhOWI0OWIwZTRjMzVjZGI2NmY5ZGZkMGFlNGRkOWZlYzI5MTkzMjFhMTRlOGExNzgyNQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 7 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb6/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I2OjE3ODg5ODAwODE4OTE6Y2RubGl2ZXR2LnR2OjQzYzNmMzNiYTA0Y2I4NDkuNGNhYzM4YzJmMzU2NWJmZGU4NmE1MjgwMTRjZDBlZWY0NmY1ZjE1NDdlMjk1ZWU2ZTM3ODIxMGYxNDY4ODc1ZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb6/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I2OjE3ODg5OTQ1MzI3ODE6Y2RubGl2ZXR2LnR2OjNmN2ZjN2IwNzY2ZTAwY2YuMTA0OWU1MGE1MGEyZWQyNTE0ZTc4Y2QxOWZiZTRmZTJjNjNlYzZkZTZhYWE2ZDRiMGJhOTVjNzg4MzY3YzM1ZA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 8 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb7/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I3OjE3ODg5ODAwODE5NTA6Y2RubGl2ZXR2LnR2OjIxYTY4M2NlMjkyYTkyYmIuZDA1ZWY4N2Q5OTVjNWUxNThhNzJmOTE4NzE4M2IyYmZkY2I2OTg0ODUyYmQ2YjEzODQ2NjBhNDNhNjcxYjRhNw
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb7/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I3OjE3ODg5OTQ1MzMwNzU6Y2RubGl2ZXR2LnR2OmQ4ZTNlMWU3YTgwNjQyY2YuNTExNmJmOTdlYTEwODkwMTU0NzU3MWQzMTQ5MjMzMDIyOGQ5YzYxMWEzNDcxYWQzMzI0ZDBlYzA4ZWEwMjhiYw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Bundesliga 9 DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb9/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I5OjE3ODg5ODAwODIxNTQ6Y2RubGl2ZXR2LnR2OjA2YTdhMjAzNjZhMTgxNTEuNjgwZjg0Nzg1MmNjZjAyNTZmODFkZmFhNWRhZWQyODliYTA2N2I0NGNmM2Q3MmM4Mzg0NDU5ZTQ1MWY1N2MwYg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cccb9/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjY2I5OjE3ODg5OTQ1MzMzODc6Y2RubGl2ZXR2LnR2OmI1NDQ5MTFmODBlZjM4MjguODlmYmMzNDE3ZDcxNzhjN2Q3YjVhNDNkZTMyNzE4MjQ2ZDkyZGExM2EyZTY5N2U2NmI4ZmZhZTkzYmNhYmNmYw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Golf IT
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaf0/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWYwOjE3ODg5ODAwODI2NDQ6Y2RubGl2ZXR2LnR2OmRlMTI1NDI5ZWYyZmM0NTMuZjYyZDU1MDM2ZGFiZTUyNTA4MDY4NTUzZGQ0YjlkMzEzZGI5MGE0ZDMyYTJhNjliZWU5NDNiOTM0NDRhYjQxMw
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Max IT
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc39e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzllOjE3ODg5ODAwODMwMzk6Y2RubGl2ZXR2LnR2OjJjMzY2ZDM0NTUxYTgyZGMuYmY5MDY2NGQ3ZGIyZGJkMThlOWI4ZGYzZTRhODczYTUwYzBiYTQ2YzUyOGIxNGM3MjkzMmRmNTcyNjFiNWE1Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaf0/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWYwOjE3ODg5OTQ1MzM2NjI6Y2RubGl2ZXR2LnR2OjEwYTQ2YmI4ZGYzYmU0NjQuNmMzMDc3MjM0NzI4ZDJkMGE1NTFhOGRjYTFlYjI2ZTNlZTJjZWI4MDczMmNlYmVmNWZmYTA1N2ZhMDhhMTQyMA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Mix DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaec/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWVjOjE3ODg5ODAwODMyNjE6Y2RubGl2ZXR2LnR2OmZlNGM0MzY4M2I5MGY3ZDcuYTM2ZmM3YjQ5OTUwYTY3YTQ5NmEwYTcwYjdjMDA0ZDQ4OTEwYmVmNzIzMmUzODFhNjdkMDA5OWNmNGIxMmM3ZA
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Select NZ
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22c/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJjOjE3ODg5ODAwODMzNDU6Y2RubGl2ZXR2LnR2OmMzN2ZiMWVjMjY1N2JhNmEuOTFjZDU4YzgzYWYyNTY2MTgxNDlmNTM5MjdhOWZiZWI3ODFiNWZiOWUzYTVkMWM1YTU2YWU0ZTYxOTJjZDIzOA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaec/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWVjOjE3ODg5OTQ1MzM3Njk6Y2RubGl2ZXR2LnR2OmUxMzNjYmJkMTU2ZWMwN2YuNGVmYTAwNjljYTMyMzM3YjcwMWMzY2YyZDQ2MjJmNzJlMzliZTc4NTE5YzM0ZjUwZjQyYWVlYmYyY2Q1MDBlYQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Max IT
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc39e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzllOjE3ODg5OTQ1MzQwMDM6Y2RubGl2ZXR2LnR2OmM0N2Y4MTdkNzFhMjM5M2IuNmQwNzliOWNiNTUzYjk3NTg0OWIzMjAwMmQ5NWUyMWUxM2MyODk1MGIxNGY4NTkwYjg2ZmY0ZjFkMzUxY2VjOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Premier League DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccae4/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWU0OjE3ODg5ODAwODM0NDg6Y2RubGl2ZXR2LnR2OmZjNmZjNjRiNTZjNzg2MWUuZGQyNzg2YWI0NTZiMTcxNTgyNGE3NjI5YWRmZGM1NTA3NDQ2ZWQzZDY3NDRjMjQ0NmVmY2VjY2UyOWM0Yjk3Nw
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccae4/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWU0OjE3ODg5OTQ1MzQxNDQ6Y2RubGl2ZXR2LnR2OjgwMTM3YmI4OWMxNmUyYjIuNzg1NjdjOTAwYWQyMDUzZTExY2MyZDVmOWNkYzRjNWY1MjkxMWEzOTQxYzE2Y2M0YjBlMzM0ZWI0YjIwNzdmOA
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Select NZ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf22c/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMjJjOjE3ODg5OTQ1MzQ3OTY6Y2RubGl2ZXR2LnR2Ojk3NTkxMDNjNWRiN2RiOTAuOTU3MmUwMjgxZjU4MWI0OGIxMTcwMjNmMmQ1ZTE0NDk5YzcyOTMxOWIzNTY4NmM0YjIwYTQ4OGNkNmIzM2U3NA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Tennis DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaee/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWVlOjE3ODg5ODAwODQxODQ6Y2RubGl2ZXR2LnR2OmNhYzY3Y2ZlMTEzZWEyMDQuZjE3ODExZjAzOTFiYWMxZDU5Yjg2ZDU3MTEwMWE0NTRkZWEyYWFjMTQ2MDczMjI1ZTYyODNlNDJjZmMyMzM0Ng
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Action GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc327/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzI3OjE3ODg5ODAwODQ0NTE6Y2RubGl2ZXR2LnR2OmE3ZDlkYTU4ODkzY2EzMGUuYTQwZjM1Yjc1OTc2MjE2MmNmYzY3ZjAxMzFjNDE2NGQ2OWE4OGM3MDk4ZmE5MjEwYmQ5NTk5YTFhMjA5MTQxMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaee/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWVlOjE3ODg5OTQ1MzQ4NzY6Y2RubGl2ZXR2LnR2OjUwYzlhZTJiYjA1NWEzMzUuZjVmN2ZhZDI2ZTQxZTJiOTc3NDI1Y2RkMzc2NTJjMWE3ODkyOTdiMWE2M2MwNGUwYjQ5YjJjODlmYzU5ODIxNA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sport Top Event DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccae6/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWU2OjE3ODg5ODAwODQ0NjE6Y2RubGl2ZXR2LnR2OjJjMWYwZGQ2ZjdkYTRmMjguMmU2ZmYwMTEzMDNhMDc3YmQ1ZDcyNDI1MjliZjc0YTIyYjg5ZDgxMTMzNWQwYTNiNWRkOWFmYjY0NTk4MTRiMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccae6/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWU2OjE3ODg5OTQ1MzQ5OTQ6Y2RubGl2ZXR2LnR2OmEzMDZiZWMzMGMzNGJkZmUuNzljZDM2NjU0MDFkYWIyZWM0Yjk4MzFiNWJlYmE1NTMzZjljOTE0ZTUwMGQzN2VhNDZlZjBhMmJiNWUzNGI5OA
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Action GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc327/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzI3OjE3ODg5OTQ1MzUwODk6Y2RubGl2ZXR2LnR2OmNmZmQxOWU2OTM5OTRkNWEuZmE5YjQyZmQ3ZTRiMGU0MzBjOTFjMjVkNWEwMmMwMDE1OGUzMjVjOGNkN2IxNmEzN2JmMjgzOTA2NGUyNDZlNg
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Arena GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc324/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzI0OjE3ODg5ODAwODQ1NDQ6Y2RubGl2ZXR2LnR2OjM1OWNmY2Y1ZWIyYzIwZWMuYmJjNzM3ZTViM2UwZDQwNGJiMmQwNDMyYmZmMTk2MWI4MjJlZjA2ZGYyZTZkYzg1YWExMWJlOGIyYTYyZWUwMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc324/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzI0OjE3ODg5OTQ1MzUyOTA6Y2RubGl2ZXR2LnR2OjAyNDkwYzY0YTQyN2UwYWIuM2QwYTUwZmYzOWY3NDZmYTk2MmZkNzVjYTZiOTdmMDgyYTY1MmZkMGM0NTRkOTFkNjVkN2YzZGQ4NWM2NjBlNw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Cricket GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc31a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzFhOjE3ODg5ODAwODQ1NjE6Y2RubGl2ZXR2LnR2OmU0YzdiNDgzMmM4NDhmZWEuY2NlY2I3OGQ0NzM3MmMzMjM1MmY4Mzg3MDc3OGJiMjg1MmQwNmVhZTMwOTA2ZTMwYzg5NzIyNWJhZjg1OWUyYQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports F1 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc315/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzE1OjE3ODg5ODAwODUyNTY6Y2RubGl2ZXR2LnR2OmI1MTQxMmNhZWJkOGJiMWIuMGRiOWMzZjM2ZWM4NGNhMGY4ZWZkYjg1NzA4YzhkNzcyMGFkZGNhM2RlZTVlYzhhZTZlMDU5NDU0ZTgyOWVhNQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc31a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzFhOjE3ODg5OTQ1MzU4OTM6Y2RubGl2ZXR2LnR2OjNmYmEwZmM2YjE0N2ZlZmMuOWQxNGNhZDAxOTIwZWVmMGMyZmJmYjE0NjU0NmM2YTIxZmE5NGFhN2Q4MDU4YzA3YjZiNzAyY2I4NGMxMmVlNw
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Football GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc340/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzQwOjE3ODg5ODAwODU1NDE6Y2RubGl2ZXR2LnR2OmRjMzk3NjQ4MThjNGMxYzcuOWI3YzhlYmNhNzI2MTJkYWVjNmVjNjdhMTZiODU5NGE5YjBmY2FkY2YxMGM4ZWVkYzU0YjIzYzUwOTU4YWI3Mw
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc340/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzQwOjE3ODg5OTQ1MzYwNjQ6Y2RubGl2ZXR2LnR2OjMxOGIzNzg5MDAzZjgxNzUuNTU2MWU4NmQwMGRkODExNTdiNmM4ZGI1ODMxMmU1M2Q3MWU5YWUzZmRlM2U1NDdmNjk2YTBlYzcwZWFkM2I3NA
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports F1 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc315/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzE1OjE3ODg5OTQ1MzYyNjM6Y2RubGl2ZXR2LnR2OjRjMGYwMjVmY2RhNTBlNWIuOGVjOTVjOWY1MDk2ZjU4MjE4M2U0NzU2NDAwNWNhMWExMWMzZjFiMzg3ODY1Y2QyMzNjZGMwYWRkZjBiZTI0MA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Main Event GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc30f/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzBmOjE3ODg5ODAwODU2Mjk6Y2RubGl2ZXR2LnR2OjdiYjY3OGNjYjc4YmU1ZjguMzg3OGQwMGRhZTUwMDRiYjNkMzBmYzQ3M2NkNmQzY2VjMmNlNzViYzI2YzZkZGM2YTM4NGZmNzc5NmJmODJkZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc30f/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzBmOjE3ODg5OTQ1MzYzMzg6Y2RubGl2ZXR2LnR2OmIzMjZkMzQ0YTA4YjMyYjIuMjI4NWIxNTQzODYxOGZiMmUzOTMzZDA1OWY5YmZjY2ViYWVkZTYyMzA1Y2EwZDU4NzgyYzZhMGUwMmMwZWJjOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Golf GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc31d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzFkOjE3ODg5ODAwODU5NjQ6Y2RubGl2ZXR2LnR2OjExYzAxMTg5MmUzYjk1MDIuNDhlZTFlODBiZDRjN2EyMDY4ZWEyMWJkYTg5MTRmYTkyYTkxNTMzMmYxNTA5ZjI3N2Q3MTFmMWU1Zjc2OTNmOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc31d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzFkOjE3ODg5OTQ1MzY0OTE6Y2RubGl2ZXR2LnR2OmJkZWZhYTAwYmJmMDBiM2EuYTk0NTFlZjE1YjY0YjA0OWM2MTY1YmYyZGU3NjU2OGE0YmVjYTdiYzJiZjM1ODQzYjc1ZGJlYjUyNWIwMTdiZA
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Mix GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJkOjE3ODg5ODAwODU5ODM6Y2RubGl2ZXR2LnR2OjFhMmUwOTA5Mjk2YmQwOTQuYTIwN2JiZTQ5MjA4NjEzNDQxYzA5NGVkNmUxZjA4ZjEwN2M4YjM3NDhmNzc0YTcxNjU3MTIzZDg5N2VjZjAxMQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Premier League GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc33d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzNkOjE3ODg5ODAwODY0MjA6Y2RubGl2ZXR2LnR2OjY1ZmRiZWYzOGJmOTY3YTIuMjZjZTU4YjFkMGNjZTNlZjY4YjEwNTQ4NzZiOWQwZTFlMzFhOTJlNmFhNDY1ZGVjMzM3ZDc3OGIwN2M3MGMyMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJkOjE3ODg5OTQ1MzcwNDA6Y2RubGl2ZXR2LnR2OjE3ZWZhYWJjYzY2ZmRkMTcuZmFlYTBjM2YzZGYzODA2MzgzOThjMjVkMWE4MDM5NmQ1ODc3YjM0ZGY4YTFkN2RiOWNjMjY5ZGQ2Y2UxN2FmZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Tennis GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc320/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzIwOjE3ODg5ODAwODY2ODg6Y2RubGl2ZXR2LnR2OmU3YTk1NThkYzY0NDAzZWYuYzE1ZDY0NjQ5MDhlN2FjNzU4MDVjNDI1MjkwMzlkOTYwZGEzOTliZGRjMTVkYTlkZmY3MmQ0ZDc5MTY5MTQyNg
-#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Racing GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc333/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzMzOjE3ODg5ODAwODY5ODU6Y2RubGl2ZXR2LnR2Ojk1MTExM2JiMGNlN2Q1OGEuYmM1NTdkMDdlYzQ0NzQyYjAyMzE1YTRhMjRjMDg1MjUxOTlkYWMzYWFjZWEwNjMyYThhNmNhZmZjOTg5MDM2OA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc320/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzIwOjE3ODg5OTQ1MzczMzk6Y2RubGl2ZXR2LnR2OjQ5NTNkMWI3ZmQ4ZjAzZmUuZGQxZWNhNjE0NTViZDIwYWViNzFlYzc4OWJhNmFmMWM2NzhmMzVjYmYwYzQ0NWE0NzNhNzBmYzIzNDYxNTM3Yw
 #EXTINF:-1 group-title="DaddyLive Sport",Sport 1 IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5fb/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZiOjE3ODg5ODAwODcyMjA6Y2RubGl2ZXR2LnR2OmFjYjBmZmJlMTlkMjhlM2QuY2I2NWE2MjM0YmZkY2IwZDk2ZDMzOWE5M2UzMzY2OTU4MzZjODRmMjU3NWJhM2ZmMGZhYTM2MWI5YTRhNmMwZg
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5fb/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZiOjE3ODg5OTQ1MzczMzc6Y2RubGl2ZXR2LnR2OmVjMzA3ODA4YWVhNzAzNzYuNzBjYTcxM2I1NTJjMWU2YTBmYjdjZTEyODhjOTg1NGJlNmRmYjAxMzU5MjQwZjhlNTIyNzEyMGRjOWM0MjgzYQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Premier League GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc33d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzNkOjE3ODg5OTQ1MzczNzc6Y2RubGl2ZXR2LnR2OmNiZDU0ZDVhYjY5ZWMwOGEuZjU5NGZkMGIwMzA3MWRkNTk2NzMzM2E4YjVmYzVlOWMzZjdlZDZkZWIwM2JiNDUzNDMxZGU1NDhiNmIwOGQ4Mw
+#EXTINF:-1 group-title="DaddyLive Sport",Sky Sports Racing GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc333/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzMzOjE3ODg5OTQ1Mzc1NDU6Y2RubGl2ZXR2LnR2OjNkZGFjYTNiYzg5NDY1ZmEuMWExODUxZTFhMzk2NDljNjdkNGU2NDkxZjcxMTY1Mzc2ZjRmZDQzYzM2ODc2N2E4OGE0ZjJmNDYwODcxM2FjZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sport 2 IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5fd/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZkOjE3ODg5ODAwODc0MzQ6Y2RubGl2ZXR2LnR2OjhlNTI1MzlkOTgwMzNlNTIuNDAwZjYzZWFjNWUyN2MzNzliNjJmMzljOTUwODVhMTVmOWYwN2JkNmIxY2NjNDU0MDhhM2ZmNGQxNWQ5MGIwNA
-#EXTINF:-1 group-title="DaddyLive Sport",Sport 3 IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5fe/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZlOjE3ODg5ODAwODc3MzU6Y2RubGl2ZXR2LnR2OjE0NmQ4OTQ3NWY5ZjNjMGEuMmMzMjQ2M2JlOTViOTk2YmJmZjFmN2Y0MmI2MmFmYjIwMTRkMDg3OGI2MDMwYzdjMDQxYzViMjYyODhkZjQwOA
-#EXTINF:-1 group-title="DaddyLive Sport",Sport 4 IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5ff/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZmOjE3ODg5ODAwODc4MDU6Y2RubGl2ZXR2LnR2Ojk3Y2NkYzhjZTkzZTAzZjcuOTlkY2I5YjA2ZmQ2ZTdlYmViMmUwYzk5NjQ3NjQ0ZTYyY2NhOTRhODYyMGNiNTgwYmIxMDY0OTI2MGQxYzAzZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5fd/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZkOjE3ODg5OTQ1Mzg0NDY6Y2RubGl2ZXR2LnR2OjdkOTRmYmE2MGU5MDBjM2EuN2I4M2YxYThlYTFmMzk2NDA2N2ZiZDZmZmZiNjZiM2ZhODhmM2UwN2MyNjg5NjZmNTRhYTY2ZDBmZDY4ZjgxNg
 #EXTINF:-1 group-title="DaddyLive Sport",Sport 5 Gold IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce601/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjAxOjE3ODg5ODAwODc5NjQ6Y2RubGl2ZXR2LnR2OmFlYTBiNDExZTBmNjE2M2IuMGU2ODg0NDAwMjNiZDZlZTRiMjM5MjFmZDE0ZjFmYTExYzg5NDBhMGQzMjEzOWUxNzBlMGY2ZDcwY2Q1MmY3YQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce601/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjAxOjE3ODg5OTQ1Mzg1ODA6Y2RubGl2ZXR2LnR2OjA5Mjc2NDA4MGZmZDdkMWIuMjVhM2NjNTA0NjdkY2Y1YjQ4NmViOGJlYzA3MmVjZTQzNmU4YjU5ZjM2MDJlNzBlOGIxODUzZTFhMDcxNmViOA
+#EXTINF:-1 group-title="DaddyLive Sport",Sport 3 IL
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5fe/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZlOjE3ODg5OTQ1Mzg1ODU6Y2RubGl2ZXR2LnR2OjJlZTc1MThlZmY4OGM0MTQuYTEyOGIxZjE4MzdhYzhmOGIwZDk5YzU4ZGE0NzkyMjE3OWJjZjIwNzk5YzEwYTlmYWQzNGMzY2VjZjExNDI0MA
+#EXTINF:-1 group-title="DaddyLive Sport",Sport 4 IL
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5ff/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWZmOjE3ODg5OTQ1Mzg3NTE6Y2RubGl2ZXR2LnR2Ojc1NTU5M2Y5OWFhMzU5YzEuNGMxMWI5YjdiM2M4MmE4ODVhYWJkOWRmMzU1YThiOWEwMWI4YTgwNWNjMGQ4MGQzNTZiNDUzNDRiNDY1ODc1Yw
 #EXTINF:-1 group-title="DaddyLive Sport",Sport 5 Live IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce603/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjAzOjE3ODg5ODAwODgzNTk6Y2RubGl2ZXR2LnR2OmFlOTU3YjQ1YTc5MjQ4MzQuZGE1NTVjMTZiOThmMzI3YTQyZDdmYWZiOTBlNDhlMjlkMWEzY2YwMzYxNjFkNWU0OGIxOTY1NTM5YmU5MmU0OA
-#EXTINF:-1 group-title="DaddyLive Sport",Sport 5 Plus IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce605/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjA1OjE3ODg5ODAwODg1MTM6Y2RubGl2ZXR2LnR2Ojc3NDEwMGRlNjIxOTBhMjQuNzFmYjA4ZDgwNTdlZTFiNWIxZjk2MjM5ZDZjMjI3NmYxY2MyY2YyZGMzMTg3MTMzMTc5MmQ2OWExNjIzMWJmOA
-#EXTINF:-1 group-title="DaddyLive Sport",Sport 5 Stars IL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce604/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjA0OjE3ODg5ODAwODkwMDg6Y2RubGl2ZXR2LnR2OmY4NGQ4YzkxYjkxM2IxZTUuOGNjNWVmYmNhNzU2OThiNDI4YjYyZjFmZjFjZDhiYTM2ZWZhMDI4ODdmY2MxNDQyYjBhMjgyNmY4YjgwY2QxOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce603/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjAzOjE3ODg5OTQ1Mzg3NTU6Y2RubGl2ZXR2LnR2OmQ2MjQwZTAzZDkyYjg1NmIuN2FlMmE0NTI0NmMyZjAxMWU4NzBjMjA3MThhZGQyNDNhYjEzN2MwNjJiMjRjODcwZGNiNjIzYzRiYWUzNWRhOA
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 1 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd412/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDEyOjE3ODg5ODAwODkxOTQ6Y2RubGl2ZXR2LnR2OjMwMzljNjc1MjRjNDdlYzMuNGY0ZjUxNzExNzA4Njk5OGI3MzA2MjQ4NGQ2Njg4OTdmY2ZkMjZjNmYwNjliZTFhNGE4MTk4NWJhNzhhMThkYg
-#EXTINF:-1 group-title="DaddyLive Sport",Sport TV PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd411/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDExOjE3ODg5ODAwODkyNzY6Y2RubGl2ZXR2LnR2OjQ1M2RhYmQxOGM5YTFjMDcuYjYzMzAwODA0MzQyMmU3MzhlZjM1ZjU2NjcyODNjYjI2N2I2ZDg0Y2JjMDJhNmJkODRhNTRhYTJhZTMyMTBhOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd412/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDEyOjE3ODg5OTQ1Mzk3NDQ6Y2RubGl2ZXR2LnR2OmJhYWNjYjk4OWZiZjRlZTguYTkyY2FjMzdhMDc3YjZmZGM1NmQ1Y2ZlMDFiZWZhZmQ4M2Y0YjBjMmQxZThhYTc2MWI5NmZhNGQ1OWMzOTg1Nw
+#EXTINF:-1 group-title="DaddyLive Sport",Sport 5 Plus IL
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce605/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjA1OjE3ODg5OTQ1Mzk3Nzg6Y2RubGl2ZXR2LnR2OjYwMTM0NjIyOTBlNTMwZTguOGIyMjNjZjk3NzQ2ODkwZWI1MDZlN2E2NDYzZmY2OGMxOTU1N2ZlMmQyNjQzNTRiODU5YzAxOTEyNDdhN2ViYw
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 2 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd417/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDE3OjE3ODg5ODAwODkzNTk6Y2RubGl2ZXR2LnR2OjgyYmRiNmIyY2JlOGQ0MmUuYmExYTY2YjRiMTY2ODk1Y2RlOThhMTBhYjc3YTBmYTIzZTMyMmQyNjI1MDc5ZTIzMmExMWM5MTA4Njc2NGE5Nw
-#EXTINF:-1 group-title="DaddyLive Sport",Sport TV 3 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd41c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDFjOjE3ODg5ODAwODk5NTY6Y2RubGl2ZXR2LnR2OmEyOTBlMjViZjU3ZDk5NGQuOGY0MjcxNGVlYTU0NjQzMWI4NWQxMDA2NmNiNThmNTQyYmVjODQzZDk4NDM0YWI3ZmFmZGFmNTQzMmM5YzA1ZQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sport TV 4 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd41e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDFlOjE3ODg5ODAwODk5NjY6Y2RubGl2ZXR2LnR2OmU4NWE2MDdlNmEzMmUzYmIuOTcxMmMzNGMwNDA1ZGY4ZmExYjEyNWVkOGRiNzhjYjU4ODQ1NTZjMDhmODI3NTcwOTQ0YjU5MGU1NDJkNjA3Mw
-#EXTINF:-1 group-title="DaddyLive Sport",Sport TV 6 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd425/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDI1OjE3ODg5ODAwOTAzNzA6Y2RubGl2ZXR2LnR2OjM5ZGNiNjAwZmMzMzgyYzUuY2M5ZmIzZmViOTRhOTkxMGRjMjM2MTExYWRhOTM5ZGU3MTU4M2Y2OTM0MmYwYWYyMDA0MDI4OTQ5MTNjZjk4NA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd417/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDE3OjE3ODg5OTQ1Mzk4MTk6Y2RubGl2ZXR2LnR2OjllMzkwMzhmZTY3MjgzZDMuZjVjODQzODMxYjAxOTI4NGFhNDRkMzY2MTdkNjFiZjNjZGY4NWRhZGM0ODMwY2Y1Y2NmOWZjNmM5NTk0ZGQ4Mw
+#EXTINF:-1 group-title="DaddyLive Sport",Sport TV PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd411/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDExOjE3ODg5OTQ1Mzk5MDU6Y2RubGl2ZXR2LnR2OmY5OTFlNmNkNTY1NmNjZWIuN2I5YzNhNzc0OGZlM2E5ZTIzNTljYjM2NDI2MjI0NWJjNTllMjI4NWVkMzBhMzI3ZmMxNTk0YjA1ZjdlMDhiNQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sport 5 Stars IL
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce604/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNjA0OjE3ODg5OTQ1Mzk5Nzc6Y2RubGl2ZXR2LnR2OjRlZmRjNjIxYzkyOWYzMWEuNjg0NjcxNjY4YzhjZDljZWY5MTllZWEzMzc4MTQ1NzE3ODM0MzZhNTliNzg2MWRkN2UwZDZkMGRlOTg2OGZhNQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 5 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd422/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDIyOjE3ODg5ODAwOTA0MzE6Y2RubGl2ZXR2LnR2OmVkNjAxYjlhM2M0Zjk1YmYuZmI5ZWM3NGExNmMwNWI4YTE5MmE0YjU2N2JhYzE0YTZiNGQ0OWFmN2U4OWY0ZjQ0YTMxYmNiY2IyZjUyNzEyNw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd422/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDIyOjE3ODg5OTQ1NDA2OTc6Y2RubGl2ZXR2LnR2OmZmOTJmODI3NGU1NTliOGUuNjZiODlkMzNjZWI5YjJjMzgzNWQ4ZmFhOGEyNmJmMDhjMjNiMGFkODg0ODhhYWU5NGQwYzJjNzg0Nzg1ZGMwNw
 #EXTINF:-1 group-title="DaddyLive Sport",Sport TV 7 PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd426/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDI2OjE3ODg5ODAwOTA2ODI6Y2RubGl2ZXR2LnR2OmFiYTgwMDk5NzhhMzMwYjQuMTcwYTE5ZGUwYmUwODJlY2EwMDM2NDVmMTVkYzcwMGUyNDAyNDBmM2E0MjBlZTE1ZDdiZjEzMzVkN2ExZWIxZQ
-#EXTINF:-1 group-title="DaddyLive Sport",SportsNet New York US
-https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb52e/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTJlOjE3ODg5ODAwOTExMjI6Y2RubGl2ZXR2LnR2OmI1NjJiM2JhZjBlYmE3OTAuNmQ5OTExN2NhODBhNWY5NWJmNDUxYThlNWUzNTAwYWQyMzAyOTljOGE2YTc0YzFmOTFkM2MzNWVjM2ExZDdkNQ
-#EXTINF:-1 group-title="DaddyLive Sport",SportDigital Fussball DE
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaf8/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWY4OjE3ODg5ODAwOTEyMjk6Y2RubGl2ZXR2LnR2OmQxOWQ4Yjc5MWUxYjQ3NWYuOTc2YTczMjE0OWVjNTgyMDQxMzgwNDg0OGIyMDgxNzVjODIyMmY0MWRhYTg2MWUwYzQxMmM4OTg0NjI5NGU3OQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd426/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDI2OjE3ODg5OTQ1NDA5NTc6Y2RubGl2ZXR2LnR2OjBmM2Y4OWQzNWM0ZTczZjIuZjZlZDY3MTAzMTQ4MTRmMzAyMTc3NGYyMzliMzQ5MjFjYTczZTViN2M5MTExNTQwYWNiZWE5OGQxNmQzNmU2Nw
+#EXTINF:-1 group-title="DaddyLive Sport",Sport TV 4 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd41e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDFlOjE3ODg5OTQ1NDA5Njk6Y2RubGl2ZXR2LnR2OjYzODY1NjY1N2U1MWI5MzIuNGNmZDA4OTQ2NjAzNzhmZGY0NzM2OTlmYzk2NmVjNDRhNjc3MGE1MjVlNTE4YjJhNzA4YWJmYzdiYmQwNDE0NQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sport TV 3 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd41c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDFjOjE3ODg5OTQ1NDExMjE6Y2RubGl2ZXR2LnR2OmJmOWQ0ZjhhZTMwYzZjNzYuNWU3ZDdhMTdhZTMyMTg0MTk2ZDgxZTk1YzA0NGZlYmQ2OGUwZTE4ZWQ0MTY2YzRiYzlmOGQzNzY0MzI1YzU5Ng
+#EXTINF:-1 group-title="DaddyLive Sport",Sport TV 6 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd425/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDI1OjE3ODg5OTQ1NDExOTg6Y2RubGl2ZXR2LnR2OjI5MDcxZjlhMzJkYjRmMDQuMDEyOWVmYTdlMGVmY2E1ODgzOWNkMWQ5ZGI2YTg0NTg0MTMxMDk2YjRhN2RiYjEyMThhN2I2NzNkZjQxNzJkNA
 #EXTINF:-1 group-title="DaddyLive Sport",Sportsnet 360 CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2a5/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmE1OjE3ODg5ODAwOTE1NzI6Y2RubGl2ZXR2LnR2OjZhNDExYTYyZGNlNDFmOTcuMzFkNGM0YTRhMTMzNTMyOWEzYjFlODYwODViZGMzNTY2MjU0OTA3YjUwZjE2YzViZGM0MzA3ZjMwOWNhODg3Mw
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2a5/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmE1OjE3ODg5OTQ1NDIwMDU6Y2RubGl2ZXR2LnR2OjUyNzA1YmU1ZTM0NDlmYmQuNzJhYTc3MmYyNWZhNGI2ODU2ZjBkOGE4ZTcwNWQwYjdkZWMxNTgwODBjZmRjODlmZGU5ZDA5NjliMjZhNGJjZQ
+#EXTINF:-1 group-title="DaddyLive Sport",SportDigital Fussball DE
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccaf8/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYWY4OjE3ODg5OTQ1NDIxMjA6Y2RubGl2ZXR2LnR2OjkzYmM4YWJmMmQ3NzJkZDguMmM2ZWI2MzFmNjlhNWM4ODMxYWE5OGY0MjZmODQ5OWUzMDdlNjFmNTU3NWRhODg2OTY3NjRlYjRmNjllMmUyNA
 #EXTINF:-1 group-title="DaddyLive Sport",Sportsnet East CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc168/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTY4OjE3ODg5ODAwOTE2NzY6Y2RubGl2ZXR2LnR2OmVmNzM1ZjY5YWFmNzMxOGUuY2Y3YzMyNWQ5NzQyMzRhMGYxOWVhMDcxZDc2NjE2MzJmMTc3OTQ3N2Y5NzcxMTdkYTMzYTA2NjE1ZDA2MDYxYw
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc168/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTY4OjE3ODg5OTQ1NDIxNTA6Y2RubGl2ZXR2LnR2OjRmZTY2ZDYwMDBkMGJiMTQuZDZkNGRlZmFiZjVmOTJlYmM3ZjU4MzQ0ODZlZDcyZWJhNDc0NDU1NzIxMjQxYTJjYTNkNGQzNGM4MTE3YjFlYw
+#EXTINF:-1 group-title="DaddyLive Sport",SportsNet New York US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb52e/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTJlOjE3ODg5OTQ1NDIxNzI6Y2RubGl2ZXR2LnR2OmI3ZTU4Zjc0MWQ4YjFhYzkuNWIwMGEzOTMxYjQ0M2E1MjE4OTRiZDVhNGMwMDRkNmY2ODg4YzhjYjU2MDFmZmRkOTFmN2JjNzRhOTBjMDVkZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sportsnet One CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2b0/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmIwOjE3ODg5ODAwOTE5NTc6Y2RubGl2ZXR2LnR2OmQzYmM4NDlkY2IyMmViMDMuZjMwMDZiMGU5MzM5MzU3NzI2Y2YwODQxZmZjZDhkMmMyMTdlYjA3MWY1MzlmODkwM2I1MGZiMmQ0Yjg1YjdjMw
-#EXTINF:-1 group-title="DaddyLive Sport",Sportsnet Ontario CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2bc/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmJjOjE3ODg5ODAwOTI1MTU6Y2RubGl2ZXR2LnR2OjNiMGFmZDljNTNkYTM3ZTQuYTg5M2U1MzhlZTI2MWFlODYxYzBiNDQzOTRjYzlkMDExODY3ZjFhYzE1NzY4MDVlNDBjNzZhMjE1NDI0ZWU1ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2b0/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmIwOjE3ODg5OTQ1NDI1MjA6Y2RubGl2ZXR2LnR2OmVmMWViNzYxODAzOWQyYTkuZTA4ZjE5MzAzNTA0NmM0M2U3MzU5ZmYyOTdlNjVkM2VlNDZjOWFhMTdmM2U4NmUxNGJmMDQ0ZTg1NWVjYjQyNQ
 #EXTINF:-1 group-title="DaddyLive Sport",Sportsnet West CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2be/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmJlOjE3ODg5ODAwOTI1MTg6Y2RubGl2ZXR2LnR2OjRiMGVkYjhhNDMyNWJkN2MuOTU1ZmFlMWUxMTY2MGQ3MjIxM2ZhMTk3ZmZlNTI4MTI0NGEzNDJiYjJlMTRlMzE0ZTAwZGZlNjU0Nzg0YTkzZQ
-#EXTINF:-1 group-title="DaddyLive Sport",Sportsnet World CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2bf/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmJmOjE3ODg5ODAwOTI3MzM6Y2RubGl2ZXR2LnR2OjdiYjBkZjA0NTIzNWM4ODYuNjBiNjYzMmRjZWVjMzdhMzRjOTFmZjAxNDJlODcwOGZkZDM0NWIyYmJiZmQ3NTNhZTc4MWEzMWMwMGViMGJhMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2be/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmJlOjE3ODg5OTQ1NDI5ODM6Y2RubGl2ZXR2LnR2OjQxYmY0NTYyYjMzODMyZmQuY2Y0YTBmYTQzOGQ2Y2ZkZWFiOTRhYjQzMzIzYzYwMDRiOTc0MjFlZjg2OGI0NmEyMjZlNmZjYTYzYTdiNDljMQ
+#EXTINF:-1 group-title="DaddyLive Sport",Sportsnet Ontario CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2bc/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmJjOjE3ODg5OTQ1NDMxOTg6Y2RubGl2ZXR2LnR2Ojg1OWJkNTI2ZDg2MmY0YWIuMDk2ZmJkOWVkNDVlNzY0ZTg1MDMzZDM5ZDAzMDcyODk1NmYwZWM2M2MwNTFkMWQ2ZGFiOWNlMTVhMzA3NjdhYg
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 10 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3db/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RiOjE3ODg5ODAwOTI5NDI6Y2RubGl2ZXR2LnR2OjJlODU5YjRjMTY5MzI0ZDkuMjE3ZWQxYzg1NWU0MjNiYjljM2I5YWJhNzQxNjc3OTZjYWE0YzM3NGU1Zjk0MWZkYThmYTZiMzYxNzk1OGZhYQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3db/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RiOjE3ODg5OTQ1NDMyODA6Y2RubGl2ZXR2LnR2OjM1Y2FmNDVmNDAzOGRiNzAuNGE5MTUwZTYzOTc2N2U2OGZkODY1M2U5MmFmZjEyNGVjODAyMWNmYjQ1YzQ1ZGMxYTFlZjg5M2U1MWJiMDE3OA
+#EXTINF:-1 group-title="DaddyLive Sport",Sportsnet World CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc2bf/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMmJmOjE3ODg5OTQ1NDM0NjI6Y2RubGl2ZXR2LnR2OmMzZGE1MmE2NDhkMWU0MzcuZGQxODdhNTQ3OTYzNmZlNjU1ZTFmZGY3NjJlNzc4NzdjYTIzNDU1ODMxNmE1ZDk3YTFjYWQ0Njc3Y2IzMDMxNA
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 11 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3dc/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RjOjE3ODg5ODAwOTMyNDM6Y2RubGl2ZXR2LnR2OjY2MTNiZmE1OTM2ZTFlZDIuZjc0MzRiZjY5MTc1NzhiOGUwYmYxZTBmZDg5ZDFiMTc2YTBmYzIzNDcxYzRjYzcyNWYyY2RjMzBkN2NjMGI4OQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3dc/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RjOjE3ODg5OTQ1NDM1NTY6Y2RubGl2ZXR2LnR2OjcyMjlmYmU1ODUwMzZjZDguMWFiOGYyY2NlODQzYWEwNzU5YWRiYzc3MjFhMWNjNmM5OWU0YTcyNWU1M2FjMDY4MjI5MzIzNzUwYTEyNDIwZQ
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 12 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3dd/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RkOjE3ODg5ODAwOTM1MDY6Y2RubGl2ZXR2LnR2OmMzMTIwMzMxZmUxNTQ2ZjYuNDIzODkwNzVlYTk5MGNkZTM2YzQ2NjhkNTYwODRhYjhhNDM2NTEyZmI1OTk3MzlhZGFjYjcxODcwZDg5YjJmZQ
-#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 13 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3de/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RlOjE3ODg5ODAwOTM2NTI6Y2RubGl2ZXR2LnR2OjA0NTRkMDI2NTlmYzY3MTAuN2I4YTllZTA3MzA1ZDNlMmY2ZTA4ZjExOWZkN2E3MGQ4ZjMwOGY4ZDA5OGRhY2Q2NjYwYTNhMjFkMWU3ZjRmOQ
-#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 14 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1ee/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWVlOjE3ODg5ODAwOTM3MTk6Y2RubGl2ZXR2LnR2OmEyZGUzYjAxMjFhMzAzNDAuOTM0MjNiZDE1OGM1NWVjYmZkM2I3ZmJlOThlZWQwNmM5OThlYzE0ODNhYjUwNDYyNGMyYjIzYzE3YTY5MDNjNw
-#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 15 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1ef/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWVmOjE3ODg5ODAwOTQwMjM6Y2RubGl2ZXR2LnR2OjQ0ZGEyZmY0ZGZiY2ZmMjIuYmM2YjJkNWM0NWQ0ZGRkMTcxOGQ3NTFkZWRmMGY4MmRlZGQyZjE2YjUyYzIyOGE5Yjg1YjNiMWUwYjUyZmMxOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3dd/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RkOjE3ODg5OTQ1NDQxNTk6Y2RubGl2ZXR2LnR2OjI1OGNiMjM1MDcyNTg0NmMuNGM2MmQwODE4YTU3OTA2YzdjZjVmNzBkOTI5ODhmNjVlODQ4NTY0YWE2MDgwZjE2ODU4MjgyOWNlMDk2OWE2MA
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 16 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f0/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWYwOjE3ODg5ODAwOTQyNDY6Y2RubGl2ZXR2LnR2Ojg0ODA1NDA0ODc4MTAxYTIuMzFlOTQ0NDNhYWI0M2QyM2JiZDJkN2Q5MGI5ZTRmNzQzMjcwOGY5NjJkYThkZjhmY2U3MWRlNTY0YTZiMDQxMg
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f0/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWYwOjE3ODg5OTQ1NDQ1Mjg6Y2RubGl2ZXR2LnR2OmM3NTE1YjRhOGYyODE4ZjYuMmM3OTNhNzk3YjU3ZmQxNTk3NjhiZTQ1NGRhNDcyMTBiNDU0NDE1ZmMwMWNlNDE2ODNkOTIxNWQwNzZkZmUyMA
+#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 13 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3de/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RlOjE3ODg5OTQ1NDQ1MjQ6Y2RubGl2ZXR2LnR2Ojc5MDk0NTUwM2YxOGJmYWEuODY0M2E3ZjU3MThkZGRhMmFlYTdhMzUzZmU2OTMwZjc3YjQzNWQzZDAxMTRmOTg1YzExNjdkZTBlNjYxZDI2NA
+#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 14 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1ee/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWVlOjE3ODg5OTQ1NDQ1OTc6Y2RubGl2ZXR2LnR2OjhlZWJmYjhjMWVjZjFkOGQuZDQwMzYwZWI1ZGUyYzVhZDkzNjA1YmFkMmU5ZDc3M2JmMTU0NjZiNGY4NGI1ZmUwMzU4MzE4YmY4NTllZTZlMg
+#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 15 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1ef/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWVmOjE3ODg5OTQ1NDQ4NzU6Y2RubGl2ZXR2LnR2OjQ3MWU5NDk1Mzg0NjdkMDcuYmZhNjQ0OTZhYTZmYTNiODIwMGVhMWJjN2YzYzYzYjJmNTYxODNjMWZkYjI0OWJjNWRmZmUzZTkwOTE5ZGE2OA
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 18 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f2/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWYyOjE3ODg5ODAwOTQ3OTc6Y2RubGl2ZXR2LnR2OjkxMTVhODViMGIzYWFkMjMuZTllMTBjMTA0MjcyZDkzMzQyMTcyNTllZTQ2YjE4NmQxMTJkYTIzMDA2ODA3ZjBkNDhkOTQ1ZmY1YjNmZTRjNg
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f2/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWYyOjE3ODg5OTQ1NDUyMzk6Y2RubGl2ZXR2LnR2OjMwZjRmYWZkMDMwOWJiZmEuMWI3ZGM4YWI1Y2EyYjQzM2MzZGQ5MzNjZTNiN2MyNWQ2OWM4ZDQ5MGNiNjAxZjRlODVmN2U0MWFiYzgxZTIzYQ
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 2 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d7181d8192bb76f76fb/playlist.m3u8?token=NmEyODhkNzE4MWQ4MTkyYmI3NmY3NmZiOjE3ODg5ODAwOTUwMzQ6Y2RubGl2ZXR2LnR2OmQzZDc4MzU1N2NkOTljYmYuYTkzMjJiZjc1OTE3ZTQ0NTY2NDVlYTU3ODI3NWNkZDI2MWM2YTFiYjE4M2NmNjMxNWY1YjFiNDRhMzJkYTA4Mg
-#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 19 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f3/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWYzOjE3ODg5ODAwOTUxMzQ6Y2RubGl2ZXR2LnR2OmJjYmM2M2Y5OTE0MmI4NDkuNDFmNzA3YTNiYTY2MjJlOGY0NzQ2ZjYzOTRkMTI5NTYwOTBiMjBjNDZlNGI1ZTZlMGIwMGQ2YjEwNjc4N2ZmZA
+https://cdnlivetv.tv/secure/api/v1/6a288d7181d8192bb76f76fb/playlist.m3u8?token=NmEyODhkNzE4MWQ4MTkyYmI3NmY3NmZiOjE3ODg5OTQ1NDU3OTY6Y2RubGl2ZXR2LnR2OmU2ZjA4YTI2NDBkMWUzOTMuMmZmMTVkYTIzY2NmYTE0YWZmM2E4NDE2ZDBjYjc4MDQwOWYxYTMxZTkzMGU5ZDE1YzRkNzExMWJkOTUwZjRkOQ
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 3 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d7181d8192bb76f76fa/playlist.m3u8?token=NmEyODhkNzE4MWQ4MTkyYmI3NmY3NmZhOjE3ODg5ODAwOTUzMDI6Y2RubGl2ZXR2LnR2OjIyYWQ3Y2VjMjlhYWVhMDYuNmNiNGUzZjA3MTQ5NDNmNDdmZTkwNmRiZDMyZmZlOGRmNDRlMWZlYTQ5YzAwODJjNjhhOGI4NjA0OWUxOGNkYQ
+https://cdnlivetv.tv/secure/api/v1/6a288d7181d8192bb76f76fa/playlist.m3u8?token=NmEyODhkNzE4MWQ4MTkyYmI3NmY3NmZhOjE3ODg5OTQ1NDU4MTM6Y2RubGl2ZXR2LnR2OjVkZWJjY2NlZWI0MjYxMTAuNjk1MzMxNDBhNTk1YmM5MDNhYWU3OGZmMTg2NGJiNmU0MWY3ZWY1NTMyZjYzMGUxNmVhZGIxNWEzYzllMWFjYw
+#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 19 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1f3/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWYzOjE3ODg5OTQ1NDU4NjI6Y2RubGl2ZXR2LnR2OmJjY2RiOGM4NGY4M2YzZWIuN2VkZGU3MmM1MjdlMjU2YzVlYjBhMTE5OWI5ODQ4YjBjYjljODQzNTc3OWMyMWE2NzZkNjBiNWU4ZWIxN2MxYg
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 4 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d5/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q1OjE3ODg5ODAwOTU0OTM6Y2RubGl2ZXR2LnR2OjQzZWNlNTg5ZTYyMGJlMjYuMzA0ZjI2OThmNWUxYmRiYThmZTVmYjNiMTg1MTA0MmI4ZGYyNjFiZTM2Yzg1ZmMxOWJhNzY3NmQ2YTEyODNkMg
-#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 6 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d7/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q3OjE3ODg5ODAwOTYwNzM6Y2RubGl2ZXR2LnR2OmMwMGNhOGYxMWM2ZTJiNGQuNTAxNGZlMTg0ZDUwNzc3ZTk4ZDgyMmRjZmZiMjNkYjA4NDdiNTQwMzYyYjdhOWU2M2E4NTBkMDMzZDc5MzYzMQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d5/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q1OjE3ODg5OTQ1NDU5MTk6Y2RubGl2ZXR2LnR2OjVkYmQzODg0MjY3M2U3YmIuZDI4MTRkOGMwOWIzZDVmOTQxODZhN2JjYThlZTJkMDMwYmRjM2M3NTVhYjE1MjczZmVjMWQ3MDFjN2U1ZTVkMg
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 5 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d6/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q2OjE3ODg5ODAwOTYzMzU6Y2RubGl2ZXR2LnR2OmI2ODdmMzQ0M2ZiNWQxY2MuZWY5YmQ1MjFjODJlYWUwZDQ5MzcxZWFhMGU5MzI3M2I0OWYxYmNhMjdjZGYwNzJmZDYxNTBmMWFhNTE5NzExZA
-#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 7 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d8/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q4OjE3ODg5ODAwOTY1Nzk6Y2RubGl2ZXR2LnR2OjAyYmRmYTllZjk5NmNiNDUuODgxNDAxMjk4NTY5NTg0MDUwNDdlNTAyOWFiNWRkYmEyYTlkNjE5NjQ4NzM3NmJlZDU2NTZhYTI3MjlhYjZlMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d6/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q2OjE3ODg5OTQ1NDYzNTM6Y2RubGl2ZXR2LnR2OmQwNDlkMGU1NzJjN2Y1MWUuNGJlNzg2MDZiMmFiMGY2Mjg4ZDYwNzc3ODFiYWQwNGU4OWM4ZTAwMGEzZDUxNDJkYWRlNWExODg3Yjg1YmFkOA
+#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 6 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d7/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q3OjE3ODg5OTQ1NDY3NjM6Y2RubGl2ZXR2LnR2Ojg3ZjRlMDFmMzgwMDU3ZTguNTJmZTlmNjIzZTU4ZGY2YzcyZjhmM2JkNjUxOTY1MDlkZjdkZjZkMWNmZWM0ZGI1MzY3MTIwMGI4YWQ5NjkwNw
 #EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 9 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3da/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RhOjE3ODg5ODAwOTY3Njc6Y2RubGl2ZXR2LnR2OmU0N2RhZGNmMTBlMzc0ZTEuMjVkN2JkOTUxNDIzZmVhZjM0YTdmNDFmNGI3YzNiMDdhMzVmZThhYjkyODliZDU5ODY0ODk0MGRhOWJjNTBhYw
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3da/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2RhOjE3ODg5OTQ1NDY4OTA6Y2RubGl2ZXR2LnR2OmFiZmJlMGNmZjFhNmI3ZmEuMDI3NzI4MmI2MzJiNWY2ZDU1MmE4ODYzMjA5ZWNmYTNmZTAwMjMxNTc3ZWVhNzBhYWIzYjQyYWM1OTc2ZGUyMw
 #EXTINF:-1 group-title="DaddyLive Sport",Starzplay Sports 1 AE
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76caa7a/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYTdhOjE3ODg5ODAwOTY4NDg6Y2RubGl2ZXR2LnR2OjUzNzBmNjhmZjhlZGQ4NDIuMThjMjIwNzMyODBiMjllMmZiODZlY2VjYmY2ZDYzNjgwNzQwODcwNTk4ZTdiZjdhM2Y5OTg4Y2ZmM2RiZjM4NQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76caa7a/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYTdhOjE3ODg5OTQ1NDcwNzM6Y2RubGl2ZXR2LnR2OjQwYTIyNzFlYWFlNTM2YWYuMDIzMzcxYTQ1NDEyZjZmMDY1YTJlYjFiMWI0NjFkOTJkNGM3ODViMzVjODNhZTdmMzM3NTVhNjhhZTI4OGIxMw
+#EXTINF:-1 group-title="DaddyLive Sport",Stan Sport 7 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf3d8/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmM2Q4OjE3ODg5OTQ1NDcxMzc6Y2RubGl2ZXR2LnR2OjEzZGFhMDA4ZDk5OWJjNmQuZjMwM2E0NzIwMWI4ZmZhOTJlYmExNWU5NmQxNWZmNzFmNmU5ZTQxZGU1YTM0NmIzNTFhYjFlMTFiNDNmOTE4MQ
 #EXTINF:-1 group-title="DaddyLive Sport",Starzplay Sports 2 AE
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76caa7b/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYTdiOjE3ODg5ODAwOTczMzM6Y2RubGl2ZXR2LnR2OjYyODkwMmQ5OTBkMDIyYTYuZjU1NzU5NGE1NDI4NzE5YWNmODY5OTI5NTU1MWViN2YzZDU2MGZmYTAxOTBlMjhhNmQzMjQwNmZjZTNhNWE5ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76caa7b/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYTdiOjE3ODg5OTQ1NDc2MTg6Y2RubGl2ZXR2LnR2OjFmM2ZmMmYwZWQyZjE3MTIuOWFhNDQ2NDAyODhhMzFlZmI1YTEzOWE3NzVlZTlkZTNiNDI5OGM3OGEyYTZiZmNjM2VmY2VjNTE1ZTdlOWIzNg
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports CL
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce9b8/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOWI4OjE3ODg5ODAwOTc1MTc6Y2RubGl2ZXR2LnR2OjZiYmI2ZjE4NDNkMjRlZTMuNzFkYmNhNmI1YTVjNjkxNjg1NGY0MDUwZDc5ODNiNTNmYThlYjU0N2MzYTZhMzg1M2NlYjFhYjgzMzgxMmZmZg
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce9b8/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOWI4OjE3ODg5OTQ1NDc3NDY6Y2RubGl2ZXR2LnR2OjFkNzM3NTY4OGUxOGQ5YjAuNGVjZjdiY2RjNzNlMGM3NDJhYmFlMDA4MDgwMGVjYzFiMTk4YzZmNWE3ZGQzNzUwZjcxMTIzYzgzYmI2Y2QwZQ
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 1 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc344/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzQ0OjE3ODg5ODAwOTc4MjM6Y2RubGl2ZXR2LnR2Ojk5NDk5MDU0YjVhOGM1NmMuODc0MjI1Nzc5MWFjNTVkZWYzNzk0Mjg1ZWU5OWNiMGQ3MDEzMmZiZDFhOTYxY2JmMzdjMjg3NTBkZWRlNTEwYg
-#EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 3 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc34a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzRhOjE3ODg5ODAwOTgyMjk6Y2RubGl2ZXR2LnR2OmFiZTA3MGI5Mzg4YjZiMjYuZGYxNzQ5YWU5YWNkNDJlMzg4OTg4NTEyY2ViYjMzYmY0YTFiOTZmMDc5NDQ3YjgzODNhMjBlNjZjOTFmNWIwYg
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc344/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzQ0OjE3ODg5OTQ1NDc4NDI6Y2RubGl2ZXR2LnR2OjJjMWQ5ZTNkZDkyNDdhNWYuODU5ZTFjNmQyOTQ1NGEwOTVkMWYyZDJmNDA2MDllOTIxZTQxZDBiMzUzNTBjZmQxZTNlYmZkOTJkYTQ4ZDlhMQ
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 2 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc347/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzQ3OjE3ODg5ODAwOTgyOTA6Y2RubGl2ZXR2LnR2OjM2MDcyYjY4MzYwYTIxZmUuZTExMGZmMDE4YzIxOWVkNWZkMDllMDZhZmM2MzhiOGU0MTU0NmEwMDhhNmRhNGMzNTg3OTI2ZjYxYjE4MTQzOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc347/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzQ3OjE3ODg5OTQ1NDc5NDI6Y2RubGl2ZXR2LnR2OmMwOWY2MzkzMTMwODVmZjMuOTU2MWM2NDY4MDllOWRhM2Y4MTdhOWQxYzU0YjA4NWMwYzE5ZTI2ZjEwN2Q1NjY2ZGNjMjI2YWYwMjYwMTAxYw
+#EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 3 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc34a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzRhOjE3ODg5OTQ1NDgwODA6Y2RubGl2ZXR2LnR2OmE0YTUxZjIxZmM3NTM0MzUuMjFhMmU5MGFkOTM2NGNjMjRiMjIyZjYzZDYyMzkyOGY3NzY1YmM4OWFmNmIzZGJhZmNhZmVkYWE3YTEyYjFiOQ
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 4 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc34e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzRlOjE3ODg5ODAwOTg3ODk6Y2RubGl2ZXR2LnR2OmQwMGViODk3YzRiYzgwMTUuZTg3MTVjZGZjOWJkYTZlYWU0NmU5YzVjZDRlNmI0ZWJkZjZmYTA1MWFmY2M5YTY0ZjExNmVhNTc2N2JhMTY0Yw
-#EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 6 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc351/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzUxOjE3ODg5ODAwOTg4Mjk6Y2RubGl2ZXR2LnR2OjE5M2RiOGRkNjNhOTcyYzUuOWVjYzIxYjk2YzU2OTc0ZmZjMjFhNjRlZWU5MGU5OTMxNGFmZTk3ZWQ1MDMwOTg2ZTUwMGQ4YzM4OWJiZWVmZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc34e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzRlOjE3ODg5OTQ1NDg0MzU6Y2RubGl2ZXR2LnR2Ojk2ZGY5OGMyODc2YzU5NmUuZTVmZjI3OTE0MWQ3OWFhNzM4ZDgyODRiNGEyN2M5ZTY5N2VhMmNjZDFlYjFiZWE5ZDMzNTcyYzAxMTVjOGUyNg
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 5 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc350/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzUwOjE3ODg5ODAwOTkwMzM6Y2RubGl2ZXR2LnR2Ojc2MWY5OGMxNWEyZDgyZjYuMGEzMzI0MTA4MzcxYzczYzA0MDRhYjQ0MTg3NTM2MmVmY2EzODdmMmY1OTllNDM3OGFmYTk5MGUxOTQyOGY5Nw
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc350/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzUwOjE3ODg5OTQ1NDg4OTM6Y2RubGl2ZXR2LnR2OjBiNTk3Y2NjYTAyYmRhNDMuNGRhNjQ5MGE2MWE5MDY4NmRmY2Y0OTJmM2EzZGMyM2E4ODA4MDZjMzExNjEzZTJmZWRlMWFhZDhhY2UyZjQ0Ng
 #EXTINF:-1 group-title="DaddyLive Sport",TV2 Sport DK
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd6fe/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNmZlOjE3ODg5ODAwOTkyNTU6Y2RubGl2ZXR2LnR2OjNmY2VhNDNhZjQyNDkzMjAuOWUzZmM1ZTRkZDI0MDgyMmRiMjVjMTEzMDJhZTAyMWI4OTBhNDgxMDlmMWY5MTg1NzIyOTYzMGI4OWU0OGM2Nw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd6fe/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNmZlOjE3ODg5OTQ1NDg5NTc6Y2RubGl2ZXR2LnR2OmYxMjBiN2RkMGQ3ZWRiMjMuM2QyYmM3Y2NlNzg3NmZjYWI1OTBiYmViNzg2MzdlMDI3NTRlMzY2OTRkYmNjOTVjOTA3NmVhYTY1OWU5MjY3ZA
+#EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 6 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc351/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzUxOjE3ODg5OTQ1NDkwMzA6Y2RubGl2ZXR2LnR2OjNlYWZjODY1ZGE1NWNmOWQuNjdkNjQ1ZWU4ZGQ4Njk3MDIwODFlYjYzYjBkZmI5Mjg4NDBjNDY2NWEyMzVkYWNjMDkwMzM5ZjY5MDMzN2FhMA
 #EXTINF:-1 group-title="DaddyLive Sport",TNT Sports 8 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc353/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzUzOjE3ODg5ODAwOTk1NDI6Y2RubGl2ZXR2LnR2OmVkN2M1NjcwNzkyNWJkMmYuMzgxZWY4NDQ3Y2RkODEyMDMyOGVhNTRiNmQyMjA5YzZjNjUwYjFmNDA2YzAwZjQ5OWY2YzcyYmNkNThmNmM1Yg
-#EXTINF:-1 group-title="DaddyLive Sport",TV3 Sport DK
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd70f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzBmOjE3ODg5ODAwOTk5Mjc6Y2RubGl2ZXR2LnR2OjhkNDBkMDcxZDVhNmQ2ZjcuOWRjNmI3NzM4NWMyNDBjMzY2NjQ2OTIxOWEwYjRjOWEzMjhkNzI1ODg2NDc1OWVkMDdkYjgyZTI0YmZhZWFhZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc353/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzUzOjE3ODg5OTQ1NDkwNTU6Y2RubGl2ZXR2LnR2OjVmYTJhMmE4NDJiYmM1M2IuOWE1Yjc4MDQwZDdmMzcwYTQ2NTM5OTViZTU0OWM3NmEzM2YzZWE0MDE3YjhhOWEwMTg0YTQ5ZjExMTYzMjk5Ng
 #EXTINF:-1 group-title="DaddyLive Sport",TV2 Sport X DK
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd700/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzAwOjE3ODg5ODAxMDAwNTg6Y2RubGl2ZXR2LnR2OmQzOWZhODQ0MjI1MjkyY2EuM2YwNmIxZWFhYzk5OGZmMzg0Yjc3N2RmZjVlOTUzMzJmMTNhODg0NDJlZDBhZGNhMWMyZGI4ZGFkZmNlMjI2Zg
-#EXTINF:-1 group-title="DaddyLive Sport",TV4 Sportkanalen SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd68b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjhiOjE3ODg5ODAxMDAzOTE6Y2RubGl2ZXR2LnR2OjczYmVhM2E0MmZlNGE2NWQuNmM3YTBmYjQ3ZGVlMDRlMDI2YjUyYTIzNDc2NTdmZWFmNWNiOGM5MmFlNTFjYzY0YzBjNGE5YmIzM2UxZDM5NQ
-#EXTINF:-1 group-title="DaddyLive Sport",TVA Sports CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc159/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTU5OjE3ODg5ODAxMDA3ODg6Y2RubGl2ZXR2LnR2OmJlMTAzMWU3Mzk2NmMzYzcuNDJkOGYxNWQyMWQ4ZGRjYmVkYWQ4NDI1ZGZjYjk2NzEyZDA4MTYwZmM4N2JlNDAwYWU5NTZhY2Q3MzYzZDQyNg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd700/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzAwOjE3ODg5OTQ1NDk3NDI6Y2RubGl2ZXR2LnR2OjE5ZTU0NzA2MDc5NWJiNTEuZWI3ZjhiYWM3YmI0MDJhYzUzNDU0ODE5YzIyYWQ4NTNmZDcwYTAyZWM2ZDM1Njc4ZWNhYzBjOTliZDgyNzY2ZQ
+#EXTINF:-1 group-title="DaddyLive Sport",TV3 Sport DK
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd70f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNzBmOjE3ODg5OTQ1NDk4MzM6Y2RubGl2ZXR2LnR2OjM4MDRmMGFjYzgxOTczZDguMTU1ZmZlMTI1MGEwNGM3Y2I4ZDNlMzBjNTliZmYyYzBlN2RiNmJmNTg1NzljMjk5ZGM3ODkwMjUwMTcyZWE5YQ
 #EXTINF:-1 group-title="DaddyLive Sport",TVP Sport PL
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd3af/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkM2FmOjE3ODg5ODAxMDEwMzI6Y2RubGl2ZXR2LnR2OjJiMjVjYWE3NTNlZjE4YzAuMjk2Y2EzZDc5NTcxNGVjODIxYTg0NmUzZGM3ZDI0NThmM2IyZmRkMjFjYzYwOTgxY2UyZTVkNDQ4ZTJjNWY5YQ
-#EXTINF:-1 group-title="DaddyLive Sport",Tennis Channel US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5ee/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWVlOjE3ODg5ODAxMDEwNzc6Y2RubGl2ZXR2LnR2OjM0OWQ0YWFkZGI3ODkxYmEuZjQzYTVmYTZiMzIyZjMxOGQ2NGMxNGZiZjc0NzI0YTk3NGUwYjljMDEyNjg2MjE5NWMxZDNhMTYyYTJlYzEzOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd3af/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkM2FmOjE3ODg5OTQ1NTAyMTg6Y2RubGl2ZXR2LnR2OmM5Y2M0ZjRiOGFjYWQwNmEuMzUxNGYzYjQ4YjJmNzIxMDUwMzRkNzM3ZGEyNTI0MzY5MTFlZWIzZDZjOTc4ZGZlNWEzNWVjZDcwMDY1MmQ3Ng
+#EXTINF:-1 group-title="DaddyLive Sport",TV4 Sportkanalen SE
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd68b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjhiOjE3ODg5OTQ1NTAyNjA6Y2RubGl2ZXR2LnR2OjZkNWNkYWMyZWMyYTFlOTUuN2FhZTg0YjRkOWNjMzY4YWVjYzYxMWVjNmU3OTU2NTY0YTIzOWJjZDQ4MGMyZjllMzZmOWU4Yjk3YjkzNmE3Ng
+#EXTINF:-1 group-title="DaddyLive Sport",TVA Sports CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc159/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTU5OjE3ODg5OTQ1NTAzNDk6Y2RubGl2ZXR2LnR2OjA4YmNhZDhjZjNjODhhNzQuNGYzMjQ0ZmY2OWE5N2ZmNDM3NThhM2E5ZjUwMjBjOGMxY2FmMTQ5NjFmZDQ5NTk5MDkwNTQzM2U4NjZmYzAwZA
 #EXTINF:-1 group-title="DaddyLive Sport",Tyc Sports AR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce9bf/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOWJmOjE3ODg5ODAxMDE0MzI6Y2RubGl2ZXR2LnR2OjljZjk1OWJhNjMwN2JiMDUuNmVlOWZhZmMwM2RlNjk3ZWIwOTY3NTQ4YjQ3M2NjMTI4ZWQ1Zjc1MjE0NzY5MzZkY2MyNDE0NzMxM2FjNDkzMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce9bf/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlOWJmOjE3ODg5OTQ1NTA4MjA6Y2RubGl2ZXR2LnR2OjMxNmJjYzY5ZTAzOWE2OTIuYzZlYWM5NWI0MTgxNzkzYWI3OTRiOTQxYjg1Nzk5ODlmMjU3YzNiOGMyZmVmZGMzNzBiMGY1ZDZkMmNjMzQ0Nw
+#EXTINF:-1 group-title="DaddyLive Sport",Tennis Channel US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5ee/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWVlOjE3ODg5OTQ1NTA4ODY6Y2RubGl2ZXR2LnR2OmZlYzljNjUxNWJhYzI0YjkuNTIxZDNjYjBhNzZkZGU1ZDUzYmYwNTQ2YTVmZjk5ZjY5OTBhODFjNmM3NTZlMjQyMzcwZDk2OWY3MDJhZmU2NA
 #EXTINF:-1 group-title="DaddyLive Sport",V Sport 1 SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd69b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjliOjE3ODg5ODAxMDE1MjQ6Y2RubGl2ZXR2LnR2OjVhZWVkMjMzMmZjMzhjMWIuODM4ZmEyZWNhZDQ2MGE5ZjlkNjFkMjA1MTA4ODliNjVjOWYxYzA0YmFhZGI0ODE1MmMyMTI1NTQyNWVhYmI4NA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd69b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjliOjE3ODg5OTQ1NTEyNzc6Y2RubGl2ZXR2LnR2OmQ4ZDliOTBiYjg1ZTZhZDAuZjE5MDlhYjY1N2ZjYjY0M2I3Yzc1NjIzNWJiZDAxMjUwNTZmOGM5NjI1MmM4ZDBhZjdlNjg1ODM5MGJkNGQ2OA
 #EXTINF:-1 group-title="DaddyLive Sport",V Sport Extra SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd7ed/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkN2VkOjE3ODg5ODAxMDE4NDk6Y2RubGl2ZXR2LnR2OmQ3MjkwMDMwZmNkNTg3ZDAuNTA1MWYxYjRmZGNmMDNiMWVlZmY1YmQwMzk3MTIwNDYxOWY0ZGM3ODcyZjczYTdmYmIyYjlhYTU3NDhiZTRhNQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd7ed/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkN2VkOjE3ODg5OTQ1NTE1Mzc6Y2RubGl2ZXR2LnR2OmUwOTVmM2JkMTRiMGYwMzkuZTEzNGFhOGFhZDM0ZTU3ZjY4NmYxZjU3ZDg1YWQ4ODUwM2ZmZmJhZjIwYWViODMwNGQxMWQyMDFlYTg4ZDRjZA
 #EXTINF:-1 group-title="DaddyLive Sport",V Sport Football SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd7ee/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkN2VlOjE3ODg5ODAxMDIyMDg6Y2RubGl2ZXR2LnR2OjlhZjc5NWZmM2ZmZjUwYWYuZmVjZDY0ZmQxMzA1NWU1ZmMyNDJmOTcxY2YwYzM3YzBiYjYyNjUyNzVkNTY3MGNiMzkzNWM5MjAxNTExODAwMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd7ee/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkN2VlOjE3ODg5OTQ1NTE2OTc6Y2RubGl2ZXR2LnR2OjJjMWYxM2U4NTcyMjAwMDMuNWY3MDI5NzRkM2RiMjIwMzFjZGY3OWM1ZWNhNzc2YzQ0ZWEwNTUxMTMyOWExZjU0YjFlMjM3MzQ0ZDU1YjMyNQ
 #EXTINF:-1 group-title="DaddyLive Sport",V Sport Premium SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd69f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjlmOjE3ODg5ODAxMDI0NjA6Y2RubGl2ZXR2LnR2OmQxOGI1NWM4ODNmNjYwZDYuYmYxNmMxMWE5NzFkZDZlMDM1M2QyODUxZWE2NTk2MDZiOGI3NGJmMGU4MjM4ZDJmZGRhZTk5YjkyY2Y3ZTI1OA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd69f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjlmOjE3ODg5OTQ1NTE4OTU6Y2RubGl2ZXR2LnR2OmVkY2JjODcwMGRhN2YxYjguZjkwNTc2ZTE4NTIxNGNiNDdlODhjYjdmNDBhZDg0YzYzMmYxNjdkYTcyNDIyZjM1MmJkODU0NGY3MzQ3YzQ4Yg
 #EXTINF:-1 group-title="DaddyLive Sport",V Sport Motor SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd69e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjllOjE3ODg5ODAxMDI1NDM6Y2RubGl2ZXR2LnR2OjAxN2Y5YTNhNDgwZWYwZjcuZTdiYzZkOWRmZTg3MmE1Nzk1ZDJmNDIyZWJjYWUxYzM2Y2I0Yzc1OThjM2MyN2Y5MTZjZTRhMTkwNzA5YzVkYQ
-#EXTINF:-1 group-title="DaddyLive Sport",Viaplay Sports 1 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc369/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzY5OjE3ODg5ODAxMDI4ODA6Y2RubGl2ZXR2LnR2OjQ1NTRiYmUyNmFjOTkyNzguOTRjOWE4ZTM3MzJmMDgxOTY3OTJlYjM5ZjhkNmFjMjg4Y2NjOGEzMDllOTQ2Y2ZhNTAyNDY3NTVkNWNlYmEyOQ
-#EXTINF:-1 group-title="DaddyLive Sport",Viaplay Sports 2 GB
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc36b/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzZiOjE3ODg5ODAxMDMyNzA6Y2RubGl2ZXR2LnR2OmI2YWVmYjFlNjNlMjdhOWMuNTU3ZjI4MjhlNDFmMDdhMWYwY2VlZWZkYWE5NDQ2ZjNhNmNlOWViMmUwYmY2NmE2N2NjOTE0ZDk3OWUzNDcxYQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd69e/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNjllOjE3ODg5OTQ1NTE5MDk6Y2RubGl2ZXR2LnR2OjQ1ZDU4NmRiYTA0N2QwMDIuMzAyNmJmMDQ3NGE5ZWU4Yzk4ZGZkZjM0MDAwMzZlNjQ0NTA5ZWJlMjJjNmVhOGFiODBmMDY2Y2IxYTRmMmRjZA
 #EXTINF:-1 group-title="DaddyLive Sport",V Sport Ultra SE
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76caae5/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYWU1OjE3ODg5ODAxMDI5NjA6Y2RubGl2ZXR2LnR2OjI4YWRlMThiMmYzMDg0NWYuYmY1ZTBlYjAwNzM0M2YxN2NlOWZmYjM5Mjc5NjM3ZmQ0MGU3N2VhMjZhMzNmYTg0MzllMDg0ZmU2N2U3OWNhMw
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76caae5/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYWU1OjE3ODg5OTQ1NTIzOTI6Y2RubGl2ZXR2LnR2OjVmOWVhMzZlNDk5OGQ0YzkuNTFkMWJlNjRiZmUyODZhMDNkYTYyOTAxYTVmM2EzYTRiZmQyNDc2MjQwMTkxN2VkYjY5OTE0NzljMzg0ZWI4ZQ
+#EXTINF:-1 group-title="DaddyLive Sport",Viaplay Sports 1 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc369/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzY5OjE3ODg5OTQ1NTI1Mjg6Y2RubGl2ZXR2LnR2OmZlMzc5YzBmOTU5MDVmYzQuZDhmZTNmZWZiZTcwYjhjMmZhN2RkNTNiZDU0N2VhYjEzMWUzYzA5ODkxYWJiZGMwMmI4NWU3MTEzNGVlNWE4Ng
+#EXTINF:-1 group-title="DaddyLive Sport",Viaplay Sports 2 GB
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc36b/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzZiOjE3ODg5OTQ1NTI1NDM6Y2RubGl2ZXR2LnR2OjEwMzQxNzE2N2YxMTRmZmYuZjBjNzlmYjU4NzU1Y2ZhMGFlZGVkZjcwY2I3MDA0MWZmMzE0MDIwNTk5MjU1Y2I4YzE1ODk3NjM5NWU0NDdiYw
 #EXTINF:-1 group-title="DaddyLive Sport",WWE US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5f7/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWY3OjE3ODg5ODAxMDM1NDU6Y2RubGl2ZXR2LnR2Ojg0YTY4MGQ0YTUxMzY2Y2MuYTA4Y2FkNjc4YzM4ODNiMGQ0M2MyZDE4OWI1ZmUyODlhN2MyOTliZjE0ZTc4NzA1N2ZjMWQ3ZDFhNDU2NTI4Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5f7/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWY3OjE3ODg5OTQ1NTMyNTY6Y2RubGl2ZXR2LnR2OmE3OGRhNmM5ODlkYWIwNDEuN2JlNTlmMGJhNTFmNGIxN2ViMGZmNTNjMjk5ZTg5ZjdhMGYyYTUwOTE0MWRjMDQ4MjUwNDQ0MjQyODYyZTY3Mg
 #EXTINF:-1 group-title="DaddyLive Sport",Willow Cricket US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5f4/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWY0OjE3ODg5ODAxMDM2Mjc6Y2RubGl2ZXR2LnR2Ojg5MTRiMjkzOTNkODMxOGMuZDhmZGIzZmJjZTZiYmYwMDBkZWFjYjA5ZTY1ZTRhYWFiNzI2MGU5YTk5MDRjZGNhMGY2NGZmNWJiYTA3ZGEyNw
-#EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 2 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce6b/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTZiOjE3ODg5ODAxMDQyOTc6Y2RubGl2ZXR2LnR2OjdiNjc1YThhY2Q3YzZmNDEuNDkzYmRhMTU2OTU4NTEwYmY5YjJhMjZkMGFhOGZhZmUwOGE3OWUxZGU4MGM2MTlkMGE0Yzc3ZGE5ODMxMDQ4NQ
-#EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 3 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce69/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTY5OjE3ODg5ODAxMDQ2Mjg6Y2RubGl2ZXR2LnR2OjI1YTM0YTUxZDJkZGYyYTYuZTI3NzA0MTQ0OWNkZDU5YzMzOWRmNzRlOTAwNmRhZDY3OGM5MTQ0ZjY3YzQwMjRmNTg3ZmZkM2FkZTQ0MzIyMg
-#EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 5 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce65/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTY1OjE3ODg5ODAxMDQ2NDQ6Y2RubGl2ZXR2LnR2OjZjYmJhMTU0NjI2ZDY1M2UuYjVjMDA1MTQ0M2JjODFiZGNiOTE3MDgzMTFhZDljYTc0NmE0ZjhjMWMxNTQ4ZDdkMGM2MDZjMTA2MWRiNzYzNg
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5f4/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWY0OjE3ODg5OTQ1NTMyODQ6Y2RubGl2ZXR2LnR2OjFmNjg0YTQ2YjI1MWNkMTkuYWRlZDczNGYwODhkNTMyYjRjMTA0ZDU4ZGFlM2M4YTM0MTMzZTBkNTFkOGYyZjRmZGM3NjM0YzcwMGUzNzAwMQ
 #EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 4 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce67/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTY3OjE3ODg5ODAxMDQ3NTU6Y2RubGl2ZXR2LnR2OjhiOTVhYzIzNDQxMjMxMjcuOGI4YmEwY2VkOGRlZGNiNmE5YmZkODk0NTgzMjNlYzMzMzRmZjRkNjRhZGEwMzg0ZGMwNWJjNTJlZDAyNmExYw
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce67/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTY3OjE3ODg5OTQ1NTM0NTE6Y2RubGl2ZXR2LnR2OmY1MTQ1ODljY2NmMTFiYmIuNmMwMGNiOGYyZjllZGJlMTgxYTZlM2FiMTE4Y2VkYWMwZmQ3NWY2ZWFiNmI4MzhjMmU1OGMyNzdkZjY1MWRmNg
+#EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 3 NL
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce69/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTY5OjE3ODg5OTQ1NTM0Njg6Y2RubGl2ZXR2LnR2OjljMGUyNTE5NmNmNTJlM2MuMTI4M2ZkZDFlOWE1YmU3MDNkM2MwYTkyNGYzMDVhOWNjMjEzNzA4ZTU4OTBmMDI2OTRjYzk4ZTQ5MzUxOTQ1ZQ
+#EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 2 NL
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce6b/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTZiOjE3ODg5OTQ1NTM3MDU6Y2RubGl2ZXR2LnR2OmIxZjY1NWMyODkwYjc5NjguYjhhNzljZTMwYjc2MTQ5MDc0OWI3NzUxNzUxZGRkMDMxZjJlNTc4ZDUwOTRmMDkyYjBmOTJlZmJhOTM4YjIwYg
 #EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 6 NL
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce62/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTYyOjE3ODg5ODAxMDQ5NjQ6Y2RubGl2ZXR2LnR2OjU4NmMzY2RjZjA1MzY5ZmUuZWU3YmViZWUwMDkwZDEzZjZmNDM3NjgxYTM5NWVmMTY1YTgyNzM4MzVkYTBkZWY5MTI0MjBhNmNlZmU0OThiMA
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb58e/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNThlOjE3ODg5ODAxMDUzODQ6Y2RubGl2ZXR2LnR2OjYxZDE0ZDNjZTQ0YWVlMmQuZGRlYjZhOTJkN2JiNThjYzAwMTQ0OGQxYjc5NzA3NGEyZmVhY2E4MzgxOTQ0NjY1YzM5MDk4NmFiNWM5NDUzOA
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 1 TR
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccbfe/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYmZlOjE3ODg5ODAxMDU3ODE6Y2RubGl2ZXR2LnR2OjFlZGE0OGZjOWZhZWUwYzYuMzkxOGRjMzk3OTFlZjM2OTUwZmMwZjczNDc1MWU5MDcxMjg0YzkxMDQ1MmU4ZTU0NGM2ZGRjZWNhM2FjYmQ0MQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce62/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTYyOjE3ODg5OTQ1NTQ0NTA6Y2RubGl2ZXR2LnR2OmM0YWEzYmM3NmFhMGE1OGQuNGE3Mzg4MjBlNzAzNjk3ZDA2Zjg5MmFmMTE4NzM1MjM3ZWFmODE3YzViMzNkOGI2NzA3NmU1Yzc4YmU2ZjI1ZA
+#EXTINF:-1 group-title="DaddyLive Sport",Ziggo Sport 5 NL
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cce65/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjZTY1OjE3ODg5OTQ1NTQ0ODQ6Y2RubGl2ZXR2LnR2OmJmNDk2NDliNDBhNDRhMWYuMmYzM2QwNDRhMWQ1MThlYTJiZmU0YTBmYmY0NTNlYmQzMjhmYWJkYzJkMzAxYzBjMDg3MjU1NWZkNjQ1NGI4NA
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 1 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76ca9a2/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhOWEyOjE3ODg5ODAxMDU5Njg6Y2RubGl2ZXR2LnR2OjI5ZjNiMmMyMTdiYjIxNDIuYjZlYjUzYzQ4OTc0M2M3NWEzNmIwMmEwMjQxNjBlODFlNWY2NTg4NDdjOWVjNGYyNmYyYmU5OTEyYzg1OGY5MQ
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 1 AU
-https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1a7/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWE3OjE3ODg5ODAxMDYwNzc6Y2RubGl2ZXR2LnR2OmU4M2Q1MDFjMWE5M2JjODMuMmJhNjEzNzFjMzk5MTMyMzU0YjcwZmYzY2YyZThjMWJkNzkyZGFiYzMxNmNkZDcxNjBmNWI3MDdkZjBkYzQ2MQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76ca9a2/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhOWEyOjE3ODg5OTQ1NTQ1NDY6Y2RubGl2ZXR2LnR2OjI0YjFlOTM2ZWVmOTJkMDkuYmM1YTI4ODk0NTcwOTZmMGI4ZmZlZGM3ZDI3NmMzOThkMGQ3Mjg5ODM1YTAwZjdiNGEzNmViZThiYjQ3MmExYw
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 1 US
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab63/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjYzOjE3ODg5ODAxMDYwNTA6Y2RubGl2ZXR2LnR2OjVlNzhkYjYwNjZjMmM5YmYuMGUzZjY3OWIyNzM1MzM4NjYyZWIwYjlmZWFiNzMwOTNlZTg3MDQyNzhjYzc3Y2YzYWZkNjlkODY1MmJiMzc2Yg
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 2 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76ca9a4/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhOWE0OjE3ODg5ODAxMDY5MTg6Y2RubGl2ZXR2LnR2OmVlZDlhYmQ4MDA2ODcyNWEuMjY0ZDNiMGQ2NDQxYzEyOTI3OTdiMzE5YTBlODBhMmQ5NmZmZWM0MWI4YjY1MjRkMmI3ZmFiNDM2NDlmN2FjOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab63/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjYzOjE3ODg5OTQ1NTQ3MjY6Y2RubGl2ZXR2LnR2OjJlZDZlMjk1ZWI1OTQ2Y2EuMTBjMjQ5NWU2YjJkYmY5MjJkOGU5ZDgyMWQ1YjU4NjJhNWU3MGMyMzVlYmQ0YmNjZmQyZGZhOTUzZDBhYTVkNA
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb58e/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNThlOjE3ODg5OTQ1NTQ3OTI6Y2RubGl2ZXR2LnR2Ojk1M2UxYjA3YTZhY2I0ZmUuZjM1ZWEzZThjNjI2NWM5MDFjOTgwNjQzMzA1NTAyOTVkMTk3ZjFmNGFkYjUyNGExNDJlYTQxOGU4MmM5Y2ZiMA
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 1 AU
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf1a7/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMWE3OjE3ODg5OTQ1NTU0MDg6Y2RubGl2ZXR2LnR2OmE4MmEwZmIxMGQzZDRlODMuM2VmZWEwZjM2YzU1Y2ZiMmMwZDhjNGE4YWQ4OWI5MWI3MzFlNTJhMTAzNjE0MjdkNDNjMTg4MTNlN2ExYzhiZA
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 2 TR
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccc04/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYzA0OjE3ODg5ODAxMDcyMTM6Y2RubGl2ZXR2LnR2OmZhMDZmY2Q1OTU2YmVlMmEuNDU5NmM3N2U3NzQyNTk3YTM2YmRkOTg0NWExYTZjYWM5YWZiMTEzNTM3ZTNlNmFlODM3NjMyNjAwMmRmODhmYg
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 3 TR
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccc08/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYzA4OjE3ODg5ODAxMDcyMjI6Y2RubGl2ZXR2LnR2OmVhYmY1Y2EyZjE3YjI3ZDQuYzUxYjUzMmFjMWUyYjdkZmQ2Njc5Yjc1NDcxOWM4YTUxZDhkZGM2YmEyNjU5OTg2MmUwOWIyNzE5NWE2YWI3Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccc04/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYzA0OjE3ODg5OTQ1NTU2MzU6Y2RubGl2ZXR2LnR2OjNiNzhlYzkyODc3YmZhYzAuYWY0YjAzNmI0NzM2YTYyN2VlNDcyNjMzYTk3NTEwMTljOTNlZWE3OTcyMTI3M2E4OGQxZWNmZjlmYmFkOTRkNQ
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 1 TR
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccbfe/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYmZlOjE3ODg5OTQ1NTU3MTk6Y2RubGl2ZXR2LnR2OjYxN2U5OTM1MDAxNGIxZmQuODZhNGY2NDg2OWMyOTE1YmIxMzEzZTQ0ZDU0MGQ5ZjQyZDVlMGZjYzcwMWJjOWE4YjE1ZmNhNjY1YTIzZmQzNw
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 2 US
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab65/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjY1OjE3ODg5ODAxMDcyNDg6Y2RubGl2ZXR2LnR2OjdkZmMyMDg2YWMwZmFmMjIuMjVjZTQ3NmM0NmFiYmQ2ODFkODRiMjVmZmE1MWUwODMxM2FiZDY2YzE4YjBmOTBkN2RkYThiYzBkMTk1YTg4Zg
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 3 US
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab67/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjY3OjE3ODg5ODAxMDczOTQ6Y2RubGl2ZXR2LnR2OjhjNzQ1ODUyNTNjODIyMDEuMjI4MDc0NGFkZTlkYjEyYTI3NmNkMTI0OWY3OTY3ZDNiMjJjZGIzMmRkYWVhOWZlMmVhMDIxZDI0YjJiYzQwNQ
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 4 TR
-https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccc0d/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYzBkOjE3ODg5ODAxMDgyMzc6Y2RubGl2ZXR2LnR2Ojk3OGVkMDJjZmFhYmI3OWYuZDU5YTlhZmU4MGQ0M2I3MzZjYTgyNDliZDgyY2VlYzk3OGFkODRmNjc1OGFlZjg1NDNhYmU0MzM1YmE3MTBmOQ
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 4 SA
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6a/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZhOjE3ODg5ODAxMDgyNzM6Y2RubGl2ZXR2LnR2OjdiN2M1MjI1NDQ4M2YzMDcuNmY3MzhiOGE2ZmZhODdhMGJjNmFmYTdiNjllNTU1YmQwYjg2NTZlOTljMDBlYWIyOGY1ODQwZmI2MmQwY2M5Zg
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab65/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjY1OjE3ODg5OTQ1NTU3NTA6Y2RubGl2ZXR2LnR2OjY3MTM2NjgwNWMyMzE1ODIuMTNiZGM5ZTQ0YTY3YzUxMjQ4ZjI4ZjBmZjRkZmI5ZmI5NmIwYmQzMjY3M2Y4YjhmNjA0YjNmOGJjMmY0ZGI1Yg
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 2 FR
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76ca9a4/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhOWE0OjE3ODg5OTQ1NTU3ODI6Y2RubGl2ZXR2LnR2OjE5MzE0NzBmYmYyOWJhYTUuYjY5YWM5NDhjMDk1YmUyNDE3OGExM2IyYTY1OTBjNTgxZjQzNzRkOTdmMTY0NmRjOGM0NjJhNzA3ZTRkYmU0Nw
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 3 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd233/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjMzOjE3ODg5ODAxMDgzNDk6Y2RubGl2ZXR2LnR2OjY2MTU1MWFhYTUzYWY2YzIuNGQzYjBhZWRlMGExY2ZhMDQ0MDJjZDZjZDg2NWNhODExYTU1ZTAwNGJkNjdhNTQzOWYxYTI3NTJkNWFkY2ZmZA
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 5 SA
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6b/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZiOjE3ODg5ODAxMDgzOTY6Y2RubGl2ZXR2LnR2OjE5NjkxMzljNDhmMDg5MWUuZTk0ZDcyOWYxZjFlMjU1MzU1ZDNkNjU0MzQ0ODJiZjA2NTE5NmQ3NzI4NzRiZDRkNzE1NDUzNTg3ZWIyYmM3ZQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd233/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjMzOjE3ODg5OTQ1NTY2MTE6Y2RubGl2ZXR2LnR2Ojk5N2RlZmRhNjNhNzc4MzAuOWM3MTRjODMxNGJiNmE5MjZkYjM1MTc3OGZlM2E3MGM1YzI2OWRkNDVlYWVkNjk1NDFhOTE0NDFhZTJlMmZjYw
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 3 US
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab67/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjY3OjE3ODg5OTQ1NTY2Nzc6Y2RubGl2ZXR2LnR2OmEzMDEwNTM5Y2JlN2Q1NjQuNzg0NjlmMjE4NDQzZjVhNGFiMmMxNTkwOWRiOWVhOTM5Zjc1OGRjYzlkMjYyYTgyZTc1NzFiNzQ5Y2U3ZDAwMQ
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 4 SA
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6a/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZhOjE3ODg5OTQ1NTY3Mjk6Y2RubGl2ZXR2LnR2OjhmNWVlZTg1MTRkMTE0YTEuMDQ1YzIzZDFlZjFjM2NlMGExYjg2MDEzYzhkYzkzOGJiYzgyYmY1MWM2YmE5NmFmOTdkNjM5MDk3OWRlZDRlNQ
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 4 TR
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccc0d/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYzBkOjE3ODg5OTQ1NTY3NTA6Y2RubGl2ZXR2LnR2OjRkY2U3MmQ2NDUwMTdlYTYuMTI5Y2EwOTVkMzE5MzNjNDZhMmRiODU5NzVhNzdmMWIxNGJlODNhYTcwZjAwZjFjYTA0MGYwYmYwODk4MmU4Yg
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 3 TR
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76ccc08/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjYzA4OjE3ODg5OTQ1NTY4Mjc6Y2RubGl2ZXR2LnR2OmMwZjVjMjkwZDVkMWU1MTkuYzUxODI5OGE5NGUzYTg4ODAzYzgwYzQ4MDYzODE3MzdkYTM4ODgyZDNiYjgwMzk2MTJlM2Y1MGM1Y2QzYmFhMA
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 6 SA
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6c/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZjOjE3ODg5ODAxMDg3NTA6Y2RubGl2ZXR2LnR2OmIxZmY2NTE5MDViY2Y4NGUuMzFlMGJhYTRjZTRkMzNiODUzZTAzNDY2NTJkZDNhZGUzOWUzNmNhYzhiNWUxMjg4OTEzNTMwMzhjNGZjMzE3YQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6c/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZjOjE3ODg5OTQ1NTc3MDY6Y2RubGl2ZXR2LnR2OmRhMzcwZmMwNmM4ZDRiNDkuMmExZGYyYjA3MGY0ZDNiMDk0NGQ3MDZhZWRlOTNkNWM5NTMxMDU0YjAzMTA1NGM3MzE0NThhYzQzMjViYTlkZg
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 8 SA
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6e/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZlOjE3ODg5ODAxMDkyNTA6Y2RubGl2ZXR2LnR2OjI2N2YyMjBkNWExYTM4ZWUuYjkwNzFjYjQ2M2E5ZDNjYzliZGVjYzdhNmQyZGI0NWRlOGVkNjZiMzg1YzFiNjc0NDMzNDJlNTBjNjY4MDMyMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6e/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZlOjE3ODg5OTQ1NTc3NTc6Y2RubGl2ZXR2LnR2OjUyN2RmNzU3ZTRhYjI4ODcuM2E1NmFhMDkyYmQ0YmFhOTMzNmNhZGNkODJkYjlmZmNmMjk3NmY2ZDcyNDQ4NTcyODc1YTk0NWUyNzExMzFkYw
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 5 SA
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6b/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZiOjE3ODg5OTQ1NTc4Mjk6Y2RubGl2ZXR2LnR2OjUwN2ExZmM5ZjJiMTA0YTcuMTFmMWQxZGUxNDI4YWNhMjZiYThlODJlODYwYzVhMDVlYmU4ZGI5YjFmYzMxNWFkNzNiNzE1ZGM2ZDcxMDZjNA
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 7 SA
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6d/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZkOjE3ODg5ODAxMDkzMTA6Y2RubGl2ZXR2LnR2OmM1YWVhNWY0MzI5ZjY0YzYuYmM4Y2VmZWYzYTA2ODNkMTY4MzE0MTRmMDBhZWUzNWNmM2Y2NzM5MmFjMTBlY2NiZDIzMTY2ZmU3NTQ1MmIzNw
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6d/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZkOjE3ODg5OTQ1NTc4NjA6Y2RubGl2ZXR2LnR2OjI2NzlkMTczNzNjMzAzYmYuYTM1ZTBkMGZhOWRiNDI3NjFmMzUxMjJhODk1NDg0OTVjMDYwN2U0ODBlNzA5ZTIxNTJmYmMyMDRiNGMwZDA2YQ
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS 9 SA
-https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6f/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZmOjE3ODg5ODAxMDk0Nzk6Y2RubGl2ZXR2LnR2OmFjZTJlMjdmZGYzYjg0M2QuNjdhNjlkMDAwMjkwMDFmYzQzZjJhMmRhZGRjZTY4MzU4MzgzZTZhNTgwNmNjZDI4MGM0NjliZjVmMmRkZjc4Nw
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 10 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd24c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjRjOjE3ODg5ODAxMDk3NDg6Y2RubGl2ZXR2LnR2OjQ0YmYwZmY1M2QyOTBjZjUuMWY3NmYxY2VmZTM5NWE5NzA1ZGJiMmZmOGU5N2U3MDEyNmQzMjc2ODUyYmNjMjIyZDU2ZjdjNDcxN2I0ZWYyYQ
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 4 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd238/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjM4OjE3ODg5ODAxMTAyNjM6Y2RubGl2ZXR2LnR2OjM3NWI4MzViMzI0OWVlMmMuZTFlMzQ1M2U4MzVlNWM0ODliNzFhNTRhZjkyM2QyNWU3ODdkZWUwOTM5ZWU0NWE0YWJmMWE1NGEwMzFiZGU0NA
+https://cdnlivetv.tv/secure/api/v1/6a288d2681d8192bb76cab6f/playlist.m3u8?token=NmEyODhkMjY4MWQ4MTkyYmI3NmNhYjZmOjE3ODg5OTQ1NTgxMzY6Y2RubGl2ZXR2LnR2OjQxNTViMDNkODVjNjE4NjkuYzhjODEyOGJlOGZjNjFiZDhiNjc4ZDRkMmVmMWRlYWFjYTFiNDlmM2VmYWFjMjU4ZWEzNGQ5N2Q4MDUxOGNlMA
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 6 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd23f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjNmOjE3ODg5ODAxMTAzMTU6Y2RubGl2ZXR2LnR2OjhiNTk1YWE5N2QyNmJmNzQuNDEzNjc2ZGIxMTVhYWIxYWMzODBkMzY4ZTVkMTFkNDQyMzk1ZmFmODVkODZmMjEyYWI3MWQ2MzVlYzQ3MTNiYw
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd23f/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjNmOjE3ODg5OTQ1NTg2ODk6Y2RubGl2ZXR2LnR2OmZmN2U4YzhkYTJjZWMxNmQuNzE1OWMwZjIwMWE4NmY0ZTI1MTAwZGE4MmY4Y2JlY2YxYWZjMmRhYjNhMTliOGQ1NWJmNjRhM2UyYmZlZWYzYQ
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 4 FR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd238/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjM4OjE3ODg5OTQ1NTg4MDg6Y2RubGl2ZXR2LnR2OjNkMzk5YTYxZjlkOTEzZTcuYWU4MTMzN2U5ZjZiNjZiMjg3MWEzNmUwYjc0NWNkMDg5OWY2MzA2ZjkyMmVlOGNlNzY1ODVmYmNiZjUwZTRiMw
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 5 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd23b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjNiOjE3ODg5ODAxMTAzMzg6Y2RubGl2ZXR2LnR2Ojk0ZjNlMDlmZjkxMGZjNGQuNjFlODA1MTE4ZDYwOWFkMGFjNzM5ZGMxNjQxNzE2ODQxNDU4ZDhmZmI0MzM5OGZiY2I3OWYwNzllNTFlMDMzOQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd23b/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjNiOjE3ODg5OTQ1NTg4MDc6Y2RubGl2ZXR2LnR2OmJiMTNiNjViMWMzZjc2MmUuZDg4ODVmODIzNDI0MzZmZmUzOTFmNWJlZmNjZWUwYmFkOWRjODJjNTkwYjczMThkMjZlZGEzNDAyNGIyOTE4NQ
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 10 FR
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd24c/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjRjOjE3ODg5OTQ1NTkwMDg6Y2RubGl2ZXR2LnR2OjcwNmUwMzY4MDJmMzhlZmIuODRhZDYxN2JkZjliMjkwOGRhNGRlZDEyMTVjYWM1ZDM5MjEwMmFlY2M0NDg3ZTczZWI0M2Y1YmQ3YWE0NmU4Mw
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 7 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd243/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjQzOjE3ODg5ODAxMTEwMDg6Y2RubGl2ZXR2LnR2OjY4NjY4ZjY2NzQ0ZjMzYzQuNWFiOTZjZTAxMGYzNTUwOWU1YThhMTIxNjdhYzMxZWMxYzIzMzNlOWJiY2VhNTYzNzg2MmMwOTQ2OGZmMTMzNQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd243/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjQzOjE3ODg5OTQ1NTk1MTY6Y2RubGl2ZXR2LnR2OjFmZWVhN2IyMDVhYTk1ZDQuZjU1MjdlOGI5ZjQxZTQ0NmFiNTA4ZTIzZmIxMWI3ODkxZjVmZmY5ZjkyZmJkYzlhNTc4YmM4ZTNlN2JlNTdhZA
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 8 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd246/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjQ2OjE3ODg5ODAxMTEwMTI6Y2RubGl2ZXR2LnR2OjZkNmQxN2UwZjRiYjgxNjUuNWUwMjg1MzZiOTE5YTE5YjUyZDQxMGQyYjE0Y2IxNmRiNGQzYTdkOGY5ZjEwNTljN2Y4ODJjNTYxZmMyM2NhNg
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd246/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjQ2OjE3ODg5OTQ1NTk5ODA6Y2RubGl2ZXR2LnR2OjUzYmI2YzU4ZmNmYWIzZDYuNjk2OWQwYWViNzkyZmRjYzljODRmMTQ2ODNjZjVhYWY1OTY0MzBjZmI1OTkyMTEyNDQ4ZjAzYzdkOTNmZTdhYQ
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS MAX 9 FR
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd249/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjQ5OjE3ODg5ODAxMTE0NzE6Y2RubGl2ZXR2LnR2OjUyOTllZGJlNDZjOTlkODYuYTc0NjcyYmMyMjY2ZTk5OWQzMzU5ZmEyMTE4NjdmZDMyNTQ0M2Y2OTViMzkzYjQ0YTNmMmVjY2IwYTM5NWFjMg
-#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS XTRA ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb591/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTkxOjE3ODg5ODAxMTE2MDg6Y2RubGl2ZXR2LnR2OmQ0MDRhOTg0NTA3NTQ0NTEuNjUyZjdkODQ4MjkwZTJjMzk5ODI4MTYxMDBiNDcyZGZhOWIzZjcyZWFjYmQyNjFmNDU0YzdhZTk3MDM5NGRlOA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd249/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkMjQ5OjE3ODg5OTQ1NTk5ODY6Y2RubGl2ZXR2LnR2OmYxNzQ3Y2U4NWYzMTkxMGIuNTYyNWU0MTA5YzAzN2ZmMzE1MmNhZTg2NGJiZDFkMTZmNTFhODNjMDc5NWEwNzFiZmE2NDk4ZmVmMWU5MWMxMw
 #EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS N ES
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5d6/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWQ2OjE3ODg5ODAxMTE2OTg6Y2RubGl2ZXR2LnR2OmQ1NmJjNmIyNjg5YTQ5ZmMuMGVhOWY4ZDA3ZDZmYWE3NjdkYzdiYWFjZjliNjIwOGE1NzYwZjFjMTMxNTViMTQ3ZmJjY2M1YWNiNzAyZTQ3Mg
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce5d6/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNWQ2OjE3ODg5OTQ1NjAxOTA6Y2RubGl2ZXR2LnR2OmM2YzZiNjA2YWRhYWQxNDUuNzAwNTFhMThiN2M1YjY2Yzk0ZjAxM2M1Yjc2MDg5NWJjZjI4OWZiODg1NjQ2MGMyMmIyNDk1ZmI0MTc2YWMwNw
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORTS XTRA ES
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb591/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTkxOjE3ODg5OTQ1NjAyMzE6Y2RubGl2ZXR2LnR2OmY5ZDkyMDVmNWNjZjZmOWMuZTMyZjc2NjMyNzdhYmQ2OTQ3ZTdjNGI4Y2Y5YjdkM2M4ODNhMDc2YjE0ODdjNmNkYTk1NjQxNTMzMDkxY2Q2Yw
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/v2db7kg.m3u8?s=XMtDal1hBwgg_cRISA6JEg&e=1789001762
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ysagetp2j4x.m3u8?s=Kk7dJVN1QcZLUP5__E64Iw&e=1789001762
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 5
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/0bsnj0w5s.m3u8?s=tlrH1N_QcIgVTXfzzCrV_A&e=1789001763
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 4
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/91qmzwr.m3u8?s=FT8V1lyt9M1LflBF4_vuEA&e=1789001763
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/wedpl8t.m3u8?s=kpTUTmbFt9AJhLYzAVwiug&e=1789001763
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 6
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/brilq81faz0axa.m3u8?s=aJHaFmFyzfRWNW8nYZkpMg&e=1789001765
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 7
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/tyb9c9jdgtqhn5.m3u8?s=4Qb17A40Ynnqh_GscjfdIg&e=1789001765
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 8
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xlzl5is.m3u8?s=7Z0Se5X8m8N1wZAe0Md2-A&e=1789001766
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 9
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/n2u9e0v.m3u8?s=-JAwc9yeo1kk7cx612906A&e=1789001766
+#EXTINF:-1 group-title="DaddyLive Sport",beIN SPORT max 10
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/1tol4.m3u8?s=k2AD3RWF8C7qmTY_9FWAgA&e=1789001766
+#EXTINF:-1 group-title="DaddyLive Sport",canal+ sport
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/l7cjwm5h33uklvh.m3u8?s=7FSAAvjnHNc8X1Qe107MZw&e=1789001768
+#EXTINF:-1 group-title="DaddyLive Sport",canal+ sport360
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/gaes7rdnbknd.m3u8?s=KT3oL8pwHwXBaX4Khszc0A&e=1789001769
+#EXTINF:-1 group-title="DaddyLive Sport",eurosport1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/um6txc0v4k7ji8o.m3u8?s=NVc4ovAaAOv1bvAN6OhRow&e=1789001769
+#EXTINF:-1 group-title="DaddyLive Sport",eurosport2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/yrm5hpui6v6mj9r.m3u8?s=wKXfRaJBfsWQD_0LOeJJuQ&e=1789001769
+#EXTINF:-1 group-title="DaddyLive Sport",rmc sport1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/63aggm.m3u8?s=vqkDGkxYUyovPn-bhzZgLA&e=1789001769
+#EXTINF:-1 group-title="DaddyLive Sport",C+Live 15 (DAZN FR best SERIE A games)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/l8sege.m3u8?s=Zw1JN-dcKp9IgYlwH4Rm2g&e=1789001771
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN liga2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ion9r5cmhen.m3u8?s=tvl4OtemAPAU44T_5Wa6wQ&e=1789001771
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ekm9z79niibzy.m3u8?s=6lIJAXtGczKpgbM1Ddg8ig&e=1789001772
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN liga
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/w2iuo.m3u8?s=oVUMb3n7o3MNnwew1p_Oqw&e=1789001772
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/lm0q2r.m3u8?s=QRnDycVmDTVlrEo7cLxzbQ&e=1789001773
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/8vj7aj9.m3u8?s=-f2P-mAwxb3CWFtVxsMPAw&e=1789001774
+#EXTINF:-1 group-title="DaddyLive Sport",beIN En español
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/dp4tigbdvjxr4l.m3u8?s=QJZXgwCXGkA52iZWxZYKTw&e=1789001775
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN F1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/6na79kddf.m3u8?s=ynMBB37nO6O6iETpcpGDNw&e=1789001775
+#EXTINF:-1 group-title="DaddyLive Sport",ES DAZN 4
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xy2i0bo.m3u8?s=7Gk0m7M64yn8osskgbgzBQ&e=1789001775
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN Deportes
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/rq4g6.m3u8?s=2wB3K3gOioHHmx4BbOqjlQ&e=1789001776
+#EXTINF:-1 group-title="DaddyLive Sport",LAS latin america sports
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/5t538a.m3u8?s=mTyh_MlDVnaTOrvKqsMVbQ&e=1789001777
+#EXTINF:-1 group-title="DaddyLive Sport",TNT sport arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/muha9xp8lgyom64.m3u8?s=VF-Wh4ORBWCYZq28LTLPGQ&e=1789001777
+#EXTINF:-1 group-title="DaddyLive Sport",TyC Sports
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/f68g2j5axq.m3u8?s=vlplnhpVsKkrLm8AGpVe3w&e=1789001778
+#EXTINF:-1 group-title="DaddyLive Sport",ESPN Premium
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/x9buv95p9kwqbow.m3u8?s=pFzTKfUHQNHWzryhBEjEWg&e=1789001778
+#EXTINF:-1 group-title="DaddyLive Sport",FOXsport1 arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/2tdbm0ikkct3271.m3u8?s=C678Wao-8WVFg6pw3F3VMw&e=1789001779
+#EXTINF:-1 group-title="DaddyLive Sport",FOXsport2 arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/tqhqq.m3u8?s=YLtzde9BQG7-ij-SjSeiug&e=1789001780
+#EXTINF:-1 group-title="DaddyLive Sport",FOXsport3 arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/zbz7klq.m3u8?s=FKJhHOnBF-UOuSqIJssQAw&e=1789001780
+#EXTINF:-1 group-title="DaddyLive Sport",WINsport+
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/h5m4gyv36vtc.m3u8?s=h-LwAQ2Js1_wj3tVUkHcHw&e=1789001780
+#EXTINF:-1 group-title="DaddyLive Sport",Zapping sports
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/b9d5tcl59dh2.m3u8?s=n-NlDmoXn9n6am1yaF4n6Q&e=1789001781
+#EXTINF:-1 group-title="DaddyLive Sport",WINsport
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xmr0xxbbmzod.m3u8?s=LkccUSfQsL0_7AXZzDIzdQ&e=1789001782
+#EXTINF:-1 group-title="DaddyLive Sport",FOXsport1MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/onfsmh.m3u8?s=9olMle-5_yWuIJ-RKwvojQ&e=1789001783
+#EXTINF:-1 group-title="DaddyLive Sport",FOXsport2MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/3p3ietefn017d.m3u8?s=e4YtsDXReCPfN9tj7iokpA&e=1789001783
+#EXTINF:-1 group-title="DaddyLive Sport",FOXsport3MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/6bysbwjkckk6lm.m3u8?s=XsdINanhydA5BJUNNWplAQ&e=1789001783
+#EXTINF:-1 group-title="DaddyLive Sport",FOX SPORTS PREMIUM
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/313bwweg2v1km.m3u8?s=6gcJJTKmy-4XBzvlrCX3Iw&e=1789001784
+#EXTINF:-1 group-title="DaddyLive Sport",DE skyde f1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/a7hfuuu11vri.m3u8?s=qf3K3ezLdY0eIbKVIVMIoA&e=1789001785
+#EXTINF:-1 group-title="DaddyLive Sport",DE dazn 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/fpq0kt.m3u8?s=VbXBzB7nFCOuJSYmVrFHvQ&e=1789001786
+#EXTINF:-1 group-title="DaddyLive Sport",DE skyde tennis
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/dvhorbczlaot.m3u8?s=THCzbbENH1hCfzjWbpRDFw&e=1789001786
+#EXTINF:-1 group-title="DaddyLive Sport",DE Sportdigital Fussball
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/uvshm3lb07cg.m3u8?s=7RJkr3QEaf-V0aU7r23pgg&e=1789001787
+#EXTINF:-1 group-title="DaddyLive Sport",UK TNT SPORT
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/bh4c0fs78pl.m3u8?s=WyJnM04LA5eFcUJC2UW4fA&e=1789001788
+#EXTINF:-1 group-title="DaddyLive Sport",UK F1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/hsg7m6kb0fse.m3u8?s=ylKCxIXwiJLhdoAY5Yy-8Q&e=1789001789
+#EXTINF:-1 group-title="DaddyLive Sport",NL ESPN 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/wfz2x.m3u8?s=vVKpP9zOUswYXUZSCuyDfg&e=1789001791
+#EXTINF:-1 group-title="DaddyLive Sport",NL ESPN 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ffaob6pxj8f.m3u8?s=cWnwozNM0U9BqPlNYM-F9Q&e=1789001791
+#EXTINF:-1 group-title="DaddyLive Sport",PT SPORT 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/6bbrls4b8ct.m3u8?s=MIsnwBaYVDgBtJTCAMSR5g&e=1789001793
+#EXTINF:-1 group-title="DaddyLive Sport",PT SPORT 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/bev00.m3u8?s=buzoXYGg-bkwArT-2_cTfg&e=1789001793
+#EXTINF:-1 group-title="DaddyLive Sport",GR SPORT 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/40bxgu27c6ej.m3u8?s=neAMs2YZbrwgXtFGU9rj2Q&e=1789001793
+#EXTINF:-1 group-title="DaddyLive Sport",GR SPORT 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xov7i3fmrbb.m3u8?s=vpdnjstcqsfc1bcJr-Q5UA&e=1789001794
+#EXTINF:-1 group-title="DaddyLive Sport",GR SPORT 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/nwllxjosrh.m3u8?s=N4MK5_vZemvnTknYQxkW6A&e=1789001795
+#EXTINF:-1 group-title="DaddyLive Sport",TR BeIN sport 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/6d8sd4.m3u8?s=3Gm-_M5LDXGsCmhuuwDUHQ&e=1789001795
+#EXTINF:-1 group-title="DaddyLive Sport",TR BeIN sport 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/fk9m6i9wk0z.m3u8?s=_LsRCAHsp7LwYz3FRp_A-A&e=1789001796
+#EXTINF:-1 group-title="DaddyLive Sport",dazn baloncesto 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/g36z95h655.m3u8?s=KgmCDFcofK0qHta0CCxOmw&e=1789001797
+#EXTINF:-1 group-title="DaddyLive Sport",dazn baloncesto 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/edl8ze.m3u8?s=SK-TJ80tNliW6q7plFDWGw&e=1789001798
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT4 (VIX TUBI ... Liga MX)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/n4ec46i.m3u8?s=R2xDO6sLw6O3sFp25BQx6A&e=1789001798
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT5 (VIX TUBI ... Liga MX)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/96uq547q9.m3u8?s=--tDTVh05pQWRA0zPNL7sw&e=1789001799
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT6
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/zh44pyu5dpby.m3u8?s=DB741mcBaL0P3rMxSv1hJQ&e=1789001799
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT7 (uefa m+LdC 1) uefa events only
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/g85mrc01p.m3u8?s=J-Ug3C-LYMin2ctFJcDyBA&e=1789001800
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT8 (uefa m+LdC 2)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/r0zijuje2llg07a.m3u8?s=QlBfR-cqVzfHRdz48p74mg&e=1789001800
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT9 (uefa m+LdC 3)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/hatlrm.m3u8?s=iS65MLc1t8LFgQK00wrA5w&e=1789001801
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT10 (uefa m+LdC 4)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ds13z4tuaur39.m3u8?s=w-Ax7iByRtDSqU_MoeJq0Q&e=1789001801
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT11 (uefa m+LdC 5)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/g61pboptvk4v0.m3u8?s=FFQdmi7cWk6Vz7q19kWtYg&e=1789001802
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT12 (uefa m+LdC 6)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/eur8cbk.m3u8?s=0USU1DL9mrBu5Jp4Qjulug&e=1789001803
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT14 (uefa m+LdC 8)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xhh0h43hpx2v7.m3u8?s=oTKsvf9An40yhi2GxeyXEg&e=1789001803
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT15 (uefa m+LdC 9)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xitymii.m3u8?s=RJEy6kB-CJVWiWTnCjyl1Q&e=1789001804
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT17 (uefa m+LdC 11)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/z626qaml2.m3u8?s=eoggjz4Fs9uRADEnTa8yog&e=1789001805
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT16 (uefa m+LdC 10)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/i8xuof32t8falvg.m3u8?s=SiF0t-McSvZaFCMyi08zDQ&e=1789001805
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT18 (uefa m+LdC 12)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/mghhbpxvh.m3u8?s=j57KVVrrg6S316ALyBtMKw&e=1789001806
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT19 (uefa m+LdC 13)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/eiqewe2jkfv0663.m3u8?s=GPjjOC2vM1d-Kfn9FWZpdg&e=1789001806
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT20 (uefa m+LdC 14)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/vfh7lfh8q0g.m3u8?s=I0dnKszSh7sbCSegdgikrw&e=1789001806
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT21 (uefa m+LdC 15)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/b5txjwwnk0x8.m3u8?s=Pe73mtKZzU4a_ag-0O220w&e=1789001808
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT22 (uefa m+LdC 16)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/w035wo.m3u8?s=2wKg3YsbbAu3yyEQ2MKFIQ&e=1789001808
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT23 (uefa m+LdC 17)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pu85vndwnoucop1.m3u8?s=Iw9GJC8Pwi09CMTd-SS-WQ&e=1789001809
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT24 (uefa m+LdC 18)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/l967ga3.m3u8?s=Qz9tGLSbTeLlTfRvHXmYGA&e=1789001809
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT25 (uefa m+LdC 19)
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/v4wvgitbwy1x.m3u8?s=Bomyq01-tGA-bT6YO0J0fA&e=1789001810
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT26
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/8ad9ik.m3u8?s=8ChbsDPDvnKzilhc9UWvwA&e=1789001811
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT27
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pvhgog8c7j80ws.m3u8?s=vFaDogyaYh9bHLrUWzio7Q&e=1789001811
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT30
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/6sx7g6kaol8.m3u8?s=q4O0f5u2jlQKmnfNlex7sA&e=1789001812
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT28
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/qlzyarw.m3u8?s=tclnyU1YWSjtSJ8ZsjhqPg&e=1789001812
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT31
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/1i4007kazec.m3u8?s=npO-htPLHzJtjEU48Af1zg&e=1789001812
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT32
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ndb8e8u68g.m3u8?s=HboseC0NuP3s6l4cLVtDLw&e=1789001814
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT34
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/a6j5y.m3u8?s=Gi2HaHlm5kaoB5bz812wgg&e=1789001814
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT33
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/cvpep9xfpsu.m3u8?s=XziSrAi6tk20AkhNPZW1kQ&e=1789001814
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT35
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/4mgsdkptj2.m3u8?s=GsTYEz0AlkHqY9fnZgzsqg&e=1789001815
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT36
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/mwhgs7.m3u8?s=x6g9i32QtmwHQaZyfwdQXg&e=1789001815
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT37
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/k515qsk11nl.m3u8?s=2oy9SZ-HytphsrTjQ6s0Dw&e=1789001817
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT39
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/497i18ugnsl3.m3u8?s=XKV7P_zKounOmQF5vd2VsQ&e=1789001817
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT40
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/4r192ptohv7.m3u8?s=DbYh9Xn7zbdwILlRff4jpA&e=1789001817
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT38
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/oa7pycjdjj8xo.m3u8?s=2rjYW8JNCna50OtidOy3JA&e=1789001818
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT41
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/4r192ptohv7.m3u8?s=j_TyaULHZRZMfs6oBaGlBw&e=1789001818
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT42
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ay0flm6y8j7hsd.m3u8?s=DEd581hYG_ktrNueNsoi8g&e=1789001820
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT44
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/dhkhekn2o6n.m3u8?s=K53OH0HRJx44mKX5Jlr9mA&e=1789001820
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT43
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/005l2ohgdmzczh.m3u8?s=5r-_FeLGRQm7Ymr6JSvWYg&e=1789001820
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT45
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/keckw4zw5et.m3u8?s=545PT3XkMw1E1PaUtNowWA&e=1789001821
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT46
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/mtlkgk8.m3u8?s=4aGll1GpDVSTksaxteGGNQ&e=1789001822
+#EXTINF:-1 group-title="DaddyLive Sport",EXTRA SPORT47
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/c8bbakenj.m3u8?s=H9UzVJ2mziyWyZVRBdq6Aw&e=1789001823
