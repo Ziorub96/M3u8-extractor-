@@ -48,6 +48,9 @@ jobs:
       - name: Extract SMTK sport channels
         run: python smtk_extractor.py
 
+      - name: Extract extra sport sources
+        run: python extra_sources_extractor.py
+
       - name: Run combiner
         run: python combine_playlist.py
 
