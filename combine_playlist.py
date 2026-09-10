@@ -38,7 +38,7 @@ SOURCES = [
 LOCAL_SOURCES = [
     ("DAMITV", "damitv_events.m3u"),
     ("WatchFooty", "watchfooty_events.m3u"),
-    ("Daddylive Unified", "daddylive_streams.m3u"),
+    ("Daddylive", "daddylive_streams.m3u"),
     ("XYZStreams", "xyzstreams_events.m3u"),
     ("SMTK Sport", "smtk_sport.m3u"),
     ("Extra Sources", "extra_sources.m3u"),
