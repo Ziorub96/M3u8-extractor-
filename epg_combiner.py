@@ -1,7 +1,8 @@
-import concurrent.futures
+import gzip
+import io
 import re
 import requests
-from threading import local
+import concurrent.futures
 
 HEADERS = {
     "User-Agent": (
@@ -11,37 +12,81 @@ HEADERS = {
     )
 }
 
-FALLBACK_COUNTRIES = [
-    "it", "uk", "gb", "de", "es", "pt", "pl", "us", "fr", "br", "ar",
-    "ca", "au", "nl", "be", "ch", "at", "se", "no", "fi", "dk", "cz",
-    "sk", "ro", "bg", "gr", "tr", "ru", "ua", "in", "jp", "kr", "cn",
-    "mx", "cl", "co", "pe", "za", "eg", "sa", "ae", "il", "ie", "nz",
-    "hu", "hr", "rs", "si",
+# Fonti EPG da epgshare01.online (file .xml.gz)
+EPG_SOURCES = [
+    # Generali sport e multi-paese
+    "https://epgshare01.online/epgshare01/epg_ripper_IT1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_US1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_US_LOCALS2.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_ES1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_PL1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_DE1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_FR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_BR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_AR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_MX1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_BE2.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_AT1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_CH1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_SE1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_NO1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_DK1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_FI1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_CZ1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_SK1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_RO1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_BG1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_GR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_HR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_RS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_HU1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_IE1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_CA1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_AU1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_IN1.xml.gz",
+    # Provider specifici
+    "https://epgshare01.online/epgshare01/epg_ripper_BEIN1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_DIRECTVSPORTS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_DISTROTV1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_PLEX1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_RAKUTEN1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_RAKUTEN_IT1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_POWERNATION1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_SPORTKLUB1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_SSPORTPLUS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_THESPORTPLUS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_FANDUEL1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_DRAFTKINGS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_PAC-12.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_RALLY_TV1.xml.gz",
 ]
 
-MAX_WORKERS = 10
-INDEX_URL = "https://iptv-org.github.io/epg/guides.json"
-BASE_URL = "https://iptv-org.github.io/epg/"
+MAX_WORKERS = 8
+OUTPUT_FILE = "combined_epg.xml"
 
-thread_local = local()
 
-def get_session():
-    if not hasattr(thread_local, "session"):
-        thread_local.session = requests.Session()
-        thread_local.session.headers.update(HEADERS)
-    return thread_local.session
-
-def fetch_guide_xml(guide_url):
-    session = get_session()
+def fetch_and_decompress(url: str, session: requests.Session):
+    """Scarica un file .xml.gz e restituisce il testo XML decompresso."""
     try:
-        r = session.get(guide_url, timeout=20)
-        if r.status_code == 200 and r.text.strip():
-            return r.text
-    except Exception:
-        pass
-    return None
+        r = session.get(url, timeout=30)
+        if r.status_code != 200:
+            return url, None
+        # Decomprime in memoria
+        with gzip.GzipFile(fileobj=io.BytesIO(r.content)) as gz:
+            text = gz.read().decode("utf-8", errors="ignore")
+        return url, text
+    except Exception as e:
+        print(f"  ❌ Errore su {url}: {e}")
+        return url, None
 
-def extract_channels_and_programmes(xml_text):
+
+def extract_channels_and_programmes(xml_text: str):
+    """Estrae i blocchi <channel> e <programme>."""
     channels = re.findall(
         r"<channel\b[^>]*>.*?</channel>|<channel\b[^>]*/>",
         xml_text,
@@ -54,74 +99,40 @@ def extract_channels_and_programmes(xml_text):
     )
     return channels, programmes
 
+
 def main():
     session = requests.Session()
     session.headers.update(HEADERS)
 
-    print("🔍 Recupero indice guide da iptv-org...")
-    try:
-        r = session.get(INDEX_URL, timeout=15)
-        r.raise_for_status()
-        guides_data = r.json()
-    except Exception as e:
-        print(f"❌ Impossibile scaricare l'indice delle guide: {e}")
-        return
-
-    countries_set = set(c.lower() for c in FALLBACK_COUNTRIES)
-    if "uk" in countries_set:
-        countries_set.add("gb")
-
-    urls_to_download = []
-
-    for guide in guides_data:
-        # 1. Recupera il percorso da 'url', 'file' o 'site'
-        raw_path = guide.get("url") or guide.get("file") or ""
-        lang = (guide.get("lang") or "").lower()
-        site = (guide.get("site") or "").lower()
-
-        # 2. Determina se la guida appartiene ai paesi selezionati
-        # Verifica tramite lang, codice paese nel dominio (es. .it) o percorso (/it/)
-        is_matched = (
-            lang in countries_set or
-            any(f"/guides/{c}/" in raw_path.lower() or f"/{c}/" in raw_path.lower() for c in countries_set) or
-            any(site.endswith(f".{c}") for c in countries_set)
-        )
-
-        if is_matched and raw_path:
-            # 3. Trasforma in URL assoluto valido
-            if raw_path.startswith("http://") or raw_path.startswith("https://"):
-                full_url = raw_path
-            else:
-                full_url = f"{BASE_URL}{raw_path.lstrip('/')}"
-
-            if full_url not in urls_to_download:
-                urls_to_download.append(full_url)
-
-    print(f"📡 Trovate {len(urls_to_download)} guide XML per i paesi selezionati. Avvio scaricamento...")
-
     all_channels = []
     all_programmes = []
-    successful_downloads = 0
+    successful = 0
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = [
-            executor.submit(fetch_guide_xml, url)
-            for url in urls_to_download
-        ]
+    print(f"📡 Scarico {len(EPG_SOURCES)} fonti EPG da epgshare01.online...")
 
-        for future in concurrent.futures.as_completed(futures):
-            xml_text = future.result()
-            if xml_text:
-                channels, programmes = extract_channels_and_programmes(xml_text)
-                all_channels.extend(channels)
-                all_programmes.extend(programmes)
-                successful_downloads += 1
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futures = {
+            ex.submit(fetch_and_decompress, url, session): url
+            for url in EPG_SOURCES
+        }
 
-    print(f"\n📊 Completato! Scaricate con successo {successful_downloads}/{len(urls_to_download)} guide.")
+        for fut in concurrent.futures.as_completed(futures):
+            url, xml_text = fut.result()
+            name = url.split("/")[-1].replace("epg_ripper_", "").replace(".xml.gz", "")
+            if not xml_text:
+                print(f"  ❌ {name}: fallito")
+                continue
 
-    output_filename = "combined_epg.xml"
+            channels, programmes = extract_channels_and_programmes(xml_text)
+            print(f"  ✓ {name}: {len(channels)} canali, {len(programmes)} programmi")
+            all_channels.extend(channels)
+            all_programmes.extend(programmes)
+            successful += 1
+
+    print(f"\n📊 Completato: {successful}/{len(EPG_SOURCES)} fonti scaricate.")
+
     if all_channels or all_programmes:
-        with open(output_filename, "w", encoding="utf-8") as f:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             f.write("<tv>\n")
             for ch in all_channels:
@@ -129,9 +140,12 @@ def main():
             for prog in all_programmes:
                 f.write(prog + "\n")
             f.write("</tv>\n")
-        print(f"✅ Salvato `{output_filename}` con {len(all_channels)} canali e {len(all_programmes)} programmi.")
+        print(f"✅ Salvato {OUTPUT_FILE} con {len(all_channels)} canali e {len(all_programmes)} programmi.")
     else:
-        print("⚠️ Nessun dato scaricato.")
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            f.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv/>\n')
+        print("⚠️ Nessun dato trovato, generato XML vuoto.")
+
 
 if __name__ == "__main__":
     main()
