@@ -92,406 +92,538 @@ http://dokagents.site/live/eurosport/mono.m3u8
 #EXTINF:-1 tvg-id="dok-eurosport2" group-title="DokAgents Sport",eurosport2
 http://dokagents.site/live/eurosport2/mono.m3u8
 #EXTINF:-1 tvg-id="ts-accn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/acc-network-us.png",ACC Network
-https://messi.damitv.st/papi/ts2/accn-usa.m3u8?tk=EV0lcqoE-VVuXziQPRFDaA&e=1789292361
+https://messi.damitv.st/papi/ts2/accn-usa.m3u8?tk=LawYmuGb5desyPbzATh8rA&e=1789298450
 #EXTINF:-1 tvg-id="ts-beinsports-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bein-sports-us.png",beIN Sports
-https://messi.damitv.st/papi/ts2/beinsports-usa.m3u8?tk=EV0lcqoE-VVuXziQPRFDaA&e=1789292361
+https://messi.damitv.st/papi/ts2/beinsports-usa.m3u8?tk=LawYmuGb5desyPbzATh8rA&e=1789298450
 #EXTINF:-1 tvg-id="ts-beinsports1-fr" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png",beIN Sports Francais 1
-https://messi.damitv.st/papi/ts2/beinsports1-fr.m3u8?tk=EV0lcqoE-VVuXziQPRFDaA&e=1789292361
+https://messi.damitv.st/papi/ts2/beinsports1-fr.m3u8?tk=LawYmuGb5desyPbzATh8rA&e=1789298450
 #EXTINF:-1 tvg-id="ts-beinsports2-fr" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png",beIN Sports Francais 2
-https://messi.damitv.st/papi/ts2/beinsports2-fr.m3u8?tk=EV0lcqoE-VVuXziQPRFDaA&e=1789292361
+https://messi.damitv.st/papi/ts2/beinsports2-fr.m3u8?tk=LawYmuGb5desyPbzATh8rA&e=1789298450
 #EXTINF:-1 tvg-id="ts-beinsports3-fr" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png",beIN Sports Francais 3
-https://messi.damitv.st/papi/ts2/beinsports3-fr.m3u8?tk=EV0lcqoE-VVuXziQPRFDaA&e=1789292361
+https://messi.damitv.st/papi/ts2/beinsports3-fr.m3u8?tk=LawYmuGb5desyPbzATh8rA&e=1789298450
 #EXTINF:-1 tvg-id="ts-big10-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/big-ten-network-us.png",Big Ten Network
-https://messi.damitv.st/papi/ts2/big10-usa.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/big10-usa.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalextra1-pl" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/canalextra.png",CANAL+ Extra 1
-https://messi.damitv.st/papi/ts2/canalextra1-pl.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/canalextra1-pl.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalextra2-pl" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/canalextra.png",CANAL+ Extra 2
-https://messi.damitv.st/papi/ts2/canalextra2-pl.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/canalextra2-pl.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalsport2-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-2-pl.png",CANAL+ Sport 2 PL
-https://messi.damitv.st/papi/ts2/canalsport2-pl.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/canalsport2-pl.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalsport3-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-3-pl.png",CANAL+ Sport 3 PL
-https://messi.damitv.st/papi/ts2/canalsport3-pl.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/canalsport3-pl.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalsport4-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-4-pl.png",CANAL+ Sport 4 PL
-https://messi.damitv.st/papi/ts2/canalsport4-pl.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/canalsport4-pl.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalsport5-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-5-pl.png",CANAL+ Sport 5 PL
-https://messi.damitv.st/papi/ts2/canalsport5-pl.m3u8?tk=wt-wiuhDDFsQiD0QM460ig&e=1789292362
+https://messi.damitv.st/papi/ts2/canalsport5-pl.m3u8?tk=5k6S5nZJwgHs1VrqoVXSZA&e=1789298451
 #EXTINF:-1 tvg-id="ts-canalsport6-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-5-pl.png",CANAL+ Sport 6 PL
-https://messi.damitv.st/papi/ts2/canalsport6-pl.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/canalsport6-pl.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-canalsport-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-pl.png",CANAL+ Sport PL
-https://messi.damitv.st/papi/ts2/canalsport-pl.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/canalsport-pl.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-cbssn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-sports-network-us.png",CBS Sports Network
-https://messi.damitv.st/papi/ts2/cbssn-usa.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/cbssn-usa.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-dazn1-de" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/dazn1-de.png",DAZN 1 Germany
-https://messi.damitv.st/papi/ts2/dazn1-de.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/dazn1-de.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-dazn1-it" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/international/dazn1-int.png",DAZN 1 Italia
-https://messi.damitv.st/papi/ts2/dazn1-it.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/dazn1-it.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-dazn1-pt" tvg-logo="https://image.discovery.indazn.com/ca/v2/ca/image?id=1o4eamzb4env61ddc8wv4ra06l_image-header_pRow_1720521601000&amp;amp;amp;amp;amp;amp;quality=70",DAZN 1 Portugal
-https://messi.damitv.st/papi/ts2/dazn1-pt.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/dazn1-pt.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-dazn1-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-1-es.png",DAZN 1 Spain
-https://messi.damitv.st/papi/ts2/dazn1-es.m3u8?tk=d-VnY2lvQrTptHtp4YXcRw&e=1789292363
+https://messi.damitv.st/papi/ts2/dazn1-es.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-dazn1-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/dazn-us.png",DAZN 1 USA
-https://messi.damitv.st/papi/ts2/dazn1-usa.m3u8?tk=XiouzkOqpT0Ns5l7yvwz7Q&e=1789292364
+https://messi.damitv.st/papi/ts2/dazn1-usa.m3u8?tk=Bs2OpCjUOhYRvxHpIAQwug&e=1789298452
 #EXTINF:-1 tvg-id="ts-dazn2-de" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/dazn2-de.png",DAZN 2 Germany
-https://messi.damitv.st/papi/ts2/dazn2-de.m3u8?tk=XiouzkOqpT0Ns5l7yvwz7Q&e=1789292364
+https://messi.damitv.st/papi/ts2/dazn2-de.m3u8?tk=XTQxcpfRPpTmNnOdh1JR9Q&e=1789298453
 #EXTINF:-1 tvg-id="ts-dazn2-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-2-es.png",DAZN 2 Spain
-https://messi.damitv.st/papi/ts2/dazn2-es.m3u8?tk=XiouzkOqpT0Ns5l7yvwz7Q&e=1789292364
+https://messi.damitv.st/papi/ts2/dazn2-es.m3u8?tk=XTQxcpfRPpTmNnOdh1JR9Q&e=1789298453
 #EXTINF:-1 tvg-id="ts-daznf1-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-f1-es.png",DAZN F1
-https://messi.damitv.st/papi/ts2/daznf1-es.m3u8?tk=XiouzkOqpT0Ns5l7yvwz7Q&e=1789292364
+https://messi.damitv.st/papi/ts2/daznf1-es.m3u8?tk=XTQxcpfRPpTmNnOdh1JR9Q&e=1789298453
 #EXTINF:-1 tvg-id="ts-daznlaliga-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-laliga-es.png",DAZN LaLiga
-https://messi.damitv.st/papi/ts2/daznlaliga-es.m3u8?tk=XiouzkOqpT0Ns5l7yvwz7Q&e=1789292364
+https://messi.damitv.st/papi/ts2/daznlaliga-es.m3u8?tk=XTQxcpfRPpTmNnOdh1JR9Q&e=1789298453
 #EXTINF:-1 tvg-id="dlhd-877" tvg-logo="",DAZN ZONA
-https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9vbmUvc2VjdXJlLzRlMDQwMjQyZWY0NTA4YmY1MmRiY2JlYzI0MmU3YmJhLzE3ODkyNTk5NjcvcHJlbWl1bTg3Ny9pbmRleC5tM3U4?tk=pDqoLAkz4MB5wi9SyYIXDQ&e=1789292367
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9vbmUvc2VjdXJlLzgxMWIxZGVlMTJjOWZhYWQ5NDkxOGM4YmJkMjMyZDc0LzE3ODkyNjYwNTQvcHJlbWl1bTg3Ny9pbmRleC5tM3U4?tk=BSPr_V_damFl8Ausva_55w&e=1789298454
 #EXTINF:-1 tvg-id="ts-elevensports1-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-1-nl-be.png",Eleven Sports 1
-https://messi.damitv.st/papi/ts2/elevensports1-pl.m3u8?tk=pDqoLAkz4MB5wi9SyYIXDQ&e=1789292367
+https://messi.damitv.st/papi/ts2/elevensports1-pl.m3u8?tk=BSPr_V_damFl8Ausva_55w&e=1789298454
 #EXTINF:-1 tvg-id="ts-elevensports2-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-2-nl-be.png",Eleven Sports 2
-https://messi.damitv.st/papi/ts2/elevensports2-pl.m3u8?tk=pDqoLAkz4MB5wi9SyYIXDQ&e=1789292367
+https://messi.damitv.st/papi/ts2/elevensports2-pl.m3u8?tk=BSPr_V_damFl8Ausva_55w&e=1789298454
 #EXTINF:-1 tvg-id="ts-elevensports3-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-3-nl-be.png",Eleven Sports 3
-https://messi.damitv.st/papi/ts2/elevensports3-pl.m3u8?tk=pDqoLAkz4MB5wi9SyYIXDQ&e=1789292367
+https://messi.damitv.st/papi/ts2/elevensports3-pl.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
 #EXTINF:-1 tvg-id="ts-elevensports4-pl" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/100659.png",Eleven Sports 4
-https://messi.damitv.st/papi/ts2/elevensports4-pl.m3u8?tk=i8SijtPmqi8TZtuTvM1o8g&e=1789292368
+https://messi.damitv.st/papi/ts2/elevensports4-pl.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
 #EXTINF:-1 tvg-id="ts-espn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png",ESPN
-https://messi.damitv.st/papi/ts2/espn-usa.m3u8?tk=i8SijtPmqi8TZtuTvM1o8g&e=1789292368
+https://messi.damitv.st/papi/ts2/espn-usa.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
 #EXTINF:-1 tvg-id="ts-espndeportes-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-deportes-us.png",ESPN Deportes
-https://messi.damitv.st/papi/ts2/espndeportes-usa.m3u8?tk=i8SijtPmqi8TZtuTvM1o8g&e=1789292368
+https://messi.damitv.st/papi/ts2/espndeportes-usa.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
 #EXTINF:-1 tvg-id="ts-espn2-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-2-us.png",ESPN2
-https://messi.damitv.st/papi/ts2/espn2-usa.m3u8?tk=i8SijtPmqi8TZtuTvM1o8g&e=1789292368
+https://messi.damitv.st/papi/ts2/espn2-usa.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
 #EXTINF:-1 tvg-id="ts-espnews-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espnews-us.png",ESPNEWS
-https://messi.damitv.st/papi/ts2/espnews-usa.m3u8?tk=i8SijtPmqi8TZtuTvM1o8g&e=1789292368
+https://messi.damitv.st/papi/ts2/espnews-usa.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
 #EXTINF:-1 tvg-id="ts-espnu-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-u-us.png",ESPNU
-https://messi.damitv.st/papi/ts2/espnu-usa.m3u8?tk=i8SijtPmqi8TZtuTvM1o8g&e=1789292368
+https://messi.damitv.st/papi/ts2/espnu-usa.m3u8?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
+#EXTINF:-1 tvg-id="dlhd-878" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/france/eurosport-1-fr.png",EuroSport 1
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlL2Q0MDAyMjRiYTQ3N2MyODY3NTEyM2U0YmZkNzk1YmRmLzE3ODkyNjYwMDkvcHJlbWl1bTg3OC9pbmRleC5tM3U4?tk=WjwUpUKVmWW6EFw0hHaRLQ&e=1789298455
+#EXTINF:-1 tvg-id="dlhd-879" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/france/eurosport-2-fr.png",EuroSport 2
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzJhMjAwMjg0OWNkNzI3YmI5MzI4NzdjN2U5ODE5OWJhLzE3ODkyNjYwNTYvcHJlbWl1bTg3OS9pbmRleC5tM3U4?tk=Ei9M_s7EEEHDjU3_XJSegg&e=1789298456
 #EXTINF:-1 tvg-id="ts-fox-sports-1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-1-us.png",Fox Sports 1
-https://messi.damitv.st/papi/ts2/fox-sports-1.m3u8?tk=br1GmfaNwrDf5zPWiY8jSQ&e=1789292375
+https://messi.damitv.st/papi/ts2/fox-sports-1.m3u8?tk=Ei9M_s7EEEHDjU3_XJSegg&e=1789298456
 #EXTINF:-1 tvg-id="ts-fox-sports-2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-2-us.png",Fox Sports 2
-https://messi.damitv.st/papi/ts2/fox-sports-2.m3u8?tk=br1GmfaNwrDf5zPWiY8jSQ&e=1789292375
+https://messi.damitv.st/papi/ts2/fox-sports-2.m3u8?tk=Ei9M_s7EEEHDjU3_XJSegg&e=1789298456
 #EXTINF:-1 tvg-id="ts-fox-sports-501" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png",Fox Sports 501 (Cricket)
-https://messi.damitv.st/papi/ts2/fox-sports-501.m3u8?tk=br1GmfaNwrDf5zPWiY8jSQ&e=1789292375
+https://messi.damitv.st/papi/ts2/fox-sports-501.m3u8?tk=Ei9M_s7EEEHDjU3_XJSegg&e=1789298456
 #EXTINF:-1 tvg-id="ts-fox-sports-502" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png",Fox Sports 502 (League)
-https://messi.damitv.st/papi/ts2/fox-sports-502.m3u8?tk=br1GmfaNwrDf5zPWiY8jSQ&e=1789292375
+https://messi.damitv.st/papi/ts2/fox-sports-502.m3u8?tk=Ei9M_s7EEEHDjU3_XJSegg&e=1789298456
 #EXTINF:-1 tvg-id="ts-fox-sports-503" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-503-au.png",Fox Sports 503
-https://messi.damitv.st/papi/ts2/fox-sports-503.m3u8?tk=br1GmfaNwrDf5zPWiY8jSQ&e=1789292375
+https://messi.damitv.st/papi/ts2/fox-sports-503.m3u8?tk=Ei9M_s7EEEHDjU3_XJSegg&e=1789298456
 #EXTINF:-1 tvg-id="ts-fox-sports-504" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png",Fox Sports 504 (Footy)
-https://messi.damitv.st/papi/ts2/fox-sports-504.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/fox-sports-504.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-fox-sports-505" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-505-au.png",Fox Sports 505
-https://messi.damitv.st/papi/ts2/fox-sports-505.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/fox-sports-505.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-fox-sports-506" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-506-au.png",Fox Sports 506
-https://messi.damitv.st/papi/ts2/fox-sports-506.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/fox-sports-506.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-fox-sports-507" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-507-au.png",Fox Sports 507
-https://messi.damitv.st/papi/ts2/fox-sports-507.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/fox-sports-507.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-go3sport1-lt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png",Go3 Sport 1
-https://messi.damitv.st/papi/ts2/go3sport1-lt.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/go3sport1-lt.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-go3sport2-lt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png",Go3 Sport 2
-https://messi.damitv.st/papi/ts2/go3sport2-lt.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/go3sport2-lt.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-golfchannel-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nbc-golf-channel-us.png",GOLF Channel
-https://messi.damitv.st/papi/ts2/golfchannel-usa.m3u8?tk=lj1eGmW5IH9TwFzurZ5DPQ&e=1789292376
+https://messi.damitv.st/papi/ts2/golfchannel-usa.m3u8?tk=cN4QF0I_j0ZydyJ35-x7RQ&e=1789298457
 #EXTINF:-1 tvg-id="ts-mlbnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/mlb-network-us.png",MLB Network
-https://messi.damitv.st/papi/ts2/mlbnetwork-usa.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/mlbnetwork-usa.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-motpgp-tv" tvg-logo="https://sportbikesincmag.com/wp-content/uploads/2024/11/New-MotoGP-Logo-sportbikesincmag.com-4.jpg",MotoGP Channel
-https://messi.damitv.st/papi/ts2/motpgp-tv.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/motpgp-tv.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-movistardeportes-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png",Movistar Deportes
-https://messi.damitv.st/papi/ts2/movistardeportes-es.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/movistardeportes-es.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-movistardeportes2-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png",Movistar Deportes 2
-https://messi.damitv.st/papi/ts2/movistardeportes2-es.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/movistardeportes2-es.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-movistardeportes3-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png",Movistar Deportes 3
-https://messi.damitv.st/papi/ts2/movistardeportes3-es.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/movistardeportes3-es.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-movistarlaliga-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistarlaliga.png",Movistar LaLiga
-https://messi.damitv.st/papi/ts2/movistarlaliga-es.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/movistarlaliga-es.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-nbatv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-tv-us.png",NBA TV
-https://messi.damitv.st/papi/ts2/nbatv-usa.m3u8?tk=WcdGWBS2pPGPOU2iQSMVnA&e=1789292377
+https://messi.damitv.st/papi/ts2/nbatv-usa.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-nbc-sports-bayarea" tvg-logo="https://cdn.mos.cms.futurecdn.net/d7jWexxhtezRZ6ryLHyKmd.jpeg",NBC Sports Bay Area
-https://messi.damitv.st/papi/ts2/nbc-sports-bayarea.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/nbc-sports-bayarea.m3u8?tk=e6X2Od4PdAJEpqXSTnkCAw&e=1789298458
 #EXTINF:-1 tvg-id="ts-nbc-sports-philly" tvg-logo="https://media.nbcsportsphiladelphia.com/2023/04/Philly-Landmark.png?resize=1200%2C675&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quality=85&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;strip=all",NBC Sports Philadelphia
-https://messi.damitv.st/papi/ts2/nbc-sports-philly.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/nbc-sports-philly.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-nflnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nfl-network-us.png",NFL Network
-https://messi.damitv.st/papi/ts2/nflnetwork-usa.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/nflnetwork-usa.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-nhlnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nhl-network-us.png",NHL Network
-https://messi.damitv.st/papi/ts2/nhlnetwork-usa.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/nhlnetwork-usa.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-polsatsport1-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-1-pl.png",Polsat Sport 1
-https://messi.damitv.st/papi/ts2/polsatsport1-pl.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/polsatsport1-pl.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-polsatsport2-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-2-pl.png",Polsat Sport 2
-https://messi.damitv.st/papi/ts2/polsatsport2-pl.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/polsatsport2-pl.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-polsatsport3-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-3-pl.png",Polsat Sport 3
-https://messi.damitv.st/papi/ts2/polsatsport3-pl.m3u8?tk=VCDGJgx01ge1IXjmtH3_Eg&e=1789292378
+https://messi.damitv.st/papi/ts2/polsatsport3-pl.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-polsatsportfight-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-fight-pl.png",Polsat Sport Fight
-https://messi.damitv.st/papi/ts2/polsatsportfight-pl.m3u8?tk=BH-mMTcXR1Izy596nIKpFg&e=1789292379
+https://messi.damitv.st/papi/ts2/polsatsportfight-pl.m3u8?tk=JgHtbyA1_1TAck969FMgVA&e=1789298459
 #EXTINF:-1 tvg-id="ts-premiere-br" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/brazil/premiere-br.png",Premiere
-https://messi.damitv.st/papi/ts2/premiere-br.m3u8?tk=BH-mMTcXR1Izy596nIKpFg&e=1789292379
+https://messi.damitv.st/papi/ts2/premiere-br.m3u8?tk=hO3q1PfvDliZ5gOWhLabtQ&e=1789298460
 #EXTINF:-1 tvg-id="ts-racernetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/racer-network-us.png",RACER Network
-https://messi.damitv.st/papi/ts2/racernetwork-usa.m3u8?tk=BH-mMTcXR1Izy596nIKpFg&e=1789292379
+https://messi.damitv.st/papi/ts2/racernetwork-usa.m3u8?tk=hO3q1PfvDliZ5gOWhLabtQ&e=1789298460
+#EXTINF:-1 tvg-id="dlhd-882" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-sport-it.png",Rai Sport
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS9hOTg4ZGU3NTBkZTc2YTJjYTI0NTExZmEzMmM4ZjY0Mi8xNzg5MjY2MDYxL3ByZW1pdW04ODIvaW5kZXgubTN1OA?tk=SapgtAukty7WNx4eSg6Qtg&e=1789298461
+#EXTINF:-1 tvg-id="dlhd-873" tvg-logo="",Sky Calcio 3 (253)
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzY2MDNhMDgyZDczYmJiNzI4ZTc2N2U2ZjBlOTE0Yzg5LzE3ODkyNjYwNzEvcHJlbWl1bTg3My9pbmRleC5tM3U4?tk=DTfkeMxkRRYimUGITj9PZA&e=1789298472
+#EXTINF:-1 tvg-id="dlhd-874" tvg-logo="",Sky Calcio 4 (254)
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzZlNWJkMDdlODg2N2ExMDI4NTRhMzI5YTkxNmQ2NTY3LzE3ODkyNjYwNzIvcHJlbWl1bTg3NC9pbmRleC5tM3U4?tk=DTfkeMxkRRYimUGITj9PZA&e=1789298472
 #EXTINF:-1 tvg-id="ts-skysport1-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-1-nz.png",Sky Sport 1 NZ
-https://messi.damitv.st/papi/ts2/skysport1-nz.m3u8?tk=IcDFUZ3frOrJksM45MHR-w&e=1789292396
+https://messi.damitv.st/papi/ts2/skysport1-nz.m3u8?tk=DTfkeMxkRRYimUGITj9PZA&e=1789298472
 #EXTINF:-1 tvg-id="ts-skysport2-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-2-nz.png",Sky Sport 2 NZ
-https://messi.damitv.st/papi/ts2/skysport2-nz.m3u8?tk=IcDFUZ3frOrJksM45MHR-w&e=1789292396
+https://messi.damitv.st/papi/ts2/skysport2-nz.m3u8?tk=DTfkeMxkRRYimUGITj9PZA&e=1789298472
+#EXTINF:-1 tvg-id="dlhd-869" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-24-it.png",Sky Sport 24
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzVhYzAwZGE4ODhiZDYyN2U5MTc2ZGM0ZmYwN2ZiNDI3LzE3ODkyNjYwMDUvcHJlbWl1bTg2OS9pbmRleC5tM3U4?tk=DTfkeMxkRRYimUGITj9PZA&e=1789298472
 #EXTINF:-1 tvg-id="ts-skysport3-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-3-nz.png",Sky Sport 3 NZ
-https://messi.damitv.st/papi/ts2/skysport3-nz.m3u8?tk=VOc4j0VSN7wbkvK54y2QuA&e=1789292399
+https://messi.damitv.st/papi/ts2/skysport3-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
 #EXTINF:-1 tvg-id="ts-skysport4-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-4-nz.png",Sky Sport 4 NZ
-https://messi.damitv.st/papi/ts2/skysport4-nz.m3u8?tk=VOc4j0VSN7wbkvK54y2QuA&e=1789292399
+https://messi.damitv.st/papi/ts2/skysport4-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
 #EXTINF:-1 tvg-id="ts-skysport5-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-5-nz.png",Sky Sport 5 NZ
-https://messi.damitv.st/papi/ts2/skysport5-nz.m3u8?tk=VOc4j0VSN7wbkvK54y2QuA&e=1789292399
+https://messi.damitv.st/papi/ts2/skysport5-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
 #EXTINF:-1 tvg-id="ts-skysport6-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-6-nz.png",Sky Sport 6 NZ
-https://messi.damitv.st/papi/ts2/skysport6-nz.m3u8?tk=CHUqsUULoW4JrKYVpuTbQw&e=1789292400
+https://messi.damitv.st/papi/ts2/skysport6-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
 #EXTINF:-1 tvg-id="ts-skysport7-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-7-nz.png",Sky Sport 7 NZ
-https://messi.damitv.st/papi/ts2/skysport7-nz.m3u8?tk=CHUqsUULoW4JrKYVpuTbQw&e=1789292400
+https://messi.damitv.st/papi/ts2/skysport7-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
 #EXTINF:-1 tvg-id="ts-skysport8-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-8-nz.png",Sky Sport 8 NZ
-https://messi.damitv.st/papi/ts2/skysport8-nz.m3u8?tk=CHUqsUULoW4JrKYVpuTbQw&e=1789292400
+https://messi.damitv.st/papi/ts2/skysport8-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
 #EXTINF:-1 tvg-id="ts-skysport9-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-9-nz.png",Sky Sport 9 NZ
-https://messi.damitv.st/papi/ts2/skysport9-nz.m3u8?tk=CHUqsUULoW4JrKYVpuTbQw&e=1789292400
+https://messi.damitv.st/papi/ts2/skysport9-nz.m3u8?tk=W8uT1bf2MK_9l7qlnXob5g&e=1789298473
+#EXTINF:-1 tvg-id="dlhd-462" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-arena-it.png",Sky Sport Arena
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS8xNmUwNDU1MDY5NmJkMmMxY2JkYTA3YmIwZTk0NTkxZC8xNzg5MjY2MDc1L3ByZW1pdW00NjIvaW5kZXgubTN1OA?tk=JcjC1xOl9G0BqLWz2Z55og&e=1789298475
 #EXTINF:-1 tvg-id="ts-skysportbundesliga-de" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-sport/sky-sport-bundesliga-de.png",Sky Sport Bundesliga
-https://messi.damitv.st/papi/ts2/skysportbundesliga-de.m3u8?tk=wfpJLHfIgZTL3RTNdLlFbQ&e=1789292407
+https://messi.damitv.st/papi/ts2/skysportbundesliga-de.m3u8?tk=7Pc5HqQbOO3uo_-eEdCIEw&e=1789298479
+#EXTINF:-1 tvg-id="dlhd-870" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-calcio-it.png",Sky Sport Calcio
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlL2UyNWMxY2ViM2QxMDZjZmRjODUxZWQxZmUxMzMxMWUxLzE3ODkyNjYwODAvcHJlbWl1bTg3MC9pbmRleC5tM3U4?tk=djQio897dBwmyhcK-Lnzuw&e=1789298480
 #EXTINF:-1 tvg-id="dlhd-577" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-sport/sky-sport-f1-de.png",Sky Sport F1
-https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9vbmUvc2VjdXJlLzVkNjA2MWJjNzEwYmFiMDgzYjA0MTc5MjdlODk0MzJkLzE3ODkyNjAwMTIvcHJlbWl1bTU3Ny9pbmRleC5tM3U4?tk=lZ8DU5Mx3uNx4Vxo_RMjqw&e=1789292412
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9vbmUvc2VjdXJlLzI4ODE1NjU1MzM4YWNmZGZmZjJlNWJmYjE1M2I0NGNmLzE3ODkyNjYwODIvcHJlbWl1bTU3Ny9pbmRleC5tM3U4?tk=p-wInl0sPwopXZYBpPJacg&e=1789298482
+#EXTINF:-1 tvg-id="dlhd-460" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-max-it.png",Sky Sport MAX
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9mb3VyL3NlY3VyZS85ZGRjNDJlZTRlNDUwMzYxOTg1MDM1ZmMyOWQzYTM4My8xNzg5MjY2MDgyL3ByZW1pdW00NjAvaW5kZXgubTN1OA?tk=p-wInl0sPwopXZYBpPJacg&e=1789298482
 #EXTINF:-1 tvg-id="dlhd-575" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-motogp-it.png",Sky Sport MotoGP
-https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9vbmUvc2VjdXJlLzI4YTc2NTIxYjc1YWI1ZmY4YTQ5MDM5MmI0MmE4Y2ZmLzE3ODkyNjAwMTgvcHJlbWl1bTU3NS9pbmRleC5tM3U4?tk=9H9v_8qybiY-Mz1ODorYAg&e=1789292418
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9vbmUvc2VjdXJlLzZhZjFlNzFhMjBjYTRhODhkYzI5Zjc3ZmNmZDU2ODUzLzE3ODkyNjYwODUvcHJlbWl1bTU3NS9pbmRleC5tM3U4?tk=4SU0vVqxbVW-zXEtmEMCZQ&e=1789298485
 #EXTINF:-1 tvg-id="ts-skysportselect-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-select-nz.png",Sky Sport Select NZ
-https://messi.damitv.st/papi/ts2/skysportselect-nz.m3u8?tk=9H9v_8qybiY-Mz1ODorYAg&e=1789292418
+https://messi.damitv.st/papi/ts2/skysportselect-nz.m3u8?tk=eEPFC2wDZsRy7x6mdv_Vrw&e=1789298486
+#EXTINF:-1 tvg-id="dlhd-576" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-sport/sky-sport-tennis-de.png",Sky Sport Tennis
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS9kZmE4MWRjMWQ1MTMzYzRhZDZjMTkzMDc3NDQ3ZDI0MS8xNzg5MjY2MDg2L3ByZW1pdW01NzYvaW5kZXgubTN1OA?tk=ztErGIOqzBI_8Gf4ahA5dQ&e=1789298487
+#EXTINF:-1 tvg-id="dlhd-461" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-uno-it.png",Sky Sport UNO
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS8yMmY2OGU3ZWUxODFkZjM0MGQ0ZTdkM2MxZWY5MTg1NC8xNzg5MjY2MDkxL3ByZW1pdW00NjEvaW5kZXgubTN1OA?tk=MtX9VndXkKJljZs8oAUXJA&e=1789298491
 #EXTINF:-1 tvg-id="ts-skysportsaction-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-action-uk.png",Sky Sports Action
-https://messi.damitv.st/papi/ts2/skysportsaction-uk.m3u8?tk=avxN0Gqi0MRaVyeA1-bbAw&e=1789292425
+https://messi.damitv.st/papi/ts2/skysportsaction-uk.m3u8?tk=MtX9VndXkKJljZs8oAUXJA&e=1789298491
 #EXTINF:-1 tvg-id="ts-skysportscricket-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-cricket-uk.png",Sky Sports Cricket
-https://messi.damitv.st/papi/ts2/skysportscricket-uk.m3u8?tk=avxN0Gqi0MRaVyeA1-bbAw&e=1789292425
+https://messi.damitv.st/papi/ts2/skysportscricket-uk.m3u8?tk=7DozTmyt5jbheMzZA7ndhw&e=1789298492
 #EXTINF:-1 tvg-id="ts-skysportsf1-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-f1-uk.png",Sky Sports F1
-https://messi.damitv.st/papi/ts2/skysportsf1-uk.m3u8?tk=avxN0Gqi0MRaVyeA1-bbAw&e=1789292425
+https://messi.damitv.st/papi/ts2/skysportsf1-uk.m3u8?tk=7DozTmyt5jbheMzZA7ndhw&e=1789298492
 #EXTINF:-1 tvg-id="ts-skysportsfootball-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-football-uk.png",Sky Sports Football
-https://messi.damitv.st/papi/ts2/skysportsfootball-uk.m3u8?tk=avxN0Gqi0MRaVyeA1-bbAw&e=1789292425
+https://messi.damitv.st/papi/ts2/skysportsfootball-uk.m3u8?tk=7DozTmyt5jbheMzZA7ndhw&e=1789298492
 #EXTINF:-1 tvg-id="ts-skysportsgolf-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-golf-uk.png",Sky Sports Golf
-https://messi.damitv.st/papi/ts2/skysportsgolf-uk.m3u8?tk=avxN0Gqi0MRaVyeA1-bbAw&e=1789292425
+https://messi.damitv.st/papi/ts2/skysportsgolf-uk.m3u8?tk=7DozTmyt5jbheMzZA7ndhw&e=1789298492
+#EXTINF:-1 tvg-id="dlhd-574" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-golf-uk.png",Sky Sports Golf
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS9mODAwMzAzNjc3NWYyMjU0NDdiNjZhNmE3MGQ5NWFlZC8xNzg5MjY2MDkzL3ByZW1pdW01NzQvaW5kZXgubTN1OA?tk=RtLUKsEEfmN1UjPRwIux3Q&e=1789298493
 #EXTINF:-1 tvg-id="ts-skysportsmainevent-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-main-event-uk.png",Sky Sports Main Event
-https://messi.damitv.st/papi/ts2/skysportsmainevent-uk.m3u8?tk=Carldfa0N08Wil1miidfNQ&e=1789292429
+https://messi.damitv.st/papi/ts2/skysportsmainevent-uk.m3u8?tk=RtLUKsEEfmN1UjPRwIux3Q&e=1789298493
 #EXTINF:-1 tvg-id="ts-skysportsmix-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-mix-uk.png",Sky Sports Mix
-https://messi.damitv.st/papi/ts2/skysportsmix-uk.m3u8?tk=Carldfa0N08Wil1miidfNQ&e=1789292429
+https://messi.damitv.st/papi/ts2/skysportsmix-uk.m3u8?tk=RtLUKsEEfmN1UjPRwIux3Q&e=1789298493
 #EXTINF:-1 tvg-id="ts-skysportsnews-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-news-uk.png",Sky Sports News
-https://messi.damitv.st/papi/ts2/skysportsnews-uk.m3u8?tk=Carldfa0N08Wil1miidfNQ&e=1789292429
+https://messi.damitv.st/papi/ts2/skysportsnews-uk.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-skysportspremierleague-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-premier-league-uk.png",Sky Sports Premier League
-https://messi.damitv.st/papi/ts2/skysportspremierleague-uk.m3u8?tk=Carldfa0N08Wil1miidfNQ&e=1789292429
+https://messi.damitv.st/papi/ts2/skysportspremierleague-uk.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-skysportsracing-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-racing-uk.png",Sky Sports Racing
-https://messi.damitv.st/papi/ts2/skysportsracing-uk.m3u8?tk=Carldfa0N08Wil1miidfNQ&e=1789292429
+https://messi.damitv.st/papi/ts2/skysportsracing-uk.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-skysportstennis-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-tennis-uk.png",Sky Sports Tennis
-https://messi.damitv.st/papi/ts2/skysportstennis-uk.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/skysportstennis-uk.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-skysportsplus-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/screen-bug/sky-sports-plus-bug-uk.png",Sky Sports+
-https://messi.damitv.st/papi/ts2/skysportsplus-uk.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/skysportsplus-uk.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-sonysportsnetwork-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-1-in.png",Sony Sports Network
-https://messi.damitv.st/papi/ts2/sonysportsnetwork-in.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/sonysportsnetwork-in.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-sonysportsnetwork2-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-2-in.png",Sony Sports Network 2
-https://messi.damitv.st/papi/ts2/sonysportsnetwork2-in.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/sonysportsnetwork2-in.m3u8?tk=EuF3SfrGCR1eEB5DGunyKg&e=1789298494
 #EXTINF:-1 tvg-id="ts-sonysportsnetwork3-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-3-in.png",Sony Sports Network 3
-https://messi.damitv.st/papi/ts2/sonysportsnetwork3-in.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/sonysportsnetwork3-in.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sonysportsnetwork4-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-4-in.png",Sony Sports Network 4
-https://messi.damitv.st/papi/ts2/sonysportsnetwork4-in.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/sonysportsnetwork4-in.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sonysportsnetwork5-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-5-in.png",Sony Sports Network 5
-https://messi.damitv.st/papi/ts2/sonysportsnetwork5-in.m3u8?tk=wjvtNxGRNHSoMO0CICU5sA&e=1789292430
+https://messi.damitv.st/papi/ts2/sonysportsnetwork5-in.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sporttv1-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV1
-https://messi.damitv.st/papi/ts2/sporttv1-pt.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/sporttv1-pt.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sporttv2-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV2
-https://messi.damitv.st/papi/ts2/sporttv2-pt.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/sporttv2-pt.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sporttv3-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV3
-https://messi.damitv.st/papi/ts2/sporttv3-pt.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/sporttv3-pt.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sporttv4-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV4
-https://messi.damitv.st/papi/ts2/sporttv4-pt.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/sporttv4-pt.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sporttv5-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV5
-https://messi.damitv.st/papi/ts2/sporttv5-pt.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/sporttv5-pt.m3u8?tk=owRMRWLbE8sBjY3LZLbx5Q&e=1789298495
 #EXTINF:-1 tvg-id="ts-sportdigitalfussball-de" tvg-logo="https://image.discovery.indazn.com/ca/v2/ca/image?id=712wbfqz8apl1k09rf681eqxd_image-header_pDach_1661948855000&amp;amp;amp;quality=70",SPORTDIGITAL FUSSBALL
-https://messi.damitv.st/papi/ts2/sportdigitalfussball-de.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/sportdigitalfussball-de.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tennischannel-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tennis-channel-us.png",Tennis Channel
-https://messi.damitv.st/papi/ts2/tennischannel-usa.m3u8?tk=MhOao7KZuvxMX0hMJLFV4Q&e=1789292431
+https://messi.damitv.st/papi/ts2/tennischannel-usa.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tntsports1-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-1-uk.png",TNT Sports 1
-https://messi.damitv.st/papi/ts2/tntsports1-uk.m3u8?tk=I5OIGnnRYWGFVFwyVRnj3Q&e=1789292432
+https://messi.damitv.st/papi/ts2/tntsports1-uk.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tntsports2-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-2-uk.png",TNT Sports 2
-https://messi.damitv.st/papi/ts2/tntsports2-uk.m3u8?tk=I5OIGnnRYWGFVFwyVRnj3Q&e=1789292432
+https://messi.damitv.st/papi/ts2/tntsports2-uk.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tntsports3-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-3-uk.png",TNT Sports 3
-https://messi.damitv.st/papi/ts2/tntsports3-uk.m3u8?tk=I5OIGnnRYWGFVFwyVRnj3Q&e=1789292432
+https://messi.damitv.st/papi/ts2/tntsports3-uk.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tntsports4-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-4-uk.png",TNT Sports 4
-https://messi.damitv.st/papi/ts2/tntsports4-uk.m3u8?tk=I5OIGnnRYWGFVFwyVRnj3Q&e=1789292432
+https://messi.damitv.st/papi/ts2/tntsports4-uk.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tsn1-ca" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/canada/tsn-1-ca.png",TSN1
-https://messi.damitv.st/papi/ts2/tsn1-ca.m3u8?tk=I5OIGnnRYWGFVFwyVRnj3Q&e=1789292432
+https://messi.damitv.st/papi/ts2/tsn1-ca.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tudn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tudn-us.png",TUDN
-https://messi.damitv.st/papi/ts2/tudn-usa.m3u8?tk=I5OIGnnRYWGFVFwyVRnj3Q&e=1789292432
+https://messi.damitv.st/papi/ts2/tudn-usa.m3u8?tk=l1YiaV6DhzyR316wCN7OpA&e=1789298496
 #EXTINF:-1 tvg-id="ts-tycsports-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/argentina/tyc-sports-ar.png",TYC Sports Internacional
-https://messi.damitv.st/papi/ts2/tycsports-usa.m3u8?tk=rdKgrowB6-vhT48C9A8Zag&e=1789292433
+https://messi.damitv.st/papi/ts2/tycsports-usa.m3u8?tk=p3qBYWCB0AOfqfyIixaKSA&e=1789298497
 #EXTINF:-1 tvg-id="ts-ufc-fight-pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-fight-pass-us.png",UFC Fight Pass 24/7
-https://messi.damitv.st/papi/ts2/ufc-fight-pass.m3u8?tk=rdKgrowB6-vhT48C9A8Zag&e=1789292433
+https://messi.damitv.st/papi/ts2/ufc-fight-pass.m3u8?tk=p3qBYWCB0AOfqfyIixaKSA&e=1789298497
 #EXTINF:-1 tvg-id="ts-willow-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/willow-us.png",Willow Cricket
-https://messi.damitv.st/papi/ts2/willow-usa.m3u8?tk=rdKgrowB6-vhT48C9A8Zag&e=1789292433
+https://messi.damitv.st/papi/ts2/willow-usa.m3u8?tk=p3qBYWCB0AOfqfyIixaKSA&e=1789298497
 #EXTINF:-1 tvg-id="ts-willow2-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/willow-xtra-us.png",Willow Cricket 2
-https://messi.damitv.st/papi/ts2/willow2-usa.m3u8?tk=rdKgrowB6-vhT48C9A8Zag&e=1789292433
+https://messi.damitv.st/papi/ts2/willow2-usa.m3u8?tk=p3qBYWCB0AOfqfyIixaKSA&e=1789298497
+#EXTINF:-1 tvg-id="dlhd-868" tvg-logo="",8Sky Cinema Suspense
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS9hNjI1ZDE5OTNkMGUyNjhiYmU5ZDAyZGQyNThjMTYwOS8xNzg5MjY2MTA5L3ByZW1pdW04NjgvaW5kZXgubTN1OA?tk=9G42GjeqPXNAWxozHCHFbQ&e=1789298509
 #EXTINF:-1 tvg-id="ts-abc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/abc-us.png",ABC
-https://messi.damitv.st/papi/ts2/abc-usa.m3u8?tk=-_7-blKrVRrX1MvcVsADjg&e=1789292441
+https://messi.damitv.st/papi/ts2/abc-usa.m3u8?tk=9G42GjeqPXNAWxozHCHFbQ&e=1789298509
 #EXTINF:-1 tvg-id="ts-ae-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/awe-us.png",AE
-https://messi.damitv.st/papi/ts2/ae-usa.m3u8?tk=-_7-blKrVRrX1MvcVsADjg&e=1789292441
+https://messi.damitv.st/papi/ts2/ae-usa.m3u8?tk=9G42GjeqPXNAWxozHCHFbQ&e=1789298509
 #EXTINF:-1 tvg-id="ts-amc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/amc-us.png",AMC
-https://messi.damitv.st/papi/ts2/amc-usa.m3u8?tk=-_7-blKrVRrX1MvcVsADjg&e=1789292441
+https://messi.damitv.st/papi/ts2/amc-usa.m3u8?tk=9G42GjeqPXNAWxozHCHFbQ&e=1789298509
 #EXTINF:-1 tvg-id="ts-ahc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/american-heroes-channel-us.png",American Heroes Channel
-https://messi.damitv.st/papi/ts2/ahc-usa.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/ahc-usa.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-animalplanet-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/animal-planet-us.png",Animal Planet
-https://messi.damitv.st/papi/ts2/animalplanet-usa.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/animalplanet-usa.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-axs-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/axs-tv-us.png",AXS TV
-https://messi.damitv.st/papi/ts2/axs-usa.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/axs-usa.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-bbc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bbc-america-us.png",BBC America
-https://messi.damitv.st/papi/ts2/bbc-usa.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/bbc-usa.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-bbcone-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-one-uk.png",BBC One London
-https://messi.damitv.st/papi/ts2/bbcone-uk.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/bbcone-uk.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-bbctwo-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-two-uk.png",BBC Two
-https://messi.damitv.st/papi/ts2/bbctwo-uk.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/bbctwo-uk.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-boomerang-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/boomerang-us.png",Boomerang
-https://messi.damitv.st/papi/ts2/boomerang-usa.m3u8?tk=tfsKfR5EVprgY_BbAaxkTg&e=1789292442
+https://messi.damitv.st/papi/ts2/boomerang-usa.m3u8?tk=4z6A2t-UL-O9wknSEAZlCg&e=1789298510
 #EXTINF:-1 tvg-id="ts-bravo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bravo-us.png",Bravo
-https://messi.damitv.st/papi/ts2/bravo-usa.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/bravo-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-cartoonnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cartoon-network-us.png",Cartoon Network
-https://messi.damitv.st/papi/ts2/cartoonnetwork-usa.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/cartoonnetwork-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-cbeebies-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-cbeebies-uk.png",CBeebies
-https://messi.damitv.st/papi/ts2/cbeebies-uk.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/cbeebies-uk.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-cbs-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-logo-white-us.png",CBS
-https://messi.damitv.st/papi/ts2/cbs-usa.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/cbs-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-cnbc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cnbc-us.png",CNBC
-https://messi.damitv.st/papi/ts2/cnbc-usa.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/cnbc-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-comedycentral-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/comedy-central-us.png",Comedy Central
-https://messi.damitv.st/papi/ts2/comedycentral-usa.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/comedycentral-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-cw-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cw-us.png",CW
-https://messi.damitv.st/papi/ts2/cw-usa.m3u8?tk=v0JJuztvKtdfbPGc0gOhPQ&e=1789292443
+https://messi.damitv.st/papi/ts2/cw-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-discovery-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-channel-us.png",Discovery Channel
-https://messi.damitv.st/papi/ts2/discovery-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/discovery-usa.m3u8?tk=vAwVlqsAu1-ErYlVnmJAXg&e=1789298511
 #EXTINF:-1 tvg-id="ts-discoveryfamily-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-family-us.png",Discovery Family
-https://messi.damitv.st/papi/ts2/discoveryfamily-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/discoveryfamily-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-discoveryturbo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-turbo-us.png",Discovery Turbo
-https://messi.damitv.st/papi/ts2/discoveryturbo-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/discoveryturbo-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-disneychannel-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/disney-channel-us.png",Disney Channel
-https://messi.damitv.st/papi/ts2/disneychannel-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/disneychannel-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-disneyjunior-usa" tvg-logo="https://thewaltdisneycompany.com/app/uploads/2021/02/021221_Disney-Junior-10th-Anniversary-00.jpg",Disney Junior
-https://messi.damitv.st/papi/ts2/disneyjunior-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/disneyjunior-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-disneyxd-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/disney-xd-us.png",Disney XD
-https://messi.damitv.st/papi/ts2/disneyxd-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/disneyxd-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-foodnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/food-network-us.png",Food Network
-https://messi.damitv.st/papi/ts2/foodnetwork-usa.m3u8?tk=2_Uch2IuqWjWbwRBPgZ9kQ&e=1789292444
+https://messi.damitv.st/papi/ts2/foodnetwork-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-fox-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-us.png",Fox
-https://messi.damitv.st/papi/ts2/fox-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/fox-usa.m3u8?tk=qiLgGGQOQiLXXQ7fRgBX6Q&e=1789298512
 #EXTINF:-1 tvg-id="ts-foxdeportes-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-deportes-us.png",Fox Deportes
-https://messi.damitv.st/papi/ts2/foxdeportes-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/foxdeportes-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-freeform-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/freeform-us.png",Freeform
-https://messi.damitv.st/papi/ts2/freeform-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/freeform-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-fx-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fx-us.png",FX
-https://messi.damitv.st/papi/ts2/fx-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/fx-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-fxm-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fx-us.png",FXM
-https://messi.damitv.st/papi/ts2/fxm-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/fxm-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-fxx-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fxx-us.png",FXX
-https://messi.damitv.st/papi/ts2/fxx-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/fxx-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-hbo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-us.png",HBO
-https://messi.damitv.st/papi/ts2/hbo-usa.m3u8?tk=ffQ2aXnHVLlP8H6AzuMAaA&e=1789292445
+https://messi.damitv.st/papi/ts2/hbo-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-hbocomedy-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-comedy-us.png",HBO Comedy
-https://messi.damitv.st/papi/ts2/hbocomedy-usa.m3u8?tk=WFQN7CHzTaNoD-w5W_LIxA&e=1789292446
+https://messi.damitv.st/papi/ts2/hbocomedy-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-hbodrama-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-drama-us.png",HBO Drama
-https://messi.damitv.st/papi/ts2/hbodrama-usa.m3u8?tk=WFQN7CHzTaNoD-w5W_LIxA&e=1789292446
+https://messi.damitv.st/papi/ts2/hbodrama-usa.m3u8?tk=mFyfa7Vh41qehffha-MlcA&e=1789298513
 #EXTINF:-1 tvg-id="ts-hbolatino-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-latino-us.png",HBO Latino
-https://messi.damitv.st/papi/ts2/hbolatino-usa.m3u8?tk=WFQN7CHzTaNoD-w5W_LIxA&e=1789292446
+https://messi.damitv.st/papi/ts2/hbolatino-usa.m3u8?tk=8mENlQgvKRY2Bx5--mxJ3w&e=1789298514
 #EXTINF:-1 tvg-id="ts-hbomovies-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-movies-us.png",HBO Movies
-https://messi.damitv.st/papi/ts2/hbomovies-usa.m3u8?tk=WFQN7CHzTaNoD-w5W_LIxA&e=1789292446
+https://messi.damitv.st/papi/ts2/hbomovies-usa.m3u8?tk=8mENlQgvKRY2Bx5--mxJ3w&e=1789298514
 #EXTINF:-1 tvg-id="ts-hgtv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hgtv-us.png",HGTV
-https://messi.damitv.st/papi/ts2/hgtv-usa.m3u8?tk=WFQN7CHzTaNoD-w5W_LIxA&e=1789292446
+https://messi.damitv.st/papi/ts2/hgtv-usa.m3u8?tk=8mENlQgvKRY2Bx5--mxJ3w&e=1789298514
+#EXTINF:-1 tvg-id="dlhd-854" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/italia1-it.png",Italia 1
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzlhNDA2NGJhNTgzNzg0Mjg4YTJkOTc1MDg1YTZiOWQ0LzE3ODkyNjYwODAvcHJlbWl1bTg1NC9pbmRleC5tM3U4?tk=8mENlQgvKRY2Bx5--mxJ3w&e=1789298514
+#EXTINF:-1 tvg-id="dlhd-856" tvg-logo="",LA7d HD+
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzkxZmFjZmNmYmMwZmU5NmJmZDRlMDNiNzQ0ZGVhOGMzLzE3ODkyNjYxMjIvcHJlbWl1bTg1Ni9pbmRleC5tM3U4?tk=v3qlnEaX5PNgyT7hRx9_RA&e=1789298522
 #EXTINF:-1 tvg-id="ts-movistarplus-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/movistar-plus-es.png",Movistar Plus
-https://messi.damitv.st/papi/ts2/movistarplus-es.m3u8?tk=t8KqeRjdTvR1txfsBKu8Fg&e=1789292457
+https://messi.damitv.st/papi/ts2/movistarplus-es.m3u8?tk=v3qlnEaX5PNgyT7hRx9_RA&e=1789298522
 #EXTINF:-1 tvg-id="ts-mtv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/mtv-us.png",MTV
-https://messi.damitv.st/papi/ts2/mtv-usa.m3u8?tk=t8KqeRjdTvR1txfsBKu8Fg&e=1789292457
+https://messi.damitv.st/papi/ts2/mtv-usa.m3u8?tk=v3qlnEaX5PNgyT7hRx9_RA&e=1789298522
 #EXTINF:-1 tvg-id="ts-nbc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nbc-us.png",NBC
-https://messi.damitv.st/papi/ts2/nbc-usa.m3u8?tk=t8KqeRjdTvR1txfsBKu8Fg&e=1789292457
+https://messi.damitv.st/papi/ts2/nbc-usa.m3u8?tk=v3qlnEaX5PNgyT7hRx9_RA&e=1789298522
 #EXTINF:-1 tvg-id="ts-nickjr-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nick-jr-us.png",Nick Jr.
-https://messi.damitv.st/papi/ts2/nickjr-usa.m3u8?tk=t8KqeRjdTvR1txfsBKu8Fg&e=1789292457
+https://messi.damitv.st/papi/ts2/nickjr-usa.m3u8?tk=E_HfEwDhPNbWR4VU6jRNBw&e=1789298523
 #EXTINF:-1 tvg-id="ts-nickelodeon-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nickelodeon-us.png",Nickelodeon
-https://messi.damitv.st/papi/ts2/nickelodeon-usa.m3u8?tk=t8KqeRjdTvR1txfsBKu8Fg&e=1789292457
+https://messi.damitv.st/papi/ts2/nickelodeon-usa.m3u8?tk=E_HfEwDhPNbWR4VU6jRNBw&e=1789298523
 #EXTINF:-1 tvg-id="ts-nicktoons-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nick-toons-us.png",Nicktoons
-https://messi.damitv.st/papi/ts2/nicktoons-usa.m3u8?tk=t8KqeRjdTvR1txfsBKu8Fg&e=1789292457
+https://messi.damitv.st/papi/ts2/nicktoons-usa.m3u8?tk=E_HfEwDhPNbWR4VU6jRNBw&e=1789298523
+#EXTINF:-1 tvg-id="dlhd-850" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png",Rai 1
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC9maXZlL3NlY3VyZS9mMTE2MDQyOWM4OTBhMDkzNjQxYzA2M2JkZTYyMmJjNS8xNzg5MjY2MTI2L3ByZW1pdW04NTAvaW5kZXgubTN1OA?tk=qGHhfd7bZGJ9vCQRsWIJ0Q&e=1789298526
+#EXTINF:-1 tvg-id="dlhd-858" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-premium-it.png",Rai Premium
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlL2NiNmZlMGU3Y2MzZTdhNjU3ZTZmM2FjOTZiODhhMmRkLzE3ODkyNjYxNTUvcHJlbWl1bTg1OC9pbmRleC5tM3U4?tk=oeqcFXY8PKmV4h_91t_zVg&e=1789298555
 #EXTINF:-1 tvg-id="ts-showtime-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-us.png",Showtime
-https://messi.damitv.st/papi/ts2/showtime-usa.m3u8?tk=T7wl46w0jvlOhRqgbPQHig&e=1789292475
+https://messi.damitv.st/papi/ts2/showtime-usa.m3u8?tk=oeqcFXY8PKmV4h_91t_zVg&e=1789298555
 #EXTINF:-1 tvg-id="ts-showtime2-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-2-us.png",Showtime 2
-https://messi.damitv.st/papi/ts2/showtime2-usa.m3u8?tk=T7wl46w0jvlOhRqgbPQHig&e=1789292475
+https://messi.damitv.st/papi/ts2/showtime2-usa.m3u8?tk=WvaF8dgq0fH5UkRcxpbaBg&e=1789298556
 #EXTINF:-1 tvg-id="ts-showtimeextreme-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-extreme-us.png",Showtime Extreme
-https://messi.damitv.st/papi/ts2/showtimeextreme-usa.m3u8?tk=T7wl46w0jvlOhRqgbPQHig&e=1789292475
+https://messi.damitv.st/papi/ts2/showtimeextreme-usa.m3u8?tk=WvaF8dgq0fH5UkRcxpbaBg&e=1789298556
 #EXTINF:-1 tvg-id="ts-showtimefamilyzone-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-family-zone-us.png",Showtime Family Zone
-https://messi.damitv.st/papi/ts2/showtimefamilyzone-usa.m3u8?tk=T7wl46w0jvlOhRqgbPQHig&e=1789292475
+https://messi.damitv.st/papi/ts2/showtimefamilyzone-usa.m3u8?tk=WvaF8dgq0fH5UkRcxpbaBg&e=1789298556
 #EXTINF:-1 tvg-id="ts-showtimenext-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-next-us.png",Showtime Next
-https://messi.damitv.st/papi/ts2/showtimenext-usa.m3u8?tk=T7wl46w0jvlOhRqgbPQHig&e=1789292475
+https://messi.damitv.st/papi/ts2/showtimenext-usa.m3u8?tk=WvaF8dgq0fH5UkRcxpbaBg&e=1789298556
 #EXTINF:-1 tvg-id="ts-showtimewomen-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-women-us.png",Showtime Women
-https://messi.damitv.st/papi/ts2/showtimewomen-usa.m3u8?tk=T7wl46w0jvlOhRqgbPQHig&e=1789292475
+https://messi.damitv.st/papi/ts2/showtimewomen-usa.m3u8?tk=WvaF8dgq0fH5UkRcxpbaBg&e=1789298556
+#EXTINF:-1 tvg-id="dlhd-862" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-comedy-it.png",Sky Cinema Comedy
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzE5YTRkYWMwZjA3NTY1NzY3YzQ3YmUxMTBjZjk0NDcwLzE3ODkyNjYxNzAvcHJlbWl1bTg2Mi9pbmRleC5tM3U4?tk=FVzS-inELPBgZSNK1TtwUw&e=1789298570
+#EXTINF:-1 tvg-id="dlhd-865" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-cinema-family-de.png",Sky Cinema Family
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlL2NiMjUyOTI3OWQ4MmI1ZGE4NmY3YWI1NzYzZWIwZDNmLzE3ODkyNjYxNzYvcHJlbWl1bTg2NS9pbmRleC5tM3U4?tk=jantLPDXn9oecm2XJnYLHQ&e=1789298576
+#EXTINF:-1 tvg-id="dlhd-864" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-romance-it.png",Sky Cinema Romance
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlL2FlZWRlMzVkYzc3MzRhN2ZlMzJjZWU0MGY3MGI3Y2JmLzE3ODkyNjYxNzYvcHJlbWl1bTg2NC9pbmRleC5tM3U4?tk=jantLPDXn9oecm2XJnYLHQ&e=1789298576
+#EXTINF:-1 tvg-id="dlhd-860" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-uno-it.png",Sky Cinema Uno
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlL2FjYmZiMGJkNzg0MzVjZmFjYWQyZWM1NWQwODE1ZTBhLzE3ODkyNjYxNTkvcHJlbWl1bTg2MC9pbmRleC5tM3U4?tk=XGX4OL1u0xj1AQ9qMxkpHg&e=1789298577
+#EXTINF:-1 tvg-id="dlhd-880" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-serie-it.png",Sky Serie
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzlhZDI4YmM2MWU0Y2VhOTU5ODNlOTYxOTRiYzg1MmViLzE3ODkyNjYxODUvcHJlbWl1bTg4MC9pbmRleC5tM3U4?tk=pIE6xfi80a0G6BZFLLXLow&e=1789298585
+#EXTINF:-1 tvg-id="dlhd-881" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png",Sky UNO
+https://messi.damitv.st/papi/tv/playlist/aHR0cHM6Ly94YW1lbGVvbi5waGFudGVtbGlzLnRvcC90d28vc2VjdXJlLzE5YTc3ZTJiNDM3ZDEzYzIwMWE1YjM3YTFkZWJjNzIyLzE3ODkyNjYxODUvcHJlbWl1bTg4MS9pbmRleC5tM3U4?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-starz-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-us.png",STARZ
-https://messi.damitv.st/papi/ts2/starz-usa.m3u8?tk=7b8P4EvQQR-kVwbgtwIadA&e=1789292510
+https://messi.damitv.st/papi/ts2/starz-usa.m3u8?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-starzcinema-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-cinema-us.png",STARZ Cinema
-https://messi.damitv.st/papi/ts2/starzcinema-usa.m3u8?tk=7b8P4EvQQR-kVwbgtwIadA&e=1789292510
+https://messi.damitv.st/papi/ts2/starzcinema-usa.m3u8?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-starzcomedy-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-comedy-us.png",STARZ Comedy
-https://messi.damitv.st/papi/ts2/starzcomedy-usa.m3u8?tk=7b8P4EvQQR-kVwbgtwIadA&e=1789292510
+https://messi.damitv.st/papi/ts2/starzcomedy-usa.m3u8?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-starzkidsfamily-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-kids-and-family-us.png",STARZ Kids and Family
-https://messi.damitv.st/papi/ts2/starzkidsfamily-usa.m3u8?tk=7b8P4EvQQR-kVwbgtwIadA&e=1789292510
+https://messi.damitv.st/papi/ts2/starzkidsfamily-usa.m3u8?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-syfy-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/syfy-us.png",SYFY
-https://messi.damitv.st/papi/ts2/syfy-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/syfy-usa.m3u8?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-tbs-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tbs-us.png",TBS
-https://messi.damitv.st/papi/ts2/tbs-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/tbs-usa.m3u8?tk=G0w5zzEcohUmRmRfGkTO8Q&e=1789298586
 #EXTINF:-1 tvg-id="ts-teenick-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/teen-nick-us.png",Teenick
-https://messi.damitv.st/papi/ts2/teenick-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/teenick-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-telemundo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/telemundo-us.png",Telemundo
-https://messi.damitv.st/papi/ts2/telemundo-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/telemundo-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-twc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/weather-channel-us.png",The Weather Channel
-https://messi.damitv.st/papi/ts2/twc-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/twc-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-tnt-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tnt-us.png",TNT
-https://messi.damitv.st/papi/ts2/tnt-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/tnt-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-trutv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tru-tv-us.png",TruTV
-https://messi.damitv.st/papi/ts2/trutv-usa.m3u8?tk=oXoRerjLhSAkT1dqCAW1JA&e=1789292511
+https://messi.damitv.st/papi/ts2/trutv-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-usanetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/canada/usa-network-ca.png",USA Network
-https://messi.damitv.st/papi/ts2/usanetwork-usa.m3u8?tk=U6jBzqwcsLbHtN6pIL3y6A&e=1789292512
+https://messi.damitv.st/papi/ts2/usanetwork-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-wapaamerica-usa" tvg-logo="https://m.media-amazon.com/images/I/81AEkpHaIPL._SL1920_.png",WAPA America
-https://messi.damitv.st/papi/ts2/wapaamerica-usa.m3u8?tk=U6jBzqwcsLbHtN6pIL3y6A&e=1789292512
+https://messi.damitv.st/papi/ts2/wapaamerica-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="ts-wapadeportes-usa" tvg-logo="https://i.ibb.co/pBzhsJ17/WAPA-Deportes.jpg",WAPA Deportes
-https://messi.damitv.st/papi/ts2/wapadeportes-usa.m3u8?tk=U6jBzqwcsLbHtN6pIL3y6A&e=1789292512
+https://messi.damitv.st/papi/ts2/wapadeportes-usa.m3u8?tk=i559Yw5bBsiUfhF1AgCiPg&e=1789298587
 #EXTINF:-1 tvg-id="nfl-network" tvg-logo="https://static.ppvservices.st/assets/thumb/5ed7ea60fe8e3842203b0741187f0fd7-thumbnail.jpg",[NFL] NFL Network
-https://messi.damitv.st/live-hls/channel/nfl-network/playlist.m3u8?tk=U6jBzqwcsLbHtN6pIL3y6A&e=1789292512
+https://messi.damitv.st/live-hls/channel/nfl-network/playlist.m3u8?tk=Ve_ZzaghioC4F8ZOtZe0CA&e=1789298588
 #EXTINF:-1 tvg-id="cfb/2026-09-12/tenn-gt" tvg-logo="https://static.ppvservices.st/assets/thumb/37821c00e4ef1132eebe5b021f9fd262-thumbnail.jpg",[American Football] Tennessee Volunteers at Georgia Tech Yellow Jackets
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/tenn-gt/playlist.m3u8?tk=W32SZ0S1r6C7CG51aVuySw&e=1789292513
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/tenn-gt/playlist.m3u8?tk=Ve_ZzaghioC4F8ZOtZe0CA&e=1789298588
 #EXTINF:-1 tvg-id="cfb/2026-09-12/sou-hou" tvg-logo="https://static.ppvservices.st/assets/thumb/d05b0d6bf75f0e354d58bda2953aa7b3-thumbnail.jpg",[American Football] Southern Jaguars at Houston Cougars
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/sou-hou/playlist.m3u8?tk=W32SZ0S1r6C7CG51aVuySw&e=1789292513
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/sou-hou/playlist.m3u8?tk=Ve_ZzaghioC4F8ZOtZe0CA&e=1789298588
 #EXTINF:-1 tvg-id="cfl/2026-09-12/cgy-edm" tvg-logo="https://static.ppvservices.st/assets/thumb/98c0d89f8b8fb0caa44c2a41c86bc7f3-thumbnail.jpg",[American Football] Calgary Stampeders at Edmonton Elks
-https://messi.damitv.st/live-hls/channel/cfl/2026-09-12/cgy-edm/playlist.m3u8?tk=W32SZ0S1r6C7CG51aVuySw&e=1789292513
+https://messi.damitv.st/live-hls/channel/cfl/2026-09-12/cgy-edm/playlist.m3u8?tk=neZClIRKNMouJzcotmx17w&e=1789298589
+#EXTINF:-1 tvg-id="cfb/2026-09-12/sdsu-ucla" tvg-logo="https://static.ppvservices.st/assets/thumb/ad6b88b7b26b99f4fa9729d56a56740b-thumbnail.jpg",[American Football] San Diego State Aztecs at UCLA Bruins
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/sdsu-ucla/playlist.m3u8?tk=neZClIRKNMouJzcotmx17w&e=1789298589
 #EXTINF:-1 tvg-id="cfb/2026-09-12/osu-tex" tvg-logo="https://static.ppvservices.st/assets/thumb/373af9d15d02154728700a4cc5db1fea-thumbnail.jpg",[American Football] Ohio State Buckeyes at Texas Longhorns
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/osu-tex/playlist.m3u8?tk=W32SZ0S1r6C7CG51aVuySw&e=1789292513
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/osu-tex/playlist.m3u8?tk=neZClIRKNMouJzcotmx17w&e=1789298589
 #EXTINF:-1 tvg-id="cfb/2026-09-12/lt-lsu" tvg-logo="https://static.ppvservices.st/assets/thumb/519cc925bee373642c74c7929bbe71ce-thumbnail.jpg",[American Football] Louisiana Tech Bulldogs at LSU Tigers
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/lt-lsu/playlist.m3u8?tk=-PzQwK6fGC9Nsh5fGdjo9w&e=1789292514
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/lt-lsu/playlist.m3u8?tk=neZClIRKNMouJzcotmx17w&e=1789298589
 #EXTINF:-1 tvg-id="cfb/2026-09-12/ttu-orst" tvg-logo="https://static.ppvservices.st/assets/thumb/d4dc24b41debbea72213c9a159914753-thumbnail.jpg",[American Football] Texas Tech Red Raiders at Oregon State Beavers
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/ttu-orst/playlist.m3u8?tk=-PzQwK6fGC9Nsh5fGdjo9w&e=1789292514
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/ttu-orst/playlist.m3u8?tk=9VYEnzN-kpntaICN-3xQgA&e=1789298590
 #EXTINF:-1 tvg-id="cfb/2026-09-12/isu-iowa" tvg-logo="https://static.ppvservices.st/assets/thumb/ff7781d6e5ac0d2ac0140cb17f40ff50-thumbnail.jpg",[American Football] Iowa State Cyclones at Iowa Hawkeyes
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/isu-iowa/playlist.m3u8?tk=-PzQwK6fGC9Nsh5fGdjo9w&e=1789292514
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/isu-iowa/playlist.m3u8?tk=9VYEnzN-kpntaICN-3xQgA&e=1789298590
 #EXTINF:-1 tvg-id="cfb/2026-09-12/clt-miss" tvg-logo="https://static.ppvservices.st/assets/thumb/b1dedcb92f4ce9ef28010c2d1002e7ef-thumbnail.jpg",[American Football] Charlotte 49ers at Ole Miss Rebels
-https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/clt-miss/playlist.m3u8?tk=-PzQwK6fGC9Nsh5fGdjo9w&e=1789292514
-#EXTINF:-1 tvg-id="mlb/2026-09-12/hou-tb" tvg-logo="https://static.ppvservices.st/assets/thumb/bc2f435257a5a9c09f384d0c9e52a3d3-thumbnail.jpg",[MLB] Houston Astros vs. Tampa Bay Rays
-https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/hou-tb/playlist.m3u8?tk=-PzQwK6fGC9Nsh5fGdjo9w&e=1789292514
+https://messi.damitv.st/live-hls/channel/cfb/2026-09-12/clt-miss/playlist.m3u8?tk=9VYEnzN-kpntaICN-3xQgA&e=1789298590
 #EXTINF:-1 tvg-id="mlb/2026-09-12/cin-mil" tvg-logo="https://static.ppvservices.st/assets/thumb/ebcbaf08459e1f7a1cb136244e10937e-thumbnail.jpg",[MLB] Cincinnati Reds vs. Milwaukee Brewers
-https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/cin-mil/playlist.m3u8?tk=omcOjHg_1-C9mPdjwMOpdA&e=1789292515
+https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/cin-mil/playlist.m3u8?tk=9VYEnzN-kpntaICN-3xQgA&e=1789298590
 #EXTINF:-1 tvg-id="mlb/2026-09-12/phi-atl" tvg-logo="https://static.ppvservices.st/assets/thumb/7349d8fd61256dd678ec4033d0de2a26-thumbnail.jpg",[MLB] Philadelphia Phillies vs. Atlanta Braves
-https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/phi-atl/playlist.m3u8?tk=omcOjHg_1-C9mPdjwMOpdA&e=1789292515
+https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/phi-atl/playlist.m3u8?tk=KrXF2ZDzEFvr5sd-6E4jqQ&e=1789298591
 #EXTINF:-1 tvg-id="mlb/2026-09-12/chw-stl" tvg-logo="https://static.ppvservices.st/assets/thumb/9293a9438f66f34e9d8a379920450993-thumbnail.jpg",[MLB] Chicago White Sox vs. St. Louis Cardinals
-https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/chw-stl/playlist.m3u8?tk=omcOjHg_1-C9mPdjwMOpdA&e=1789292515
+https://messi.damitv.st/live-hls/channel/mlb/2026-09-12/chw-stl/playlist.m3u8?tk=KrXF2ZDzEFvr5sd-6E4jqQ&e=1789298591
 #EXTINF:-1 tvg-id="liga-mx/2026-09-12/tol-ats" tvg-logo="https://static.ppvservices.st/assets/thumb/fe98e614131ccf02599a9478a9dc9573-thumbnail.jpg",[Football] Toluca vs. Atlas
-https://messi.damitv.st/live-hls/channel/liga-mx/2026-09-12/tol-ats/playlist.m3u8?tk=ICVZy6pvZUCXamWRJZw_4Q&e=1789292516
+https://messi.damitv.st/live-hls/channel/liga-mx/2026-09-12/tol-ats/playlist.m3u8?tk=KrXF2ZDzEFvr5sd-6E4jqQ&e=1789298591
 #EXTINF:-1 tvg-id="mls/2026-09-12/clb-rbny" tvg-logo="https://static.ppvservices.st/assets/thumb/585f3a8c64615f6639c2580a129ff940-thumbnail.jpg",[MLS] Columbus Crew vs. Red Bull New York
-https://messi.damitv.st/live-hls/channel/mls/2026-09-12/clb-rbny/playlist.m3u8?tk=ICVZy6pvZUCXamWRJZw_4Q&e=1789292516
+https://messi.damitv.st/live-hls/channel/mls/2026-09-12/clb-rbny/playlist.m3u8?tk=KrXF2ZDzEFvr5sd-6E4jqQ&e=1789298591
 #EXTINF:-1 tvg-id="mls/2026-09-12/dc-atl" tvg-logo="https://static.ppvservices.st/assets/thumb/ab56a6dbeae94f8df54f49d67249b938-thumbnail.jpg",[MLS] D.C. United vs. Atlanta United FC
-https://messi.damitv.st/live-hls/channel/mls/2026-09-12/dc-atl/playlist.m3u8?tk=ICVZy6pvZUCXamWRJZw_4Q&e=1789292516
+https://messi.damitv.st/live-hls/channel/mls/2026-09-12/dc-atl/playlist.m3u8?tk=KrXF2ZDzEFvr5sd-6E4jqQ&e=1789298591
 #EXTINF:-1 tvg-id="mls/2026-09-12/cin-clt" tvg-logo="https://static.ppvservices.st/assets/thumb/40f71c4f837bf746dfda302da1493d75-thumbnail.jpg",[MLS] FC Cincinnati vs. Charlotte FC
-https://messi.damitv.st/live-hls/channel/mls/2026-09-12/cin-clt/playlist.m3u8?tk=ICVZy6pvZUCXamWRJZw_4Q&e=1789292516
+https://messi.damitv.st/live-hls/channel/mls/2026-09-12/cin-clt/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
 #EXTINF:-1 tvg-id="mls/2026-09-12/mia-nsh" tvg-logo="https://static.ppvservices.st/assets/thumb/7e2e5a1e6f5ee374c8a4d4a8ded6687b-thumbnail.jpg",[MLS] Inter Miami CF vs. Nashville SC
-https://messi.damitv.st/live-hls/channel/mls/2026-09-12/mia-nsh/playlist.m3u8?tk=tuGYNbeBE9a2BCX3CHjeaw&e=1789292517
+https://messi.damitv.st/live-hls/channel/mls/2026-09-12/mia-nsh/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
 #EXTINF:-1 tvg-id="mls/2026-09-12/orl-tor" tvg-logo="https://static.ppvservices.st/assets/thumb/667f21f81fe7834af99967143f1f6c50-thumbnail.jpg",[MLS] Orlando City SC vs. Toronto FC
-https://messi.damitv.st/live-hls/channel/mls/2026-09-12/orl-tor/playlist.m3u8?tk=tuGYNbeBE9a2BCX3CHjeaw&e=1789292517
+https://messi.damitv.st/live-hls/channel/mls/2026-09-12/orl-tor/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
 #EXTINF:-1 tvg-id="us-open-espn--espn2" tvg-logo="https://static.ppvservices.st/assets/thumb/e8148b55e20882ab01d187342e73178c-thumbnail.jpg",[Tennis] US Open: 24/7 streams
-https://messi.damitv.st/live-hls/channel/us-open-espn--espn2/playlist.m3u8?tk=tuGYNbeBE9a2BCX3CHjeaw&e=1789292517
-#EXTINF:-1 tvg-id="sd-delta~live_cfb_bethune-cookman-stetson-hatters-live-streaming-623789424",[american-football] Bethune-Cookman vs Stetson
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_bethune-cookman-stetson-hatters-live-streaming-623789424/playlist.m3u8?tk=tuGYNbeBE9a2BCX3CHjeaw&e=1789292517
-#EXTINF:-1 tvg-id="sd-delta~live_cfb_colorado-state-southern-utah-live-streaming-587767104",[american-football] Colorado State vs Southern Utah
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_colorado-state-southern-utah-live-streaming-587767104/playlist.m3u8?tk=tuGYNbeBE9a2BCX3CHjeaw&e=1789292517
-#EXTINF:-1 tvg-id="sd-delta~live_cfb_nebraska-bowling-green-live-streaming-587753280",[american-football] Nebraska vs Bowling Green
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_nebraska-bowling-green-live-streaming-587753280/playlist.m3u8?tk=IgpErMUBx-BVHOyGRlje5Q&e=1789292518
+https://messi.damitv.st/live-hls/channel/us-open-espn--espn2/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
 #EXTINF:-1 tvg-id="sd-delta~live_cfb_wisconsin-western-illinois-live-streaming-587769264",[american-football] Wisconsin vs Western Illinois
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_wisconsin-western-illinois-live-streaming-587769264/playlist.m3u8?tk=IgpErMUBx-BVHOyGRlje5Q&e=1789292518
-#EXTINF:-1 tvg-id="sd-delta~live_cfb_ucla-san-diego-st-live-streaming-587754576" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzrAThFlBWSUYAUwVmDW2nmAmD32FrWGHXbeAENgBjUgg5sSdTtw5kAJqWCEImeuFFs8aEDN4AGMFLBluIQ1JAoQiGCBLmNV0wWBIKfYbPop9bFF33l6WWW8mWjBPelEIIA.webp",[american-football] UCLA vs San Diego State
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_ucla-san-diego-st-live-streaming-587754576/playlist.m3u8?tk=IgpErMUBx-BVHOyGRlje5Q&e=1789292518
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_wisconsin-western-illinois-live-streaming-587769264/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
+#EXTINF:-1 tvg-id="sd-echo~chico-vs-independiente-medellin-football-1549776",[football] Chico vs Independiente Medellin
+https://messi.damitv.st/live-sd/streamed/echo/chico-vs-independiente-medellin-football-1549776/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
+#EXTINF:-1 tvg-id="sd-echo~talleres-cordoba-vs-union-santa-fe-football-1493135",[football] Talleres Cordoba vs Union Santa Fe
+https://messi.damitv.st/live-sd/streamed/echo/talleres-cordoba-vs-union-santa-fe-football-1493135/playlist.m3u8?tk=LuVgGT8uwCoX0UEYonPswQ&e=1789298592
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_howard-payne-yellow-jackets-clutch-city-live-streaming-606185856",[american-football] Howard Payne Yellow Jackets vs Clutch City Eagles
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_howard-payne-yellow-jackets-clutch-city-live-streaming-606185856/playlist.m3u8?tk=05sPdTb0YtHfB8nFvKyPSg&e=1789298593
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_wisconsin-lutheran-warriors-ripon-red-hawks-live-streaming-606184992",[american-football] Wisconsin Lutheran Warriors vs Ripon Red Hawks
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_wisconsin-lutheran-warriors-ripon-red-hawks-live-streaming-606184992/playlist.m3u8?tk=05sPdTb0YtHfB8nFvKyPSg&e=1789298593
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_trinity-tigers-mcmurry-war-hawks-live-streaming-606184560",[american-football] Trinity Tigers vs McMurry War Hawks
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_trinity-tigers-mcmurry-war-hawks-live-streaming-606184560/playlist.m3u8?tk=05sPdTb0YtHfB8nFvKyPSg&e=1789298593
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_texas-lutheran-bulldogs-southwestern-pirates-live-streaming-606184128",[american-football] Texas Lutheran Bulldogs vs Southwestern Pirates
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_texas-lutheran-bulldogs-southwestern-pirates-live-streaming-606184128/playlist.m3u8?tk=05sPdTb0YtHfB8nFvKyPSg&e=1789298593
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_simpson-storm-crown-storm-live-streaming-606183696",[american-football] Simpson Storm vs Crown Storm
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_simpson-storm-crown-storm-live-streaming-606183696/playlist.m3u8?tk=05sPdTb0YtHfB8nFvKyPSg&e=1789298593
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_shenandoah-hornets-geneva-golden-tornadoes-live-streaming-606183264",[american-football] Shenandoah Hornets vs Geneva Golden Tornadoes
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_shenandoah-hornets-geneva-golden-tornadoes-live-streaming-606183264/playlist.m3u8?tk=gCFDGk9h3AeEy-8WvGmEyw&e=1789298594
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_otterbeincardinals-heidelberg-student-princes-live-streaming-606182832",[american-football] Otterbein	Cardinals vs Heidelberg Student Princes
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_otterbeincardinals-heidelberg-student-princes-live-streaming-606182832/playlist.m3u8?tk=gCFDGk9h3AeEy-8WvGmEyw&e=1789298594
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_oklahoma-panhandle-state-aggies-schreiner-mountaineers-live-streaming-606182400",[american-football] Oklahoma Panhandle State Aggies vs Schreiner Mountaineers
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_oklahoma-panhandle-state-aggies-schreiner-mountaineers-live-streaming-606182400/playlist.m3u8?tk=gCFDGk9h3AeEy-8WvGmEyw&e=1789298594
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_northwestern-eagles-central-dutch-live-streaming-606181968",[american-football] Northwestern Eagles vs Central Dutch
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_northwestern-eagles-central-dutch-live-streaming-606181968/playlist.m3u8?tk=gCFDGk9h3AeEy-8WvGmEyw&e=1789298594
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_guilford-quakers-methodist-monarchs-live-streaming-606181536",[american-football] Guilford Quakers vs Methodist Monarchs
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_guilford-quakers-methodist-monarchs-live-streaming-606181536/playlist.m3u8?tk=gCFDGk9h3AeEy-8WvGmEyw&e=1789298594
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_dakota-state-trojans-nebraska-wesleyan-prairie-wolves-live-streaming-606181104",[american-football] Dakota State Trojans vs Nebraska Wesleyan Prairie Wolves
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_dakota-state-trojans-nebraska-wesleyan-prairie-wolves-live-streaming-606181104/playlist.m3u8?tk=gCFDGk9h3AeEy-8WvGmEyw&e=1789298594
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_centenary-gents-millsaps-majors-live-streaming-606180672",[american-football] Centenary Gents vs Millsaps Majors
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_centenary-gents-millsaps-majors-live-streaming-606180672/playlist.m3u8?tk=KlKlVtGMG68hpIgKC6HHPA&e=1789298595
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_benedictine-eagles-loras-duhawks-live-streaming-606180240",[american-football] Benedictine Eagles vs Loras Duhawks
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_benedictine-eagles-loras-duhawks-live-streaming-606180240/playlist.m3u8?tk=KlKlVtGMG68hpIgKC6HHPA&e=1789298595
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_belhavenblazers-east-texas-baptist-tigers-live-streaming-606179808",[american-football] Belhaven	Blazers vs East Texas Baptist Tigers
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_belhavenblazers-east-texas-baptist-tigers-live-streaming-606179808/playlist.m3u8?tk=KlKlVtGMG68hpIgKC6HHPA&e=1789298595
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_illinois-blueboys-lyon-college-scots-live-streaming-606155184",[american-football] Illinois Blueboys vs Lyon College Scots
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_illinois-blueboys-lyon-college-scots-live-streaming-606155184/playlist.m3u8?tk=KlKlVtGMG68hpIgKC6HHPA&e=1789298595
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_texas-permian-basin-falcons-western-new-mexico-mustangs-live-streaming-587737728",[american-football] Texas-Permian Basin Falcons vs Western New Mexico Mustangs
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_texas-permian-basin-falcons-western-new-mexico-mustangs-live-streaming-587737728/playlist.m3u8?tk=KlKlVtGMG68hpIgKC6HHPA&e=1789298595
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_southeastern-oklahoma-state-savage-storm-ouachita-baptist-tigers-live-streaming-587736864",[american-football] Southeastern Oklahoma State Savage Storm vs Ouachita Baptist Tigers
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_southeastern-oklahoma-state-savage-storm-ouachita-baptist-tigers-live-streaming-587736864/playlist.m3u8?tk=KlKlVtGMG68hpIgKC6HHPA&e=1789298595
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_newberry-wolves-lenoir-rhyne-bears-live-streaming-587736432",[american-football] Newberry Wolves vs Lenoir Rhyne Bears
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_newberry-wolves-lenoir-rhyne-bears-live-streaming-587736432/playlist.m3u8?tk=xybduU60XaH4Rv9T_PiFuA&e=1789298596
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_missouri-st-miners-missouri-western-griffons-live-streaming-587736000",[american-football] Missouri S&T Miners vs Missouri Western Griffons
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_missouri-st-miners-missouri-western-griffons-live-streaming-587736000/playlist.m3u8?tk=xybduU60XaH4Rv9T_PiFuA&e=1789298596
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_minnesota-state-mankato-mavericks-bemidji-state-beavers-live-streaming-587735568",[american-football] Minnesota State Mankato Mavericks vs Bemidji State Beavers
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_minnesota-state-mankato-mavericks-bemidji-state-beavers-live-streaming-587735568/playlist.m3u8?tk=xybduU60XaH4Rv9T_PiFuA&e=1789298596
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_lincoln-university-blue-tigers-langston-lions-live-streaming-587735136",[american-football] Lincoln University Blue Tigers vs Langston Lions
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_lincoln-university-blue-tigers-langston-lions-live-streaming-587735136/playlist.m3u8?tk=YAaIsZU3U0Kdh5zT6-kdeQ&e=1789298597
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_henderson-state-reddies-oklahoma-baptist-bison-live-streaming-587734272",[american-football] Henderson State Reddies vs Oklahoma Baptist Bison
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_henderson-state-reddies-oklahoma-baptist-bison-live-streaming-587734272/playlist.m3u8?tk=YAaIsZU3U0Kdh5zT6-kdeQ&e=1789298597
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_ashland-eagles-grand-valley-state-lakers-live-streaming-587733840",[american-football] Ashland Eagles vs Grand Valley State Lakers
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_ashland-eagles-grand-valley-state-lakers-live-streaming-587733840/playlist.m3u8?tk=YAaIsZU3U0Kdh5zT6-kdeQ&e=1789298597
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_kentucky-wesleyan-panthers-william-jewell-cardinals-live-streaming-587731680",[american-football] Kentucky Wesleyan Panthers vs William Jewell Cardinals
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_kentucky-wesleyan-panthers-william-jewell-cardinals-live-streaming-587731680/playlist.m3u8?tk=YAaIsZU3U0Kdh5zT6-kdeQ&e=1789298597
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_east-texas-am-commerce-northwestern-st-live-streaming-623792448",[american-football] East Texas A&M-Commerce Lions vs Northwestern State Demons
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_east-texas-am-commerce-northwestern-st-live-streaming-623792448/playlist.m3u8?tk=YAaIsZU3U0Kdh5zT6-kdeQ&e=1789298597
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_tennessee-tech-samford-live-streaming-587778336",[american-football] Tennessee Tech vs Samford Bulldogs
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_tennessee-tech-samford-live-streaming-587778336/playlist.m3u8?tk=YAaIsZU3U0Kdh5zT6-kdeQ&e=1789298597
+#EXTINF:-1 tvg-id="sd-echo~forge-vs-atletico-ottawa-football-1517345" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzrAThFlBWSUYAUwVmDW2nmAmD32FrWGHXbeAENgBjUgg5sSdTtw5kAJqWCEImeuFFs8VXm1rcKIENxB9dICCBghEKPcdwFgSCn2Gz6KMCpRc35ellkemtGBuYqIQQA.webp",[football] Forge vs Atlético Ottawa
+https://messi.damitv.st/live-sd/streamed/echo/forge-vs-atletico-ottawa-football-1517345/playlist.m3u8?tk=hqpeZDu8lhxQLZmdSWrYDw&e=1789298598
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_houston-baptist-arkansas-baptist-buffaloes-live-streaming-587734704",[american-football] Houston Baptist vs Arkansas Baptist
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_houston-baptist-arkansas-baptist-buffaloes-live-streaming-587734704/playlist.m3u8?tk=hqpeZDu8lhxQLZmdSWrYDw&e=1789298598
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_south-dakota-state-new-haven-chargers-live-streaming-587777904",[american-football] South Dakota State vs New Haven
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_south-dakota-state-new-haven-chargers-live-streaming-587777904/playlist.m3u8?tk=hqpeZDu8lhxQLZmdSWrYDw&e=1789298598
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_nicholls-state-ut-rio-grande-valley-live-streaming-587777472",[american-football] Nicholls vs UT Rio Grande Valley
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_nicholls-state-ut-rio-grande-valley-live-streaming-587777472/playlist.m3u8?tk=hqpeZDu8lhxQLZmdSWrYDw&e=1789298598
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_central-arkansas-central-oklahoma-bronchos-live-streaming-623785968",[american-football] Central Arkansas vs Central Oklahoma
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_central-arkansas-central-oklahoma-bronchos-live-streaming-623785968/playlist.m3u8?tk=hqpeZDu8lhxQLZmdSWrYDw&e=1789298598
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_arkansas-st-west-georgia-wolves-live-streaming-587766240",[american-football] Arkansas State vs West Georgia
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_arkansas-st-west-georgia-wolves-live-streaming-587766240/playlist.m3u8?tk=kgW40B00zrMJY0Co15Q6xQ&e=1789298599
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_alcorn-state-arkansas-pine-bluff-live-streaming-587776176",[american-football] Alcorn State vs Arkansas-Pine Bluff
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_alcorn-state-arkansas-pine-bluff-live-streaming-587776176/playlist.m3u8?tk=kgW40B00zrMJY0Co15Q6xQ&e=1789298599
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_mcneese-state-tarleton-state-texans-live-streaming-587777040" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzrAThFlBWSUYAUwVmDW2nmAmD32FrWGHXbeAENgBjUgg5sSdTtw5kAJqWCEImeuFFs8aEFBRgBhECETcQUkCg0g+JoyEMXGwJBT7DZ9LSpRcwZeESyyPTLRgXmKiEEA.webp",[american-football] McNeese State vs Tarleton State
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_mcneese-state-tarleton-state-texans-live-streaming-587777040/playlist.m3u8?tk=kgW40B00zrMJY0Co15Q6xQ&e=1789298599
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_alabama-am-tennessee-st-live-streaming-623792016",[american-football] Alabama A and M vs Tennessee State
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_alabama-am-tennessee-st-live-streaming-623792016/playlist.m3u8?tk=kgW40B00zrMJY0Co15Q6xQ&e=1789298599
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_southeastern-louisiana-north-alabama-lions-live-streaming-623792880",[american-football] Southeastern Louisiana vs North Alabama
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_southeastern-louisiana-north-alabama-lions-live-streaming-623792880/playlist.m3u8?tk=kgW40B00zrMJY0Co15Q6xQ&e=1789298599
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_southern-illinois-southeast-missouri-st-live-streaming-623793312",[american-football] Southern Illinois vs Southeast Missouri State
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_southern-illinois-southeast-missouri-st-live-streaming-623793312/playlist.m3u8?tk=kgW40B00zrMJY0Co15Q6xQ&e=1789298599
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_murray-state-valparaiso-beacons-live-streaming-587773152",[american-football] Murray State vs Valparaiso
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_murray-state-valparaiso-beacons-live-streaming-587773152/playlist.m3u8?tk=i1zEYeHH9jTW8RCPG9o4mg&e=1789298600
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_missouri-state-lindenwood-lions-live-streaming-587767968",[american-football] Missouri State vs Lindenwood
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_missouri-state-lindenwood-lions-live-streaming-587767968/playlist.m3u8?tk=i1zEYeHH9jTW8RCPG9o4mg&e=1789298600
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_marshall-middle-tennessee-st-live-streaming-587752848",[american-football] Marshall vs Middle Tennessee
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_marshall-middle-tennessee-st-live-streaming-587752848/playlist.m3u8?tk=i1zEYeHH9jTW8RCPG9o4mg&e=1789298600
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_tulane-south-alabama-live-streaming-587754144" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzrAThFlBWSUYAUwVmDW2nmAmD32FrWGHXbeAENgBjUgg5sSdTtw5kAJqWCEImeuFFs8rMDxAzuYHTBDctIFCAgg+x0+YPmCwJBT7DZ9FGBUou78vSyzPTLRg7mKiEEA.webp",[american-football] Tulane vs South Alabama
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_tulane-south-alabama-live-streaming-587754144/playlist.m3u8?tk=i1zEYeHH9jTW8RCPG9o4mg&e=1789298600
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_sam-houston-state-tulsa-live-streaming-587753712",[american-football] Sam Houston State vs Tulsa
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_sam-houston-state-tulsa-live-streaming-587753712/playlist.m3u8?tk=i1zEYeHH9jTW8RCPG9o4mg&e=1789298600
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_nebraska-bowling-green-live-streaming-587753280",[american-football] Nebraska vs Bowling Green
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_nebraska-bowling-green-live-streaming-587753280/playlist.m3u8?tk=i1zEYeHH9jTW8RCPG9o4mg&e=1789298600
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_cincinnati-western-carolina-live-streaming-587766672",[american-football] Cincinnati vs Western Carolina
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_cincinnati-western-carolina-live-streaming-587766672/playlist.m3u8?tk=jE1pk-6O1BPcHIWLisNRPg&e=1789298601
+#EXTINF:-1 tvg-id="sd-delta~live_cfb_south-carolina-towson-live-streaming-587768832",[american-football] South Carolina vs Towson
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_south-carolina-towson-live-streaming-587768832/playlist.m3u8?tk=jE1pk-6O1BPcHIWLisNRPg&e=1789298601
 #EXTINF:-1 tvg-id="sd-admin~ppv-louisiana-tech-bulldogs-at-lsu-tigers" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzuAQ1sFKBWSYAU2DFLABM8E9g1gDCFJMd46Tp51jwywYAE50IEiCwgUweLOkhh4kaVIhEAY3UgqICIvlaIhhUpnCVErVlmkZ-MIJUFs9MIWBJcGmUMetjCzIZFzkwR2BjMgggA.webp",[american-football] LSU vs Louisiana Tech
-https://messi.damitv.st/live-sd/streamed/admin/ppv-louisiana-tech-bulldogs-at-lsu-tigers/playlist.m3u8?tk=IgpErMUBx-BVHOyGRlje5Q&e=1789292518
+https://messi.damitv.st/live-sd/streamed/admin/ppv-louisiana-tech-bulldogs-at-lsu-tigers/playlist.m3u8?tk=jE1pk-6O1BPcHIWLisNRPg&e=1789298601
 #EXTINF:-1 tvg-id="sd-delta~live_cfb_florida-atl-navy-live-streaming-587755440",[american-football] Florida Atlantic vs Navy
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_florida-atl-navy-live-streaming-587755440/playlist.m3u8?tk=IgpErMUBx-BVHOyGRlje5Q&e=1789292518
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_florida-atl-navy-live-streaming-587755440/playlist.m3u8?tk=jE1pk-6O1BPcHIWLisNRPg&e=1789298601
 #EXTINF:-1 tvg-id="sd-delta~live_cfb_clemson-georgia-southern-live-streaming-587755008",[american-football] Clemson vs Georgia Southern
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_clemson-georgia-southern-live-streaming-587755008/playlist.m3u8?tk=3vLdZC_xnBZ63vPbPj9qrA&e=1789292519
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_clemson-georgia-southern-live-streaming-587755008/playlist.m3u8?tk=jE1pk-6O1BPcHIWLisNRPg&e=1789298601
 #EXTINF:-1 tvg-id="sd-delta~live_cfb_auburn-southern-miss-live-streaming-623786400",[american-football] Auburn vs Southern Miss
-https://messi.damitv.st/live-sd/streamed/delta/live_cfb_auburn-southern-miss-live-streaming-623786400/playlist.m3u8?tk=3vLdZC_xnBZ63vPbPj9qrA&e=1789292519
+https://messi.damitv.st/live-sd/streamed/delta/live_cfb_auburn-southern-miss-live-streaming-623786400/playlist.m3u8?tk=jE1pk-6O1BPcHIWLisNRPg&e=1789298601
 #EXTINF:-1 tvg-id="sd-admin~ppv-garcia-vs-benn" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzrAThFlBWSUYAUwVmDW2nmAmD32FrWGHXbeAENgBjUgg5sSdTtw5kAJqWCEImeuFFs8VRChAowZRDm4g+IY1JCISICCAMW+BYEgp3WIsdpUouO8vSyzPTLRgOmKiEEA.webp",[fight] Ryan Garcia vs Conor Benn
-https://messi.damitv.st/live-sd/streamed/admin/ppv-garcia-vs-benn/playlist.m3u8?tk=3vLdZC_xnBZ63vPbPj9qrA&e=1789292519
+https://messi.damitv.st/live-sd/streamed/admin/ppv-garcia-vs-benn/playlist.m3u8?tk=c3lGy1gar-MM4ufLRO8F9Q&e=1789298602
