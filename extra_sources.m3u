@@ -1,5 +1,45 @@
 #EXTM3U
-#EXTINF:-1 tvg-id="64095" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Miami%20Marlins%20vs%20Arizona%20Diamondbacks.jpg" group-title="Extra - bingstream", Miami Marlins vs Arizona Diamondbacks - MLB
+#EXTINF:-1 tvg-id="60879" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/South%20Melbourne%20vs%20Lions.jpg" group-title="Extra - bingstream", South Melbourne vs Lions - Australia Cup
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
 #EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
-https://livecdn-tc-iptv.rumsport10.live/live_abr/55844/720p/chunks.m3u8?is_vip=false&token=1789535843-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-4070f82a9906684d8dc95a18e7667ac0
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a90e4b95d79ffdae276b408/chunks.m3u8?is_vip=false&token=1789554745-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-d8d63fa4f3cf4952203f26c04ccf3ae1
+#EXTINF:-1 tvg-id="64079" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Flames%20vs%20Guardians.jpg" group-title="Extra - bingstream", Flames vs Guardians - ETPL
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-iptv.rumsport10.live/live_abr/490/720p/chunks.m3u8?is_vip=false&token=1789554749-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-a8170c09607abd588ac2b7ecc390e009
+#EXTINF:-1 tvg-id="60880" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Daejeon%20Citizen%20vs%20Kyoto%20Sanga.jpg" group-title="Extra - bingstream", Daejeon Citizen vs Kyoto Sanga - AFC Champions League Elite [Server 1]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae4-fancode/chunks.m3u8?is_vip=false&token=1789554750-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-f067f1b97da730776b4a8800e847b5d4
+#EXTINF:-1 tvg-id="60880" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Daejeon%20Citizen%20vs%20Kyoto%20Sanga.jpg" group-title="Extra - bingstream", Daejeon Citizen vs Kyoto Sanga - AFC Champions League Elite [Server 2]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae4/chunks.m3u8?is_vip=false&token=1789554752-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-4b1dc547ac124f4c9450084bf35e55f3
+#EXTINF:-1 tvg-id="60881" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Gamba%20Osaka%20vs%20C%C3%B4ng%20An%20Nh%C3%A2n%20D%C3%A2n.jpg" group-title="Extra - bingstream", Gamba Osaka vs Công An Nhân Dân - AFC Champions League Elite [Server 1]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae6-fancode/chunks.m3u8?is_vip=false&token=1789554753-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-e40686ddaa2e83eb1c6c0a3c6c702b93
+#EXTINF:-1 tvg-id="60881" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Gamba%20Osaka%20vs%20C%C3%B4ng%20An%20Nh%C3%A2n%20D%C3%A2n.jpg" group-title="Extra - bingstream", Gamba Osaka vs Công An Nhân Dân - AFC Champions League Elite [Server 2]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae6/chunks.m3u8?is_vip=false&token=1789554755-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-e1465c453f55cd3a56328dc188204de8
+#EXTINF:-1 tvg-id="60882" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Kashima%20vs%20Newcastle%20Jets.jpg" group-title="Extra - bingstream", Kashima vs Newcastle Jets - AFC Champions League Elite [Server 1]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae5-fancode/chunks.m3u8?is_vip=false&token=1789554756-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-f9ee2e4cd265e5caca2eb70fa1779ca3
+#EXTINF:-1 tvg-id="60882" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Kashima%20vs%20Newcastle%20Jets.jpg" group-title="Extra - bingstream", Kashima vs Newcastle Jets - AFC Champions League Elite [Server 2]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae5/chunks.m3u8?is_vip=false&token=1789554758-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-ec8232696d2423c5095387fc9d130e10
+#EXTINF:-1 tvg-id="60883" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Ratchaburi%20vs%20SHANGHAI%20SIPG.jpg" group-title="Extra - bingstream", Ratchaburi vs SHANGHAI SIPG - AFC Champions League Elite [Server 1]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae7-fancode/chunks.m3u8?is_vip=false&token=1789554759-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-f260cbadefaa9bba3d7009b6224cd577
+#EXTINF:-1 tvg-id="60883" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Ratchaburi%20vs%20SHANGHAI%20SIPG.jpg" group-title="Extra - bingstream", Ratchaburi vs SHANGHAI SIPG - AFC Champions League Elite [Server 2]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae7/chunks.m3u8?is_vip=false&token=1789554761-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-9b0ea84218d1e7990a22d46fd5fd0098
+#EXTINF:-1 tvg-id="66602" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Vietnam%20U23%20vs%20Kuwait%20U23.jpg" group-title="Extra - bingstream", Vietnam U23 vs Kuwait U23 - Asian Games
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a886f1ffbc4c8ef09351ae3/chunks.m3u8?is_vip=false&token=1789554762-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-6c8a3be570ffa7296cf45bbc3975ae01
