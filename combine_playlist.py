@@ -42,10 +42,13 @@ LOCAL_SOURCES = [
     ("XYZStreams", "xyzstreams_events.m3u"),
     ("SMTK Sport", "smtk_sport.m3u"),
     ("Extra Sources", "extra_sources.m3u"),
+    ("CDN Live TV Channels", "cdnlivetv_channels.m3u"),
+    ("CDN Live TV Events", "cdnlivetv_events.m3u"),
 ]
 
 OUTPUT_FILE = "combined_events.m3u"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
 
 def fetch_playlist(url):
     headers = {"User-Agent": USER_AGENT}
@@ -57,12 +60,14 @@ def fetch_playlist(url):
         print(f"❌ Errore scaricando {url}: {e}")
         return []
 
+
 def fetch_local_playlist(path):
     try:
         return Path(path).read_text(encoding="utf-8", errors="ignore").splitlines()
     except FileNotFoundError:
         print(f"❌ File locale non trovato: {path}")
         return []
+
 
 def set_group_title(extinf_line, group_title):
     if 'group-title="' in extinf_line:
@@ -71,6 +76,7 @@ def set_group_title(extinf_line, group_title):
         head, tail = extinf_line.rsplit(',', 1)
         return f'{head} group-title="{group_title}",{tail}'
     return f'{extinf_line} group-title="{group_title}"'
+
 
 def set_tvg_id(extinf_line, channel_name, group_title):
     if 'tvg-id="' in extinf_line:
@@ -84,6 +90,7 @@ def set_tvg_id(extinf_line, channel_name, group_title):
         head, tail = extinf_line.rsplit(',', 1)
         return f'{head} tvg-id="{tvg_id}",{tail}'
     return extinf_line
+
 
 def parse_m3u(lines):
     blocks = []
@@ -104,6 +111,28 @@ def parse_m3u(lines):
         blocks.append(current_block)
     return blocks
 
+
+def process_blocks(blocks, name, all_lines, seen_urls):
+    added = 0
+    for block in blocks:
+        stream_url = block[-1]
+        # Filtra YouTube
+        if any(domain in stream_url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
+            continue
+        # Deduplica per URL
+        if stream_url in seen_urls:
+            continue
+        seen_urls.add(stream_url)
+        # Applica group-title e tvg-id
+        if block[0].startswith("#EXTINF"):
+            block[0] = set_group_title(block[0], name)
+            channel_name = block[0].split(",")[-1].strip()
+            block[0] = set_tvg_id(block[0], channel_name, name)
+        all_lines.extend(block)
+        added += 1
+    return added
+
+
 def main():
     all_lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
     seen_urls = set()
@@ -116,19 +145,8 @@ def main():
         print(f"   -> {len(blocks)} voci trovate")
         if blocks:
             all_lines.append(f"# ===== SORGENTE: {name} =====")
-            for block in blocks:
-                stream_url = block[-1]
-                # 🔴 Filtra YouTube
-                if any(domain in stream_url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
-                    continue
-                if stream_url in seen_urls:
-                    continue
-                seen_urls.add(stream_url)
-                if block[0].startswith("#EXTINF"):
-                    block[0] = set_group_title(block[0], name)
-                    channel_name = block[0].split(",")[-1].strip()
-                    block[0] = set_tvg_id(block[0], channel_name, name)
-                all_lines.extend(block)
+            added = process_blocks(blocks, name, all_lines, seen_urls)
+            print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
     # Processa sorgenti locali
     for name, path in LOCAL_SOURCES:
@@ -138,24 +156,14 @@ def main():
         print(f"   -> {len(blocks)} voci trovate")
         if blocks:
             all_lines.append(f"# ===== SORGENTE: {name} =====")
-            for block in blocks:
-                stream_url = block[-1]
-                # 🔴 Filtra YouTube
-                if any(domain in stream_url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
-                    continue
-                if stream_url in seen_urls:
-                    continue
-                seen_urls.add(stream_url)
-                if block[0].startswith("#EXTINF"):
-                    block[0] = set_group_title(block[0], name)
-                    channel_name = block[0].split(",")[-1].strip()
-                    block[0] = set_tvg_id(block[0], channel_name, name)
-                all_lines.extend(block)
+            added = process_blocks(blocks, name, all_lines, seen_urls)
+            print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(all_lines))
 
     print(f"\n✅ Salvato {OUTPUT_FILE} con {len(seen_urls)} flussi unici")
+
 
 if __name__ == "__main__":
     main()
