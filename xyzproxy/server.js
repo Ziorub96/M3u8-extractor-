@@ -61,11 +61,80 @@ let cachedHindiUrl = "https://mpd26wc64.blogspot.com/p/matchday01.html";
 let lastHindiScrape = 0;
 const CACHE_TTL = 3 * 60 * 1000;
 
-async function resolveStreamUrl(channel) {
-  const embedId = EMBED_MAP[channel];
-  if (!embedId) throw new Error(`Canale ${channel} non mappato`);
+// ============ DISCOVERY ============
+const discoveredEmbeds = new Map();       // embedId -> { name, source }
+const visitedPages = new Set();           // evita loop di crawling
+const MAX_DISCOVERY_DEPTH = 3;
+const MAX_EVENT_LINKS = 10;
 
-  const cached = resolvedUrlsCache[channel];
+let discoveryCache = { data: null, expiresAt: 0 };
+const DISCOVERY_TTL = 15 * 60 * 1000;
+
+async function discoverFromPage(pageUrl, depth = 0) {
+  if (depth > MAX_DISCOVERY_DEPTH) return;
+  if (visitedPages.has(pageUrl)) return;
+  visitedPages.add(pageUrl);
+
+  try {
+    const res = await fetchWithAgent(pageUrl, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
+      },
+      signal: AbortSignal.timeout(8000)
+    });
+    if (!res.ok) return;
+    const html = await res.text();
+
+    // Cerca pattern: /embed/{id} o player.xyzstreams.st/embed/{id}
+    const embedRegex = /(?:player\.xyzstreams\.st)?\/embed\/([a-zA-Z0-9_-]+)/g;
+    let match;
+    while ((match = embedRegex.exec(html)) !== null) {
+      const embedId = match[1];
+      if (!discoveredEmbeds.has(embedId)) {
+        // Prova a estrarre un nome dal contesto circostante
+        const before = html.slice(Math.max(0, match.index - 200), match.index);
+        const nameMatch = before.match(/>([^<]{3,60})<\/[a-z]+>\s*$/i);
+        const name = nameMatch ? nameMatch[1].trim() : embedId;
+        discoveredEmbeds.set(embedId, { name, source: pageUrl });
+      }
+    }
+
+    // Cerca anche link a pagine evento (worldcup, match, live, ecc.)
+    const eventLinkRegex = /href="([^"]*(?:worldcup|match|live|event|stream)[^"]*)"/gi;
+    const eventLinks = new Set();
+    while ((match = eventLinkRegex.exec(html)) !== null) {
+      try {
+        const full = new URL(match[1], pageUrl).href;
+        if (isHostAllowed(full) && !visitedPages.has(full)) eventLinks.add(full);
+      } catch {}
+    }
+
+    // Visita le pagine evento (max MAX_EVENT_LINKS per livello)
+    for (const link of [...eventLinks].slice(0, MAX_EVENT_LINKS)) {
+      await discoverFromPage(link, depth + 1);
+    }
+  } catch (e) {
+    console.error(`Discovery error su ${pageUrl}: ${e.message}`);
+  }
+}
+
+async function runDiscovery() {
+  discoveredEmbeds.clear();
+  visitedPages.clear();
+  await discoverFromPage("https://xyzstreams.st");
+  await discoverFromPage("https://xyzstreams.st/alt.html");
+  await discoverFromPage("https://xyzstreams-6h9.pages.dev/worldcup26-1-0710");
+  console.log(`🔍 Discovery completata: ${discoveredEmbeds.size} embed trovati`);
+  return discoveredEmbeds;
+}
+
+// ============ RESOLVER GENERALIZZATO ============
+// Accetta sia un nome mappato (es. "fox") che un embedId diretto (es. "fox-xyz-waUvqaAA")
+async function resolveStreamUrlById(embedIdOrName) {
+  const embedId = EMBED_MAP[embedIdOrName] || embedIdOrName;
+  const cacheKey = embedId;
+
+  const cached = resolvedUrlsCache[cacheKey];
   if (cached && Date.now() < cached.expiresAt) return cached.url;
 
   let lastError = null;
@@ -93,7 +162,12 @@ async function resolveStreamUrl(channel) {
       let playerOptions = null;
 
       const mockWindow = {
-        location: { href: embedUrl, hostname: "player.xyzstreams.st", pathname: `/embed/${embedId}`, search: "" },
+        location: {
+          href: embedUrl,
+          hostname: "player.xyzstreams.st",
+          pathname: `/embed/${embedId}`,
+          search: ""
+        },
         navigator: { userAgent: "Mozilla/5.0" },
         setTimeout: () => {},
         setInterval: () => {},
@@ -103,7 +177,11 @@ async function resolveStreamUrl(channel) {
 
       const mockDocument = {
         referrer: STREAM_REFERER,
-        getElementById: () => ({ addEventListener: () => {}, classList: { add: () => {}, remove: () => {} }, style: {} }),
+        getElementById: () => ({
+          addEventListener: () => {},
+          classList: { add: () => {}, remove: () => {} },
+          style: {}
+        }),
         addEventListener: () => {},
         createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
         querySelector: () => null,
@@ -121,7 +199,7 @@ async function resolveStreamUrl(channel) {
         clearInterval: mockWindow.clearInterval,
         console: { log: () => {}, error: () => {} },
         Clappr: new Proxy({
-          Player: function(options) {
+          Player: function (options) {
             playerOptions = options;
             const dummyFunc = () => dummyProxy;
             const dummyProxy = new Proxy(dummyFunc, {
@@ -156,16 +234,22 @@ async function resolveStreamUrl(channel) {
       const streamUrl = playerOptions?.source;
       if (!streamUrl) throw new Error("URL stream non estratta");
 
-      resolvedUrlsCache[channel] = { url: streamUrl, expiresAt: Date.now() + CACHE_DURATION };
+      resolvedUrlsCache[cacheKey] = { url: streamUrl, expiresAt: Date.now() + CACHE_DURATION };
       return streamUrl;
     } catch (err) {
       lastError = err;
       await new Promise(r => setTimeout(r, 150));
     }
   }
-  throw lastError || new Error(`Risoluzione fallita per ${channel}`);
+  throw lastError || new Error(`Risoluzione fallita per ${embedId}`);
 }
 
+// Wrapper retro-compatibile: usa solo EMBED_MAP (verrà generalizzato internamente)
+async function resolveStreamUrl(channel) {
+  return resolveStreamUrlById(channel);
+}
+
+// ============ HINDI ============
 async function getHindiUrl() {
   if (Date.now() - lastHindiScrape < CACHE_TTL) return cachedHindiUrl;
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -194,6 +278,7 @@ async function getHindiUrl() {
   return cachedHindiUrl;
 }
 
+// ============ M3U8 REWRITE ============
 function rewriteM3u8(text, baseUrl) {
   const lines = text.split('\n');
   return lines.map(line => {
@@ -210,10 +295,46 @@ function rewriteM3u8(text, baseUrl) {
   }).join('\n');
 }
 
+// ============ ROUTES ============
+
+// Discovery: restituisce la lista di tutti i canali/embed scoperti
+app.get("/api/discover", async (req, res) => {
+  try {
+    if (discoveryCache.data && Date.now() < discoveryCache.expiresAt) {
+      return res.json(discoveryCache.data);
+    }
+    const embeds = await runDiscovery();
+    const list = [...embeds.entries()].map(([id, info]) => ({
+      embedId: id,
+      name: info.name,
+      source: info.source,
+      resolveUrl: `/api/resolve/${id}`
+    }));
+    const result = { count: list.length, channels: list };
+    discoveryCache = { data: result, expiresAt: Date.now() + DISCOVERY_TTL };
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Risolve un singolo embedId scoperto (accetta anche i nomi in EMBED_MAP)
+app.get("/api/resolve/:embedId", async (req, res) => {
+  try {
+    const url = await resolveStreamUrlById(req.params.embedId);
+    res.json({ embedId: req.params.embedId, url });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Proxy stream (HLS master playlist)
 app.get("/api/proxy/stream/:channel", async (req, res) => {
   try {
     const channel = req.params.channel.replace('.m3u8', '');
-    const streamUrl = (channel === 'hindi') ? await getHindiUrl() : await resolveStreamUrl(channel);
+    const streamUrl = (channel === 'hindi')
+      ? await getHindiUrl()
+      : await resolveStreamUrlById(channel); // <-- generalizzato
 
     const response = await fetchWithAgent(streamUrl, {
       headers: {
@@ -237,6 +358,7 @@ app.get("/api/proxy/stream/:channel", async (req, res) => {
   }
 });
 
+// Proxy segmenti (video chunks e sub-playlist)
 app.get("/api/proxy/segment", async (req, res) => {
   try {
     const segmentUrl = req.query.url;
