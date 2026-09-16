@@ -2,8 +2,28 @@
 #EXTINF:-1 tvg-id="69066" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Day%202.jpg" group-title="Extra - bingstream", Day 2 - FIBA 3x3 U23 World Cup
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
 #EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
-https://livecdn-tc-iptv.rumsport10.live/live_abr/274846/720p/chunks.m3u8?is_vip=false&token=1789627642-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-45a9d43ffbae1c6cb58d5168385b0dec
-#EXTINF:-1 tvg-id="67350" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/UAE%20U23%20vs%20Iran%20U23.jpg" group-title="Extra - bingstream", UAE U23 vs Iran U23 - Asian Games
+https://livecdn-tc-iptv.rumsport10.live/live_abr/274846/720p/chunks.m3u8?is_vip=false&token=1789646548-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-1de6fc9400a4c6bc832be155bb87a5fc
+#EXTINF:-1 tvg-id="67353" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Japan%20U23%20vs%20Hong%20Kong%20U23.jpg" group-title="Extra - bingstream", Japan U23 vs Hong Kong U23 - Asian Games
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
 #EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
-https://livecdn-tc-livestream.rumsport10.live/sla/1-6a89c098fd629e492f245baf/chunks.m3u8?is_vip=false&token=1789627644-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-cf41aa5cc25ee72b9f17d4bd66e6024f
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a89c0988f7c293f9f116e60/chunks.m3u8?is_vip=false&token=1789646551-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-87e7c126ab454dd29739e71a060bc989
+#EXTINF:-1 tvg-id="64118" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/ES1%2C%20Giro%20d'Abruzzo%2C%20Stage%202.jpg" group-title="Extra - bingstream", ES1, Giro d'Abruzzo, Stage 2 - UCI Pro Series
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-iptv.rumsport10.live/live_abr/1410/720p/chunks.m3u8?is_vip=false&token=1789646555-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-0745ff5906115c60aca1626624b43009
+#EXTINF:-1 tvg-id="61631" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Port%20FC%20vs%20Vissel%20Kobe.jpg" group-title="Extra - bingstream", Port FC vs Vissel Kobe - AFC Champions League Elite [Server 1]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a89c0988f7c293f9f116e7a-fancode/chunks.m3u8?is_vip=false&token=1789646562-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-92330f37b2ef306412bc7981e916d82d
+#EXTINF:-1 tvg-id="61631" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Port%20FC%20vs%20Vissel%20Kobe.jpg" group-title="Extra - bingstream", Port FC vs Vissel Kobe - AFC Champions League Elite [Server 2]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a89c0988f7c293f9f116e7a/chunks.m3u8?is_vip=false&token=1789646562-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-637acb636ce38295c3702ba0b20d07db
+#EXTINF:-1 tvg-id="61632" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Viettel%20vs%20Melbourne%20Victory.jpg" group-title="Extra - bingstream", Viettel vs Melbourne Victory - AFC Champions League Two [Server 1]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a89c0988f7c293f9f116e7b-fancode/chunks.m3u8?is_vip=false&token=1789646563-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-0311ced21ede038e80d2dc25ec84781a
+#EXTINF:-1 tvg-id="61632" tvg-logo="https://raw.githubusercontent.com/srhady/axsports/main/bing_posters/Viettel%20vs%20Melbourne%20Victory.jpg" group-title="Extra - bingstream", Viettel vs Melbourne Victory - AFC Champions League Two [Server 2]
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://iframe.rumsport8.live/
+https://livecdn-tc-livestream.rumsport10.live/sla/1-6a89c0988f7c293f9f116e7b/chunks.m3u8?is_vip=false&token=1789646563-Kv4cPTAAP5YTi-edcb381b402a9d3b83c369dc063ab6747063ec51-6032969c8d7fc33dd4a35cd227360b62
