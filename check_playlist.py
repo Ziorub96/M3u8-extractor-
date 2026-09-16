@@ -4,12 +4,13 @@ import sys
 import time
 import random
 from pathlib import Path
+from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from curl_cffi import requests as curl_requests
 
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
-workers = 10
+workers = 16
 timeout = 5
 HTTP_TIMEOUT = 8
 
@@ -66,6 +67,7 @@ DOMAIN_HEADERS = {
     },
 }
 
+
 def is_daddylive_cdn(url: str) -> bool:
     u = url.lower()
     return (
@@ -74,6 +76,7 @@ def is_daddylive_cdn(url: str) -> bool:
         or "stream_url" in u
         or bool(re.search(r"https?://[a-z0-9.-]+\.[a-z0-9.-]+/(hls|live)/", u))
     )
+
 
 def parse_m3u(lines):
     blocks = []
@@ -94,6 +97,7 @@ def parse_m3u(lines):
         blocks.append(current)
     return blocks
 
+
 def get_headers_dict(url: str) -> dict:
     headers = {
         "User-Agent": USER_AGENT,
@@ -110,22 +114,84 @@ def get_headers_dict(url: str) -> dict:
         headers["Origin"] = "https://daddylive.app"
     return headers
 
+
 def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
     h = get_headers_dict(url)
     if cookie_str:
         h["Cookie"] = cookie_str
     return "\r\n".join(f"{k}: {v}" for k, v in h.items()) + "\r\n"
 
-def http_check_m3u8(url: str) -> tuple[bool, str, str]:
+
+def check_first_segment(manifest_text: str, manifest_url: str) -> tuple:
     """
-    Soft check: GET con fingerprint Chrome.
-    OK se status < 400 e il body sembra una playlist HLS valida.
+    Scarica i primi 512 byte del primo segmento del manifest.
+    Ritorna (ok, motivo).
+    Gestisce URL relativi (es. cdnlivetv.tv usa /stream-segment/...).
+    Riconosce: MPEG-TS (0x47), MP4/fMP4 (ftyp), WebP+EXIF (RIFF/WEBP).
+    """
+    try:
+        seg_lines = [
+            ln.strip()
+            for ln in manifest_text.splitlines()
+            if ln.strip() and not ln.strip().startswith("#")
+        ]
+        if not seg_lines:
+            return False, "no segments"
+
+        seg_url = seg_lines[0]
+        if not seg_url.startswith("http"):
+            seg_url = urljoin(manifest_url, seg_url)
+
+        seg_headers = get_headers_dict(seg_url)
+        session = curl_requests.Session(impersonate="chrome120")
+        r = session.get(
+            seg_url,
+            headers=seg_headers,
+            timeout=HTTP_TIMEOUT,
+            allow_redirects=True,
+            stream=True,
+        )
+
+        if r.status_code >= 400:
+            r.close()
+            return False, f"segment HTTP {r.status_code}"
+
+        chunk = next(r.iter_content(512), b"")
+        r.close()
+
+        if not chunk:
+            return False, "segment empty"
+
+        # MPEG-TS: sync byte 0x47
+        if chunk[0:1] == b"\x47":
+            return True, "ts-ok"
+
+        # MP4 / fMP4: contiene 'ftyp'
+        if b"ftyp" in chunk[:64]:
+            return True, "mp4-ok"
+
+        # WebP con EXIF (DAMITV)
+        if chunk[:4] == b"RIFF" and b"WEBP" in chunk[:16]:
+            return True, "webp-exif"
+
+        return False, f"unknown fmt {chunk[:8].hex()}"
+    except Exception as e:
+        return False, f"segment error: {str(e)[:80]}"
+
+
+def http_check_m3u8(url: str) -> tuple:
+    """
+    Soft-check HTTP con fingerprint Chrome.
     Ritorna (ok, motivo, cookie_str).
     """
     headers = get_headers_dict(url)
 
-    # Delay extra per domini sensibili al rate limiting
-    sensitive_domains = ("cdnlivetv.tv", "bolaloca.my", "epiembeds.online", "cuttingfame.net")
+    sensitive_domains = (
+        "cdnlivetv.tv",
+        "bolaloca.my",
+        "epiembeds.online",
+        "cuttingfame.net",
+    )
     if any(domain in url for domain in sensitive_domains):
         time.sleep(random.uniform(0.4, 1.0))
 
@@ -134,7 +200,12 @@ def http_check_m3u8(url: str) -> tuple[bool, str, str]:
     while attempt < max_retries:
         try:
             session = curl_requests.Session(impersonate="chrome120")
-            r = session.get(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True)
+            r = session.get(
+                url,
+                headers=headers,
+                timeout=HTTP_TIMEOUT,
+                allow_redirects=True,
+            )
             cookies = session.cookies.get_dict()
             cookie_str = "; ".join(f"{k}={v}" for k, v in cookies.items())
 
@@ -147,51 +218,60 @@ def http_check_m3u8(url: str) -> tuple[bool, str, str]:
             if r.status_code >= 400:
                 return False, f"HTTP {r.status_code}", cookie_str
 
-            text = r.content[:4096].decode("utf-8", errors="ignore")
+            text = r.content[:8192].decode("utf-8", errors="ignore")
             text_l = text.lower()
 
-            # 1) Blacklist parole chiave → scarto immediato
-            blacklist = ("offline", "error", "denied", "invalid", "not found", "expired", "maintenance")
+            # Blacklist
+            blacklist = (
+                "offline",
+                "error",
+                "denied",
+                "invalid",
+                "not found",
+                "expired",
+                "maintenance",
+            )
             if any(word in text_l for word in blacklist):
-                return False, "Contenuto di errore nel manifest", cookie_str
+                return False, "contenuto di errore", cookie_str
 
-            # 2) Lunghezza minima
-            if len(text.strip()) < 200:
-                return False, "Manifest troppo corto", cookie_str
+            if len(text.strip()) < 50:
+                return False, "manifest troppo corto", cookie_str
 
-            # 3) Controllo struttura HLS
-            has_extm3u = "#extm3u" in text_l
-            has_segment_ref = bool(re.search(r"#extinf:\s*[\d.]+.*?\.(ts|m4s|aac|mp3)", text_l, re.DOTALL))
-            has_targetduration = "#ext-x-targetduration" in text_l
-            has_streaminf = "#ext-x-stream-inf" in text_l
+            if "#extm3u" not in text_l:
+                return False, "body non m3u8", cookie_str
 
-            if has_extm3u and (has_segment_ref or has_targetduration or has_streaminf):
-                return True, "soft-ok", cookie_str
+            # Verifica primo segmento (gestisce URL relativi)
+            seg_ok, seg_msg = check_first_segment(text, url)
+            if seg_ok:
+                return True, f"soft-ok ({seg_msg})", cookie_str
 
-            if has_extm3u:
-                return False, "Manifest HLS incompleto", cookie_str
+            # Se ha tag tipici HLS ma il segmento non è verificabile, considera valido
+            if "#ext-x-stream-inf" in text_l or "#ext-x-targetduration" in text_l:
+                return True, "soft-ok (manifest-only)", cookie_str
 
-            return False, "Body non sembra m3u8", cookie_str
+            return False, f"segment check failed: {seg_msg}", cookie_str
 
         except Exception as e:
             if attempt == max_retries - 1:
-                return False, f"HTTP error: {str(e)[:120]}", ""
+                return False, f"http error: {str(e)[:120]}", ""
             time.sleep(2)
             attempt += 1
 
-    return False, "Max retries superati", ""
+    return False, "max retries", ""
 
-def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
+
+def ffprobe_check(url: str, cookie_str: str = "") -> tuple:
     headers_string = headers_for_ffprobe(url, cookie_str)
     cmd = [
-        "ffprobe", "-v", "error",
+        "ffprobe",
+        "-v", "error",
         "-show_entries", "stream=codec_type",
         "-of", "default=noprint_wrappers=1:nokey=1",
         "-timeout", str(timeout * 1_000_000),
         "-analyzeduration", "1000000",
         "-probesize", "1000000",
         "-headers", headers_string,
-        "-i", url
+        "-i", url,
     ]
     try:
         r = subprocess.run(
@@ -208,40 +288,45 @@ def ffprobe_check(url: str, cookie_str: str = "") -> tuple[bool, str]:
         if r.returncode == 0 and out:
             if "audio" in out or "video" in out:
                 return True, "ffprobe-ok"
-            return False, "Nessuna traccia audio/video"
+            return False, "nessuna traccia audio/video"
         motivo = err.splitlines()[-1][:200] if err else f"ffprobe code {r.returncode}"
         return False, motivo
     except subprocess.TimeoutExpired:
-        return False, "Timeout ffprobe"
+        return False, "timeout ffprobe"
     except Exception as e:
         return False, str(e)[:200]
+
 
 def controlla_blocco(block):
     url = block[-1]
 
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
-        return block, False, "YouTube escluso"
+        return block, False, "youtube escluso"
 
     time.sleep(random.uniform(0.1, 0.3))
 
     soft_ok, soft_msg, cookie_str = http_check_m3u8(url)
 
     if soft_ok:
-        if soft_msg == "soft-ok":
-            return block, True, "soft-ok"
+        # Se il soft-check ha già verificato il segmento, salta ffprobe
+        if any(tag in soft_msg for tag in ("ts-ok", "mp4-ok", "webp-exif")):
+            return block, True, soft_msg
+        # Altrimenti conferma con ffprobe
         hard_ok, hard_msg = ffprobe_check(url, cookie_str)
         if hard_ok:
-            return block, True, ""
+            return block, True, soft_msg
         return block, True, f"soft-only ({hard_msg})"
 
+    # Soft-check fallito → prova ffprobe come ultima chance
     hard_ok, hard_msg = ffprobe_check(url, cookie_str)
     if hard_ok:
-        return block, True, ""
+        return block, True, "ffprobe-ok"
 
     motivo = soft_msg if soft_msg else hard_msg
     if soft_msg and hard_msg and soft_msg != hard_msg:
         motivo = f"{soft_msg} | {hard_msg}"
     return block, False, motivo[:250]
+
 
 def main():
     try:
@@ -297,6 +382,7 @@ def main():
     print(f"\n✅ Funzionanti: {len(funzionanti)} (di cui soft-only: {soft_only})")
     print(f"❌ Non funzionanti: {len(non_funzionanti)}")
     print(f"📄 {out_ok} | {out_ko}")
+
 
 if __name__ == "__main__":
     main()
