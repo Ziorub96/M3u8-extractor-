@@ -29,39 +29,46 @@ jobs:
           pip install requests yt-dlp playwright curl_cffi
           playwright install --with-deps chromium
 
+      # ============================================================
+      # ESTRATTORI ATTIVI
+      # ============================================================
       - name: Extract DAMITV streams
         run: python damitv_extractor.py
+        continue-on-error: true
 
       - name: Extract Daddylive streams
         run: python daddylive_extractor.py
-
-      - name: Extract WatchFooty events
-        run: python watchfooty_direct.py
-
-      - name: Extract xyzstreams live channels
-        run: |
-          sleep 30
-          python xyzstreams_proxy.py
-        env:
-          XYZPROXY_URL: ${{ secrets.XYZPROXY_URL }}
-
-      - name: Extract SMTK sport channels
-        run: python smtk_extractor.py
-
-      - name: Extract extra sport sources
-        run: python extra_sources_extractor.py
+        continue-on-error: true
 
       - name: Extract CDN Live TV channels and events
         run: python cdnlivetv_extractor.py
+        continue-on-error: true
+
+      # ============================================================
+      # STEP DISMESSI (commentati per storico)
+      # ------------------------------------------------------------
+      # WatchFooty  → sempre vuoto
+      # xyzstreams  → proxy Node fragile, dipendenza esterna
+      # SMTK        → canali geobloccati (richiedono VPN russa)
+      # Extra Srces → 0 flussi funzionanti
+      # ============================================================
 
       - name: Run combiner
         run: python combine_playlist.py
 
       - name: Check streams
         run: python check_playlist.py
+        continue-on-error: true
 
       - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
-          file_pattern: "combined_events.m3u combined_events_checked.m3u flussi_non_funzionanti.txt damitv_events.m3u daddylive_streams.m3u watchfooty_events.m3u xyzstreams_events.m3u smtk_sport.m3u extra_sources.m3u cdnlivetv_channels.m3u cdnlivetv_events.m3u"
+          file_pattern: >-
+            combined_events.m3u
+            combined_events_checked.m3u
+            flussi_non_funzionanti.txt
+            damitv_events.m3u
+            daddylive_streams.m3u
+            cdnlivetv_channels.m3u
+            cdnlivetv_events.m3u
