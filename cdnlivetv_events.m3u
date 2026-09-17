@@ -1,67 +1,95 @@
 #EXTM3U
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Orlando City vs Columbus Crew - CBS Sports Network HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cbee6/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNiZWU2OjE3ODk2NDE5NjI5OTU6Y2RubGl2ZXR2LnR2OmM1NjJhNzQxZTUyZTQzNDEuNzNjMjEyZjVhMmMxNjBkM2JjOGEyMmFkYTk0MjcyZjg3OGQ0YWEyMGQ3MGNmYTRjMmVmZjI5OWM0YzZhOGI0Mg
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Calgary Stampeders vs Ottawa Redblacks - TSN 1 HD CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc172/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTcyOjE3ODk2NDE5NjMwMjA6Y2RubGl2ZXR2LnR2OmY0NDZhYzIzYjViNTJiZWEuZWEyZDA1ZmEyZGM5Yjg2NmI3ZmU3MWE3ZDc3NTNlZTZlNzZhMDUwZjMzZmM4YzdmY2NmYzYzZjQ2ZGEyYTM5OA
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/at-t-sportsnet-pittsburgh-hd-us.webp" group-title="CDN Live TV Events - MLB",Pittsburgh Pirates vs Milwaukee Brewers - AT&T SportsNet Pittsburgh HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb583/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNTgzOjE3ODk2NDE5NjM2NTQ6Y2RubGl2ZXR2LnR2OjgxYjJkMDBjMTYwYjk3MWIuYmEwYzVlNjA0MDc1YzY2ODIyZDJhZmIzNmNmNjEyOWVmOGEyMjdmZmUxMjk5Mzc3YjY4MWQ5NGYzYTM3YTczYw
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/spectrum-sportsnet-la-dodgers-hd-us.webp" group-title="CDN Live TV Events - MLB",Cincinnati Reds vs Los Angeles Dodgers - Spectrum Sportsnet LA Dodgers HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5ea/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWVhOjE3ODk2NDE5NjM2ODQ6Y2RubGl2ZXR2LnR2OjgxZWY2YThkOTM0M2FlMmEuN2RlYzg1M2I3NmJhZjJlMmZiZDgxNmU1NzA1MWY4YTYyNTQyZGExNDQ2ZmU5NWYyZDY4ZDVmZDdlY2E1NTRmZQ
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Denver Broncos vs Jacksonville Jaguars - Sky Sports NFL HD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc328/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzI4OjE3ODk2NDE5NjMwMjA6Y2RubGl2ZXR2LnR2OjczNmExMzUxZmQ3ZDBmODYuYWMzZDVmZDdlNDgwZGI3YzA4MjliMWI0NmUxMjdkOWUzMWNkZDE3MGVjZjVhZDQxNWM4OGM5M2RiMTNhY2I5Mw
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Chicago Bears vs Minnesota Vikings - Sky Sports NFL HD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc328/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzI4OjE3ODk2NDE5NjI5OTU6Y2RubGl2ZXR2LnR2OjU0NDdjMjBiZGE3MjAwNDQuZDMzYmEwMjE3MGU5NmRjMzUzOTZiNzYzY2U1ZmE4YjJmMGFkODJiOTM5YTNjOWVhMGYyNzU5NmYwM2Y3NGU0ZA
 #EXTINF:-1 group-title="CDN Live TV Events - Soccer",Real Salt Lake vs Vancouver Whitecaps - TSN 5 CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc16d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTZkOjE3ODk2MjQyMTI1NDA6Y2RubGl2ZXR2LnR2OmJhZjIxZjgwODQ0YjNmNjAuZWYyMjE1MTZkMGE5MTE0NDc4NDFiM2JjNmU3MTQ5NjRkMzBjNDRlMTBjYjMxYWMzNWE5NDhkMDI0NDNlNDQ1ZA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc16d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTZkOjE3ODk2NDE5NjI5NzY6Y2RubGl2ZXR2LnR2OmFiMTExNzc1NDY0ZjVlMzkuNmEzODE5MTU0ZGM3MDliMGNhOTE5YWY1ZjZiMjU4MmIwNmJjOThlODkyODY0MWZkODU1MDgyNDY5MGY5NmI4OA
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Arizona Cardinals vs Seattle Seahawks - Sky Sports+ UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJlOjE3ODk2NDE5NjI5ODY6Y2RubGl2ZXR2LnR2OjE3MjNmZjBmNzgwMmQyMDkuNWFlNGM2YmE2YTAyOGE2YjA5MWJmNGVlNDdiNDJjN2FjNWYzYzY3NjEyNDlmNmRhZmEzZWRhN2U0ZTE1OWE3MQ
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/nbc-sports-california-hd-us.webp" group-title="CDN Live TV Events - MLB",Tampa Bay Rays vs Athletics - NBC Sports California HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5d7/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWQ3OjE3ODk2NDE5NjQxNzY6Y2RubGl2ZXR2LnR2OjIwMzYyZGIzN2Q0ODY4OTUuNzk4ZjY3N2U0MDM4ODk4NTk4NjBhMTA3NTFmMDI2YzE2YzExOTg4NTZiYmRjOWVmMjQxNjc4OGVjMzU1N2RlZg
+#EXTINF:-1 group-title="CDN Live TV Events - MLB",Houston Astros vs Kansas City Royals - Space City Home Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb52c/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTJjOjE3ODk2NDE5NjQzMzI6Y2RubGl2ZXR2LnR2OmFlM2M4Y2Y2ZTJlNWVlMTAuNzYyYTUzYTdiZmUzMmMzMTM5NTk3OGJhNDA3ZjNkMDMzMzJmNWZiODgyZWEyY2Y5N2M0OTk5MTczYTRjMWY3MQ
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",New England Patriots vs Pittsburgh Steelers - Sky Sports Football UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc33e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzNlOjE3ODk2NDE5NjI5OTk6Y2RubGl2ZXR2LnR2OjdiMzQzYTljNzA3YzA4MzguMmFkNzA2N2ZkNDc3NDc2OGQ3MDQ5MzU4MTZhODU5NTRlYjRjODYwMWJkZWYwNjUyM2EwMGY2ZTBmZTQyNzhiYw
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Hamilton Tiger-Cats vs Montreal Alouettes - TSN 1 HD CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc172/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTcyOjE3ODk2NDE5NjMwMzQ6Y2RubGl2ZXR2LnR2OjI0ZDI0Zjg4ZjlhNDcwNzQuYjJhZDIxMDI0NTgzMDVmM2E2OTJkODg2MzFlZDMwMmUxY2M3MWRlYTZkZTA3ODg3NjM1ODljMTJhMWIwY2QyOQ
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Dallas Cowboys vs Washington Commanders - Sky Sports Football UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc33e/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzNlOjE3ODk2NDE5NjI5OTY6Y2RubGl2ZXR2LnR2OjlhNzMzNDhmMTA1NDA5Y2QuMGRiZGJiZjlmOWY2MDI1OWM1YTJiMzAxYTNiMDE1ZGU5NGZkYzhmYWZhNGQyOGY2Y2U0NDFlZDY0OWJlMDdiNQ
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/chicago-sports-network-chsn-us.webp" group-title="CDN Live TV Events - MLB",Chicago White Sox vs Detroit Tigers - Chicago Sports Network CHSN US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb311/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzExOjE3ODk2NDE5NjQzMzc6Y2RubGl2ZXR2LnR2OjZhZGU4M2UwNDVkNGZlNmQuN2U2YzE3NjY0ZDIyOWY4YWRkOGRjZTAxNzZhYzc4NTcxMDc4NzQ4MGIzMjgxYWUyYTRmNDRkNWE4ODg4NmJlNg
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/fox-sports-2-fhd-us.webp" group-title="CDN Live TV Events - Soccer",CF Montréal vs Vancouver Whitecaps - Fox Sports 2 FHD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c5/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWM1OjE3ODk2NDE5NjI5NzE6Y2RubGl2ZXR2LnR2OjMxODljMWRmZGFjOTYyMzMuYjhmNzBjNTMxNjNhOTEwNDUzOTIxZDZkMzJhNTllYmI5YzcwNmJmNDgwYTViY2NmYWVkYWVlOGM5NjQyNmM4OA
+#EXTINF:-1 group-title="CDN Live TV Events - MLB",Los Angeles Angels vs Minnesota Twins - MLB Network HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cf/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNmOjE3ODk2NDE5NjQ1OTg6Y2RubGl2ZXR2LnR2OjNhYzdlNGU1NTZhMzM3OTMuYmE4ZjFkZTgyZGY3OTk5YzBjZDNhNGQzNTVlZTBiMGI4MGI1MjVmZTBkN2Q5ZTRmMDBiMjI1NWZjODhjYWNjYg
 #EXTINF:-1 group-title="CDN Live TV Events - Soccer",CF Montréal vs Columbus Crew - RDS 2 QC
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc110/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTEwOjE3ODk2MjQyMTI1MDM6Y2RubGl2ZXR2LnR2OjUzYmZkMDNkMmNhYWQyYjMuYWNmNjg3ODVlODY1ZDUyYTFjYzhhZTk3Nzg5YzUzYjZhMzcyMmQ5YmZjZWFiNzU2MzdhZWRhNTgwYzI2MjY1MA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Vila Nova vs América Mineiro - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI0NTU6Y2RubGl2ZXR2LnR2OjI4ZDJlMzk5YWVjNGU2ZDkuNDI1ZTRkMGQzZDgyZjVjZjQzYTc3ZmE2MzEyYTU5N2VjN2I3NzQ1NTc3MmFhOGNhMzY1YjljOWNhMjllM2U1Nw
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Ponte Preta vs CRB - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI0OTc6Y2RubGl2ZXR2LnR2OjVkZmZkMzUyMDI3OWExMWQuZDFiMzUyYWIyYWQ3Y2UyZGVlYjIzMDM3MWE5NjNjNTQ5ZDk4NTlmNzYyMjFiMjBmZjIwYzkxNGYwNWI0NjBiOA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",São Bernardo vs Atlético Goianiense - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI0OTg6Y2RubGl2ZXR2LnR2OjM3YTRhYjEzYzMyOTNlMWIuN2JmMDJmNjkzYzUzOGMxYjg3NzgxMDNjMWQzOGJhZGY5NDdkOGQ2MTE3NjRjNjlmYzNkNDAzYWM0M2QyMWYwMA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Sport Recife vs Juventude - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1MTM6Y2RubGl2ZXR2LnR2OjEyNmM3ZWUzYzc1ZjEzMzQuOTZmMWRjNzFjNDIxZWY3ZmEwZjA4OTUxM2M1MDg5YTZkYWVkYTJlNDY2N2FiNzU3MjVjMjc2NTM3ZjQ1NWQyMA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Vila Nova vs Londrina - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1Mjg6Y2RubGl2ZXR2LnR2OjJiNTc5ZjA4ZmNiN2YzZGMuNzhjZGE4MTNlOTk1MzZlMzhlNjM2MjUxMTBlYjIwNTFkNDA5MjUwNDljOTg1OWQ5Y2YxNzM0NDA2YTM4NzM5MQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Novorizontino vs São Bernardo - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1NDY6Y2RubGl2ZXR2LnR2OjMxZGE4ZWMyMGE1MjkzOGIuZGQ5OTA0MDViNTE2OGI2NzllZDM2MTJkMjhhNmYxNDJjZTc2MjcwYWY1ZTVkODNlOTU0M2Y5NTY1YzVjMzVmZQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Athletic Club-MG vs Botafogo-SP - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1MTE6Y2RubGl2ZXR2LnR2OjUxYTMzOWU4YzM0ZDVhYWMuYzNlNzc3OTMwMjMzYzRkYWMyMGEwZTFjOGUyMDAxMDk2NmE1OWUwMDVhMzlmYzkzMzBhMzA1MjU3ZjFlYWUxYQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Goiás vs Avaí - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1MjE6Y2RubGl2ZXR2LnR2OjgwY2ZhNTI1NmU0Y2FiZmMuZDU5Y2FkNjBjZTIwNTZhMzllMTUxOWU0MDc4NDcxY2Q0ZjAxYTI5N2EyNjNiYmM2MTFlYzBlYjlhOTEzZWE4NA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Náutico vs Sport Recife - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1NTE6Y2RubGl2ZXR2LnR2OjY1MzNkZTAzNzM2ZWQ2YTAuMTA5ZWE1NGE0M2UyZDI1MTNhOGY2OWQ1YTQ1ZmFmYmUzYTc1ZmRmZDNlNDczZWYzNzQ1YzkyMGMwYTY5MDA3Mg
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Ceará vs Novorizontino - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1NDc6Y2RubGl2ZXR2LnR2OjM2OTFkNTlmY2VhYjVkMmQuNDVjYjlmMjkwOGZlNzAxYjI3MzE3ZGYxMjM0MzE3NTNmMTIwZDMxMWZjMGY3NjNkOTU3YTYyMGZiYzViZWE2NQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Londrina vs Fortaleza - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1MjU6Y2RubGl2ZXR2LnR2OmFjMWFlMDM0ZjUzYTI5ZDguNDBlOTNmYTIzYjk2ZDVhYzk1YmFlZjAzZmI5YmVhOWEwMmQ5NDc4MDYxMGJlZjJjNmI4M2E1OTRmY2RiMzhhOQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Cuiabá vs Náutico - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1NTI6Y2RubGl2ZXR2LnR2OjEyZjViZDk5OWRiNGMxNjkuZTZiNWFjYTNlYWNhZDZlZjdmMTBkNDJkYThkYTFiN2M0MjJmZTE2YTNkZWY4YjJhYjUyZjYxODgzMjMxOGE5NQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Operário Ferroviário vs Ceará - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1NTU6Y2RubGl2ZXR2LnR2Ojg4OWQ5OTAzMjNjMjMzN2YuMzQ2MmFiMjRlZGI2MWU2Mjc3NmMwY2I4N2I2ODdhYTAyNTI3N2M0MWZmNDUwYThhOGNmNWE1NTAzNzQzYjE0YQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Criciúma vs Operário Ferroviário - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTI1NTE6Y2RubGl2ZXR2LnR2Ojk0N2Y0MjM0MWRlZGMzYzUuYjAxNGE0ZjM0YjVjMzRmZWQ1NmI3MzlmZDNlNWFiYjk1Mzk2ZmYwNjlmNzQ5NDc1YmU0YmU2ZGI4NzNmZjg2Zg
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Goiás vs Atlético Goianiense - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTM5Mzc6Y2RubGl2ZXR2LnR2OjE2MWVjZDJlNDg4MDAxMTEuMzBmYmNiNzAyYzFmZDAwYzI2MzFlMzI2ZDE1YmEwNmFhZjQxMWU4ZTUzNjVkMjVkYWVhMWZkOTY4ZGUwYzEwYw
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Criciúma vs Avaí - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTQ3NzE6Y2RubGl2ZXR2LnR2OjJmN2Q4OTY0MjU4MDdmNzUuMmU0NzQ1MDE3YTU5MTM0MzZiOTVjNzE1Zjc2MjM5MzYwZGVjNDhmNDYwYTU0MTZhZDk3Zjc2YmVkNTNjNTdmMw
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",CRB vs Cuiabá - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTU5Njk6Y2RubGl2ZXR2LnR2OjY1MTVkOTc3NGQ4ZDUzYmYuNTQ2OTFjOWNlYThjNjA5OWJjMGMyZGU1N2Q5NzcwMjQ5YTRjMjRlNjBkNzIwYjYwYjAzNDY3NzNkZmNlZmQ2ZA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Fortaleza vs Athletic Club-MG - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYwOTY6Y2RubGl2ZXR2LnR2OjFlODBmNzkzOTk4ZGYyNzkuZmZkZTVhOGM3YmZmMmZkZjY3ZmQ1N2VkNzFkMzk5Mzc5NDc1YjVhODQzNWQ2OWUxMGM0NzNjY2Y3YTlmOWI4Mw
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",América Mineiro vs Juventude - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYwOTk6Y2RubGl2ZXR2LnR2OjM3MWU2YzA0MzJmM2M0NDIuZjRlNjI0OTI5NDhkMzY1ZGMwZThkOWUzZTBiMWM2MWIwNWRiNDM0NDBkZjA0OWY5NjU4NGI0OWNjN2JiMjRkOQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Atlético Goianiense vs América Mineiro - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYyNTk6Y2RubGl2ZXR2LnR2OmM5N2YyZDYwMDdjZTcxM2QuYmVlZDNmZTlkOTRmODZiNzE1NDM0M2NiNmJhODIzNjQ3Y2Q1MDA5NGVkMWIxZGIyZTI1YTY5MmE2N2QwMjA0Mg
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Avaí vs Ceará - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYyNzI6Y2RubGl2ZXR2LnR2Ojg5ODJkOGEzZDRmNjA2MzMuYjZhNGEzMTg4MzMzZmJjMDE1NGU4MmUxMmY2YmQ1NWE2MDZmMGIxZTA4Njk1OGNhOGRjZjZmOTczNmNmMjIwMA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Botafogo-SP vs Ponte Preta - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYxNjQ6Y2RubGl2ZXR2LnR2OmNiYWIxMTJlMjg1ZTdmZjguNDNlMTE5MDRiNWI4YWVmMzlkOTkyNTUxNDFjOTFlMzBkMWFiMjc1YmNlZGY3MGI4M2I2NDMyZjg1OGYzYjE4OA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Athletic Club-MG vs Sport Recife - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYyMTg6Y2RubGl2ZXR2LnR2OjgyMWQwNGJlNGM2MTc1ZTQuMTYwYWQ2Mzc4MDA3NzAwYzZjMjA2NDExMjM0MDA1M2ZhN2NmZTViNmIwYjY4MTBiYTM0MjkyMmE5YWZkMTNmYw
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Cuiabá vs Ponte Preta - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYyOTk6Y2RubGl2ZXR2LnR2OmU1NWRlZDYyYzFmMWZkOWMuMmNjZjhhY2RhOTk5ZjRkNzdiYWE1YmM2Y2E4NjFiMzljZTdkZjgyYjA4ZWU3YmI3ZDk5YTM5ZGIwOTA5ZmMxNA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Botafogo-SP vs Vila Nova - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYyODI6Y2RubGl2ZXR2LnR2OjEwYmVhMTJkOWY0YmM3OWQuNjU3NWNhMGNiN2Q4NTY0NWRmMTE3YzU1YmEyNGE3NDIyMjg4MDQ5YTgwM2Y5YWU4YjgwODNiN2ZhMWRhNzcwNg
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Juventude vs Operário Ferroviário - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYzMzQ6Y2RubGl2ZXR2LnR2OjJhODJlZWJmMzI2OTQ2MjQuMTA1YWU5ZmRkNTkxNGY1ZDc0YTNiYTJmMjJmYmU0OGRmNTJmY2JhNDIwNTc4ZjNlODUwMGE4NjM5YmQ5YjRiNw
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Londrina vs Criciúma - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYzMTU6Y2RubGl2ZXR2LnR2OmIzOGEzNmQzYjkyNTI4ZjEuMjI1YjViZTQxOTJlMGMxMTg0Y2MxMjU5ZGNiNjg2MzRjN2I2ZjdiODRlOGZmYTM3NWIyMDEwY2NlMDc4MmY1Zg
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",São Bernardo vs CRB - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTY0MjY6Y2RubGl2ZXR2LnR2Ojk1Nzg3MDJhNzkwMDM4ZDMuYTFjNjUzOTVjNDIwYTAzYmQ4NWMxOWM2OThkMTE0OGQ4YTU1ZWNlOGRiNjgxODEyMGM4ZDJjN2ZhNzg2MjBmOQ
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Fortaleza vs Náutico - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYzNDc6Y2RubGl2ZXR2LnR2OjJiNjk4ZjA3YjAzM2Y3MWIuNTI2ZTJhYTZiYzBmM2E2OGVhNDYwZTZiMzBmNjdiZDE0YTU1NGVlYmFjY2EyNjBmNjIxM2Q2OWM1OTA3Y2RiZA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Novorizontino vs Goiás - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTYzOTA6Y2RubGl2ZXR2LnR2OjczZjZkYjE5YWY4OGUzMmYuZWQ3YjE5NjEzY2VjZTEyZGRhNjgyMDM3ZTA5YjliZjI2YjFhMmEwNzk0YzFjYjYyNjgxZWUxZTk1ODFmMWRkMA
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",América Mineiro vs Fortaleza - Premiere Clubes HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce89d/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODlkOjE3ODk2MjQyMTc1NTQ6Y2RubGl2ZXR2LnR2OjJkNzg2NDYyYWVjNTc3NmMuYTdkYzg1MDAwMzZiZTAwNTRkODczZmM5OWM2YmNhZmRhNjU2OTU4NjRmYmM0ZmJhOWJjNmU4NTExMzc1N2M3NQ
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc110/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTEwOjE3ODk2NDE5NjI4MTU6Y2RubGl2ZXR2LnR2OmNjMzY2NGQxZWFjMTkzNTUuZjdlYTRhZDU3ZmY0N2YxOWEzYzcxNTdjMWNmMWMzNGU5YzMxNmFkZWQxMTVkMDBiMzczYjA3YmI0ZTczZmZkNQ
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Green Bay Packers vs Atlanta Falcons - Sky Sports Main Event UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc30d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzBkOjE3ODk2NDE5NjMwMzU6Y2RubGl2ZXR2LnR2OjJiOGJjNzNhOThkNTBkZDEuM2Q2NGM1ZmNiMjM4OWU0ZjkyMTgzMjJlYTc1NzllZmFmNTU0NmI5OTA0NDcyOTFiYmM2MGY1NzNjM2FlNGMyNA
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Chicago Sky vs Washington Mystics - Monumental Sports Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb509/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTA5OjE3ODk2NDE5NjU1Njc6Y2RubGl2ZXR2LnR2OjFhNTA1NjE4ZjVlZjE3ZTguYmY1NGJlNTg4NTg0ZWJlMGE0N2RmMzg2Y2E0NGUyY2RlYWMwYjhmYjcxMzk4OWE5MmE5NDNlYWQ3MzZjMTFlYQ
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/nbc-sports-boston-hd-us.webp" group-title="CDN Live TV Events - Basketball",Atlanta Dream vs Connecticut Sun - NBC Sports Boston HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5d6/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWQ2OjE3ODk2NDE5NjU1NzE6Y2RubGl2ZXR2LnR2OjZmNzhkMTNiMTMyMGNjZTcuZjNkMGVhMzJiZDMxNzcxZTliMjBlMmRlNjQxMjExZTJhZTg0YTBmZmY1ZTVjZmY3NzcyYzM4ODkwNzAwOTQ2MA
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/fox-us.webp" group-title="CDN Live TV Events - MLB",New York Mets vs Philadelphia Phillies - FOX US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb38e/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzhlOjE3ODk2NDE5NjQzMjQ6Y2RubGl2ZXR2LnR2OmE4ZDlkYmY2NzExYjg0MDEuZDQzNjNiYjJjYjMwYTVkY2VmNWRlNmE4NWUxYjFkODEwNzIzMDJkZWRlYTg4ODhmNzcxZDY0ZGE4YTQwOWRjYg
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Indiana Fever vs Minnesota Lynx - ESPN US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb305/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzA1OjE3ODk2NDE5NjYzOTg6Y2RubGl2ZXR2LnR2OjM1MWRiMDhhOWJjM2Y5ZjkuNzE3ZDQwODc5MzBmZTA2MzliZGQzN2NiNGE2Nzg4Y2QzNzRjNzQ5OTgwODU5ZGM5MTI5OTUyZjNhYjYxYTc1ZA
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/sky-sports-mix-fhd-uk.webp" group-title="CDN Live TV Events - Basketball",Seattle Storm vs Las Vegas Aces - Sky Sports Mix FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJkOjE3ODk2NDE5NjU2MDg6Y2RubGl2ZXR2LnR2Ojg1MzBjZTljMWQ4YWEzOTEuYjMxNjNmNjk0NTQ5YmFlYjk5ZWIxYzlhN2I0MjRmZGQxYTM5ZmUyMDIxMzAzN2Q5ODU1YWExZjU2YmY2YjAyYQ
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Washington Mystics vs Chicago Sky - Monumental Sports Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb509/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTA5OjE3ODk2NDE5NjcyOTU6Y2RubGl2ZXR2LnR2OmQyYjAwMjE0NWRhZGI3ZjIuMjEzNjRkMTU2MDkyMzYzYmU4M2FiMTA4ZTFlY2M3ZWEzOThjOTQ5ZDkzOTY1MWI2YmE3OTMyOGU1NmQwNzE5OQ
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/sky-sports-mix-fhd-uk.webp" group-title="CDN Live TV Events - Basketball",Dallas Wings vs Los Angeles Sparks - Sky Sports Mix FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJkOjE3ODk2NDE5NjU1NzM6Y2RubGl2ZXR2LnR2OjI0YzU0MjdlMThlNDEzM2MuYjNhM2VlZGM3MWJjOGI0Y2E0YjdhMDIyZjg3YTJjNTQwYzkwYjA5ZTAxMTQyNzEzOWQxOTIxMmVhMGJkYWZjNw
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/nesn-us.webp" group-title="CDN Live TV Events - MLB",Texas Rangers vs Boston Red Sox - NESN US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb51b/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNTFiOjE3ODk2NDE5NjQ1Nzc6Y2RubGl2ZXR2LnR2Ojk4NDlkZjljM2ZlYWU2ZDcuMjY1MzU4NGZjYWExMjlhMDA4OTEwYmVjMjQ4MWFlMTAyZGExNDllM2ZjMjdiOGM4YTRkMTY1MDk5YzMxNDYzYw
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/sky-sports-mix-fhd-uk.webp" group-title="CDN Live TV Events - Basketball",Las Vegas Aces vs Seattle Storm - Sky Sports Mix FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJkOjE3ODk2NDE5NjYwMTg6Y2RubGl2ZXR2LnR2OmQ2OGUxOWZjOGFlMTgwNzkuMjlhMzg4ODNmZGFiMGViYTBkM2QwNmUzOGQ3OWY2MWVhNmFkYTQ3MGQ2N2I0NjBmZjUxY2UzZTM2YTBkOTZkZA
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/golf-channel-fhd-us.webp" group-title="CDN Live TV Events - Golf",Biltmore Championship Asheville Round 1 - Golf Channel FHD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cc/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNjOjE3ODk2NDE5Njc4NTA6Y2RubGl2ZXR2LnR2OjNlNTU2MTZjMjE4ZTNmZDUuMDRmODBmMzAxNTgxMmE1ZDFjYjc1YjM0MWNmNGIzYTcyOWM2YmE1NmY1YTAwMjQ4MDU2YTBmOTcyZmZhNDAyYQ
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/golf-channel-fhd-us.webp" group-title="CDN Live TV Events - Golf",Biltmore Championship Asheville Round 2 - Golf Channel FHD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cc/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNjOjE3ODk2NDE5Njc5MTE6Y2RubGl2ZXR2LnR2OjhmZWVkNTIzZDQ2NjFiYWEuYjAzZDAxZDUwNDFhNzY0ZWQyOGViYjY2NzFhZDczYzUxYTQwODZlNjQwZDY3Y2U1OTQ2Y2Q3ZGY0YWE5M2JhMw
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",New York Liberty vs Atlanta Dream - Sky Sports Mix UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJhOjE3ODk2NDE5NjY5MTI6Y2RubGl2ZXR2LnR2OjMxZGQ3Y2ZiNjNmMDQzZDYuMmFhZTdhYzU5NTg4NjE5MGE2N2NmMWUzZDk2N2M1N2NhN2YyNmUzNmNlMzc3OGY1ZGUxNzU1MjcwN2Y3N2M4Zg
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/golf-channel-fhd-us.webp" group-title="CDN Live TV Events - Golf",Biltmore Championship Asheville Round 3 - Golf Channel FHD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cc/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNjOjE3ODk2NDE5NjgwODk6Y2RubGl2ZXR2LnR2OmQ5MDJmZDA2OGFlZjg2ODAuZTE2NjlmYmFlZGZiY2VhODQ2MTZlODVlYjE4NjRlYjBiODUxNTViYTRiNThlMDI0NDY3MDdhMGNiMTcxZjBhNw
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Seattle Storm vs Dallas Wings - Sky Sports Mix UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJhOjE3ODk2NDE5NjcyNTE6Y2RubGl2ZXR2LnR2OmUzNGJlOWRiYWYwYjNjYmUuMDE5OTA3OGQxNWY1NTJlMjVkOTNkYzVlY2QyMDg2NDkyM2I4NmEyMjI5M2I1ZDRmOTFmMzQyYWM1YmZjOWM2YQ
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/golf-channel-fhd-us.webp" group-title="CDN Live TV Events - Golf",Biltmore Championship Asheville Round 4 - Golf Channel FHD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5cc/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWNjOjE3ODk2NDE5NjgzNTc6Y2RubGl2ZXR2LnR2OjU1MzZmNWVkNmU3MjY5MzAuNDE1MGEzNmViNWY0MWIxODY0MzlhMGNjMjI2MzIyNzA2NDRkOGYwZmIwOTkzZGRhNDQzM2UyZjAwZjNiZTFmNg
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/sky-sports-f1-fhd-uk.webp" group-title="CDN Live TV Events - Motorsport",Azerbaijan Grand Prix Qualifying - Sky Sports F1 FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc315/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzE1OjE3ODk2NDE5Njg0MTU6Y2RubGl2ZXR2LnR2OjAwMzliYTZiNjc0NTcxYjAuM2RiOTlmMGQ5NmQyMTZhMzllYWU0YjVmMzE1NDAyNzE4NDkxM2QxNGQyZjhkNzcwMTBmMDQ2MGYwMjJmNTU2Yg
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Minnesota Lynx vs Indiana Fever - Sky Sports Mix UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJhOjE3ODk2NDE5Njc3ODU6Y2RubGl2ZXR2LnR2OjM5NjFlMzZiMTc3NWEzYTkuMGQyN2EzNDEwZDkwOGI2MTA0NGM0ODg2ZTIwYjc4ZjkyYmI1MTIwZTE5NGQ0NzM3MjljYTE1NWI2MDIzMjAxMw
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Phoenix Mercury vs Las Vegas Aces - Sky Sports Mix UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc32a/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzJhOjE3ODk2NDE5Njc4MDg6Y2RubGl2ZXR2LnR2OjJkMGYzYThiM2I1YmE2ZDUuYjI1ZjRhMzk2ZTNhMzJhZWM1NDFkZGU2NTBhMmY0MmVkZmY4MTZjYTcwOTVjZjBhZjMwMmM0NjI5NDRmY2M4OQ
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Las Vegas Aces vs Los Angeles Sparks - ESPN US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb305/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzA1OjE3ODk2NDE5NjY3OTY6Y2RubGl2ZXR2LnR2OmQwZmEzYmU5YzNlZWE4ZGMuMWJiZDhjZGNiY2Q0NWFiYzQ5MGY4MTQxMzg2NGJmNTUxNmEzODAxOWZhM2Q4OTFmZjk4Zjg0MzRlNDU1M2RhMQ
+#EXTINF:-1 group-title="CDN Live TV Events - MLB",New York Yankees vs Tampa Bay Rays - SPORTSNET EAST CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc168/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTY4OjE3ODk2NDE5NjU1NDY6Y2RubGl2ZXR2LnR2OmJmYWExY2ZlMDEzNzdhMDIuMTIyNmEyMDVhZTVmNjBiZWQ1YzgzNjlmNWJjYjRjODIwZThiNGFkY2FmOGI5MWZjZTY2ZjY3OTFiMTk1ZjBhZA
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/sky-sports-main-event-fhd-uk.webp" group-title="CDN Live TV Events - NFL",Buffalo Bills vs Detroit Lions - Sky Sports Main Event FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc30f/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzBmOjE3ODk2NDE5NjMwMzA6Y2RubGl2ZXR2LnR2OjM3YWNlMzc1YWE3YmVhY2YuNzNmNGE0NzIzYzY4Y2VlZjY0MmQ0NzA2MWQ3NThlM2M5MGZlNjViNDViMGY4MWMzZTZkM2UwMTNhZjRkMGU2OA
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/itv-4-fhd-uk.webp" group-title="CDN Live TV Events - Darts",World Series of Darts Finals Day 2 - ITV 4 FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc391/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzkxOjE3ODk2NDE5Njg0ODc6Y2RubGl2ZXR2LnR2OmI5MDQyZTY2ZTEyMzFkNGUuYzcxMjNiZTEyM2M5MGNmZTRmZTQwYjBkZGNkM2U4NTA1MzI2YjdiZGVkOWEzOWQ1NmFjMmJmMGE1NGY3MzljOA
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/itv-4-fhd-uk.webp" group-title="CDN Live TV Events - Darts",World Series of Darts Finals Day 3 - ITV 4 FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc391/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzkxOjE3ODk2NDE5Njg1OTY6Y2RubGl2ZXR2LnR2OjVjMmJjNThhM2M3MmYwYWMuZmVmMjQ5NzRmZTdjZjdkZGE0Mjk0NjBmZDhiNDM5OTI0YWZkYjVkMzRjYWRmOWEzNDZkNzNhNDFhODY3MGFiZA
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/itv-4-fhd-uk.webp" group-title="CDN Live TV Events - Darts",World Series of Darts Finals Day 4 - ITV 4 FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc391/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzkxOjE3ODk2NDE5Njg3MzY6Y2RubGl2ZXR2LnR2OmZkY2I4MDU3YzMzMjRmMmUuZjJjZDhkZWQyMjBjNzdlYjZlN2VlYjM2MzZmMTA0ZmMyMjQ4NDEyMTJmOTU1OGRlMzViYjQzNjI0Y2M3NGY2NA
+#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/usa-network-us.webp" group-title="CDN Live TV Events - Basketball",Phoenix Mercury vs Dallas Wings - USA Network US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb34e/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzRlOjE3ODk2NDE5NjYxNjc6Y2RubGl2ZXR2LnR2OmE5ZTU1ZTQ2NDA3NjBlZmQuOGUzNzE1ZTFlNTVkMDI2NTQ5MzUxNWIyMDEyYWFmMTkwNzliNjg3NjcyZjVmYjIyZWJlNmFkMTkzOGRjNjc0Mg
+#EXTINF:-1 group-title="CDN Live TV Events - Basketball",Indiana Fever vs Washington Mystics - NBA TV FHD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5d3/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWQzOjE3ODk2NDE5NjU4NjU6Y2RubGl2ZXR2LnR2OjliZWRhYzlhM2I4ZTU0MWYuNTBkNTIyMzBmZjUzYjNhYzJjN2QxZDA3MzY1MzYyZmM0MjJkZTZiODIxNWJkM2VkNDcwMDRmZTBhZGFkOTNjOQ
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Los Angeles Rams vs New York Giants - ESPN US
+https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb305/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiMzA1OjE3ODk2NDE5NjMwMjE6Y2RubGl2ZXR2LnR2OmExMWRmZTFmOGIyOTkzZTYuY2RhMmI3OGZmYzUyN2UxMTk5YjhjYjI5MDUyMzZiYTE3MTQ0Y2I3ZTYyZWNjYjRjYjBjM2M5OWRhODM2MmIxMA
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Toronto Argonauts vs Edmonton Elks - CA CTV Winnipeg
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cbfee/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNiZmVlOjE3ODk2NDE5NjMwMjE6Y2RubGl2ZXR2LnR2OmZiYWI0NWFkNTlmOGE2ZDcuNGFmMTgyZjA0NGY4YWFiODE3MGEyZjRlODI1Mzc0N2JjZjgzNDAyYjkyZTQzMzcxOTljMzQyNmMyZTEzMTM1MQ
+#EXTINF:-1 group-title="CDN Live TV Events - NFL",Kansas City Chiefs vs Indianapolis Colts - NBC 12 (WWBT) Richmond HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cbea7/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNiZWE3OjE3ODk2NDE5NjMwMTQ6Y2RubGl2ZXR2LnR2OjM1MGM5YWVkMTRlMWRmNDQuNjkzMjQwYzEzMzhiMzI4MzUwNjE2NjNmYTg5OWU1MGZhNDNlZWVjMjViNTBhNDRlM2U4ZWZkNTg1Yjk4MWNkZQ
