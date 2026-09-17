@@ -30,24 +30,32 @@ TVG_ID_MAP = {
     "Eleven Sports 1": "ElevenSports1.pl",
 }
 
+# === SORGENTI REMOTE ===
 SOURCES = [
     ("doms9", "https://s.id/d9M3U8"),
     ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u"),
 ]
 
+# === SORGENTI LOCALI (prodotte dagli estrattori attivi) ===
 LOCAL_SOURCES = [
     ("DAMITV", "damitv_events.m3u"),
-    ("WatchFooty", "watchfooty_events.m3u"),
     ("Daddylive", "daddylive_streams.m3u"),
-    ("XYZStreams", "xyzstreams_events.m3u"),
-    ("SMTK Sport", "smtk_sport.m3u"),
-    ("Extra Sources", "extra_sources.m3u"),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u"),
     ("CDN Live TV Events", "cdnlivetv_events.m3u"),
 ]
 
+# === SORGENTI DISMESSE (commentate per storico) ===
+# ("WatchFooty", "watchfooty_events.m3u"),      # sempre vuoto
+# ("XYZStreams", "xyzstreams_events.m3u"),      # proxy Node fragile
+# ("SMTK Sport", "smtk_sport.m3u"),             # geobloccati (VPN russa)
+# ("Extra Sources", "extra_sources.m3u"),       # 0 flussi funzionanti
+
 OUTPUT_FILE = "combined_events.m3u"
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/120.0.0.0 Safari/537.36"
+)
 
 
 def fetch_playlist(url):
@@ -65,7 +73,7 @@ def fetch_local_playlist(path):
     try:
         return Path(path).read_text(encoding="utf-8", errors="ignore").splitlines()
     except FileNotFoundError:
-        print(f"❌ File locale non trovato: {path}")
+        print(f"⚠️  File locale non trovato, skip: {path}")
         return []
 
 
@@ -117,7 +125,8 @@ def process_blocks(blocks, name, all_lines, seen_urls):
     for block in blocks:
         stream_url = block[-1]
         # Filtra YouTube
-        if any(domain in stream_url for domain in ["youtube.com", "youtu.be", "googlevideo.com"]):
+        if any(domain in stream_url for domain in
+               ["youtube.com", "youtu.be", "googlevideo.com"]):
             continue
         # Deduplica per URL
         if stream_url in seen_urls:
@@ -137,7 +146,7 @@ def main():
     all_lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
     seen_urls = set()
 
-    # Processa sorgenti remote
+    # --- Sorgenti remote ---
     for name, url in SOURCES:
         print(f"📡 Scarico {name}...")
         lines = fetch_playlist(url)
@@ -148,8 +157,11 @@ def main():
             added = process_blocks(blocks, name, all_lines, seen_urls)
             print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
-    # Processa sorgenti locali
+    # --- Sorgenti locali ---
     for name, path in LOCAL_SOURCES:
+        if not Path(path).exists():
+            print(f"⚠️  Skip {name} (file assente: {path})")
+            continue
         print(f"📂 Leggo file locale {name}...")
         lines = fetch_local_playlist(path)
         blocks = parse_m3u(lines)
