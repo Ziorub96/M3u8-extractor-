@@ -1,15 +1,6 @@
 # ================================================================
-# CDN Live TV - Extractor (v2 - anti rate-limit)
-# Estrae canali TV (414) + eventi sport dall'API cdnlivetv.is
-# Decodifica token Base64 dal player HTML → URL m3u8 finale
-#
-# FIX v2:
-#  - MAX_WORKERS 16 → 3
-#  - Jitter casuale prima di ogni richiesta (0.5-1.2s)
-#  - Backoff esponenziale su 429/502/503
-#  - Pausa 45s tra fasi
-#  - Ordine invertito: prima EVENTI, poi CANALI TV
-#  - Cache dedup URL player
+# CDN Live TV - Extractor v3 (Soccer only + anti rate-limit)
+# Estrae canali TV (414) + eventi calcio dall'API cdnlivetv.is
 # ================================================================
 
 import requests
@@ -30,6 +21,9 @@ API_EVENTS = "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan
 CHANNELS_OUTPUT = "cdnlivetv_channels.m3u"
 EVENTS_OUTPUT = "cdnlivetv_events.m3u"
 
+# --- SOLO CALCIO ---
+ONLY_SPORT = "Soccer"          # None = tutti gli sport
+
 # --- ANTI RATE-LIMIT ---
 MAX_WORKERS = 3
 TIMEOUT = 20
@@ -39,7 +33,6 @@ JITTER_MAX = 1.2
 PAUSE_BETWEEN_PHASES = 45
 BACKOFF_BASE = 3
 
-# Filtri opzionali
 MAX_CHANNELS = 0
 EVENTS_ONLY_LIVE = False
 
@@ -54,6 +47,7 @@ HEADERS = {
 }
 
 _resolve_cache: dict = {}
+
 
 # ================================================================
 # UTILITY
@@ -83,8 +77,7 @@ def normalize_event_name(name: str) -> str:
     )
     name = unicodedata.normalize("NFKD", name)
     name = "".join(c for c in name if not unicodedata.combining(c))
-    name = re.sub(r"\s+", " ", name).strip().lower()
-    return name
+    return re.sub(r"\s+", " ", name).strip().lower()
 
 
 # ================================================================
@@ -93,21 +86,19 @@ def normalize_event_name(name: str) -> str:
 def resolve_m3u8(player_url: str):
     if not player_url:
         return None, "no player url"
-
     if player_url in _resolve_cache:
         return _resolve_cache[player_url]
 
     time.sleep(random.uniform(JITTER_MIN, JITTER_MAX))
-
     last_err = ""
+
     for attempt in range(RETRIES):
         try:
             r = requests.get(player_url, headers=HEADERS,
                              timeout=TIMEOUT, verify=False)
 
             if r.status_code in (429, 502, 503):
-                wait = (2 ** attempt) * BACKOFF_BASE + random.uniform(0, 2)
-                time.sleep(wait)
+                time.sleep((2 ** attempt) * BACKOFF_BASE + random.uniform(0, 2))
                 last_err = f"HTTP {r.status_code}"
                 continue
 
@@ -117,7 +108,6 @@ def resolve_m3u8(player_url: str):
                 return result
 
             html = r.text
-
             join_match = re.search(
                 r"[A-Za-z_$][\w$]*\s*=\s*("
                 r"(?:[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*\)\s*\+\s*)+"
@@ -130,27 +120,17 @@ def resolve_m3u8(player_url: str):
                 return result
 
             args = re.findall(
-                r"[A-Za-z_$][\w$]*\(([A-Za-z_$][\w$]*)\)",
-                join_match.group(1),
+                r"[A-Za-z_$][\w$]*\(([A-Za-z_$][\w$]*)\)", join_match.group(1)
             )
             vars_dict = dict(re.findall(
-                r"var\s+([A-Za-z_$][\w$]*)\s*=\s*'([^']*)'", html,
+                r"var\s+([A-Za-z_$][\w$]*)\s*=\s*'([^']*)'", html
             ))
 
-            parts = []
-            for arg in args:
-                if arg in vars_dict:
-                    parts.append(
-                        b64d(vars_dict[arg]).decode("utf-8", errors="replace")
-                    )
+            parts = [b64d(vars_dict[a]).decode("utf-8", errors="replace")
+                     for a in args if a in vars_dict]
             url = "".join(parts)
 
-            if not url.startswith("http"):
-                result = (None, "url malformato")
-                _resolve_cache[player_url] = result
-                return result
-
-            result = (url, None)
+            result = (url, None) if url.startswith("http") else (None, "url malformato")
             _resolve_cache[player_url] = result
             return result
 
@@ -167,12 +147,14 @@ def resolve_m3u8(player_url: str):
 # PROCESSORI
 # ================================================================
 def process_channel(ch: dict) -> dict:
-    name = ch.get("name", "Unknown")
-    code = ch.get("code", "")
-    img = ch.get("image", "")
-    player_url = ch.get("url", "")
-    url, err = resolve_m3u8(player_url)
-    return {"name": name, "code": code, "img": img, "url": url, "err": err}
+    url, err = resolve_m3u8(ch.get("url", ""))
+    return {
+        "name": ch.get("name", "Unknown"),
+        "code": ch.get("code", ""),
+        "img": ch.get("image", ""),
+        "url": url,
+        "err": err,
+    }
 
 
 def process_event_item(event: dict, sport: str) -> list:
@@ -206,8 +188,7 @@ def process_event_item(event: dict, sport: str) -> list:
 def fetch_api(url: str, label: str):
     for attempt in range(RETRIES):
         try:
-            r = requests.get(url, headers=HEADERS,
-                             timeout=TIMEOUT, verify=False)
+            r = requests.get(url, headers=HEADERS, timeout=TIMEOUT, verify=False)
             if r.status_code in (429, 502, 503):
                 wait = (2 ** attempt) * BACKOFF_BASE + random.uniform(0, 2)
                 print(f"  ⏸️ {label} HTTP {r.status_code}, attendo {wait:.1f}s...")
@@ -226,8 +207,10 @@ def fetch_api(url: str, label: str):
 # ================================================================
 def main():
     print("=" * 60)
-    print(" CDN Live TV - Extractor v2 (anti rate-limit)")
+    print(" CDN Live TV - Extractor v3 (Soccer only)")
     print(f" Workers: {MAX_WORKERS} | Jitter: {JITTER_MIN}-{JITTER_MAX}s")
+    if ONLY_SPORT:
+        print(f" Filtro sport: {ONLY_SPORT}")
     print("=" * 60)
 
     # ============ FASE 1: EVENTI ============
@@ -238,17 +221,16 @@ def main():
     if data_ev:
         root = data_ev.get("cdn-live-tv", {})
         all_events = []
-        sport_counts = {}
         for sport, evs in root.items():
-            if isinstance(evs, list):
-                sport_counts[sport] = len(evs)
-                for ev in evs:
-                    all_events.append((sport, ev))
+            if not isinstance(evs, list):
+                continue
+            if ONLY_SPORT and sport != ONLY_SPORT:
+                continue
+            for ev in evs:
+                all_events.append((sport, ev))
 
-        print(f"✓ {len(all_events)} eventi totali in {len(sport_counts)} sport")
-        top5 = sorted(sport_counts.items(), key=lambda x: -x[1])[:5]
-        for s, n in top5:
-            print(f"    - {s}: {n}")
+        print(f"✓ {len(all_events)} eventi" +
+              (f" (solo {ONLY_SPORT})" if ONLY_SPORT else ""))
 
         if all_events:
             est_sec = len(all_events) * ((JITTER_MIN + JITTER_MAX) / 2) / MAX_WORKERS
@@ -256,10 +238,8 @@ def main():
 
             t0 = time.time()
             with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-                futures = [
-                    ex.submit(process_event_item, ev, sp)
-                    for sp, ev in all_events
-                ]
+                futures = [ex.submit(process_event_item, ev, sp)
+                           for sp, ev in all_events]
                 done = 0
                 ok_total = 0
                 last_log = 0
@@ -281,7 +261,7 @@ def main():
                         last_log = now
 
     # ============ PAUSA ============
-    print(f"\n⏸️  Pausa {PAUSE_BETWEEN_PHASES}s per reset rate-limit...")
+    print(f"\n⏸️  Pausa {PAUSE_BETWEEN_PHASES}s...")
     time.sleep(PAUSE_BETWEEN_PHASES)
 
     # ============ FASE 2: CANALI ============
@@ -291,8 +271,7 @@ def main():
     channels = []
     if data_ch:
         channels = data_ch.get("channels", [])
-        total = data_ch.get("total_channels", len(channels))
-        print(f"✓ {total} canali ricevuti")
+        print(f"✓ {data_ch.get('total_channels', len(channels))} canali ricevuti")
 
     if MAX_CHANNELS > 0:
         channels = channels[:MAX_CHANNELS]
@@ -326,30 +305,25 @@ def main():
         seen_titles.add(key)
         results_ev.append(r)
 
-    # ============ OUTPUT CANALI ============
+    # ============ OUTPUT ============
     tv_ok = [r for r in results_tv if r["url"]]
     with open(CHANNELS_OUTPUT, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         for r in tv_ok:
             tvg_id = f' tvg-id="{r["code"]}"' if r["code"] else ""
             logo = f' tvg-logo="{r["img"]}"' if r["img"] else ""
-            f.write(
-                f'#EXTINF:-1{tvg_id}{logo} '
-                f'group-title="CDN Live TV Channels",{r["name"]}\n'
-            )
+            f.write(f'#EXTINF:-1{tvg_id}{logo} '
+                    f'group-title="CDN Live TV Channels",{r["name"]}\n')
             f.write(f'{r["url"]}\n')
 
-    # ============ OUTPUT EVENTI ============
     with open(EVENTS_OUTPUT, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         for r in results_ev:
             tvg_id = f' tvg-id="{r["code"]}"' if r.get("code") else ""
             logo = f' tvg-logo="{r["img"]}"' if r.get("img") else ""
             sport = r.get("sport", "Sport")
-            f.write(
-                f'#EXTINF:-1{tvg_id}{logo} '
-                f'group-title="CDN Live TV Events - {sport}",{r["name"]}\n'
-            )
+            f.write(f'#EXTINF:-1{tvg_id}{logo} '
+                    f'group-title="CDN Live TV Events - {sport}",{r["name"]}\n')
             f.write(f'{r["url"]}\n')
 
     print(f"\n✅ Canali TV OK:    {len(tv_ok)}/{len(results_tv)}")
