@@ -1,9 +1,25 @@
 #EXTM3U
-#EXTINF:-1 tvg-id="br" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/brazil/espn-brasil-hd-br.webp" group-title="CDN Live TV Events - Soccer",USA vs Chile - ESPN Brasil HD BR
-https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce889/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg5OjE3OTA3NDAyNzAzODU6Y2RubGl2ZXR2LnR2OmFhZDA4NzAxNzNkNjVjNGUuNzkzN2E0NzRmZTUyN2RlMjQ3ODhkZGVmMjMxMzIxZWNjNWQ1NzZiMjUzNzE4OTAyZDRmOTkxYzYxYmIyMzI1Ng
+#EXTINF:-1 tvg-id="pt" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/portugal/canal-11-pt.webp" group-title="CDN Live TV Events - Soccer",Portugal U21 vs Gibraltar U21 - Canal 11 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd441/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQxOjE3OTA3OTkyOTgwOTA6Y2RubGl2ZXR2LnR2OmM4NzliNWZjYTNmMmUxYjEuNmU3YzlhZGJhZDc5ZGZmZGYxNWMwZWZmZTQxMDAyMjI3NGI0YzMxNDk5YzU3YmUyN2ZiYWYwMGFkODNjMWMxMQ
+#EXTINF:-1 tvg-id="bg" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/bg/diema-sport-hd-bg.webp" group-title="CDN Live TV Events - Soccer",Czech Republic U21 vs Bulgaria U21 - Diema Sport HD BG
+https://cdnlivetv.tv/secure/api/v1/6a288d2d81d8192bb76cdf0e/playlist.m3u8?token=NmEyODhkMmQ4MWQ4MTkyYmI3NmNkZjBlOjE3OTA3OTkyOTgyODM6Y2RubGl2ZXR2LnR2OjllOWFmMWY4ZThlODI3NDAuMTE2MzczOWIzNWY0ZTI4OTlmNTkzMjg2ODQ4ZGRjYTZlZjE3NjRhNmU3OWYzMjc2MjY5MzY3MjVhYWYzN2Y3YQ
+#EXTINF:-1 tvg-id="pt" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/portugal/canal-11-pt.webp" group-title="CDN Live TV Events - Soccer",Portugal U19 vs Netherlands U19 - Canal 11 PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd441/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDQxOjE3OTA3OTkyOTgwOTA6Y2RubGl2ZXR2LnR2OmM4NzliNWZjYTNmMmUxYjEuNmU3YzlhZGJhZDc5ZGZmZGYxNWMwZWZmZTQxMDAyMjI3NGI0YzMxNDk5YzU3YmUyN2ZiYWYwMGFkODNjMWMxMQ
+#EXTINF:-1 tvg-id="pl" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/poland/tvp-sport-fhd-pl.webp" group-title="CDN Live TV Events - Soccer",Poland U21 vs Sweden U21 - TVP Sport FHD PL
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd3af/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkM2FmOjE3OTA3OTkyOTg0OTM6Y2RubGl2ZXR2LnR2OmY5MjY1YTRjYjMyOTQxOWYuY2NkMGI3ZjdiMjkwOGM1OGZlZjNkYTM0YjFhMzdhMzAyYjQ3OGRjZDRlNTI2MWE5NGE1ZWZkNGVjNTIwMjM5Yg
 #EXTINF:-1 group-title="CDN Live TV Events - Soccer",Lithuania vs Andorra - Fox Soccer Plus HD US
-https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c2/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWMyOjE3OTA3NDAyNzA3MDE6Y2RubGl2ZXR2LnR2OjBmM2I2Y2U1NzA3ODk3NzEuZmRhNTdhOWUwOTZiMTI4Nzk2MTNhNWQyMzg0Nzg4ZjdmMzE2OWM0NDFkNTQ2MzUxYjM4YTRjN2VmMjZhZDc1Mw
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c2/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWMyOjE3OTA3OTkyOTkyODI6Y2RubGl2ZXR2LnR2OmRjYjRhNDIzZTIyOGVmOTQuN2I1M2EzYzY3NzM5Yzg1YWI4YTM4YThmOWMwNjhlZjNkNTA5YWZkMDNkMGUyYWM1MTNmYzUxMzNlZDM0NGQ2NA
 #EXTINF:-1 group-title="CDN Live TV Events - Soccer",Platense vs Estudiantes de La Plata - Sport TV 1 FHD PT
-https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd412/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDEyOjE3OTA3NDAyNzA3MTU6Y2RubGl2ZXR2LnR2OjlmYmYwYTY3OWMzMjY4MWEuN2Y0ZTQ0NDU1MDc1NTBkYjI3N2NiZGRhZGVmYmQ3Y2MyOTFjNDY2NzhkNGExNTQxM2RjMDg2OWE3MDhjZDhmMg
-#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Canada vs Peru - TSN 4 FHD CA
-https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc177/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTc3OjE3OTA3NDAyNzE4Nzk6Y2RubGl2ZXR2LnR2OmUzNWQ5NGZmOThlYWRmYzYuNTcxY2FhZDQ2Y2Q3M2U2OTA2MmVkNTlkMDkyNDdiNmJhN2MyZmE3ZTNkM2ZmYWFlNjlmMzk1YWM4ZDc5MjUwMA
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd412/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDEyOjE3OTA3OTkyOTk2ODM6Y2RubGl2ZXR2LnR2OjY3YzIwZTE0NWQwNDlkNWUuYjVhNTgzOTE5MzJiZDMxODViY2Q0Mjk1YzY5Y2UxMWNhNTY2OTFmOWM0MmQ5MmI0Mjc0OGM1OGIyYzM1NmYwZA
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Colombia vs Paraguay - Movistar Liga de Campeones 2 FHD
+https://cdnlivetv.tv/secure/api/v1/6a288d2b81d8192bb76cc77f/playlist.m3u8?token=NmEyODhkMmI4MWQ4MTkyYmI3NmNjNzdmOjE3OTA3OTkzMDA4NTA6Y2RubGl2ZXR2LnR2OjM5OGU4OTM3NWFiYzdkZDIuNWY0OGZkOWZjOTkwYzIyZTJkMDUxNDZmYjMyMTc3MzhlNThhZTg5YWI1OTg0NjczYzkyZjIwZjFmNDMwN2U4MQ
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Fortaleza vs Náutico - ESPN Brasil HD BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce889/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg5OjE3OTA3OTkzMDE3MTU6Y2RubGl2ZXR2LnR2OmQzNjk4NGI3MTJjNzE4ZDQuNWE0ZmM2ODk5NWM1MmJjYWZkY2EyOGNhYTIyY2NmYzQ5OGFiY2VjM2ZkYTM1ZTAyMTc0ZDI3MzkwMmQwN2EwZg
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",India vs Brazil - SONY TEN 3
+https://cdnlivetv.tv/secure/api/v1/6a288d2f81d8192bb76cf2b6/playlist.m3u8?token=NmEyODhkMmY4MWQ4MTkyYmI3NmNmMmI2OjE3OTA3OTkzMDIyMjA6Y2RubGl2ZXR2LnR2OmY3NTQ1YjdjMmYxMGFmZmYuM2QxMjZmZmU1MDQ1NmI0MzA0YTdjZmE1MmFjOTEyNzhiOTJkZTgwYTc0OTBjOWM3OWM3NGI3ZDlmMmQzNDkxMA
+#EXTINF:-1 tvg-id="gb" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-kingdom/viaplay-sports-2-fhd-uk.webp" group-title="CDN Live TV Events - Soccer",Argentina vs Bolivia - Viaplay Sports 2 FHD UK
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc36b/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzZiOjE3OTA3OTkyOTk1MzE6Y2RubGl2ZXR2LnR2OmM3NDFmYjkwNWRjMzI0NGEuMzVmYjAwNGUwMTM0YzE3NzljNDUwMDdhNDBhMDYxM2Y5NzM0MDI3OTMyMmQzNTFhMmJhMTM4N2M0OGY2OThkMw
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Canada vs Peru - TSN 5 CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc16d/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTZkOjE3OTA3OTkzMDI3Njg6Y2RubGl2ZXR2LnR2Ojc4YzYzODFkYjk0NjQyNjQuN2M4OTQyZjdkYTg0NWMwNzUyYmUzNWZkZjBjZjEwYjA4OTc4MmY4YjQxZjc2MDI2NTM1MjczMGU3YzBjMGJiMA
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",USA vs Mexico - TELEMUNDO
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce4d3/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlNGQzOjE3OTA3OTkzMDMzMDE6Y2RubGl2ZXR2LnR2OjYwM2UwOWQyMWUyMjI1M2EuMjM5M2IyZDVhOTgwYWJmMzhhMTZmODNiNjhlNTJhNWVjODY4Y2E5NDhiMDZkMmYwMjA4NzU2MWRlMGRkNjI4Zg
