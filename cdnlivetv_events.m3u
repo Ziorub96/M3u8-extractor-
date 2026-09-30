@@ -1,3 +1,9 @@
 #EXTM3U
-#EXTINF:-1 tvg-id="us" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/united-states/tnt-us.webp" group-title="CDN Live TV Events - Soccer",USA vs Chile - TNT US
-https://cdnlivetv.tv/secure/api/v1/6a288d2781d8192bb76cb402/playlist.m3u8?token=NmEyODhkMjc4MWQ4MTkyYmI3NmNiNDAyOjE3OTA3MjczODQ0MzM6Y2RubGl2ZXR2LnR2OjgwNGRkZDRjODE5Y2ZiYzEuZTQ2Y2YyNmVlMDRjZmQ3ODlhODVhYzAxOTNiMmI0MDQ0NzVlNzU4YzNiZDNjZjU4MzEwNjdiMDIwNmFjMzAyNw
+#EXTINF:-1 tvg-id="br" tvg-logo="https://cdnlivetv.tv/api/v1/channels/images6318/brazil/espn-brasil-hd-br.webp" group-title="CDN Live TV Events - Soccer",USA vs Chile - ESPN Brasil HD BR
+https://cdnlivetv.tv/secure/api/v1/6a288d2e81d8192bb76ce889/playlist.m3u8?token=NmEyODhkMmU4MWQ4MTkyYmI3NmNlODg5OjE3OTA3NDAyNzAzODU6Y2RubGl2ZXR2LnR2OmFhZDA4NzAxNzNkNjVjNGUuNzkzN2E0NzRmZTUyN2RlMjQ3ODhkZGVmMjMxMzIxZWNjNWQ1NzZiMjUzNzE4OTAyZDRmOTkxYzYxYmIyMzI1Ng
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Lithuania vs Andorra - Fox Soccer Plus HD US
+https://cdnlivetv.tv/secure/api/v1/6a288d2881d8192bb76cb5c2/playlist.m3u8?token=NmEyODhkMjg4MWQ4MTkyYmI3NmNiNWMyOjE3OTA3NDAyNzA3MDE6Y2RubGl2ZXR2LnR2OjBmM2I2Y2U1NzA3ODk3NzEuZmRhNTdhOWUwOTZiMTI4Nzk2MTNhNWQyMzg0Nzg4ZjdmMzE2OWM0NDFkNTQ2MzUxYjM4YTRjN2VmMjZhZDc1Mw
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Platense vs Estudiantes de La Plata - Sport TV 1 FHD PT
+https://cdnlivetv.tv/secure/api/v1/6a288d2c81d8192bb76cd412/playlist.m3u8?token=NmEyODhkMmM4MWQ4MTkyYmI3NmNkNDEyOjE3OTA3NDAyNzA3MTU6Y2RubGl2ZXR2LnR2OjlmYmYwYTY3OWMzMjY4MWEuN2Y0ZTQ0NDU1MDc1NTBkYjI3N2NiZGRhZGVmYmQ3Y2MyOTFjNDY2NzhkNGExNTQxM2RjMDg2OWE3MDhjZDhmMg
+#EXTINF:-1 group-title="CDN Live TV Events - Soccer",Canada vs Peru - TSN 4 FHD CA
+https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc177/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMTc3OjE3OTA3NDAyNzE4Nzk6Y2RubGl2ZXR2LnR2OmUzNWQ5NGZmOThlYWRmYzYuNTcxY2FhZDQ2Y2Q3M2U2OTA2MmVkNTlkMDkyNDdiNmJhN2MyZmE3ZTNkM2ZmYWFlNjlmMzk1YWM4ZDc5MjUwMA
