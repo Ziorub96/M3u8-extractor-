@@ -1,6 +1,18 @@
+# ================================================================
+# DAMITV Extractor v2 (parallelizzato)
+# - DokAgents: timeout ridotto + ThreadPoolExecutor(8)
+# - 24/7 / Live TV / Eventi: ThreadPoolExecutor(5)
+# - Timeout DAMITV: 15s (era 30s)
+# - DokAgents candidati ridotti ai funzionanti noti
+# ================================================================
+
 import json
 import time
 import requests
+import urllib3
+from concurrent.futures import ThreadPoolExecutor
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BASE_URL = "https://ondemand.st"
 API_STREAMS = f"{BASE_URL}/papi/api/streams"
@@ -8,13 +20,21 @@ API_MATCHES_TODAY = f"{BASE_URL}/papi/matches/all-today"
 API_EXTRACT = f"{BASE_URL}/papi/extract-url/"
 API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) "
+              "Chrome/120.0.0.0 Safari/537.36")
 OUTPUT_FILE = "damitv_events.m3u"
 
 PAST_MINUTES = 30
 UPCOMING_MINUTES = 180
 
-# ==================== CANALI SPORTIVI McQUACK (statici) ====================
+# --- PARALLELISMO ---
+WORKERS_DAMITV = 5          # API DAMITV (extract-url, tv/resolve)
+WORKERS_DOKAGENTS = 8       # test DokAgents
+TIMEOUT_DAMITV = 15         # era 30s
+TIMEOUT_DOKAGENTS = 4       # era 8s
+
+# ==================== CANALI McQUACK (statici) ====================
 MCQUACK_SPORT_CHANNELS = [
     ("Eurosport 1", "http://stream.mcquack.net/176/index.m3u8"),
     ("Eurosport 2", "http://stream.mcquack.net/192/index.m3u8"),
@@ -58,27 +78,18 @@ MCQUACK_SPORT_CHANNELS = [
     ("OKKO Prime Sport", "http://stream.mcquack.net/493/index.m3u8"),
 ]
 
-# ==================== CANALI DOKAGENTS (dinamici) ====================
+# ==================== DOKAGENTS (ridotti ai funzionanti) ====================
 DOKAGENTS_BASE = "http://dokagents.site/live"
 DOKAGENTS_CANDIDATES = [
+    # Funzionanti confermati dai log precedenti
     "digisport1", "digisport2", "digisport3", "digisport4",
-    "digisport5", "digisport6", "digisportplus", "digisportnews",
-    "eurosport", "eurosport1", "eurosport2", "eurosport2hd",
-    "sportklub1", "sportklub2", "sportklub3", "sportklub4", "sportklub5", "sportklub6",
-    "arenasport1", "arenasport2", "arenasport3", "arenasport4", "arenasport5", "arenasport6",
-    "maxsport1", "maxsport2", "maxsport3", "maxsport4",
-    "matchtv", "matchfutbol1", "matchfutbol2", "matchfutbol3",
-    "setantasport", "setantasport1", "setantasport2",
-    "sport1", "sport2", "sport3", "sport4", "sport5",
-    "skysport1", "skysport2", "skysport3", "skysport4", "skysport5",
-    "movistar", "dazn1", "dazn2", "dazn3", "dazn4",
-    "canalsport", "canalplus", "canalplus1", "canalplus2",
-    "nbatv", "nflnetwork", "nhl", "mlb", "ufc", "boxing", "fight",
-    "golf", "tennis", "racing", "motorsport", "extreme",
-    "redbulltv", "f1", "motoamerica", "supercross",
-    "futbol", "football", "soccer", "calcio", "seriea", "premierleague",
-    "la-liga", "ligue1", "bundesliga", "championsleague", "europaleague",
-    "copa", "libertadores", "sudamericana", "concacaf", "afc", "uefa", "fifa"
+    "eurosport", "eurosport2",
+    # Pochi altri probabili
+    "digisport5", "digisportplus",
+    "eurosport1",
+    "sportklub1", "sportklub2", "sportklub3",
+    "arenasport1", "arenasport2",
+    "maxsport1", "maxsport2",
 ]
 
 session = requests.Session()
@@ -86,6 +97,10 @@ session.headers.update({"User-Agent": USER_AGENT})
 
 _event_cache = {}
 
+
+# ================================================================
+# HTTP HELPER
+# ================================================================
 def http_get_json(url, referer=None):
     headers = {}
     if referer:
@@ -93,25 +108,27 @@ def http_get_json(url, referer=None):
 
     for attempt in range(3):
         try:
-            r = session.get(url, headers=headers, timeout=30)
+            r = session.get(url, headers=headers,
+                            timeout=TIMEOUT_DAMITV, verify=False)
             if r.status_code in (502, 503):
-                wait = 5 * (attempt + 1)
-                print(f"⚠️ {r.status_code} su {url[:80]} → riprovo tra {wait}s")
-                time.sleep(wait)
+                time.sleep(5 * (attempt + 1))
                 continue
             r.raise_for_status()
             return r.json()
-        except requests.RequestException as e:
+        except requests.RequestException:
             if attempt == 2:
-                print(f"❌ Errore richiesta {url}: {e}")
                 return None
             time.sleep(3)
     return None
 
+
+# ================================================================
+# RESOLVER (con cache)
+# ================================================================
 def get_event_m3u8(event_id, sd=False):
-    cache_key = (event_id, sd)
-    if cache_key in _event_cache:
-        return _event_cache[cache_key]
+    key = (event_id, sd)
+    if key in _event_cache:
+        return _event_cache[key]
 
     url = API_EXTRACT + event_id
     if sd:
@@ -121,101 +138,114 @@ def get_event_m3u8(event_id, sd=False):
     result = None
     if data and data.get("success"):
         result = data.get("hlsUrl") or data.get("sdUrl")
-
-    _event_cache[cache_key] = result
+    _event_cache[key] = result
     return result
 
-def get_channel_m3u8(ch_id):
-    cache_key = (ch_id, "channel")
-    if cache_key in _event_cache:
-        return _event_cache[cache_key]
 
-    data = http_get_json(API_TV_RESOLVE + ch_id, referer=f"{BASE_URL}/embed/?id={ch_id}")
+def get_channel_m3u8(ch_id):
+    key = (ch_id, "channel")
+    if key in _event_cache:
+        return _event_cache[key]
+
+    data = http_get_json(API_TV_RESOLVE + ch_id,
+                         referer=f"{BASE_URL}/embed/?id={ch_id}")
     result = None
     if data and (data.get("stream") or data.get("url")):
         result = data.get("stream") or data.get("url")
-
-    _event_cache[cache_key] = result
+    _event_cache[key] = result
     return result
 
+
+# ================================================================
+# FASE 3: 24/7 (parallelizzata)
+# ================================================================
 def get_24_7_channels(seen_ids):
-    print("📡 Recupero canali 24/7 da papi/api/streams...")
+    print("📡 Recupero canali 24/7...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
     if not data or not data.get("success"):
         print("❌ API non raggiungibile")
         return []
 
-    lines = []
+    todo = []
     for category in data.get("streams", []):
         if not isinstance(category, dict):
             continue
-
-        category_name = category.get("category", "").lower()
-
+        cat_name = category.get("category", "").lower()
         for ev in category.get("streams", []):
             if not isinstance(ev, dict):
                 continue
-
             ev_id = ev.get("id", "")
             title = ev.get("name", "Sconosciuto")
             logo = ev.get("poster", "")
-
             is_always_live = ev.get("always_live") == 1
-            is_247_category = any(kw in category_name for kw in ["24/7", "channels"])
-
-            if not is_always_live and not is_247_category:
+            is_247 = any(kw in cat_name for kw in ["24/7", "channels"])
+            if not is_always_live and not is_247:
                 continue
-
             if ev_id in seen_ids:
                 continue
+            todo.append((ev_id, title, logo))
 
-            print(f"🔍 Risolvo {title} ({ev_id})...")
-            m3u8_url = get_event_m3u8(ev_id)
-            if m3u8_url:
+    print(f"   {len(todo)} canali 24/7 da risolvere (parallel {WORKERS_DAMITV})...")
+    lines = []
+
+    def resolve(item):
+        ev_id, title, logo = item
+        return (ev_id, title, logo, get_event_m3u8(ev_id))
+
+    with ThreadPoolExecutor(max_workers=WORKERS_DAMITV) as ex:
+        for ev_id, title, logo, m3u8 in ex.map(resolve, todo):
+            if m3u8:
                 seen_ids.add(ev_id)
                 lines.append(f'#EXTINF:-1 tvg-id="{ev_id}" tvg-logo="{logo}",{title}')
-                lines.append(m3u8_url)
-            else:
-                print(f"⚠️ Stream non disponibile per {title}")
+                lines.append(m3u8)
 
     print(f"✅ Canali 24/7 aggiunti: {len(lines)//2}")
     return lines
 
+
+# ================================================================
+# FASE 4: Live TV (parallelizzata)
+# ================================================================
 def get_live_tv_channels(seen_ids):
     ts_url = f"{BASE_URL}/data/ts-channels.json"
-    print("📡 Scarico lista canali Live TV da ts-channels.json...")
+    print("📡 Scarico ts-channels.json...")
     data = http_get_json(ts_url, referer=f"{BASE_URL}/livetv")
     if not data or not isinstance(data, dict) or "channels" not in data:
-        print("❌ Errore nel recupero di ts-channels.json")
+        print("❌ Errore nel recupero")
         return []
 
-    channels = data["channels"]
-    print(f"🔢 Trovati {len(channels)} canali nel file.")
-
-    lines = []
-    for ch in channels:
+    todo = []
+    for ch in data["channels"]:
         if not isinstance(ch, dict):
             continue
-
         daddy_id = ch.get("daddyId")
         name = ch.get("name", "Sconosciuto")
         logo = ch.get("image", "")
-
         if not daddy_id or daddy_id in seen_ids:
             continue
+        todo.append((daddy_id, name, logo))
 
-        print(f"🔍 Risolvo {name} ({daddy_id})...")
-        m3u8_url = get_channel_m3u8(daddy_id)
-        if m3u8_url:
-            seen_ids.add(daddy_id)
-            lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}" tvg-logo="{logo}",{name}')
-            lines.append(m3u8_url)
-        else:
-            print(f"⚠️ Stream non disponibile per {name}")
+    print(f"   {len(todo)} canali Live TV da risolvere (parallel {WORKERS_DAMITV})...")
+    lines = []
+
+    def resolve(item):
+        daddy_id, name, logo = item
+        return (daddy_id, name, logo, get_channel_m3u8(daddy_id))
+
+    with ThreadPoolExecutor(max_workers=WORKERS_DAMITV) as ex:
+        for daddy_id, name, logo, m3u8 in ex.map(resolve, todo):
+            if m3u8:
+                seen_ids.add(daddy_id)
+                lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}" tvg-logo="{logo}",{name}')
+                lines.append(m3u8)
 
     print(f"✅ Canali Live TV aggiunti: {len(lines)//2}")
     return lines
 
+
+# ================================================================
+# FASE 5: Eventi sportivi (parallelizzata)
+# ================================================================
 def is_relevant_event(event, now_ts):
     start_raw = event.get("date")
     if not start_raw:
@@ -226,84 +256,92 @@ def is_relevant_event(event, now_ts):
         start_ts = int(start_raw)
     return (now_ts - PAST_MINUTES * 60) <= start_ts <= (now_ts + UPCOMING_MINUTES * 60)
 
-def build_sports_lines(seen_ids):
-    print("📡 Recupero eventi sportivi live/imminenti da papi/matches/all-today...")
-    data = http_get_json(API_MATCHES_TODAY, referer=f"{BASE_URL}/matches")
-    if not data:
-        print("❌ API non raggiungibile o dati non validi")
-        return []
 
-    if not isinstance(data, list):
-        print("❌ Formato dati inaspettato")
+def build_sports_lines(seen_ids):
+    print("📡 Recupero eventi sportivi...")
+    data = http_get_json(API_MATCHES_TODAY, referer=f"{BASE_URL}/matches")
+    if not data or not isinstance(data, list):
+        print("❌ API non raggiungibile")
         return []
 
     now_ts = int(time.time())
-    lines = []
-    event_count = 0
-
+    todo = []
     for ev in data:
         if not isinstance(ev, dict):
             continue
-
         title = ev.get("title", "Sconosciuto")
         sport = ev.get("league", "")
         stream_id = ev.get("id", "")
-
         if not title or not stream_id:
             continue
-
         if stream_id.startswith("247") or sport.startswith("24/7"):
             continue
         if stream_id.lower().startswith("dl-"):
             continue
-
         if not is_relevant_event(ev, now_ts):
             continue
+        todo.append((stream_id, title, sport, ev.get("poster", "")))
 
-        event_count += 1
-        print(f"⚽ Processo evento: {title}")
+    print(f"   {len(todo)} eventi da risolvere (parallel {WORKERS_DAMITV})...")
+    lines = []
 
-        m3u8_url = get_event_m3u8(stream_id)
-        if not m3u8_url:
-            m3u8_url = get_event_m3u8(stream_id, sd=True)
+    def resolve(item):
+        stream_id, title, sport, logo = item
+        m3u8 = get_event_m3u8(stream_id)
+        if not m3u8:
+            m3u8 = get_event_m3u8(stream_id, sd=True)
+        return (stream_id, title, sport, logo, m3u8)
 
-        if m3u8_url:
-            seen_ids.add(stream_id)
-            display = f"[{sport}] {title}"
-            logo = ev.get("poster", "")
-            if logo:
-                lines.append(f'#EXTINF:-1 tvg-id="{stream_id}" tvg-logo="{logo}",{display}')
-            else:
-                lines.append(f'#EXTINF:-1 tvg-id="{stream_id}",{display}')
-            lines.append(m3u8_url)
+    with ThreadPoolExecutor(max_workers=WORKERS_DAMITV) as ex:
+        for stream_id, title, sport, logo, m3u8 in ex.map(resolve, todo):
+            if m3u8:
+                seen_ids.add(stream_id)
+                display = f"[{sport}] {title}"
+                if logo:
+                    lines.append(f'#EXTINF:-1 tvg-id="{stream_id}" tvg-logo="{logo}",{display}')
+                else:
+                    lines.append(f'#EXTINF:-1 tvg-id="{stream_id}",{display}')
+                lines.append(m3u8)
 
-    print(f"✅ Eventi sportivi aggiunti: {len(lines)//2} (da {event_count} eventi)")
+    print(f"✅ Eventi aggiunti: {len(lines)//2}")
     return lines
 
+
+# ================================================================
+# FASE 2: DokAgents (parallelizzata)
+# ================================================================
 def get_dokagents_channels():
-    """Scopre canali disponibili su dokagents.site/live (HTTP) e restituisce lista di tuple (nome, url)."""
-    print("📡 Ricerca canali su dokagents.site/live (HTTP)...")
+    print(f"📡 Test DokAgents (parallel {WORKERS_DOKAGENTS}, timeout {TIMEOUT_DOKAGENTS}s)...")
     channels = []
-    headers = {"User-Agent": USER_AGENT}
-    patterns = ["mono.m3u8", "index.m3u8"]
 
-    for nome in DOKAGENTS_CANDIDATES:
-        for pattern in patterns:
-            url = f"{DOKAGENTS_BASE}/{nome}/{pattern}"
-            try:
-                r = requests.get(url, headers=headers, timeout=8, verify=False)
-                if r.status_code == 200 and r.text.strip().startswith("#EXTM3U"):
-                    channels.append((nome, url))
-                    print(f"   ✅ {nome} -> {url}")
-                    break
-            except Exception:
-                pass
-            time.sleep(0.2)
+    def check(nome):
+        url = f"{DOKAGENTS_BASE}/{nome}/mono.m3u8"
+        try:
+            r = requests.get(url, headers={"User-Agent": USER_AGENT},
+                             timeout=TIMEOUT_DOKAGENTS, verify=False)
+            if r.status_code == 200 and r.text.strip().startswith("#EXTM3U"):
+                return (nome, url)
+        except Exception:
+            pass
+        return None
 
-    print(f"   Trovati {len(channels)} canali dokagents.")
+    t0 = time.time()
+    with ThreadPoolExecutor(max_workers=WORKERS_DOKAGENTS) as ex:
+        for res in ex.map(check, DOKAGENTS_CANDIDATES):
+            if res:
+                channels.append(res)
+
+    print(f"   Trovati {len(channels)} canali in {time.time()-t0:.1f}s.")
+    for nome, url in channels:
+        print(f"   ✅ {nome}")
     return channels
 
+
+# ================================================================
+# MAIN
+# ================================================================
 def main():
+    t_start = time.time()
     seen_ids = set()
     lines = ["#EXTM3U"]
 
@@ -311,28 +349,34 @@ def main():
     for name, url in MCQUACK_SPORT_CHANNELS:
         lines.append(f'#EXTINF:-1 tvg-id="mcq-{name}" group-title="McQuack Sport",{name}')
         lines.append(url)
+    print(f"[1/5] McQuack Sport: {len(MCQUACK_SPORT_CHANNELS)} canali (statici)")
 
-    # 2) DokAgents (dinamici)
-    dokagents_channels = get_dokagents_channels()
-    for name, url in dokagents_channels:
+    # 2) DokAgents
+    print(f"\n[2/5] DokAgents...")
+    for name, url in get_dokagents_channels():
         lines.append(f'#EXTINF:-1 tvg-id="dok-{name}" group-title="DokAgents Sport",{name}')
         lines.append(url)
 
     # 3) DAMITV 24/7
+    print(f"\n[3/5] DAMITV 24/7...")
     lines.extend(get_24_7_channels(seen_ids))
 
     # 4) DAMITV Live TV
+    print(f"\n[4/5] DAMITV Live TV...")
     lines.extend(get_live_tv_channels(seen_ids))
 
-    # 5) Eventi sportivi live/imminenti
+    # 5) Eventi sportivi
+    print(f"\n[5/5] Eventi sportivi...")
     lines.extend(build_sports_lines(seen_ids))
 
     if len(lines) > 1:
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
         print(f"\n✅ Salvato {OUTPUT_FILE} con {len(lines)//2} voci totali")
+        print(f"⏱️  Tempo totale: {time.time()-t_start:.1f}s")
     else:
         print("\n⚠️ Nessun canale trovato. Il file non è stato sovrascritto.")
+
 
 if __name__ == "__main__":
     main()
