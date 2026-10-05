@@ -1,6 +1,11 @@
 # ================================================================
-# CDN Live TV - Extractor v3 (Soccer only + anti rate-limit)
-# Estrae canali TV (414) + eventi calcio dall'API cdnlivetv.is
+# CDN Live TV - Extractor v4 (Soccer only + anti rate-limit + abort)
+# Estrae canali TV + eventi calcio dall'API cdnlivetv.is
+#
+# CHANGELOG v4:
+#  - RETRIES 4→2, BACKOFF_BASE 3→2, BACKOFF_MAX=6 (cap)
+#  - JITTER 0.5-1.2s → 0.3-0.7s
+#  - Abort automatico dopo 20 fallimenti consecutivi (canali)
 # ================================================================
 
 import requests
@@ -22,16 +27,18 @@ CHANNELS_OUTPUT = "cdnlivetv_channels.m3u"
 EVENTS_OUTPUT = "cdnlivetv_events.m3u"
 
 # --- SOLO CALCIO ---
-ONLY_SPORT = "Soccer"          # None = tutti gli sport
+ONLY_SPORT = "Soccer"
 
 # --- ANTI RATE-LIMIT ---
 MAX_WORKERS = 3
 TIMEOUT = 20
-RETRIES = 4
-JITTER_MIN = 0.5
-JITTER_MAX = 1.2
+RETRIES = 2
+JITTER_MIN = 0.3
+JITTER_MAX = 0.7
 PAUSE_BETWEEN_PHASES = 45
-BACKOFF_BASE = 3
+BACKOFF_BASE = 2
+BACKOFF_MAX = 6
+MAX_CONSECUTIVE_FAIL = 20
 
 MAX_CHANNELS = 0
 EVENTS_ONLY_LIVE = False
@@ -98,7 +105,8 @@ def resolve_m3u8(player_url: str):
                              timeout=TIMEOUT, verify=False)
 
             if r.status_code in (429, 502, 503):
-                time.sleep((2 ** attempt) * BACKOFF_BASE + random.uniform(0, 2))
+                wait = min((2 ** attempt) * BACKOFF_BASE, BACKOFF_MAX) + random.uniform(0, 1)
+                time.sleep(wait)
                 last_err = f"HTTP {r.status_code}"
                 continue
 
@@ -190,7 +198,7 @@ def fetch_api(url: str, label: str):
         try:
             r = requests.get(url, headers=HEADERS, timeout=TIMEOUT, verify=False)
             if r.status_code in (429, 502, 503):
-                wait = (2 ** attempt) * BACKOFF_BASE + random.uniform(0, 2)
+                wait = min((2 ** attempt) * BACKOFF_BASE, BACKOFF_MAX) + random.uniform(0, 1)
                 print(f"  ⏸️ {label} HTTP {r.status_code}, attendo {wait:.1f}s...")
                 time.sleep(wait)
                 continue
@@ -207,8 +215,9 @@ def fetch_api(url: str, label: str):
 # ================================================================
 def main():
     print("=" * 60)
-    print(" CDN Live TV - Extractor v3 (Soccer only)")
+    print(" CDN Live TV - Extractor v4 (Soccer only + abort)")
     print(f" Workers: {MAX_WORKERS} | Jitter: {JITTER_MIN}-{JITTER_MAX}s")
+    print(f" Retries: {RETRIES} | Backoff max: {BACKOFF_MAX}s | Abort: {MAX_CONSECUTIVE_FAIL} KO di fila")
     if ONLY_SPORT:
         print(f" Filtro sport: {ONLY_SPORT}")
     print("=" * 60)
@@ -264,7 +273,7 @@ def main():
     print(f"\n⏸️  Pausa {PAUSE_BETWEEN_PHASES}s...")
     time.sleep(PAUSE_BETWEEN_PHASES)
 
-    # ============ FASE 2: CANALI ============
+    # ============ FASE 2: CANALI (con abort) ============
     print(f"\n[2/2] Scarico API canali TV...")
     data_ch = fetch_api(API_CHANNELS, "API canali")
 
@@ -277,21 +286,46 @@ def main():
         channels = channels[:MAX_CHANNELS]
 
     results_tv = []
+    aborted = False
     if channels:
         print(f"Elaboro {len(channels)} canali...")
         t0 = time.time()
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-            futures = [ex.submit(process_channel, ch) for ch in channels]
-            done = 0
-            last_log = 0
+        last_log = 0
+        done = 0
+        consecutive_fail = 0
+
+        executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
+        futures = [executor.submit(process_channel, ch) for ch in channels]
+
+        try:
             for fut in as_completed(futures):
-                results_tv.append(fut.result())
+                r = fut.result()
+                results_tv.append(r)
                 done += 1
+
+                if r["url"]:
+                    consecutive_fail = 0
+                else:
+                    consecutive_fail += 1
+
                 now = time.time()
                 if done % 50 == 0 or (now - last_log) > 30 or done == len(channels):
-                    ok = sum(1 for r in results_tv if r["url"])
+                    ok = sum(1 for x in results_tv if x["url"])
                     print(f"  [{done}/{len(channels)}] OK: {ok}  ({now-t0:.0f}s)")
                     last_log = now
+
+                if consecutive_fail >= MAX_CONSECUTIVE_FAIL:
+                    print(f"\n🛑 Rate-limit rilevato: {consecutive_fail} KO consecutivi")
+                    print(f"   Abort dopo {done}/{len(channels)} canali (~{now-t0:.0f}s)")
+                    aborted = True
+                    break
+        finally:
+            if aborted:
+                for f in futures:
+                    f.cancel()
+                executor.shutdown(wait=False, cancel_futures=True)
+            else:
+                executor.shutdown(wait=True)
 
     # ============ DEDUPLICA ============
     seen_titles = set()
@@ -326,7 +360,8 @@ def main():
                     f'group-title="CDN Live TV Events - {sport}",{r["name"]}\n')
             f.write(f'{r["url"]}\n')
 
-    print(f"\n✅ Canali TV OK:    {len(tv_ok)}/{len(results_tv)}")
+    print(f"\n✅ Canali TV OK:    {len(tv_ok)}/{len(results_tv)}" +
+          (" (ABORT)" if aborted else ""))
     print(f"✅ Eventi unici OK: {len(results_ev)}/{len(results_ev_raw)}")
     print(f"📄 {CHANNELS_OUTPUT} | {EVENTS_OUTPUT}")
 
