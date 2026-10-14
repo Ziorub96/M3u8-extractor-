@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Combina playlist M3U da sorgenti remote e locali.
+"""
 import re
 import requests
 from pathlib import Path
@@ -45,11 +50,11 @@ LOCAL_SOURCES = [
     ("Daddylive", "daddylive_streams.m3u", False),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u", False),
     ("CDN Live TV Events", "cdnlivetv_events.m3u", False),
-    ("StreamCorner", "streamcorner_COMPLETE.m3u", True),   # ⬅️ NUOVO — conserva group-title originali
+    ("StreamCorner", "streamcorner_COMPLETE.m3u", True),   # conserva group-title originali
+    ("WatchFooty", "watchfooty_events.m3u", False),        # ⬅️ NUOVO
 ]
 
 # === SORGENTI DISMESSE (commentate per storico) ===
-# ("WatchFooty", "watchfooty_events.m3u"),      # sempre vuoto
 # ("XYZStreams", "xyzstreams_events.m3u"),      # proxy Node fragile
 # ("SMTK Sport", "smtk_sport.m3u"),             # geobloccati (VPN russa)
 # ("Extra Sources", "extra_sources.m3u"),       # 0 flussi funzionanti
@@ -83,7 +88,9 @@ def fetch_local_playlist(path):
 
 def set_group_title(extinf_line, group_title):
     if 'group-title="' in extinf_line:
-        return re.sub(r'group-title="[^"]*"', f'group-title="{group_title}"', extinf_line)
+        return re.sub(r'group-title="[^"]*"',
+                      f'group-title="{group_title}"',
+                      extinf_line)
     if ',' in extinf_line:
         head, tail = extinf_line.rsplit(',', 1)
         return f'{head} group-title="{group_title}",{tail}'
@@ -97,7 +104,8 @@ def set_tvg_id(extinf_line, channel_name, group_title):
     if not tvg_id:
         return extinf_line
     if 'group-title="' in extinf_line:
-        return extinf_line.replace('group-title="', f'tvg-id="{tvg_id}" group-title="')
+        return extinf_line.replace('group-title="',
+                                   f'tvg-id="{tvg_id}" group-title="')
     if ',' in extinf_line:
         head, tail = extinf_line.rsplit(',', 1)
         return f'{head} tvg-id="{tvg_id}",{tail}'
