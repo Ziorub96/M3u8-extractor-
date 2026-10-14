@@ -20,6 +20,17 @@ USER_AGENT = (
     "Chrome/131.0.0.0 Safari/537.36"
 )
 
+# ============================================================
+# SKIP PATTERNS — URL che NON vanno testati (pass-through diretto)
+# ------------------------------------------------------------
+# StreamCorner usa embed_url (pagine HTML, non m3u8 diretti).
+# ffprobe/check segmento li boccerebbe tutti → li facciamo passare.
+# ============================================================
+SKIP_URL_PATTERNS = [
+    "getsugatensho",     # embed StreamCorner (mirror .st/.su/.sbs)
+    "sportsembed",       # embed StreamCorner
+]
+
 DOMAIN_HEADERS = {
     "ondemand.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "messi.damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
@@ -120,6 +131,11 @@ def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
     if cookie_str:
         h["Cookie"] = cookie_str
     return "\r\n".join(f"{k}: {v}" for k, v in h.items()) + "\r\n"
+
+
+def should_skip(url: str) -> bool:
+    """True se l'URL deve essere saltato (pass-through senza test)."""
+    return any(pattern in url for pattern in SKIP_URL_PATTERNS)
 
 
 def check_first_segment(manifest_text: str, manifest_url: str) -> tuple:
@@ -303,6 +319,10 @@ def controlla_blocco(block):
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
         return block, False, "youtube escluso"
 
+    # === SKIP: URL StreamCorner (embed HTML) → pass-through ===
+    if should_skip(url):
+        return block, True, "skip (embed pass-through)"
+
     time.sleep(random.uniform(0.1, 0.3))
 
     soft_ok, soft_msg, cookie_str = http_check_m3u8(url)
@@ -351,6 +371,7 @@ def main():
     funzionanti = []
     non_funzionanti = []
     soft_only = 0
+    skipped = 0
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = [ex.submit(controlla_blocco, b) for b in blocks]
@@ -361,6 +382,8 @@ def main():
                 funzionanti.append(block)
                 if motivo.startswith("soft-"):
                     soft_only += 1
+                if motivo.startswith("skip"):
+                    skipped += 1
                 if i % 20 == 0:
                     print(f"[{i}/{len(blocks)}] OK | {nome}")
             else:
@@ -379,7 +402,8 @@ def main():
             nome = block[0].split(",")[-1].strip()
             f.write(f"{nome} | {block[-1]} | {motivo}\n")
 
-    print(f"\n✅ Funzionanti: {len(funzionanti)} (di cui soft-only: {soft_only})")
+    print(f"\n✅ Funzionanti: {len(funzionanti)} "
+          f"(di cui soft-only: {soft_only}, skip pass-through: {skipped})")
     print(f"❌ Non funzionanti: {len(non_funzionanti)}")
     print(f"📄 {out_ok} | {out_ko}")
 
