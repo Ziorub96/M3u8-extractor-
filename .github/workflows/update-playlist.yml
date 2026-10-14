@@ -44,6 +44,11 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
+      - name: Extract StreamCorner streams
+        run: python streamcorner_extractor.py --output streamcorner_COMPLETE.m3u
+        continue-on-error: true
+        timeout-minutes: 10
+
       # ============================================================
       # STEP DISMESSI (commentati per storico)
       # ------------------------------------------------------------
@@ -72,3 +77,4 @@ jobs:
             daddylive_streams.m3u
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
+            streamcorner_COMPLETE.m3u
