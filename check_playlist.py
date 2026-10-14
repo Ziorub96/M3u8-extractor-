@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Check playlist M3U: verifica ogni flusso e produce una versione checked.
+"""
 import re
 import subprocess
 import sys
@@ -25,10 +30,13 @@ USER_AGENT = (
 # ------------------------------------------------------------
 # StreamCorner usa embed_url (pagine HTML, non m3u8 diretti).
 # ffprobe/check segmento li boccerebbe tutti → li facciamo passare.
+#
+# WatchFooty: Playwright produce m3u8 veri, ma alcuni embed residui
+# possono essere pagine sportsembed → skip anche per loro.
 # ============================================================
 SKIP_URL_PATTERNS = [
     "getsugatensho",     # embed StreamCorner (mirror .st/.su/.sbs)
-    "sportsembed",       # embed StreamCorner
+    "sportsembed",       # embed StreamCorner / WatchFooty residui
 ]
 
 DOMAIN_HEADERS = {
@@ -319,7 +327,7 @@ def controlla_blocco(block):
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
         return block, False, "youtube escluso"
 
-    # === SKIP: URL StreamCorner (embed HTML) → pass-through ===
+    # === SKIP: URL StreamCorner / WatchFooty (embed HTML) → pass-through ===
     if should_skip(url):
         return block, True, "skip (embed pass-through)"
 
