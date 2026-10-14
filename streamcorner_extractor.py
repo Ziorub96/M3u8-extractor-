@@ -6,14 +6,16 @@ StreamCorner Extractor — CARNETS-style
 
 Estrae canali e eventi da StreamCorner.st e genera playlist M3U.
 
-Funziona completamente offline dopo il primo run (il vault viene
-salvato in `.streamcorner_vault.json`).
+Opzionalmente risolve gli embed_url in m3u8 diretti tramite Playwright
+(richiede `pip install playwright && playwright install chromium`).
 
 Uso:
-    python streamcorner_extractor.py                    # tutto
+    python streamcorner_extractor.py                        # catalogo base
+    python streamcorner_extractor.py --split                # + M3U per provider
+    python streamcorner_extractor.py --playwright           # + risoluzione m3u8
+    python streamcorner_extractor.py --playwright --playwright-workers 4
+    python streamcorner_extractor.py --refresh-vault        # rigenera vault
     python streamcorner_extractor.py --providers slingtv_channels,nba
-    python streamcorner_extractor.py --refresh-vault     # ri-forza il vault
-    python streamcorner_extractor.py --output streamcorner.m3u
 """
 
 import os
@@ -41,6 +43,7 @@ WORKER_ASSETS = [
     "https://streamcorner.st/assets/provider_worker.js",
 ]
 VAULT_CACHE = ".streamcorner_vault.json"
+M3U8_CACHE = ".streamcorner_m3u8_cache.json"
 
 # Provider supportati: (endpoint, keyField)
 PROVIDERS = {
@@ -66,6 +69,9 @@ HEADERS_WORKER = {
     "Content-Type": "text/plain",
     "Accept": "application/octet-stream",
 }
+
+# -- Playwright -- (importato lazy, solo se richiesto)
+PLAYWRIGHT_AVAILABLE = None  # determinato al runtime
 
 
 # ============================================================
@@ -250,7 +256,6 @@ def load_vault(force_refresh=False, verbose=True):
     if not worker_js:
         raise RuntimeError("Impossibile scaricare il worker")
 
-    # Estrai `dr` (chiave) e `Ar` (payload cifrato)
     dr_arr = _extract_array_strings(worker_js, "dr")
     Ar_arr = _extract_array_strings(worker_js, "Ar")
     if not dr_arr or not Ar_arr:
@@ -279,12 +284,12 @@ def load_vault(force_refresh=False, verbose=True):
 class StreamCornerClient:
     def __init__(self, vault):
         self.vault = vault
-        self.t = decode_spec(vault['specs'][0])   # "ninjacorner.api...."
-        self.e = decode_spec(vault['specs'][1])   # "ninjacorner.transport...."
-        self.n = decode_spec(vault['specs'][3])   # "ninjacorner.token...."
-        self.tr = get_const(vault, 16)            # "ninjacorner:req:outer:v4"
-        self.nr = get_const(vault, 20)            # "ninjacorner:req:guard:v4"
-        self.Br = get_const(vault, 25)            # "ninjacorner:outer:v3"
+        self.t = decode_spec(vault['specs'][0])
+        self.e = decode_spec(vault['specs'][1])
+        self.n = decode_spec(vault['specs'][3])
+        self.tr = get_const(vault, 16)
+        self.nr = get_const(vault, 20)
+        self.Br = get_const(vault, 25)
         self.r_key = hashlib.sha256(self.t + self.e + self.tr).digest()
         self.n_str = self.n.decode("utf-8", "replace")
         self.session = requests.Session()
@@ -399,19 +404,215 @@ def fetch_provider(client, provider, key_field, workers=15, verbose=True):
 
 
 # ============================================================
+# PLAYWRIGHT RESOLVER — embed_url → m3u8 diretto
+# ============================================================
+def _check_playwright():
+    """Verifica se Playwright è disponibile (una volta sola)."""
+    global PLAYWRIGHT_AVAILABLE
+    if PLAYWRIGHT_AVAILABLE is not None:
+        return PLAYWRIGHT_AVAILABLE
+    try:
+        from playwright.sync_api import sync_playwright  # noqa
+        PLAYWRIGHT_AVAILABLE = True
+    except ImportError:
+        PLAYWRIGHT_AVAILABLE = False
+        print("   ⚠️  Playwright non installato.")
+        print("      pip install playwright && playwright install chromium")
+    return PLAYWRIGHT_AVAILABLE
+
+
+def resolve_embed_with_playwright(embed_url, timeout=30, verbose=False):
+    """
+    Apre embed_url in un browser headless e intercetta la richiesta m3u8.
+    Ritorna l'URL m3u8 o None.
+    """
+    if not _check_playwright():
+        return None
+
+    from playwright.sync_api import sync_playwright
+
+    found = {"m3u8": None}
+
+    def on_response(response):
+        url = response.url
+        if ".m3u8" in url and found["m3u8"] is None:
+            try:
+                body = response.text()
+                if "#EXTM3U" in body[:500]:
+                    found["m3u8"] = url
+                    if verbose:
+                        print(f"      🎯 {url[:110]}")
+            except Exception:
+                pass
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--no-sandbox",
+                    "--disable-blink-features=AutomationControlled",
+                    "--disable-dev-shm-usage",
+                ],
+            )
+            context = browser.new_context(
+                user_agent=UA,
+                viewport={"width": 1280, "height": 720},
+                locale="en-US",
+            )
+            context.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            """)
+            page = context.new_page()
+            page.on("response", on_response)
+
+            try:
+                page.goto(embed_url, wait_until="domcontentloaded",
+                          timeout=timeout * 1000)
+            except Exception:
+                pass
+
+            # Aspetta che il player parta (max 15s)
+            for _ in range(15):
+                if found["m3u8"]:
+                    break
+                try:
+                    page.wait_for_timeout(1000)
+                except Exception:
+                    break
+
+            # Prova a cliccare play
+            if not found["m3u8"]:
+                for selector in [
+                    "button[aria-label*='play' i]",
+                    "button[title*='play' i]",
+                    ".play-button",
+                    ".vjs-big-play-button",
+                    ".jw-icon-playback",
+                    "[class*='play']",
+                ]:
+                    try:
+                        page.click(selector, timeout=1500)
+                        break
+                    except Exception:
+                        continue
+                for _ in range(10):
+                    if found["m3u8"]:
+                        break
+                    try:
+                        page.wait_for_timeout(1000)
+                    except Exception:
+                        break
+
+            browser.close()
+    except Exception as e:
+        if verbose:
+            print(f"      ❌ Playwright error: {str(e)[:120]}")
+        return None
+
+    return found["m3u8"]
+
+
+def resolve_with_playwright(items, workers=2, verbose=True, cache_file=M3U8_CACHE):
+    """
+    Risolve in parallelo gli embed_url degli item in m3u8 diretti.
+    Usa una cache persistente per evitare di rifare lo stesso lavoro.
+    """
+    # Carica cache
+    cache = {}
+    if os.path.exists(cache_file):
+        try:
+            with open(cache_file, encoding="utf-8") as f:
+                cache = json.load(f)
+            if verbose:
+                print(f"   📂 Cache m3u8: {len(cache)} voci")
+        except Exception:
+            cache = {}
+
+    # Filtra item da risolvere
+    to_resolve = []
+    for it in items:
+        embed = it.get("embed_url")
+        if not embed:
+            continue
+        if it.get("m3u8"):
+            continue
+        if embed in cache:
+            it["m3u8"] = cache[embed]
+            continue
+        to_resolve.append(it)
+
+    if verbose:
+        print(f"   🔄 Da risolvere: {len(to_resolve)} (già in cache: "
+              f"{sum(1 for it in items if it.get('m3u8'))})")
+
+    if not to_resolve:
+        return items
+
+    total = len(to_resolve)
+    resolved = 0
+    done = 0
+
+    def worker(item):
+        embed = item["embed_url"]
+        m3u8 = resolve_embed_with_playwright(embed, timeout=30, verbose=False)
+        return item, embed, m3u8
+
+    # Playwright non è thread-safe: uso ThreadPool ma con lock sul sync_playwright
+    # In pratica ogni call crea la sua istanza sync_playwright — funziona su Linux/macOS.
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = [ex.submit(worker, it) for it in to_resolve]
+        for fut in as_completed(futs):
+            done += 1
+            try:
+                item, embed, m3u8 = fut.result()
+                if m3u8:
+                    item["m3u8"] = m3u8
+                    cache[embed] = m3u8
+                    resolved += 1
+                    if verbose:
+                        print(f"   🎯 [{done}/{total}] "
+                              f"{item.get('channel_name') or item.get('event_name') or '?'}"
+                              f" → {m3u8[:80]}")
+                elif verbose and done % 10 == 0:
+                    print(f"   ·  [{done}/{total}] (risolti: {resolved})")
+            except Exception:
+                pass
+
+    # Salva cache
+    with open(cache_file, "w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+
+    if verbose:
+        print(f"   ✅ Risolti: {resolved}/{total}")
+    return items
+
+
+# ============================================================
 # M3U WRITER
 # ============================================================
-def write_m3u(items, filename, group_prefix=""):
-    """Scrive playlist M3U da lista di item."""
+def write_m3u(items, filename, group_prefix="", prefer_m3u8=False):
+    """
+    Scrive playlist M3U.
+    Se prefer_m3u8=True, scrive solo gli item con m3u8 risolto.
+    """
     seen = set()
+    written = 0
     with open(filename, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        f.write(f"# StreamCorner — {len(items)} stream\n\n")
+        f.write(f"# StreamCorner — {len(items)} item\n\n")
         for it in items:
-            url = it.get("embed_url")
+            # Scegli URL
+            if prefer_m3u8:
+                url = it.get("m3u8")
+                if not url:
+                    continue
+            else:
+                url = it.get("m3u8") or it.get("embed_url")
             if not url or url in seen:
                 continue
             seen.add(url)
+            written += 1
 
             name = (it.get("channel_name") or it.get("event_name")
                     or it.get("title") or it.get("name") or "?")
@@ -430,7 +631,7 @@ def write_m3u(items, filename, group_prefix=""):
             else:
                 f.write(f'#EXTINF:-1 group-title="{cat}",{name}\n')
             f.write(url + "\n")
-    return len(seen)
+    return written
 
 
 # ============================================================
@@ -448,9 +649,15 @@ def main():
     parser.add_argument("--refresh-vault", action="store_true",
                         help="Forza rigenerazione vault")
     parser.add_argument("--workers", type=int, default=15,
-                        help="Thread paralleli (default: 15)")
+                        help="Thread paralleli per provider (default: 15)")
     parser.add_argument("--split", action="store_true",
                         help="Genera anche M3U per provider")
+    parser.add_argument("--playwright", action="store_true",
+                        help="Risolvi embed_url in m3u8 con Playwright (lento)")
+    parser.add_argument("--playwright-workers", type=int, default=2,
+                        help="Worker Playwright paralleli (default: 2)")
+    parser.add_argument("--playwright-limit", type=int, default=0,
+                        help="Limita a N item da risolvere (0 = tutti)")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -458,7 +665,7 @@ def main():
     print("=" * 60)
 
     # 1. Vault
-    print(f"\n[1/3] Vault")
+    print(f"\n[1/4] Vault")
     vault = load_vault(force_refresh=args.refresh_vault)
     client = StreamCornerClient(vault)
 
@@ -469,7 +676,7 @@ def main():
         names = [p.strip() for p in args.providers.split(",")]
         providers = [(p, PROVIDERS[p]) for p in names if p in PROVIDERS]
 
-    print(f"\n[2/3] Fetch {len(providers)} provider")
+    print(f"\n[2/4] Fetch {len(providers)} provider")
     all_items = []
     os.makedirs(args.output_dir, exist_ok=True)
 
@@ -481,25 +688,65 @@ def main():
                 it["_provider"] = provider
             all_items.extend(items)
 
-            if args.split:
+            if args.split and not args.playwright:
                 fname = os.path.join(args.output_dir,
                                      f"streamcorner_{provider}.m3u")
                 n = write_m3u(items, fname, group_prefix=provider)
                 print(f"      💾 {fname} ({n})")
 
-    # 3. Playlist finale
-    print(f"\n[3/3] Playlist finale")
-    total = write_m3u(all_items, os.path.join(args.output_dir, args.output))
-    print(f"\n   💾 {args.output}: {total} stream unici")
+    # 3. (Opzionale) Playwright
+    if args.playwright:
+        print(f"\n[3/4] Risoluzione m3u8 con Playwright")
+        if args.playwright_limit > 0:
+            all_items = all_items[:args.playwright_limit]
+            print(f"   ⚠️  Limite attivo: {len(all_items)} item")
+        all_items = resolve_with_playwright(
+            all_items, workers=args.playwright_workers, verbose=True)
 
-    # Salva JSON per usi futuri
+    # 4. Playlist finale
+    print(f"\n[4/4] Playlist finale")
+
+    # 4a. Playlist "mixed" (m3u8 se disponibile, altrimenti embed_url)
+    mixed_path = os.path.join(args.output_dir, args.output)
+    total_mixed = write_m3u(all_items, mixed_path, prefer_m3u8=False)
+    print(f"   💾 {args.output}: {total_mixed} stream (mixed)")
+
+    # 4b. Se Playwright, genera anche playlist solo-m3u8 (VLC-ready)
+    if args.playwright:
+        vlc_name = args.output.replace(".m3u", "_VLC.m3u")
+        if not vlc_name.endswith("_VLC.m3u"):
+            vlc_name = "streamcorner_VLC.m3u"
+        vlc_path = os.path.join(args.output_dir, vlc_name)
+        total_vlc = write_m3u(all_items, vlc_path, prefer_m3u8=True)
+        print(f"   💾 {vlc_name}: {total_vlc} stream (solo m3u8, VLC-ready)")
+
+    # 4c. Split per provider se richiesto
+    if args.split and args.playwright:
+        print(f"\n   📂 Split per provider (solo m3u8)...")
+        by_provider = {}
+        for it in all_items:
+            p = it.get("_provider", "other")
+            by_provider.setdefault(p, []).append(it)
+        for p, items in by_provider.items():
+            fname = os.path.join(args.output_dir, f"streamcorner_{p}.m3u")
+            n = write_m3u(items, fname, group_prefix=p, prefer_m3u8=True)
+            if n > 0:
+                print(f"      💾 {fname} ({n})")
+
+    # JSON finale
     json_path = os.path.join(args.output_dir, "streamcorner_data.json")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(all_items, f, indent=2, ensure_ascii=False, default=str)
     print(f"   💾 {json_path}")
 
+    # Riepilogo
+    n_with_m3u8 = sum(1 for it in all_items if it.get("m3u8"))
+    n_with_embed = sum(1 for it in all_items if it.get("embed_url"))
     print("\n" + "=" * 60)
-    print(f"✅ COMPLETATO: {total} stream")
+    print(f"✅ COMPLETATO")
+    print(f"   Item totali:       {len(all_items)}")
+    print(f"   Con embed_url:     {n_with_embed}")
+    print(f"   Con m3u8 (directo):{n_with_m3u8}")
     print("=" * 60)
 
 
