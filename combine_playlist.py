@@ -37,11 +37,15 @@ SOURCES = [
 ]
 
 # === SORGENTI LOCALI (prodotte dagli estrattori attivi) ===
+# Formato: (nome_sorgente, file_path, keep_group_title)
+#   - keep_group_title=True  → mantiene il group-title originale del file
+#   - keep_group_title=False → forza group-title = nome_sorgente
 LOCAL_SOURCES = [
-    ("DAMITV", "damitv_events.m3u"),
-    ("Daddylive", "daddylive_streams.m3u"),
-    ("CDN Live TV Channels", "cdnlivetv_channels.m3u"),
-    ("CDN Live TV Events", "cdnlivetv_events.m3u"),
+    ("DAMITV", "damitv_events.m3u", False),
+    ("Daddylive", "daddylive_streams.m3u", False),
+    ("CDN Live TV Channels", "cdnlivetv_channels.m3u", False),
+    ("CDN Live TV Events", "cdnlivetv_events.m3u", False),
+    ("StreamCorner", "streamcorner_COMPLETE.m3u", True),   # ⬅️ NUOVO — conserva group-title originali
 ]
 
 # === SORGENTI DISMESSE (commentate per storico) ===
@@ -120,7 +124,12 @@ def parse_m3u(lines):
     return blocks
 
 
-def process_blocks(blocks, name, all_lines, seen_urls):
+def process_blocks(blocks, name, all_lines, seen_urls, keep_group_title=False):
+    """Aggiunge i blocchi alla playlist combinata.
+
+    Se keep_group_title=True, mantiene il group-title originale del file
+    (usato per StreamCorner che ha già group-title per categoria).
+    """
     added = 0
     for block in blocks:
         stream_url = block[-1]
@@ -134,7 +143,8 @@ def process_blocks(blocks, name, all_lines, seen_urls):
         seen_urls.add(stream_url)
         # Applica group-title e tvg-id
         if block[0].startswith("#EXTINF"):
-            block[0] = set_group_title(block[0], name)
+            if not keep_group_title:
+                block[0] = set_group_title(block[0], name)
             channel_name = block[0].split(",")[-1].strip()
             block[0] = set_tvg_id(block[0], channel_name, name)
         all_lines.extend(block)
@@ -154,11 +164,19 @@ def main():
         print(f"   -> {len(blocks)} voci trovate")
         if blocks:
             all_lines.append(f"# ===== SORGENTE: {name} =====")
-            added = process_blocks(blocks, name, all_lines, seen_urls)
+            added = process_blocks(blocks, name, all_lines, seen_urls,
+                                   keep_group_title=False)
             print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
     # --- Sorgenti locali ---
-    for name, path in LOCAL_SOURCES:
+    for entry in LOCAL_SOURCES:
+        # Supporto sia per tuple a 2 che a 3 elementi (retrocompatibilità)
+        if len(entry) == 3:
+            name, path, keep_group = entry
+        else:
+            name, path = entry
+            keep_group = False
+
         if not Path(path).exists():
             print(f"⚠️  Skip {name} (file assente: {path})")
             continue
@@ -168,7 +186,8 @@ def main():
         print(f"   -> {len(blocks)} voci trovate")
         if blocks:
             all_lines.append(f"# ===== SORGENTE: {name} =====")
-            added = process_blocks(blocks, name, all_lines, seen_urls)
+            added = process_blocks(blocks, name, all_lines, seen_urls,
+                                   keep_group_title=keep_group)
             print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
