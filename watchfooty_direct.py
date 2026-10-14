@@ -1,6 +1,19 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+WatchFooty Extractor — CARNETS-style (Playwright)
+=================================================
+Estrae eventi live da watchfooty.st e risolve gli embed
+sportsembed.su → m3u8 diretto.
+
+Uso:
+    python watchfooty_extractor.py                # live only (default)
+    python watchfooty_extractor.py --all          # anche non-live
+    python watchfooty_extractor.py --max 5        # limita a 5 match
+"""
 from __future__ import annotations
 
+import argparse
 import asyncio
 import re
 import sys
@@ -16,11 +29,12 @@ USER_AGENT = (
     "AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/131.0.0.0 Safari/537.36"
 )
-MAX_MATCHES = 20
-TIMEOUT_PER_EMBED = 20
+MAX_MATCHES_DEFAULT = 20
+TIMEOUT_PER_EMBED = 25
 ONLY_LIVE = True
 
-def get_matches() -> list[dict]:
+
+def get_matches(max_matches: int, only_live: bool = True) -> list[dict]:
     print("📡 WatchFooty: scarico i match dall'API...")
     headers = {
         "User-Agent": USER_AGENT,
@@ -42,7 +56,7 @@ def get_matches() -> list[dict]:
         if not streams:
             continue
         status = (m.get("status") or "").lower()
-        if ONLY_LIVE and status not in ("in", "live"):
+        if only_live and status not in ("in", "live"):
             continue
         matches.append({
             "id": str(m.get("matchId") or m.get("id") or ""),
@@ -52,8 +66,34 @@ def get_matches() -> list[dict]:
             "streams": streams[:3],
         })
 
-    print(f"✅ WatchFooty: {len(matches)} match live (max {MAX_MATCHES})")
-    return matches[:MAX_MATCHES]
+    print(f"✅ WatchFooty: {len(matches)} match "
+          f"{'live' if only_live else 'totali'} (max {max_matches})")
+    return matches[:max_matches]
+
+
+async def _try_navigate_iframe(page, timeout_ms: int = 10000) -> bool:
+    """
+    Cerca un iframe nella pagina e naviga dentro di esso.
+    Ritorna True se ha navigato, False altrimenti.
+    """
+    try:
+        iframe_element = await page.query_selector("iframe")
+        if not iframe_element:
+            return False
+        iframe_src = await iframe_element.get_attribute("src")
+        if not iframe_src:
+            return False
+        if iframe_src.startswith("//"):
+            iframe_src = "https:" + iframe_src
+        if not iframe_src.startswith("http"):
+            return False
+        await page.goto(iframe_src, wait_until="domcontentloaded",
+                        timeout=timeout_ms)
+        await asyncio.sleep(2)
+        return True
+    except Exception:
+        return False
+
 
 async def extract_m3u8_from_page(context, embed_url: str) -> str | None:
     captured: list[str] = []
@@ -63,45 +103,45 @@ async def extract_m3u8_from_page(context, embed_url: str) -> str | None:
         url = req.url
         low = url.lower()
         if ".m3u8" in low and not url.startswith("blob:"):
-            if not any(x in low for x in ("ad.", "ads.", "tracker", "analytics", "doubleclick")):
+            if not any(x in low for x in
+                       ("ad.", "ads.", "tracker", "analytics", "doubleclick")):
                 if url not in captured:
                     captured.append(url)
 
     page.on("request", on_request)
 
     try:
-        # Naviga verso l'embed principale di sportsembed.su
-        await page.goto(embed_url, wait_until="domcontentloaded", timeout=TIMEOUT_PER_EMBED * 1000)
+        # 1. Naviga verso l'embed principale
+        await page.goto(embed_url, wait_until="domcontentloaded",
+                        timeout=TIMEOUT_PER_EMBED * 1000)
         await asyncio.sleep(2)
 
-        # 1. Cerca eventuale iframe dentro sportsembed.su e ricava il suo SRC
-        iframe_element = await page.query_selector("iframe")
-        if iframe_element:
-            iframe_src = await iframe_element.get_attribute("src")
-            if iframe_src and iframe_src.startswith("http"):
-                # Naviga direttamente dentro l'URL del player finale
+        # 2. Primo iframe annidato
+        if await _try_navigate_iframe(page):
+            # 3. Secondo iframe (annidato, alcuni player ne hanno 2)
+            if not captured:
+                await _try_navigate_iframe(page, timeout_ms=8000)
+
+        # 4. Click su più punti per sbloccare overlay/popup (Clappr/JWPlayer/HLS.js)
+        if not captured:
+            for x, y in [(640, 360), (400, 300), (800, 400), (640, 500)]:
                 try:
-                    await page.goto(iframe_src, wait_until="domcontentloaded", timeout=10000)
-                    await asyncio.sleep(2)
+                    await page.mouse.click(x, y)
+                    await asyncio.sleep(0.5)
+                    if captured:
+                        break
                 except Exception:
-                    pass
+                    continue
 
-        # 2. Clicca al centro dello schermo/video per sbloccare l'overlay dei player (Clappr/JWPlayer/HlsJS)
-        try:
-            await page.mouse.click(640, 360)
-            await asyncio.sleep(1)
-        except Exception:
-            pass
-
-        # 3. Attesa breve per intercettare l'm3u8
-        for _ in range(5):
+        # 5. Attesa estesa (player lenti)
+        for _ in range(15):
             if captured:
                 break
             await asyncio.sleep(1)
 
     except PlaywrightTimeout:
         pass
-    except Exception as e:
+    except Exception:
         pass
     finally:
         await page.close()
@@ -115,11 +155,12 @@ async def extract_m3u8_from_page(context, embed_url: str) -> str | None:
             return url
     return captured[0]
 
-async def build_playlist() -> int:
-    matches = get_matches()
+
+async def build_playlist(max_matches: int, only_live: bool) -> int:
+    matches = get_matches(max_matches, only_live)
     if not matches:
         Path(OUTPUT_FILE).write_text("#EXTM3U\n", encoding="utf-8")
-        print("⚠️ Nessun match live, file vuoto creato")
+        print("⚠️  Nessun match, file vuoto creato")
         return 0
 
     lines = ["#EXTM3U"]
@@ -132,22 +173,22 @@ async def build_playlist() -> int:
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
-                "--disable-web-security",  # Bypass per la cattura cross-origin negli iframe
-                "--disable-features=IsolateOrigins,site-per-process"
+                "--disable-web-security",
+                "--disable-features=IsolateOrigins,site-per-process",
             ]
         )
-        
         context = await browser.new_context(
             user_agent=USER_AGENT,
             viewport={"width": 1280, "height": 720},
-            bypass_csp=True, # Permette l'ispezione di script ed iframe protetti
+            bypass_csp=True,
             extra_http_headers={
                 "Referer": "https://sportsembed.su/",
-                "Origin": "https://sportsembed.su"
+                "Origin": "https://sportsembed.su",
             }
         )
-
-        await context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        await context.add_init_script(
+            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+        )
 
         for i, match in enumerate(matches, 1):
             print(f"\n[{i}/{len(matches)}] {match['title']}")
@@ -162,11 +203,14 @@ async def build_playlist() -> int:
 
                 if m3u8:
                     display = f"[{match['league']}] {match['title']} ({quality})"
-                    lines.append(f'#EXTINF:-1 tvg-id="wf-{match["id"]}-{j}" group-title="WatchFooty",{display}')
-                    lines.append(f'#EXTVLCOPT:http-referrer=https://sportsembed.su/')
+                    lines.append(
+                        f'#EXTINF:-1 tvg-id="wf-{match["id"]}-{j}" '
+                        f'group-title="WatchFooty",{display}'
+                    )
+                    lines.append("#EXTVLCOPT:http-referrer=https://sportsembed.su/")
                     lines.append(m3u8)
                     success += 1
-                    print("   ✅ OK")
+                    print(f"   ✅ {m3u8[:100]}")
                     break
                 else:
                     print("   ❌ Nessun m3u8")
@@ -177,15 +221,32 @@ async def build_playlist() -> int:
     print(f"\n✅ WatchFooty: salvato {OUTPUT_FILE} con {success} eventi")
     return success
 
+
 def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="WatchFooty Extractor — Playwright"
+    )
+    parser.add_argument("--max", type=int, default=MAX_MATCHES_DEFAULT,
+                        help=f"Max match da processare (default: {MAX_MATCHES_DEFAULT})")
+    parser.add_argument("--all", action="store_true",
+                        help="Includi anche match non-live")
+    parser.add_argument("--output", default=OUTPUT_FILE,
+                        help=f"File output (default: {OUTPUT_FILE})")
+    args = parser.parse_args()
+
+    # Applica output custom
+    global OUTPUT_FILE
+    OUTPUT_FILE = args.output
+
     try:
-        count = asyncio.run(build_playlist())
+        count = asyncio.run(build_playlist(args.max, not args.all))
         if count == 0:
-            print("Nessuno stream WatchFooty aggiunto")
+            print("⚠️  Nessuno stream WatchFooty aggiunto")
     except Exception as e:
         print(f"❌ Errore fatale WatchFooty: {e}", file=sys.stderr)
         Path(OUTPUT_FILE).write_text("#EXTM3U\n", encoding="utf-8")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
