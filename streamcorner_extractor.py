@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor — EVENTS LIVE ONLY (v2 con patch Playwright)
-====================================================================
-Estrae SOLO gli eventi attualmente in onda dal provider "admin" di
-StreamCorner e risolve gli m3u8 via Playwright.
-
-Compatibile col CLI del workflow (--playwright-limit, --playwright-workers,
---refresh-vault, --no-playwright, --output).
+StreamCorner Extractor — EVENTS LIVE ONLY (v3 - Stealth + DRM Capture)
+=======================================================================
+Versione potenziata con:
+- Stealth avanzato (anti-bot detection bypass)
+- Emulazione WebGL (swiftshader) per far partire Bitmovin/Shaka
+- Intercettazione profonda di tutte le richieste di rete
+- Cattura PSSH + License URL (primo passo per decrittazione DRM)
+- Report DRM strutturato in JSON
 
 Output:
     streamcorner_VLC.m3u          → m3u8 eventi live (usato dal combine)
     streamcorner_EVENTS_LIVE.m3u  → eventi live, raggruppati per partita
     streamcorner_COMPLETE.m3u     → mixed (embed + m3u8), debug
     streamcorner_events.json      → dati grezzi
+    streamcorner_drm_report.json  → PSSH + license URL catturati
 """
 
 import os, re, json, time, struct, hashlib, argparse, base64
@@ -31,8 +33,9 @@ WORKER_ASSETS = [
     "https://streamcorner.st/assets/provider-data.worker-DzCsTezu.js",
     "https://streamcorner.st/assets/provider_worker.js",
 ]
-VAULT_CACHE = ".streamcorner_vault.json"
-M3U8_CACHE  = ".streamcorner_events_m3u8_cache.json"
+VAULT_CACHE  = ".streamcorner_vault.json"
+M3U8_CACHE   = ".streamcorner_events_m3u8_cache.json"
+DRM_LOG_FILE = "streamcorner_drm_report.json"
 
 UA = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
       "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
@@ -40,9 +43,8 @@ UA = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
 PROVIDER  = "admin"
 KEY_FIELD = "stream_id"
 
-# Margine "live adesso" (secondi)
-LIVE_MARGIN_BEFORE = 1800   # 30 min prima
-LIVE_MARGIN_AFTER  = 3600   # 60 min dopo
+LIVE_MARGIN_BEFORE = 1800
+LIVE_MARGIN_AFTER  = 3600
 
 # ============================================================
 # SALSA20/12
@@ -233,25 +235,137 @@ def filter_live(events):
     return live
 
 # ============================================================
-# PLAYWRIGHT — v2 con patch swiftshader/autoplay/log
+# UTILITY: estrazione PSSH
 # ============================================================
-def resolve_with_playwright(embed_url, timeout=35, event_name="?", src_name="?"):
+def extract_pssh_from_text(text):
+    """
+    Cerca PSSH box (base64) nel testo. I PSSH hanno un box 'pssh' a offset 4.
+    Ritorna la prima corrispondenza o None.
+    """
+    if not text:
+        return None
+    for match in re.findall(r'[A-Za-z0-9+/]{40,}={0,2}', text):
+        try:
+            decoded = base64.b64decode(match + "=" * ((4 - len(match) % 4) % 4))
+            # PSSH box: [4 byte size][4 byte 'pssh'][...]
+            if len(decoded) >= 12 and decoded[4:8] == b'pssh':
+                return match
+        except Exception:
+            continue
+    return None
+
+def extract_kid_from_key_line(key_line):
+    """Estrae KID (Key ID) da #EXT-X-KEY se presente."""
+    m = re.search(r'KEYID=0x([0-9a-fA-F]+)', key_line)
+    return m.group(1) if m else None
+
+def extract_widevine_urn(key_line):
+    """Estrae l'UUID Widevine/PlayReady/FairPlay da KEYFORMAT."""
+    m = re.search(r'KEYFORMAT="(urn:uuid:[0-9a-fA-F-]+)"', key_line)
+    return m.group(1) if m else None
+
+# ============================================================
+# PLAYWRIGHT — v3 Stealth + DRM Capture
+# ============================================================
+def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="?"):
     from playwright.sync_api import sync_playwright
-    found = {"m3u8": None}
+
+    findings = {
+        "m3u8": None,
+        "mpd": None,
+        "license_url": None,
+        "license_method": None,
+        "license_headers": None,
+        "pssh": None,
+        "kid": None,
+        "drm_system": None,
+        "key_line": None,
+        "manifest_has_key": False,
+        "requests": [],
+    }
+
+    KEYWORDS_NET = [
+        '.m3u8', '.mpd', 'manifest', 'playlist',
+        'license', 'widevine', 'playready', 'fairplay',
+        'pssh', 'getlicense', 'acquirelicense', 'drm',
+    ]
+
+    def on_request(request):
+        url_lower = request.url.lower()
+        if any(k in url_lower for k in KEYWORDS_NET):
+            entry = {
+                "method": request.method,
+                "url": request.url[:250],
+            }
+            findings["requests"].append(entry)
+            print(f"      [NET] {request.method} {request.url[:140]}")
+
+            if any(k in url_lower for k in ['license', 'widevine',
+                                             'getlicense', 'acquirelicense']):
+                findings["license_url"] = request.url
+                findings["license_method"] = request.method
+                try:
+                    findings["license_headers"] = dict(request.headers)
+                except Exception:
+                    findings["license_headers"] = None
+                print(f"      🔑 LICENSE URL: {request.url[:150]}")
+                if request.post_data:
+                    print(f"      🔑 LICENSE BODY len: {len(request.post_data)}")
 
     def on_response(response):
-        u = response.url
-        if ".m3u8" in u and found["m3u8"] is None:
+        url = response.url
+        body_text = ""
+        try:
+            if any(k in url.lower() for k in ['.m3u8', '.mpd',
+                                               'manifest', 'license']):
+                body_text = response.text()[:20000]
+        except Exception:
+            pass
+
+        # --- m3u8 ---
+        if '.m3u8' in url and findings["m3u8"] is None:
             try:
-                if "#EXTM3U" in response.text()[:500]:
-                    found["m3u8"] = u
+                if "#EXTM3U" in body_text:
+                    findings["m3u8"] = url
+                    print(f"      🎯 M3U8: {url[:130]}")
+                    # Analizza chiavi DRM nel manifest
+                    for line in body_text.splitlines():
+                        if line.startswith("#EXT-X-KEY"):
+                            findings["manifest_has_key"] = True
+                            findings["key_line"] = line[:300]
+                            findings["kid"] = extract_kid_from_key_line(line)
+                            findings["drm_system"] = extract_widevine_urn(line)
+                            print(f"      🔐 KEY LINE: {line[:180]}")
+                        if line.startswith("#EXT-X-SESSION-KEY"):
+                            print(f"      🔐 SESSION-KEY: {line[:180]}")
             except Exception:
                 pass
 
-    def on_request(req):
-        u = req.url.lower()
-        if any(k in u for k in (".m3u8", ".mpd", "license", "widevine")):
-            print(f"      → {req.method} {req.url[:120]}")
+        # --- mpd ---
+        if '.mpd' in url and findings["mpd"] is None:
+            try:
+                if "<MPD" in body_text:
+                    findings["mpd"] = url
+                    print(f"      🎯 MPD: {url[:130]}")
+                    pssh = extract_pssh_from_text(body_text)
+                    if pssh:
+                        findings["pssh"] = pssh
+                        print(f"      🔐 PSSH nel MPD: {pssh[:80]}...")
+            except Exception:
+                pass
+
+        # --- PSSH nella risposta di licenza o manifest ---
+        if body_text and findings["pssh"] is None:
+            pssh = extract_pssh_from_text(body_text)
+            if pssh:
+                findings["pssh"] = pssh
+                print(f"      🔐 PSSH: {pssh[:80]}...")
+
+        # --- License URL in header ---
+        for h, v in response.headers.items():
+            if 'license' in h.lower() or 'drm' in h.lower():
+                findings["license_url"] = v
+                print(f"      🔑 LICENSE (header {h}): {v[:120]}")
 
     try:
         with sync_playwright() as p:
@@ -265,87 +379,121 @@ def resolve_with_playwright(embed_url, timeout=35, event_name="?", src_name="?")
                     "--enable-unsafe-swiftshader",
                     "--autoplay-policy=no-user-gesture-required",
                     "--mute-audio",
+                    "--disable-features=IsolateOrigins,site-per-process",
+                    "--allow-running-insecure-content",
                 ],
             )
             ctx = browser.new_context(
                 user_agent=UA,
-                viewport={"width": 1280, "height": 720},
-                locale="en-US",
+                viewport={"width": 1920, "height": 1080},
+                locale="it-IT",
+                timezone_id="Europe/Rome",
                 extra_http_headers={"Referer": "https://streamcorner.st/"},
                 permissions=["autoplay"],
             )
-            ctx.add_init_script(
-                "Object.defineProperty(navigator,'webdriver',{get:()=>undefined});"
-                "Object.defineProperty(navigator,'plugins',{get:()=>[1,2,3]});"
-            )
+
+            # Stealth init script
+            ctx.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                Object.defineProperty(navigator, 'plugins', {
+                    get: () => [
+                        {name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer'},
+                        {name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai'},
+                        {name: 'Native Client', filename: 'internal-nacl-plugin'}
+                    ]
+                });
+                Object.defineProperty(navigator, 'languages',
+                    {get: () => ['it-IT', 'it', 'en-US', 'en']});
+                window.chrome = { runtime: {} };
+                const _getParameter = WebGLRenderingContext.prototype.getParameter;
+                WebGLRenderingContext.prototype.getParameter = function(parameter) {
+                    if (parameter === 37445) return 'Intel Inc.';
+                    if (parameter === 37446) return 'Intel Iris OpenGL Engine';
+                    return _getParameter.apply(this, arguments);
+                };
+            """)
 
             page = ctx.new_page()
-            page.on("response", on_response)
             page.on("request", on_request)
+            page.on("response", on_response)
 
             try:
                 page.goto(embed_url, wait_until="domcontentloaded",
                           timeout=timeout*1000)
+            except Exception as e:
+                print(f"      ⚠️ goto: {str(e)[:80]}")
+
+            page.wait_for_timeout(8000)
+
+            # Interazione realistica
+            try:
+                page.mouse.move(960, 540)
+                page.wait_for_timeout(500)
+                page.mouse.down()
+                page.wait_for_timeout(100)
+                page.mouse.up()
+                page.wait_for_timeout(3000)
             except Exception:
                 pass
 
-            # attesa boot player
-            for _ in range(15):
-                if found["m3u8"]: break
-                try: page.wait_for_timeout(700)
-                except Exception: break
-
-            # click realistico (move → down → up)
-            if not found["m3u8"]:
+            # Selettori play
+            for sel in [
+                "button[aria-label*='play' i]",
+                ".vjs-big-play-button",
+                ".jw-icon-playback",
+                ".bitmovinplayer-ui",
+                ".clappr-play-button",
+                "video",
+            ]:
                 try:
-                    page.mouse.move(640, 360)
-                    page.wait_for_timeout(200)
-                    page.mouse.down()
-                    page.wait_for_timeout(100)
-                    page.mouse.up()
-                    page.wait_for_timeout(1000)
+                    if page.locator(sel).count() > 0:
+                        page.click(sel, timeout=2000)
+                        page.wait_for_timeout(3000)
+                        break
                 except Exception:
-                    pass
+                    continue
 
-            # click sui selettori player noti
-            if not found["m3u8"]:
-                for sel in [
-                    "button[aria-label*='play' i]",
-                    ".vjs-big-play-button",
-                    ".jw-icon-playback",
-                    ".bitmovinplayer-ui",
-                    ".clappr-play-button",
-                    "video",
-                ]:
-                    try:
-                        page.click(sel, timeout=1500)
-                        page.wait_for_timeout(1200)
-                        if found["m3u8"]: break
-                    except Exception:
-                        continue
+            # Fallback play() JS
+            try:
+                page.evaluate("""() => {
+                    const v = document.querySelector('video');
+                    if (v) { v.muted = true; v.play().catch(()=>{}); }
+                }""")
+            except Exception:
+                pass
 
-            # fallback: forza play() via JS
-            if not found["m3u8"]:
-                try:
-                    page.evaluate("""() => {
-                        const v = document.querySelector('video');
-                        if (v) { v.muted = true; v.play().catch(()=>{}); }
-                    }""")
-                    page.wait_for_timeout(2000)
-                except Exception:
-                    pass
-
-            # attesa finale lunga
-            for _ in range(20):
-                if found["m3u8"]: break
-                try: page.wait_for_timeout(700)
-                except Exception: break
-
+            page.wait_for_timeout(10000)
             browser.close()
     except Exception as e:
-        print(f"      ⚠️  {event_name}/{src_name}: {str(e)[:120]}")
+        print(f"      ❌ {str(e)[:120]}")
 
-    return found["m3u8"]
+    # --- Salva report DRM ---
+    has_drm = bool(findings["license_url"] or findings["pssh"]
+                   or findings["manifest_has_key"])
+    if has_drm:
+        try:
+            record = {
+                "timestamp": int(time.time()),
+                "event": event_name,
+                "source": src_name,
+                "embed": embed_url[:200],
+                "m3u8": findings["m3u8"],
+                "mpd": findings["mpd"],
+                "license_url": findings["license_url"],
+                "license_method": findings["license_method"],
+                "pssh": findings["pssh"],
+                "kid": findings["kid"],
+                "drm_system": findings["drm_system"],
+                "key_line": findings["key_line"],
+                "requests": findings["requests"][:30],
+            }
+            with open(DRM_LOG_FILE, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+            print(f"      📄 Report DRM salvato")
+        except Exception as e:
+            print(f"      ⚠️ report: {str(e)[:80]}")
+
+    return findings["m3u8"] or findings["mpd"]
 
 # ============================================================
 # RESOLVE
@@ -383,8 +531,8 @@ def resolve_all(events, workers=4, limit=0):
     def worker(ev, idx, emb):
         ev_name = (ev.get("event_name") or "?")[:35]
         src = (ev["streams"][idx].get("source_name") or "?")[:22]
-        m = resolve_with_playwright(emb, timeout=35,
-                                     event_name=ev_name, src_name=src)
+        m = resolve_with_playwright_v3(emb, timeout=45,
+                                        event_name=ev_name, src_name=src)
         return ev, idx, emb, m, ev_name, src
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
@@ -400,7 +548,8 @@ def resolve_all(events, workers=4, limit=0):
                     print(f"      {m[:110]}")
                 elif done % 5 == 0:
                     print(f"   ·  [{done}/{len(jobs)}] risolti: {resolved}")
-            except Exception: pass
+            except Exception as e:
+                print(f"   ❌ worker: {str(e)[:100]}")
 
     try:
         json.dump(cache, open(M3U8_CACHE,"w",encoding="utf-8"),
@@ -489,7 +638,7 @@ def write_complete(events, filename, only_live=True):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Events Extractor")
+    ap = argparse.ArgumentParser(description="StreamCorner Events Extractor v3")
     ap.add_argument("--output", default="streamcorner_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=".")
     ap.add_argument("--providers", default="all")
@@ -504,10 +653,16 @@ def main():
     args = ap.parse_args()
 
     print("="*60)
-    print("📡 STREAMCORNER EXTRACTOR — EVENTS LIVE ONLY (v2)")
+    print("📡 STREAMCORNER EXTRACTOR — EVENTS LIVE ONLY (v3)")
     print("="*60)
 
     os.makedirs(args.output_dir, exist_ok=True)
+
+    # Reset DRM report
+    drm_path = os.path.join(args.output_dir, DRM_LOG_FILE)
+    if os.path.exists(drm_path):
+        try: os.remove(drm_path)
+        except Exception: pass
 
     # 1. Vault
     print("\n[1/4] Vault")
@@ -529,7 +684,7 @@ def main():
     live_events = filter_live(events)
 
     # 4. Risoluzione
-    print("\n[4/4] Risoluzione m3u8 (Playwright v2)")
+    print("\n[4/4] Risoluzione m3u8 (Playwright v3 — Stealth + DRM)")
     if args.no_playwright:
         print("   ⏭️  saltata (--no-playwright)")
     else:
@@ -547,7 +702,7 @@ def main():
 
     vlc_path = os.path.join(args.output_dir, "streamcorner_VLC.m3u")
     n_vlc = write_vlc_flat(live_events, vlc_path, only_live=True)
-    print(f"   💾 streamcorner_VLC.m3u: {n_vlc} stream (flat, gruppo StreamCorner)")
+    print(f"   💾 streamcorner_VLC.m3u: {n_vlc} stream (flat)")
 
     mixed_path = os.path.join(args.output_dir, args.output)
     n_mix = write_complete(live_events, mixed_path, only_live=True)
@@ -557,6 +712,16 @@ def main():
     json.dump(live_events, open(json_path,"w",encoding="utf-8"),
               indent=2, ensure_ascii=False, default=str)
     print(f"   💾 streamcorner_events.json")
+
+    # Riepilogo DRM
+    drm_count = 0
+    if os.path.exists(drm_path):
+        try:
+            with open(drm_path, encoding="utf-8") as f:
+                drm_count = sum(1 for _ in f)
+        except Exception:
+            pass
+    print(f"   💾 {DRM_LOG_FILE}: {drm_count} voci DRM catturate")
 
     # Riepilogo
     total = sum(len(ev.get("streams") or []) for ev in live_events)
@@ -570,6 +735,7 @@ def main():
     print(f"   Stream totali:         {total}")
     print(f"   Con embed_url:         {with_url}")
     print(f"   Con m3u8 risolto:      {with_m3u8}")
+    print(f"   Report DRM:            {drm_count} entries")
     print("="*60)
 
 if __name__ == "__main__":
