@@ -7,9 +7,9 @@ Estrae eventi live da watchfooty.st e risolve gli embed
 sportsembed.su → m3u8 diretto.
 
 Uso:
-    python watchfooty_extractor.py                # live only (default)
-    python watchfooty_extractor.py --all          # anche non-live
-    python watchfooty_extractor.py --max 5        # limita a 5 match
+    python watchfooty_direct.py                # live only (default)
+    python watchfooty_direct.py --all          # anche non-live
+    python watchfooty_direct.py --max 5        # limita a 5 match
 """
 from __future__ import annotations
 
@@ -223,6 +223,8 @@ async def build_playlist(max_matches: int, only_live: bool) -> int:
 
 
 def main() -> None:
+    global OUTPUT_FILE
+    
     parser = argparse.ArgumentParser(
         description="WatchFooty Extractor — Playwright"
     )
@@ -235,7 +237,6 @@ def main() -> None:
     args = parser.parse_args()
 
     # Applica output custom
-    global OUTPUT_FILE
     OUTPUT_FILE = args.output
 
     try:
