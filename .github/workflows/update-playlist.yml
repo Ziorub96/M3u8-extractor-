@@ -48,12 +48,12 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
-      - name: Extract StreamCorner streams (single file)
+      - name: Extract StreamCorner streams
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
-            --playwright \
-            --playwright-workers 4
+            --playwright-workers 4 \
+            --split
         continue-on-error: true
         timeout-minutes: 60
 
@@ -90,4 +90,5 @@ jobs:
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
             streamcorner_COMPLETE.m3u
+            streamcorner_VLC.m3u
             watchfooty_events.m3u
