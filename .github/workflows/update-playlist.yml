@@ -15,7 +15,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 180
 
     steps:
       - name: Checkout repository
@@ -35,6 +35,13 @@ jobs:
 
       # ============================================================
       # Cache persistente per m3u8 risolti (NON committata nel repo)
+      # ------------------------------------------------------------
+      # Pattern: rolling cache
+      #   - key univoca per run (run_id) → forza il salvataggio
+      #   - restore-keys con prefisso → recupera la cache più recente
+      # GitHub auto-pota le cache >7 giorni o quando supera 10 GB.
+      # Il vault NON è cachato: costa ~2s rigenerarlo e un vault
+      # stale romperebbe tutte le chiamate al worker.
       # ============================================================
       - name: Cache StreamCorner m3u8 results
         uses: actions/cache@v4
@@ -59,14 +66,18 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
+      # ------------------------------------------------------------
+      # StreamCorner: 250 item (invece di 400) per contenere i tempi.
+      # Priorità basata su hit-rate reale (slingtv 11%, skygo 3%).
+      # Niente --split: genera file non committati.
+      # ------------------------------------------------------------
       - name: Extract StreamCorner streams
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
             --playwright-workers 6 \
-            --playwright-limit 400 \
-            --playwright-priority "slingtv_channels,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,skygo" \
-            --split
+            --playwright-limit 250 \
+            --playwright-priority "slingtv_channels,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,skygo"
         continue-on-error: true
         timeout-minutes: 90
 
