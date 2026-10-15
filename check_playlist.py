@@ -4,8 +4,7 @@
 Check playlist M3U: verifica ogni flusso e produce una versione checked.
 
 Ottimizzazioni:
-  - SKIP_URL_PATTERNS: embed HTML (StreamCorner/WatchFooty) → pass-through
-  - BLOCKED_DOMAINS: domini morti (sempre KO) → skip diretto senza test
+  - BLOCKED_DOMAINS: domini morti + embed HTML → KO diretto senza test
   - Primo segmento: riconosce MPEG-TS, MP4, WebP+EXIF
 """
 import re
@@ -31,31 +30,34 @@ USER_AGENT = (
 )
 
 # ============================================================
-# SKIP PATTERNS — URL che NON vanno testati (pass-through diretto)
+# BLOCKED_DOMAINS — URL che vanno SCARTATI SEMPRE (KO diretto)
 # ------------------------------------------------------------
-# StreamCorner usa embed_url (pagine HTML, non m3u8 diretti).
-# ffprobe/check segmento li boccerebbe tutti → li facciamo passare.
+# Include:
+#   1. Embed HTML StreamCorner / WatchFooty (NON sono m3u8)
+#   2. Domini completamente morti (403, 404, DNS fail, timeout)
 #
-# WatchFooty: Playwright produce m3u8 veri, ma alcuni embed residui
-# possono essere pagine sportsembed → skip anche per loro.
-# ============================================================
-SKIP_URL_PATTERNS = [
-    "getsugatensho",     # embed StreamCorner (mirror .st/.su/.sbs)
-    "sportsembed",       # embed StreamCorner / WatchFooty residui
-]
-
-# ============================================================
-# BLOCKED_DOMAINS — domini completamente morti (KO diretto senza test)
-# ------------------------------------------------------------
-# Questi domini restituiscono SEMPRE errore (403, 404, DNS fail, timeout).
-# Non li testiamo → risparmio tempo check ~40%.
+# Questi NON devono MAI finire nella playlist checked.
+# Vengono marcati KO senza test → risparmio tempo check ~40%.
 # Aggiornato: 2026-10-15 (analisi flussi_non_funzionanti.txt)
 #
 # NOTA: cdnlivetv.tv NON è in blacklist (è buono, solo rate-limited).
 # ============================================================
 BLOCKED_DOMAINS = [
     # ------------------------------------------------------------
-    # CDN morti (sempre 403)
+    # 1. EMBED HTML — non sono m3u8, da scartare SEMPRE
+    # ------------------------------------------------------------
+    "getsugatensho",        # embed StreamCorner (mirror .st/.su/.sbs)
+    "sportsembed",          # embed StreamCorner / WatchFooty residui
+    "amazon.com.pandecocogaming.sbs",
+    "ww1.sportsonnline.click",
+    "taifood-blog.asia",
+    "embedme.st",
+    "embedhd.click",
+    "embedhd.pk",
+    "streamsgate.co",
+
+    # ------------------------------------------------------------
+    # 2. CDN morti (sempre 403)
     # ------------------------------------------------------------
     "khala.futlivehd.com",
     "ftlly.com",
@@ -76,17 +78,6 @@ BLOCKED_DOMAINS = [
     "bozztv.com",
     "live20.bozztv.com",
     "lbgo.bozztv.com",
-
-    # ------------------------------------------------------------
-    # Embed HTML (non m3u8) e mirror morti
-    # ------------------------------------------------------------
-    "amazon.com.pandecocogaming.sbs",
-    "ww1.sportsonnline.click",
-    "taifood-blog.asia",
-    "embedme.st",
-    "embedhd.click",
-    "embedhd.pk",
-    "streamsgate.co",
     "edgestream1.pro",
     "edgestream2.pro",
     "edgestream3.pro",
@@ -96,7 +87,7 @@ BLOCKED_DOMAINS = [
     "edgestream7.pro",
 
     # ------------------------------------------------------------
-    # DNS fail / connection timeout
+    # 3. DNS fail / connection timeout
     # ------------------------------------------------------------
     "xn.futbolx.ryzn.pro",
     "lb.iptvnetwork.net",
@@ -110,7 +101,7 @@ BLOCKED_DOMAINS = [
     "soultv.com.br",
 
     # ------------------------------------------------------------
-    # IP diretti morti (403 / timeout / connection refused)
+    # 4. IP diretti morti (403 / timeout / connection refused)
     # ------------------------------------------------------------
     "31.148.48.15",
     "88.212.15.27",
@@ -247,13 +238,8 @@ def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
     return "\r\n".join(f"{k}: {v}" for k, v in h.items()) + "\r\n"
 
 
-def should_skip(url: str) -> bool:
-    """True se l'URL deve essere saltato (pass-through senza test)."""
-    return any(pattern in url for pattern in SKIP_URL_PATTERNS)
-
-
 def should_block(url: str) -> bool:
-    """True se l'URL appartiene a un dominio completamente morto."""
+    """True se l'URL appartiene a un dominio bloccato (embed HTML o morto)."""
     return any(domain in url for domain in BLOCKED_DOMAINS)
 
 
@@ -438,13 +424,9 @@ def controlla_blocco(block):
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
         return block, False, "youtube escluso"
 
-    # === SKIP: URL StreamCorner / WatchFooty (embed HTML) → pass-through ===
-    if should_skip(url):
-        return block, True, "skip (embed pass-through)"
-
-    # === BLOCKED: domini morti → KO diretto senza test ===
+    # === BLOCKED: embed HTML o domini morti → KO diretto senza test ===
     if should_block(url):
-        return block, False, "dominio bloccato (morto)"
+        return block, False, "dominio bloccato (morto/embed)"
 
     time.sleep(random.uniform(0.1, 0.3))
 
@@ -494,7 +476,6 @@ def main():
     funzionanti = []
     non_funzionanti = []
     soft_only = 0
-    skipped = 0
     blocked = 0
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
@@ -506,8 +487,6 @@ def main():
                 funzionanti.append(block)
                 if motivo.startswith("soft-"):
                     soft_only += 1
-                if motivo.startswith("skip"):
-                    skipped += 1
                 if i % 20 == 0:
                     print(f"[{i}/{len(blocks)}] OK | {nome}")
             else:
@@ -529,7 +508,7 @@ def main():
             f.write(f"{nome} | {block[-1]} | {motivo}\n")
 
     print(f"\n✅ Funzionanti: {len(funzionanti)} "
-          f"(di cui soft-only: {soft_only}, skip pass-through: {skipped})")
+          f"(di cui soft-only: {soft_only})")
     print(f"❌ Non funzionanti: {len(non_funzionanti)} "
           f"(di cui dominio bloccato: {blocked})")
     print(f"📄 {out_ok} | {out_ko}")
