@@ -1,0 +1,52 @@
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# ============================================================
+# IDE / Editor
+# ============================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# StreamCorner — cache e dati temporanei (rigenerabili)
+# ------------------------------------------------------------
+# Questi file vengono ricreati ad ogni run, non vanno committati.
+# ============================================================
+.streamcorner_vault.json
+.streamcorner_m3u8_cache.json
+streamcorner_data.json
+
+# ============================================================
+# StreamCorner — split per provider (NON committati)
+# ------------------------------------------------------------
+# Vengono generati solo con --split per debug locale.
+# Vanno su Git SOLO streamcorner_COMPLETE.m3u e streamcorner_VLC.m3u.
+# ============================================================
+streamcorner_*.m3u
+!streamcorner_COMPLETE.m3u
+!streamcorner_VLC.m3u
+
+# ============================================================
+# Log e temporanei
+# ============================================================
+*.log
+*.bak
+*.tmp
