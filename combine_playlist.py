@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 Combina playlist M3U da sorgenti remote e locali.
+
+Filtra via qualsiasi URL che punta a una pagina embed HTML (NON m3u8).
+Include solo stream m3u8 diretti per un player IPTV pulito.
 """
 import re
 import requests
@@ -35,6 +38,30 @@ TVG_ID_MAP = {
     "Eleven Sports 1": "ElevenSports1.pl",
 }
 
+# ============================================================
+# EMBED_URL_PATTERNS — URL che NON sono m3u8 diretti
+# ------------------------------------------------------------
+# Questi sono pattern di pagine HTML che contengono un player JS
+# (Bitmovin/Shaka), NON flussi m3u8. Il player IPTV non li apre.
+# Vengono scartati SEMPRE, indipendentemente dalla sorgente.
+# ============================================================
+EMBED_URL_PATTERNS = [
+    # StreamCorner (embed HTML)
+    "getsugatensho",
+    "sportsembed",
+    # Embed morti residui
+    "amazon.com.pandecocogaming.sbs",
+    "taifood-blog.asia",
+    "embedhd.click",
+    "embedhd.pk",
+    "embedme.st",
+    "streamsgate.co",
+    "sportsonnline.click",
+    "instream.click",
+    "instream.live",
+    "instream.xyz",
+]
+
 # === SORGENTI REMOTE ===
 SOURCES = [
     ("doms9", "https://s.id/d9M3U8"),
@@ -45,13 +72,15 @@ SOURCES = [
 # Formato: (nome_sorgente, file_path, keep_group_title)
 #   - keep_group_title=True  → mantiene il group-title originale del file
 #   - keep_group_title=False → forza group-title = nome_sorgente
+#
+# StreamCorner: usiamo streamcorner_VLC.m3u (solo m3u8 risolti, NO embed_url)
 LOCAL_SOURCES = [
     ("DAMITV", "damitv_events.m3u", False),
     ("Daddylive", "daddylive_streams.m3u", False),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u", False),
     ("CDN Live TV Events", "cdnlivetv_events.m3u", False),
-    ("StreamCorner", "streamcorner_VLC.m3u", False),   # ⬅️ MODIFICA: solo m3u8 + gruppo unico
-    ("WatchFooty", "watchfooty_events.m3u", False),
+    ("StreamCorner", "streamcorner_VLC.m3u", False),   # solo m3u8 + gruppo unico
+    # ("WatchFooty", "watchfooty_events.m3u", False),  # DISABILITATO (dominio morto)
 ]
 
 # === SORGENTI DISMESSE (commentate per storico) ===
@@ -84,6 +113,12 @@ def fetch_local_playlist(path):
     except FileNotFoundError:
         print(f"⚠️  File locale non trovato, skip: {path}")
         return []
+
+
+def is_embed_url(url):
+    """True se l'URL punta a una pagina embed HTML (NON m3u8 diretto)."""
+    url_lower = url.lower()
+    return any(pattern in url_lower for pattern in EMBED_URL_PATTERNS)
 
 
 def set_group_title(extinf_line, group_title):
@@ -135,20 +170,34 @@ def parse_m3u(lines):
 def process_blocks(blocks, name, all_lines, seen_urls, keep_group_title=False):
     """Aggiunge i blocchi alla playlist combinata.
 
+    Filtri applicati:
+      - Rimuove YouTube (youtube.com, youtu.be, googlevideo.com)
+      - Rimuove URL embed HTML (EMBED_URL_PATTERNS) — NON sono m3u8
+      - Deduplica per URL
+
     Se keep_group_title=True, mantiene il group-title originale del file.
     Se False, forza group-title = nome sorgente.
     """
     added = 0
+    skipped_embed = 0
     for block in blocks:
         stream_url = block[-1]
+
         # Filtra YouTube
         if any(domain in stream_url for domain in
                ["youtube.com", "youtu.be", "googlevideo.com"]):
             continue
+
+        # Filtra URL embed HTML (NON sono m3u8 → player non li apre)
+        if is_embed_url(stream_url):
+            skipped_embed += 1
+            continue
+
         # Deduplica per URL
         if stream_url in seen_urls:
             continue
         seen_urls.add(stream_url)
+
         # Applica group-title e tvg-id
         if block[0].startswith("#EXTINF"):
             if not keep_group_title:
@@ -157,6 +206,10 @@ def process_blocks(blocks, name, all_lines, seen_urls, keep_group_title=False):
             block[0] = set_tvg_id(block[0], channel_name, name)
         all_lines.extend(block)
         added += 1
+
+    if skipped_embed > 0:
+        print(f"   🚫 {skipped_embed} URL embed HTML scartati")
+
     return added
 
 
