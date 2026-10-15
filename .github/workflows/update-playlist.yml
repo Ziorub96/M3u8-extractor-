@@ -78,6 +78,35 @@ jobs:
         run: python check_playlist.py
         continue-on-error: true
 
+      # ============================================================
+      # SAFETY: crea file mancanti prima del commit
+      # ============================================================
+      - name: Ensure all output files exist
+        if: always()
+        run: |
+          for f in \
+            combined_events.m3u \
+            combined_events_checked.m3u \
+            flussi_non_funzionanti.txt \
+            damitv_events.m3u \
+            daddylive_streams.m3u \
+            cdnlivetv_channels.m3u \
+            cdnlivetv_events.m3u \
+            streamcorner_COMPLETE.m3u \
+            streamcorner_VLC.m3u \
+            watchfooty_events.m3u; do
+            if [ ! -f "$f" ]; then
+              echo "Crea $f (mancante)"
+              if [[ "$f" == *.m3u ]]; then
+                echo "#EXTM3U" > "$f"
+              else
+                touch "$f"
+              fi
+            fi
+          done
+          echo "--- Stato file ---"
+          ls -la *.m3u *.txt 2>/dev/null || true
+
       - name: Commit and push
         if: always()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -94,5 +123,4 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             watchfooty_events.m3u
-          add_options: '--ignore-errors'
           skip_dirty_check: false
