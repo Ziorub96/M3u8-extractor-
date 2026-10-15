@@ -12,7 +12,7 @@ Strategia salvataggio:
     2. Risolve N item con Playwright (limite 200 di default)
     3. Riscrive COMPLETE aggiornato + VLC-ready (solo m3u8)
 
-Output:
+Output (creati SEMPRE, anche se vuoti):
     streamcorner_COMPLETE.m3u   → mixed (m3u8 se disponibile, embed_url altrimenti)
     streamcorner_VLC.m3u        → solo m3u8 diretti (VLC/TiviMate-ready)
     streamcorner_<provider>.m3u → split per provider (solo con --split)
@@ -85,6 +85,27 @@ HEADERS_WORKER = {
 }
 
 PLAYWRIGHT_AVAILABLE = None
+
+
+# ============================================================
+# UTILITY — crea file di output sempre (anche vuoti)
+# ============================================================
+def ensure_output_files(output_dir, output_name):
+    """
+    Crea sempre i file di output (anche vuoti con solo header).
+    Evita che 'git add' fallisca se un file non esiste.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    files = [
+        output_name,
+        output_name.replace(".m3u", "_VLC.m3u") if output_name.endswith(".m3u")
+        else output_name + "_VLC.m3u",
+    ]
+    for f in files:
+        path = os.path.join(output_dir, f)
+        if not os.path.exists(path):
+            with open(path, "w", encoding="utf-8") as fp:
+                fp.write("#EXTM3U\n")
 
 
 # ============================================================
@@ -408,7 +429,7 @@ def fetch_provider(client, provider, key_field, workers=15, verbose=True):
 
 
 # ============================================================
-# PLAYWRIGHT RESOLVER — versione ottimizzata (blocca immagini/CSS/font)
+# PLAYWRIGHT RESOLVER — versione ottimizzata
 # ============================================================
 def _check_playwright():
     global PLAYWRIGHT_AVAILABLE
@@ -425,10 +446,6 @@ def _check_playwright():
 
 
 def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
-    """
-    Versione ottimizzata: blocca immagini/CSS/font per velocizzare.
-    Timeout default 12s (invece di 30s).
-    """
     if not _check_playwright():
         return None
 
@@ -487,7 +504,6 @@ def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
             except Exception:
                 pass
 
-            # Attesa ridotta (max 6s)
             for _ in range(6):
                 if found["m3u8"]:
                     break
@@ -496,7 +512,6 @@ def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
                 except Exception:
                     break
 
-            # Click play se serve
             if not found["m3u8"]:
                 for selector in [
                     "button[aria-label*='play' i]",
@@ -583,7 +598,6 @@ def resolve_with_playwright(items, workers=2, verbose=True, cache_file=M3U8_CACH
             except Exception:
                 pass
 
-    # Salva cache ad ogni batch (se il job muore, la cache è persistita)
     try:
         with open(cache_file, "w", encoding="utf-8") as f:
             json.dump(cache, f, ensure_ascii=False, indent=2)
@@ -599,11 +613,6 @@ def resolve_with_playwright(items, workers=2, verbose=True, cache_file=M3U8_CACH
 # M3U WRITER
 # ============================================================
 def write_m3u(items, filename, group_prefix="", prefer_m3u8=False):
-    """
-    Scrive playlist M3U.
-    Se prefer_m3u8=True, scrive SOLO gli item con m3u8 risolto.
-    Se prefer_m3u8=False, scrive m3u8 se disponibile, altrimenti embed_url.
-    """
     seen = set()
     written = 0
     with open(filename, "w", encoding="utf-8") as f:
@@ -674,6 +683,10 @@ def main():
     print("📡 STREAMCORNER EXTRACTOR")
     print("=" * 60)
 
+    # Pre-crea TUTTI i file di output (evita errori di git add)
+    os.makedirs(args.output_dir, exist_ok=True)
+    ensure_output_files(args.output_dir, args.output)
+
     # 1. Vault
     print(f"\n[1/5] Vault")
     vault = load_vault(force_refresh=args.refresh_vault)
@@ -688,7 +701,6 @@ def main():
 
     print(f"\n[2/5] Fetch {len(providers)} provider")
     all_items = []
-    os.makedirs(args.output_dir, exist_ok=True)
 
     for provider, key in providers:
         print(f"\n   {provider} (key={key})")
@@ -698,17 +710,13 @@ def main():
                 it["_provider"] = provider
             all_items.extend(items)
 
-    # --------------------------------------------------------
     # 3. SALVATAGGIO ANTICIPATO (mixed) — garantisce file non vuoto
-    # --------------------------------------------------------
     print(f"\n[3/5] Salvataggio anticipato (mixed)")
     mixed_path = os.path.join(args.output_dir, args.output)
     total_mixed = write_m3u(all_items, mixed_path, prefer_m3u8=False)
     print(f"   💾 {args.output}: {total_mixed} stream (mixed, salvato)")
 
-    # --------------------------------------------------------
     # 4. RISOLUZIONE PLAYWRIGHT (con limite di default)
-    # --------------------------------------------------------
     use_m3u8 = not args.no_playwright
     if use_m3u8:
         print(f"\n[4/5] Risoluzione m3u8 con Playwright")
@@ -743,10 +751,16 @@ def main():
         print(f"   💾 {vlc_name}: {total_vlc} stream (solo m3u8, VLC-ready)")
     else:
         print(f"\n[4/5] Playwright saltato (--no-playwright)")
+        # Crea comunque il file VLC vuoto
+        vlc_name = args.output.replace(".m3u", "_VLC.m3u")
+        if not vlc_name.endswith("_VLC.m3u"):
+            vlc_name = "streamcorner_VLC.m3u"
+        vlc_path = os.path.join(args.output_dir, vlc_name)
+        if not os.path.exists(vlc_path):
+            with open(vlc_path, "w", encoding="utf-8") as f:
+                f.write("#EXTM3U\n")
 
-    # --------------------------------------------------------
     # 5. SPLIT PER PROVIDER (mixed)
-    # --------------------------------------------------------
     if args.split:
         print(f"\n[5/5] Split per provider")
         by_provider = {}
