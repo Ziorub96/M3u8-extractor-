@@ -12,7 +12,7 @@ Strategia salvataggio:
     2. Risolve N item con Playwright (limite 200 di default)
     3. Riscrive COMPLETE aggiornato + VLC-ready (solo m3u8)
 
-Output (creati SEMPRE, anche se vuoti):
+Output:
     streamcorner_COMPLETE.m3u   → mixed (m3u8 se disponibile, embed_url altrimenti)
     streamcorner_VLC.m3u        → solo m3u8 diretti (VLC/TiviMate-ready)
     streamcorner_<provider>.m3u → split per provider (solo con --split)
@@ -91,15 +91,11 @@ PLAYWRIGHT_AVAILABLE = None
 # UTILITY — crea file di output sempre (anche vuoti)
 # ============================================================
 def ensure_output_files(output_dir, output_name):
-    """
-    Crea sempre i file di output (anche vuoti con solo header).
-    Evita che 'git add' fallisca se un file non esiste.
-    """
+    """Crea sempre i file di output (anche vuoti)."""
     os.makedirs(output_dir, exist_ok=True)
     files = [
         output_name,
-        output_name.replace(".m3u", "_VLC.m3u") if output_name.endswith(".m3u")
-        else output_name + "_VLC.m3u",
+        "streamcorner_VLC.m3u",
     ]
     for f in files:
         path = os.path.join(output_dir, f)
@@ -683,7 +679,7 @@ def main():
     print("📡 STREAMCORNER EXTRACTOR")
     print("=" * 60)
 
-    # Pre-crea TUTTI i file di output (evita errori di git add)
+    # Pre-crea TUTTI i file di output
     os.makedirs(args.output_dir, exist_ok=True)
     ensure_output_files(args.output_dir, args.output)
 
@@ -710,13 +706,13 @@ def main():
                 it["_provider"] = provider
             all_items.extend(items)
 
-    # 3. SALVATAGGIO ANTICIPATO (mixed) — garantisce file non vuoto
+    # 3. SALVATAGGIO ANTICIPATO
     print(f"\n[3/5] Salvataggio anticipato (mixed)")
     mixed_path = os.path.join(args.output_dir, args.output)
     total_mixed = write_m3u(all_items, mixed_path, prefer_m3u8=False)
     print(f"   💾 {args.output}: {total_mixed} stream (mixed, salvato)")
 
-    # 4. RISOLUZIONE PLAYWRIGHT (con limite di default)
+    # 4. PLAYWRIGHT
     use_m3u8 = not args.no_playwright
     if use_m3u8:
         print(f"\n[4/5] Risoluzione m3u8 con Playwright")
@@ -738,29 +734,18 @@ def main():
         )
         all_items = to_resolve + rest
 
-        # Riscrittura COMPLETE aggiornato
+        # Riscrittura COMPLETE
         total_mixed = write_m3u(all_items, mixed_path, prefer_m3u8=False)
         print(f"\n   💾 {args.output}: {total_mixed} stream (aggiornato)")
 
-        # VLC-ready (solo m3u8)
-        vlc_name = args.output.replace(".m3u", "_VLC.m3u")
-        if not vlc_name.endswith("_VLC.m3u"):
-            vlc_name = "streamcorner_VLC.m3u"
-        vlc_path = os.path.join(args.output_dir, vlc_name)
+        # VLC-ready con nome FISSO
+        vlc_path = os.path.join(args.output_dir, "streamcorner_VLC.m3u")
         total_vlc = write_m3u(all_items, vlc_path, prefer_m3u8=True)
-        print(f"   💾 {vlc_name}: {total_vlc} stream (solo m3u8, VLC-ready)")
+        print(f"   💾 streamcorner_VLC.m3u: {total_vlc} stream (solo m3u8)")
     else:
         print(f"\n[4/5] Playwright saltato (--no-playwright)")
-        # Crea comunque il file VLC vuoto
-        vlc_name = args.output.replace(".m3u", "_VLC.m3u")
-        if not vlc_name.endswith("_VLC.m3u"):
-            vlc_name = "streamcorner_VLC.m3u"
-        vlc_path = os.path.join(args.output_dir, vlc_name)
-        if not os.path.exists(vlc_path):
-            with open(vlc_path, "w", encoding="utf-8") as f:
-                f.write("#EXTM3U\n")
 
-    # 5. SPLIT PER PROVIDER (mixed)
+    # 5. SPLIT
     if args.split:
         print(f"\n[5/5] Split per provider")
         by_provider = {}
@@ -773,13 +758,12 @@ def main():
             if n > 0:
                 print(f"   💾 {fname} ({n})")
 
-    # JSON finale
+    # JSON
     json_path = os.path.join(args.output_dir, "streamcorner_data.json")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(all_items, f, indent=2, ensure_ascii=False, default=str)
     print(f"\n   💾 {json_path}")
 
-    # Riepilogo
     n_with_m3u8 = sum(1 for it in all_items if it.get("m3u8"))
     n_with_embed = sum(1 for it in all_items if it.get("embed_url"))
     print("\n" + "=" * 60)
