@@ -34,6 +34,17 @@ jobs:
           playwright install --with-deps chromium
 
       # ============================================================
+      # Cache persistente per m3u8 risolti (NON committata nel repo)
+      # ============================================================
+      - name: Cache StreamCorner m3u8 results
+        uses: actions/cache@v4
+        with:
+          path: .streamcorner_m3u8_cache.json
+          key: streamcorner-m3u8-cache-${{ github.run_id }}
+          restore-keys: |
+            streamcorner-m3u8-cache-
+
+      # ============================================================
       # ESTRATTORI ATTIVI
       # ============================================================
       - name: Extract DAMITV streams
@@ -53,8 +64,8 @@ jobs:
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
             --playwright-workers 6 \
-            --playwright-limit 200 \
-            --playwright-priority "skygo,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,slingtv_channels" \
+            --playwright-limit 400 \
+            --playwright-priority "slingtv_channels,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,skygo" \
             --split
         continue-on-error: true
         timeout-minutes: 90
