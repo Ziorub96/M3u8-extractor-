@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Check playlist M3U: verifica ogni flusso e produce una versione checked.
+
+Ottimizzazioni:
+  - SKIP_URL_PATTERNS: embed HTML (StreamCorner/WatchFooty) → pass-through
+  - BLOCKED_DOMAINS: domini morti (sempre KO) → skip diretto senza test
+  - Primo segmento: riconosce MPEG-TS, MP4, WebP+EXIF
 """
 import re
 import subprocess
@@ -37,6 +42,107 @@ USER_AGENT = (
 SKIP_URL_PATTERNS = [
     "getsugatensho",     # embed StreamCorner (mirror .st/.su/.sbs)
     "sportsembed",       # embed StreamCorner / WatchFooty residui
+]
+
+# ============================================================
+# BLOCKED_DOMAINS — domini completamente morti (KO diretto senza test)
+# ------------------------------------------------------------
+# Questi domini restituiscono SEMPRE errore (403, 404, DNS fail, timeout).
+# Non li testiamo → risparmio tempo check ~40%.
+# Aggiornato: 2026-10-15 (analisi flussi_non_funzionanti.txt)
+#
+# NOTA: cdnlivetv.tv NON è in blacklist (è buono, solo rate-limited).
+# ============================================================
+BLOCKED_DOMAINS = [
+    # ------------------------------------------------------------
+    # CDN morti (sempre 403)
+    # ------------------------------------------------------------
+    "khala.futlivehd.com",
+    "ftlly.com",
+    "fubo18.com",
+    "messi.damitv.st",
+    "cache0.wonvt.st",
+    "193.47.62.",
+    "webcast-origin.b-cdn.net",
+    "5r9k1i.5gkygx509kqv.net",
+    "8375pd.awqb0f40a9yo.net",
+    "88.212.15.19",
+    "89.33.29.115",
+    "streamfree.top",
+    "envivosenhd.beer",
+    "cdn-5.nxplay.com.br",
+    "stream.mcquack.net",
+    "telekomsrbije.com",
+    "bozztv.com",
+    "live20.bozztv.com",
+    "lbgo.bozztv.com",
+
+    # ------------------------------------------------------------
+    # Embed HTML (non m3u8) e mirror morti
+    # ------------------------------------------------------------
+    "amazon.com.pandecocogaming.sbs",
+    "ww1.sportsonnline.click",
+    "taifood-blog.asia",
+    "embedme.st",
+    "embedhd.click",
+    "embedhd.pk",
+    "streamsgate.co",
+    "edgestream1.pro",
+    "edgestream2.pro",
+    "edgestream3.pro",
+    "edgestream4.pro",
+    "edgestream5.pro",
+    "edgestream6.pro",
+    "edgestream7.pro",
+
+    # ------------------------------------------------------------
+    # DNS fail / connection timeout
+    # ------------------------------------------------------------
+    "xn.futbolx.ryzn.pro",
+    "lb.iptvnetwork.net",
+    "instream.click",
+    "tvsen7.aynascope.net",
+    "tvsen5.aynaott.com",
+    "tvsen5.aynascope.net",
+    "d2xeo83q8fcni6.cloudfront.net",
+    "d12a2vxqkkh1bo.cloudfront.net",
+    "live-stream.iblups.com",
+    "soultv.com.br",
+
+    # ------------------------------------------------------------
+    # IP diretti morti (403 / timeout / connection refused)
+    # ------------------------------------------------------------
+    "31.148.48.15",
+    "88.212.15.27",
+    "162.19.255.233",
+    "185.49.107.6",
+    "190.83.2.182",
+    "190.197.41.183",
+    "195.178.110.110",
+    "201.190.41.246",
+    "23.237.104.106",
+    "45.4.1.201",
+    "45.134.141.161",
+    "45.167.2.101",
+    "45.5.119.43",
+    "46.32.176.50",
+    "58.8.186.128",
+    "74.91.26.218",
+    "87.229.103.60",
+    "91.228.35.249",
+    "103.250.28.74",
+    "103.151.60.162",
+    "121.91.61.106",
+    "143.14.134.107",
+    "145.239.5.177",
+    "158.101.222.193",
+    "162.250.201.58",
+    "168.228.44.241",
+    "178.33.11.6",
+    "180.188.254.253",
+    "183.207.248.71",
+    "192.162.64.99",
+    "202.150.172.59",
 ]
 
 DOMAIN_HEADERS = {
@@ -144,6 +250,11 @@ def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
 def should_skip(url: str) -> bool:
     """True se l'URL deve essere saltato (pass-through senza test)."""
     return any(pattern in url for pattern in SKIP_URL_PATTERNS)
+
+
+def should_block(url: str) -> bool:
+    """True se l'URL appartiene a un dominio completamente morto."""
+    return any(domain in url for domain in BLOCKED_DOMAINS)
 
 
 def check_first_segment(manifest_text: str, manifest_url: str) -> tuple:
@@ -331,6 +442,10 @@ def controlla_blocco(block):
     if should_skip(url):
         return block, True, "skip (embed pass-through)"
 
+    # === BLOCKED: domini morti → KO diretto senza test ===
+    if should_block(url):
+        return block, False, "dominio bloccato (morto)"
+
     time.sleep(random.uniform(0.1, 0.3))
 
     soft_ok, soft_msg, cookie_str = http_check_m3u8(url)
@@ -380,6 +495,7 @@ def main():
     non_funzionanti = []
     soft_only = 0
     skipped = 0
+    blocked = 0
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = [ex.submit(controlla_blocco, b) for b in blocks]
@@ -396,6 +512,8 @@ def main():
                     print(f"[{i}/{len(blocks)}] OK | {nome}")
             else:
                 non_funzionanti.append((block, motivo))
+                if motivo.startswith("dominio bloccato"):
+                    blocked += 1
                 print(f"[{i}/{len(blocks)}] KO | {nome} | {motivo}")
 
     out_ok = Path("combined_events_checked.m3u")
@@ -412,7 +530,8 @@ def main():
 
     print(f"\n✅ Funzionanti: {len(funzionanti)} "
           f"(di cui soft-only: {soft_only}, skip pass-through: {skipped})")
-    print(f"❌ Non funzionanti: {len(non_funzionanti)}")
+    print(f"❌ Non funzionanti: {len(non_funzionanti)} "
+          f"(di cui dominio bloccato: {blocked})")
     print(f"📄 {out_ok} | {out_ko}")
 
 
