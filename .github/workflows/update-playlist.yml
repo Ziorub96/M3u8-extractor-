@@ -40,13 +40,15 @@ jobs:
       #   - key univoca per run (run_id) → forza il salvataggio
       #   - restore-keys con prefisso → recupera la cache più recente
       # GitHub auto-pota le cache >7 giorni o quando supera 10 GB.
-      # Il vault NON è cachato: costa ~2s rigenerarlo e un vault
-      # stale romperebbe tutte le chiamate al worker.
+      #
+      # NOTA: lo script streamcorner_extractor.py usa il file
+      # `.streamcorner_events_m3u8_cache.json` (eventi live only).
+      # Il vecchio file `.streamcorner_m3u8_cache.json` non è più usato.
       # ============================================================
       - name: Cache StreamCorner m3u8 results
         uses: actions/cache@v4
         with:
-          path: .streamcorner_m3u8_cache.json
+          path: .streamcorner_events_m3u8_cache.json
           key: streamcorner-m3u8-cache-${{ github.run_id }}
           restore-keys: |
             streamcorner-m3u8-cache-
@@ -67,21 +69,21 @@ jobs:
         continue-on-error: true
 
       # ------------------------------------------------------------
-      # StreamCorner: 250 item (invece di 400) per contenere i tempi.
-      # Priorità basata su hit-rate reale (slingtv 11%, skygo 3%).
-      # Niente --split: genera file non committati.
+      # StreamCorner: estrae SOLO eventi live adesso (provider admin).
+      # Risolve gli embed via Playwright (4 worker paralleli).
+      # Il limite --playwright-limit è 0 = nessun limite.
       # ------------------------------------------------------------
       - name: Extract StreamCorner streams
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
-            --playwright-workers 6 \
-            --playwright-limit 250 \
-            --playwright-priority "slingtv_channels,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,skygo"
+            --playwright-workers 4 \
+            --playwright-limit 0
         continue-on-error: true
-        timeout-minutes: 90
+        timeout-minutes: 30
 
       - name: Extract WatchFooty streams
+        if: false  # ⬅️ DISABILITATO — dominio api.watchfooty.st morto (2026-10-15)
         run: python watchfooty_direct.py --max 20
         continue-on-error: true
         timeout-minutes: 25
@@ -117,6 +119,7 @@ jobs:
             cdnlivetv_events.m3u \
             streamcorner_COMPLETE.m3u \
             streamcorner_VLC.m3u \
+            streamcorner_EVENTS_LIVE.m3u \
             watchfooty_events.m3u; do
             if [ ! -f "$f" ]; then
               echo "Crea $f (mancante)"
@@ -145,5 +148,6 @@ jobs:
             cdnlivetv_events.m3u
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
+            streamcorner_EVENTS_LIVE.m3u
             watchfooty_events.m3u
           skip_dirty_check: false
