@@ -31,18 +31,24 @@ Thumbs.db
 # Questi file vengono ricreati ad ogni run, non vanno committati.
 # ============================================================
 .streamcorner_vault.json
-.streamcorner_m3u8_cache.json
+.streamcorner_m3u8_cache.json              # vecchio nome (retrocompatibilità)
+.streamcorner_events_m3u8_cache.json       # nuovo nome (eventi live)
 streamcorner_data.json
+streamcorner_events.json
 
 # ============================================================
 # StreamCorner — split per provider (NON committati)
 # ------------------------------------------------------------
 # Vengono generati solo con --split per debug locale.
-# Vanno su Git SOLO streamcorner_COMPLETE.m3u e streamcorner_VLC.m3u.
+# Vanno su Git SOLO:
+#   - streamcorner_COMPLETE.m3u
+#   - streamcorner_VLC.m3u
+#   - streamcorner_EVENTS_LIVE.m3u
 # ============================================================
 streamcorner_*.m3u
 !streamcorner_COMPLETE.m3u
 !streamcorner_VLC.m3u
+!streamcorner_EVENTS_LIVE.m3u
 
 # ============================================================
 # Log e temporanei
