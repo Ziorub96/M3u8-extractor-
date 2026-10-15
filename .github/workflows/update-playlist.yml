@@ -15,7 +15,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 150
 
     steps:
       - name: Checkout repository
@@ -52,10 +52,11 @@ jobs:
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
-            --playwright-workers 4 \
+            --playwright-workers 6 \
+            --playwright-limit 200 \
             --split
         continue-on-error: true
-        timeout-minutes: 60
+        timeout-minutes: 90
 
       - name: Extract WatchFooty streams
         run: python watchfooty_extractor.py --max 20
@@ -78,6 +79,7 @@ jobs:
         continue-on-error: true
 
       - name: Commit and push
+        if: always()
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
@@ -92,3 +94,5 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             watchfooty_events.m3u
+          add_options: '--ignore-errors'
+          skip_dirty_check: false
