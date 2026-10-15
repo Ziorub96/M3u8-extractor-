@@ -60,7 +60,7 @@ jobs:
         timeout-minutes: 90
 
       - name: Extract WatchFooty streams
-        run: python watchfooty_extractor.py --max 20
+        run: python watchfooty_direct.py --max 20
         continue-on-error: true
         timeout-minutes: 25
 
