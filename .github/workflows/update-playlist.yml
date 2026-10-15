@@ -54,6 +54,7 @@ jobs:
             --output streamcorner_COMPLETE.m3u \
             --playwright-workers 6 \
             --playwright-limit 200 \
+            --playwright-priority "skygo,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,slingtv_channels" \
             --split
         continue-on-error: true
         timeout-minutes: 90
