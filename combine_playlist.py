@@ -45,15 +45,12 @@ SOURCES = [
 # Formato: (nome_sorgente, file_path, keep_group_title)
 #   - keep_group_title=True  → mantiene il group-title originale del file
 #   - keep_group_title=False → forza group-title = nome_sorgente
-#
-# StreamCorner: usiamo streamcorner_VLC.m3u (solo m3u8 risolti, NO embed_url)
-# e forziamo group-title="StreamCorner" per avere un unico gruppo nel player.
 LOCAL_SOURCES = [
     ("DAMITV", "damitv_events.m3u", False),
     ("Daddylive", "daddylive_streams.m3u", False),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u", False),
     ("CDN Live TV Events", "cdnlivetv_events.m3u", False),
-    ("StreamCorner", "streamcorner_VLC.m3u", False),   # ⬅️ VLC (solo m3u8) + group unico
+    ("StreamCorner", "streamcorner_VLC.m3u", False),   # ⬅️ MODIFICA: solo m3u8 + gruppo unico
     ("WatchFooty", "watchfooty_events.m3u", False),
 ]
 
