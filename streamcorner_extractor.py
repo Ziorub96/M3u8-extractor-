@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor — EVENTS LIVE ONLY
-==========================================
+StreamCorner Extractor — EVENTS LIVE ONLY (v2 con patch Playwright)
+====================================================================
 Estrae SOLO gli eventi attualmente in onda dal provider "admin" di
 StreamCorner e risolve gli m3u8 via Playwright.
 
-Compatibile con il vecchio CLI (accetta --playwright-limit, --workers,
---providers, ecc.) e con i file che il workflow/combine si aspettano
-(streamcorner_VLC.m3u, streamcorner_COMPLETE.m3u).
+Compatibile col CLI del workflow (--playwright-limit, --playwright-workers,
+--refresh-vault, --no-playwright, --output).
 
-Output prodotti:
+Output:
     streamcorner_VLC.m3u          → m3u8 eventi live (usato dal combine)
     streamcorner_EVENTS_LIVE.m3u  → eventi live, raggruppati per partita
-    streamcorner_COMPLETE.m3u     → mixed (embed + m3u8), per debug
-    streamcorner_events.json      → dati grezzi per debug
-
-Uso:
-    python streamcorner_extractor.py                     # default
-    python streamcorner_extractor.py --playwright-limit 400
-    python streamcorner_extractor.py --no-playwright
+    streamcorner_COMPLETE.m3u     → mixed (embed + m3u8), debug
+    streamcorner_events.json      → dati grezzi
 """
 
 import os, re, json, time, struct, hashlib, argparse, base64
@@ -43,10 +37,10 @@ M3U8_CACHE  = ".streamcorner_events_m3u8_cache.json"
 UA = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
       "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
 
-PROVIDER   = "admin"
-KEY_FIELD  = "stream_id"
+PROVIDER  = "admin"
+KEY_FIELD = "stream_id"
 
-# Finestra "live adesso" (margine pre/post partita in secondi)
+# Margine "live adesso" (secondi)
 LIVE_MARGIN_BEFORE = 1800   # 30 min prima
 LIVE_MARGIN_AFTER  = 3600   # 60 min dopo
 
@@ -216,15 +210,12 @@ def fetch_events(client):
 # FILTRO LIVE
 # ============================================================
 def is_live_now(ev, now=None):
-    """True se l'evento è in onda adesso (con margine pre/post)."""
     if now is None: now = int(time.time())
     st = ev.get("start_time") or ev.get("timestamp") or 0
     et = ev.get("end_time") or 0
     if not st:
-        # evento senza orari (es. 24/7 come Family Guy) → sempre live
         return True
     if not et:
-        # solo start_time: consideralo live per 4 ore
         et = st + 4*3600
     return (st - LIVE_MARGIN_BEFORE) <= now <= (et + LIVE_MARGIN_AFTER)
 
@@ -235,16 +226,16 @@ def filter_live(events):
         if is_live_now(ev, now):
             live.append(ev)
         else:
-            name = ev.get("event_name","?")[:40]
+            name = (ev.get("event_name") or "?")[:40]
             t = ev.get("time_utc","?")
             print(f"   ⏭️  skip {name} (inizia {t})")
     print(f"   🔴 {len(live)}/{len(events)} eventi in onda adesso")
     return live
 
 # ============================================================
-# PLAYWRIGHT
+# PLAYWRIGHT — v2 con patch swiftshader/autoplay/log
 # ============================================================
-def resolve_with_playwright(embed_url, timeout=15):
+def resolve_with_playwright(embed_url, timeout=35, event_name="?", src_name="?"):
     from playwright.sync_api import sync_playwright
     found = {"m3u8": None}
 
@@ -254,51 +245,106 @@ def resolve_with_playwright(embed_url, timeout=15):
             try:
                 if "#EXTM3U" in response.text()[:500]:
                     found["m3u8"] = u
-            except Exception: pass
+            except Exception:
+                pass
 
-    BLOCK = {"image","font","stylesheet"}
-    def route(r):
-        if r.request.resource_type in BLOCK: return r.abort()
-        return r.continue_()
+    def on_request(req):
+        u = req.url.lower()
+        if any(k in u for k in (".m3u8", ".mpd", "license", "widevine")):
+            print(f"      → {req.method} {req.url[:120]}")
 
     try:
         with sync_playwright() as p:
-            b = p.chromium.launch(headless=True, args=[
-                "--no-sandbox","--disable-blink-features=AutomationControlled",
-                "--disable-dev-shm-usage","--disable-gpu","--disable-images"])
-            ctx = b.new_context(user_agent=UA,
-                viewport={"width":1280,"height":720}, locale="en-US")
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--no-sandbox",
+                    "--disable-blink-features=AutomationControlled",
+                    "--disable-dev-shm-usage",
+                    "--use-gl=swiftshader",
+                    "--enable-unsafe-swiftshader",
+                    "--autoplay-policy=no-user-gesture-required",
+                    "--mute-audio",
+                ],
+            )
+            ctx = browser.new_context(
+                user_agent=UA,
+                viewport={"width": 1280, "height": 720},
+                locale="en-US",
+                extra_http_headers={"Referer": "https://streamcorner.st/"},
+                permissions=["autoplay"],
+            )
             ctx.add_init_script(
-                "Object.defineProperty(navigator,'webdriver',{get:()=>undefined});")
-            ctx.route("**/*", route)
+                "Object.defineProperty(navigator,'webdriver',{get:()=>undefined});"
+                "Object.defineProperty(navigator,'plugins',{get:()=>[1,2,3]});"
+            )
+
             page = ctx.new_page()
             page.on("response", on_response)
+            page.on("request", on_request)
+
             try:
                 page.goto(embed_url, wait_until="domcontentloaded",
                           timeout=timeout*1000)
-            except Exception: pass
-            for _ in range(6):
+            except Exception:
+                pass
+
+            # attesa boot player
+            for _ in range(15):
                 if found["m3u8"]: break
-                try: page.wait_for_timeout(500)
+                try: page.wait_for_timeout(700)
                 except Exception: break
+
+            # click realistico (move → down → up)
             if not found["m3u8"]:
-                for sel in ["button[aria-label*='play' i]",
-                            ".vjs-big-play-button",".jw-icon-playback",
-                            ".play-button",".clappr-play-button"]:
-                    try: page.click(sel, timeout=800); break
-                    except Exception: continue
-                for x,y in [(640,360),(400,300),(800,400)]:
+                try:
+                    page.mouse.move(640, 360)
+                    page.wait_for_timeout(200)
+                    page.mouse.down()
+                    page.wait_for_timeout(100)
+                    page.mouse.up()
+                    page.wait_for_timeout(1000)
+                except Exception:
+                    pass
+
+            # click sui selettori player noti
+            if not found["m3u8"]:
+                for sel in [
+                    "button[aria-label*='play' i]",
+                    ".vjs-big-play-button",
+                    ".jw-icon-playback",
+                    ".bitmovinplayer-ui",
+                    ".clappr-play-button",
+                    "video",
+                ]:
                     try:
-                        page.mouse.click(x,y); page.wait_for_timeout(500)
+                        page.click(sel, timeout=1500)
+                        page.wait_for_timeout(1200)
                         if found["m3u8"]: break
-                    except Exception: continue
-                for _ in range(8):
-                    if found["m3u8"]: break
-                    try: page.wait_for_timeout(500)
-                    except Exception: break
-            b.close()
-    except Exception:
-        return None
+                    except Exception:
+                        continue
+
+            # fallback: forza play() via JS
+            if not found["m3u8"]:
+                try:
+                    page.evaluate("""() => {
+                        const v = document.querySelector('video');
+                        if (v) { v.muted = true; v.play().catch(()=>{}); }
+                    }""")
+                    page.wait_for_timeout(2000)
+                except Exception:
+                    pass
+
+            # attesa finale lunga
+            for _ in range(20):
+                if found["m3u8"]: break
+                try: page.wait_for_timeout(700)
+                except Exception: break
+
+            browser.close()
+    except Exception as e:
+        print(f"      ⚠️  {event_name}/{src_name}: {str(e)[:120]}")
+
     return found["m3u8"]
 
 # ============================================================
@@ -335,19 +381,21 @@ def resolve_all(events, workers=4, limit=0):
     done = 0
 
     def worker(ev, idx, emb):
-        return ev, idx, emb, resolve_with_playwright(emb, timeout=15)
+        ev_name = (ev.get("event_name") or "?")[:35]
+        src = (ev["streams"][idx].get("source_name") or "?")[:22]
+        m = resolve_with_playwright(emb, timeout=35,
+                                     event_name=ev_name, src_name=src)
+        return ev, idx, emb, m, ev_name, src
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         for f in as_completed([ex.submit(worker, e, i, u) for e, i, u in jobs]):
             done += 1
             try:
-                ev, idx, emb, m = f.result()
+                ev, idx, emb, m, ev_name, src = f.result()
                 if m:
                     ev["streams"][idx]["m3u8"] = m
                     cache[emb] = m
                     resolved += 1
-                    ev_name = (ev.get("event_name") or "?")[:35]
-                    src = (ev["streams"][idx].get("source_name") or "?")[:22]
                     print(f"   🎯 [{done}/{len(jobs)}] {ev_name} → {src}")
                     print(f"      {m[:110]}")
                 elif done % 5 == 0:
@@ -365,7 +413,6 @@ def resolve_all(events, workers=4, limit=0):
 # M3U WRITERS
 # ============================================================
 def write_events_grouped(events, filename, only_live=False):
-    """M3U con group-title = event_name (una entry per fonte)."""
     now = int(time.time())
     seen = set(); groups = {}
     with open(filename, "w", encoding="utf-8") as f:
@@ -393,7 +440,6 @@ def write_events_grouped(events, filename, only_live=False):
     return len(seen), len(groups)
 
 def write_vlc_flat(events, filename, only_live=True):
-    """M3U flat (group-title unico), compatibile col combine esistente."""
     now = int(time.time())
     seen = set()
     with open(filename, "w", encoding="utf-8") as f:
@@ -420,7 +466,6 @@ def write_vlc_flat(events, filename, only_live=True):
     return len(seen)
 
 def write_complete(events, filename, only_live=True):
-    """Mixed: m3u8 se presente, altrimenti embed_url (debug)."""
     now = int(time.time())
     seen = set()
     with open(filename, "w", encoding="utf-8") as f:
@@ -445,22 +490,21 @@ def write_complete(events, filename, only_live=True):
 # ============================================================
 def main():
     ap = argparse.ArgumentParser(description="StreamCorner Events Extractor")
-    # Argomenti compatibili col vecchio CLI
     ap.add_argument("--output", default="streamcorner_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=".")
-    ap.add_argument("--providers", default="all")   # ignorato
+    ap.add_argument("--providers", default="all")
     ap.add_argument("--refresh-vault", action="store_true")
-    ap.add_argument("--workers", type=int, default=15)  # ignorato
-    ap.add_argument("--split", action="store_true")     # ignorato
+    ap.add_argument("--workers", type=int, default=15)
+    ap.add_argument("--split", action="store_true")
     ap.add_argument("--no-playwright", action="store_true")
-    ap.add_argument("--no-quick-probe", action="store_true")  # ignorato
+    ap.add_argument("--no-quick-probe", action="store_true")
     ap.add_argument("--playwright-workers", type=int, default=4)
     ap.add_argument("--playwright-limit", type=int, default=0)
-    ap.add_argument("--playwright-priority", default="")  # ignorato
+    ap.add_argument("--playwright-priority", default="")
     args = ap.parse_args()
 
     print("="*60)
-    print("📡 STREAMCORNER EXTRACTOR — EVENTS LIVE ONLY")
+    print("📡 STREAMCORNER EXTRACTOR — EVENTS LIVE ONLY (v2)")
     print("="*60)
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -480,12 +524,12 @@ def main():
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
         return
 
-    # 3. Filtro live adesso
+    # 3. Filtro live
     print("\n[3/4] Filtro live adesso")
     live_events = filter_live(events)
 
-    # 4. Risoluzione m3u8
-    print("\n[4/4] Risoluzione m3u8 (Playwright)")
+    # 4. Risoluzione
+    print("\n[4/4] Risoluzione m3u8 (Playwright v2)")
     if args.no_playwright:
         print("   ⏭️  saltata (--no-playwright)")
     else:
