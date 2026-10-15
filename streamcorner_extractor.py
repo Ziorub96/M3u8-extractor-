@@ -9,7 +9,7 @@ Playwright è attivo di default per risolvere gli embed_url in m3u8 diretti.
 
 Strategia salvataggio:
     1. Salva subito streamcorner_COMPLETE.m3u (mixed, non vuoto mai)
-    2. Risolve N item con Playwright (limite 200 di default)
+    2. Risolve N item con Playwright (limite 200, priorità SkyGo/Extra)
     3. Riscrive COMPLETE aggiornato + VLC-ready (solo m3u8)
 
 Output:
@@ -39,6 +39,7 @@ import hashlib
 import argparse
 import requests
 import urllib3
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -58,6 +59,11 @@ M3U8_CACHE = ".streamcorner_m3u8_cache.json"
 
 PLAYWRIGHT_DEFAULT_LIMIT = 200
 PLAYWRIGHT_DEFAULT_WORKERS = 6
+
+# Priorità di default: provider con player più semplici/hit rate alto prima
+PLAYWRIGHT_DEFAULT_PRIORITY = (
+    "skygo,extra004,extra003,channels,mlb,nfl,nba,peacock_channels,slingtv_channels"
+)
 
 # Provider supportati: (endpoint, keyField)
 PROVIDERS = {
@@ -425,7 +431,7 @@ def fetch_provider(client, provider, key_field, workers=15, verbose=True):
 
 
 # ============================================================
-# PLAYWRIGHT RESOLVER — versione ottimizzata
+# PLAYWRIGHT RESOLVER — versione ottimizzata con click multipli
 # ============================================================
 def _check_playwright():
     global PLAYWRIGHT_AVAILABLE
@@ -441,7 +447,12 @@ def _check_playwright():
     return PLAYWRIGHT_AVAILABLE
 
 
-def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
+def resolve_embed_with_playwright(embed_url, timeout=20, verbose=False):
+    """
+    Apre embed_url in un browser headless e intercetta la richiesta m3u8.
+    Blocca image/font/stylesheet (NON media) per velocizzare.
+    Timeout default 20s.
+    """
     if not _check_playwright():
         return None
 
@@ -461,7 +472,8 @@ def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
             except Exception:
                 pass
 
-    BLOCK_TYPES = {"image", "font", "stylesheet", "media"}
+    # NON bloccare "media" (i player lo usano in preload prima del manifest)
+    BLOCK_TYPES = {"image", "font", "stylesheet"}
 
     def route_handler(route):
         if route.request.resource_type in BLOCK_TYPES:
@@ -500,7 +512,8 @@ def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
             except Exception:
                 pass
 
-            for _ in range(6):
+            # Attesa iniziale 4s
+            for _ in range(8):
                 if found["m3u8"]:
                     break
                 try:
@@ -508,18 +521,30 @@ def resolve_embed_with_playwright(embed_url, timeout=12, verbose=False):
                 except Exception:
                     break
 
+            # Click sul play button + click multipli su overlay
             if not found["m3u8"]:
                 for selector in [
                     "button[aria-label*='play' i]",
                     ".vjs-big-play-button",
                     ".jw-icon-playback",
+                    ".play-button",
                 ]:
                     try:
-                        page.click(selector, timeout=800)
+                        page.click(selector, timeout=1000)
                         break
                     except Exception:
                         continue
-                for _ in range(5):
+
+                for x, y in [(640, 360), (400, 300), (800, 400), (640, 500)]:
+                    try:
+                        page.mouse.click(x, y)
+                        page.wait_for_timeout(500)
+                        if found["m3u8"]:
+                            break
+                    except Exception:
+                        continue
+
+                for _ in range(10):
                     if found["m3u8"]:
                         break
                     try:
@@ -572,7 +597,7 @@ def resolve_with_playwright(items, workers=2, verbose=True, cache_file=M3U8_CACH
 
     def worker(item):
         embed = item["embed_url"]
-        m3u8 = resolve_embed_with_playwright(embed, timeout=12, verbose=False)
+        m3u8 = resolve_embed_with_playwright(embed, timeout=20, verbose=False)
         return item, embed, m3u8
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
@@ -673,6 +698,10 @@ def main():
                         default=PLAYWRIGHT_DEFAULT_LIMIT,
                         help=f"Max item da risolvere con Playwright "
                              f"(default: {PLAYWRIGHT_DEFAULT_LIMIT}, 0 = tutti)")
+    parser.add_argument("--playwright-priority",
+                        default=PLAYWRIGHT_DEFAULT_PRIORITY,
+                        help="Provider in ordine di priorità per Playwright "
+                             "(default: skygo,extra004,extra003,...)")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -706,26 +735,47 @@ def main():
                 it["_provider"] = provider
             all_items.extend(items)
 
-    # 3. SALVATAGGIO ANTICIPATO
+    # 3. SALVATAGGIO ANTICIPATO (mixed)
     print(f"\n[3/5] Salvataggio anticipato (mixed)")
     mixed_path = os.path.join(args.output_dir, args.output)
     total_mixed = write_m3u(all_items, mixed_path, prefer_m3u8=False)
     print(f"   💾 {args.output}: {total_mixed} stream (mixed, salvato)")
 
-    # 4. PLAYWRIGHT
+    # 4. PLAYWRIGHT con priorità provider
     use_m3u8 = not args.no_playwright
     if use_m3u8:
         print(f"\n[4/5] Risoluzione m3u8 con Playwright")
 
+        # Riordina all_items in base alla priorità dei provider
+        priority = [p.strip() for p in args.playwright_priority.split(",")
+                    if p.strip()]
+        priority_map = {p: i for i, p in enumerate(priority)}
+
+        def sort_key(it):
+            p = it.get("_provider", "other")
+            return (priority_map.get(p, 999),)
+
+        all_items_sorted = sorted(all_items, key=sort_key)
+
         limit = args.playwright_limit
-        if limit > 0 and limit < len(all_items):
-            print(f"   ⚠️  Limite: {limit} item (catalogo totale: {len(all_items)})")
-            to_resolve = all_items[:limit]
-            rest = all_items[limit:]
+        if limit > 0 and limit < len(all_items_sorted):
+            print(f"   ⚠️  Limite: {limit} item "
+                  f"(catalogo totale: {len(all_items_sorted)})")
+            print(f"   📋 Priorità: {priority}")
+            to_resolve = all_items_sorted[:limit]
+            # rest mantiene ordine originale
+            resolved_ids = {id(it) for it in to_resolve}
+            rest = [it for it in all_items if id(it) not in resolved_ids]
         else:
-            print(f"   → Tutti i {len(all_items)} item")
-            to_resolve = all_items
+            print(f"   → Tutti i {len(all_items_sorted)} item")
+            to_resolve = all_items_sorted
             rest = []
+
+        # Riepilogo provider che verranno processati
+        prov_count = Counter(it.get("_provider", "?") for it in to_resolve)
+        print(f"   📊 Provider che verranno processati:")
+        for p, c in prov_count.most_common():
+            print(f"      {p}: {c}")
 
         to_resolve = resolve_with_playwright(
             to_resolve,
