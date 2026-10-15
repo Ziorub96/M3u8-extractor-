@@ -40,10 +40,6 @@ jobs:
       #   - key univoca per run (run_id) → forza il salvataggio
       #   - restore-keys con prefisso → recupera la cache più recente
       # GitHub auto-pota le cache >7 giorni o quando supera 10 GB.
-      #
-      # NOTA: lo script streamcorner_extractor.py usa il file
-      # `.streamcorner_events_m3u8_cache.json` (eventi live only).
-      # Il vecchio file `.streamcorner_m3u8_cache.json` non è più usato.
       # ============================================================
       - name: Cache StreamCorner m3u8 results
         uses: actions/cache@v4
@@ -69,11 +65,10 @@ jobs:
         continue-on-error: true
 
       # ------------------------------------------------------------
-      # StreamCorner: estrae SOLO eventi live adesso (provider admin).
-      # Risolve gli embed via Playwright (4 worker paralleli).
-      # Il limite --playwright-limit è 0 = nessun limite.
+      # StreamCorner v3: eventi live + stealth Playwright + DRM capture
+      # Timeout 45s per embed × 48 embed / 4 worker ≈ 9-15 min
       # ------------------------------------------------------------
-      - name: Extract StreamCorner streams
+      - name: Extract StreamCorner streams (v3)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
@@ -83,7 +78,7 @@ jobs:
         timeout-minutes: 30
 
       - name: Extract WatchFooty streams
-        if: false  # ⬅️ DISABILITATO — dominio api.watchfooty.st morto (2026-10-15)
+        if: false  # DISABILITATO — dominio api.watchfooty.st morto (2026-10-15)
         run: python watchfooty_direct.py --max 20
         continue-on-error: true
         timeout-minutes: 25
@@ -120,18 +115,21 @@ jobs:
             streamcorner_COMPLETE.m3u \
             streamcorner_VLC.m3u \
             streamcorner_EVENTS_LIVE.m3u \
+            streamcorner_drm_report.json \
             watchfooty_events.m3u; do
             if [ ! -f "$f" ]; then
               echo "Crea $f (mancante)"
               if [[ "$f" == *.m3u ]]; then
                 echo "#EXTM3U" > "$f"
+              elif [[ "$f" == *.json ]]; then
+                echo "{}" > "$f"
               else
                 touch "$f"
               fi
             fi
           done
           echo "--- Stato file ---"
-          ls -la *.m3u *.txt 2>/dev/null || true
+          ls -la *.m3u *.txt *.json 2>/dev/null || true
 
       - name: Commit and push
         if: always()
@@ -149,5 +147,6 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
+            streamcorner_drm_report.json
             watchfooty_events.m3u
           skip_dirty_check: false
