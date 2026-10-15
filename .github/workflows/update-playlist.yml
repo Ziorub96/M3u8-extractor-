@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,13 +48,12 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
-      - name: Extract StreamCorner streams (catalog + m3u8 via Playwright)
+      - name: Extract StreamCorner streams (single file)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
             --playwright \
-            --playwright-workers 4 \
-            --split
+            --playwright-workers 4
         continue-on-error: true
         timeout-minutes: 60
 
@@ -87,16 +90,4 @@ jobs:
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
             streamcorner_COMPLETE.m3u
-            streamcorner_VLC.m3u
-            streamcorner_slingtv_channels.m3u
-            streamcorner_skygo.m3u
-            streamcorner_extra003.m3u
-            streamcorner_extra004.m3u
-            streamcorner_channels.m3u
-            streamcorner_mlb.m3u
-            streamcorner_nfl.m3u
-            streamcorner_nba.m3u
-            streamcorner_peacock_channels.m3u
-            streamcorner_data.json
-            .streamcorner_m3u8_cache.json
             watchfooty_events.m3u
