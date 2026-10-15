@@ -1,147 +1,173 @@
 #EXTM3U
 # StreamCorner — 708 item
 
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/d552b9414b84d2e2fd3d1f60d3ed8789.png" group-title="Sports",beIN SPORTS CONNECT 4
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1141/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a8c25871ea408591c2eb28d028ea25163b973df0.png" group-title="News",Al Jazeera English
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1650/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8637ba95d1416ba84b42b457f0a11a3a.png" group-title="News",BBC News
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/504/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/9c9407a0ce3dc37b64d99077f0088d3f6cb8c4a8.png" group-title="News",ABC News Live
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1283/20261015T120000Z/20261015T133000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/a7e2326983375da2fed239d2f4e3e8f4.png" group-title="Other",BBC Drama
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2652/20261015T121100Z/20261015T130400Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/1d4267afe18ac391eb1013f7b5c52a7f03e704ef.PNG" group-title="Sports",ACC Network
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1231/20261015T100000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bb4efd6a7e4a5697d174cf1c769d3dc196041576.png" group-title="Sports",beIN SPORTS XTRA
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1395/20261015T120000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://b-img.movetv.com/1280x720/0142c0fd0a48d9d52da67a8c44b11379.png" group-title="Lifestyle",BBC Food
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2337/20261015T114500Z/20261015T125200Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/9c9407a0ce3dc37b64d99077f0088d3f6cb8c4a8.png" group-title="News",ABC News Live
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1283/20261015T120000Z/20261015T133000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/35c26eafc2392c854b458a1c5ab006b1.jpeg" group-title="Entertainment",AMC
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/159/20261015T133000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/d552b9414b84d2e2fd3d1f60d3ed8789.png" group-title="Sports",beIN SPORTS CONNECT 4
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1141/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/1a4c4244a44a443370b0af62f9e2648c.png" group-title="Sports",beIN SPORTS CONNECT 8
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1145/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/d62d0147c805c72a706f03876f152bf20d44ac8a.png" group-title="Entertainment",Cartoon Network & Adult Swim
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/19/20261015T120800Z/20261015T122400Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e0299243451091372d3c6c143a7631035088f4f0.png" group-title="Sports",Big Ten Network
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1097/20261015T113000Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/f4eb052baea0d0f261d154f7977a49b5a199ab35.png" group-title="Sports",Boston Celtics
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1006/20261015T120000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8637ba95d1416ba84b42b457f0a11a3a.png" group-title="News",BBC News
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/504/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bb4efd6a7e4a5697d174cf1c769d3dc196041576.png" group-title="Sports",beIN SPORTS XTRA
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1395/20261015T120000Z/20261015T140000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://b-img.movetv.com/1280x720/5afc5712dec581c17ce06641842cc5ff.png" group-title="Sports",Big Ten Network Alternate 2
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2370/20261015T100000Z/20261015T130000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e81378c2af0f04b38bd3435afb8e9a29b13eb431.png" group-title="Sports",Big Ten Network Alternate
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1272/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/0625b58dda4b93e12beae0c519649b3df65ac3d6.png" group-title="Sports",Chicago Bulls
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1009/20261015T121500Z/20261015T161500Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/6a0fefe88dfa904221c20bac46e0a26a047afefa.PNG" group-title="News",CNN
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/9/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/7733c037244786eef7293b2a835e1fd68ccf35ed.png" group-title="Sports",Detroit Pistons
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1013/20261015T085500Z/20261015T125500Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/ca589c958c598a571449ecafffdd4e22b1b72208.png" group-title="News",Bloomberg TV+
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/7/20261015T100000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/ed8adc6309b02d4b7fb208786a30ca04899e74b6.PNG" group-title="Sports",ESPN
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1290/20261015T120000Z/20261015T140000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/d62d0147c805c72a706f03876f152bf20d44ac8a.png" group-title="Entertainment",Cartoon Network & Adult Swim
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/19/20261015T120800Z/20261015T122400Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/1d4267afe18ac391eb1013f7b5c52a7f03e704ef.PNG" group-title="Sports",ACC Network
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1231/20261015T100000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/f4eb052baea0d0f261d154f7977a49b5a199ab35.png" group-title="Sports",Boston Celtics
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1006/20261015T120000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a8c25871ea408591c2eb28d028ea25163b973df0.png" group-title="News",Al Jazeera English
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1650/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://b-img.movetv.com/1280x720/0142c0fd0a48d9d52da67a8c44b11379.png" group-title="Lifestyle",BBC Food
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2337/20261015T114500Z/20261015T125200Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e0299243451091372d3c6c143a7631035088f4f0.png" group-title="Sports",Big Ten Network
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1097/20261015T113000Z/20261015T123000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/0e5bc548b52ba0d494c613de5cd1f11e9369214c.PNG" group-title="Entertainment",Bravo
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/630/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/391b93f1158076223e5e2cce2c3e2d1dce2a2978.PNG" group-title="Sports",ESPN2
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1291/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/23eddc162c8899b9e50177f849197f1d7ab39af5.png" group-title="Sports",Denver Nuggets
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1012/20261015T085500Z/20261015T125500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/b85351e6f7a6ec4fa4ca2cf06c42b98fa653e496.png" group-title="Sports",Charlotte Hornets
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1008/20261015T125000Z/20261015T165000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/03f3294d69d83c97a031497bb269c5a4ba73b8e0.PNG" group-title="Entertainment",Comedy Central
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/613/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/780b9207681433e471bc8aeeff614f271bf0b610.PNG" group-title="Kids & Family",Disney Channel
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1276/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8328c59ec156c144fcd137e1227ffb2f.png" group-title="Lifestyle",Food Network
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/13/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bb2f2c6bcd77db3da0244ed2a71acefe9b88611f.PNG" group-title="Sports",ESPNU
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1292/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/716dc7ce57d80c03ff7bc4e2dbf974e184902273.PNG" group-title="Entertainment",FOX (KTTV)
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/531/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/7733c037244786eef7293b2a835e1fd68ccf35ed.png" group-title="Sports",Detroit Pistons
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1013/20261015T085500Z/20261015T125500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/6a0fefe88dfa904221c20bac46e0a26a047afefa.PNG" group-title="News",CNN
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/9/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/ed8adc6309b02d4b7fb208786a30ca04899e74b6.PNG" group-title="Sports",ESPN
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1290/20261015T120000Z/20261015T140000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/391b93f1158076223e5e2cce2c3e2d1dce2a2978.PNG" group-title="Sports",ESPN2
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1291/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/09f94e10454954401ddd708b6b512c3c6f4420cb.PNG" group-title="Entertainment",FOX (WNYW)
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/537/20261015T110000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/7e81634f07da663019d668e9aa6ffbfc.png" group-title="Sports",Fubo Sports Network
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1914/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/32103898bc141adf8cbd5148ae05e8c1987f0e09.png" group-title="Sports",Golden State Warriors
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1014/20261015T093500Z/20261015T133500Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/4645a189ee67a696891f0398e609329044f11ab2.PNG" group-title="Lifestyle",HGTV
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/14/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bf7f058337f505bafb8769428508959b0b5f8836.PNG" group-title="Entertainment",FX
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/558/20261015T110000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1920x1080/d8b2601f1535de6fabe61a22373ab2f9.png" group-title="Sports",Golf Channel
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/631/20261015T113000Z/20261015T160000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/1144979f17ce64945ea1f7e799374e4a.png" group-title="Sports",ESPN 4K
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2586/20261015T100000Z/20261015T180000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/5f300d44341aa3e565ad72ea1c93aae40276d5c1.png" group-title="News",France 24 (English)
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/332/20261015T121500Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/557a9e5bb785d8d7d5a6655fed15d37a.png" group-title="Reality",History
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/156/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/780b9207681433e471bc8aeeff614f271bf0b610.PNG" group-title="Kids & Family",Disney Channel
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1276/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/dd57203c63cdc7859b7570babc576d1072f83549.PNG" group-title="Sports",ESPNEWS
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1296/20261015T150000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8328c59ec156c144fcd137e1227ffb2f.png" group-title="Lifestyle",Food Network
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/13/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/716dc7ce57d80c03ff7bc4e2dbf974e184902273.PNG" group-title="Entertainment",FOX (KTTV)
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/531/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/0625b58dda4b93e12beae0c519649b3df65ac3d6.png" group-title="Sports",Chicago Bulls
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1009/20261015T121500Z/20261015T161500Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a79ba88cf19e77f4d4156e1ae9e58b5db4e8719e.png" group-title="Movies",Freeform
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1279/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/8cb76d905bbb9dd4b754e8a274e394ce92ce0ad8.png" group-title="Sports",Memphis Grizzlies
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1019/20261015T090500Z/20261015T130500Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/613745ce3cdf1b86fb79fd92b3b51a59c88a1221.png" group-title="Sports",Indiana Pacers
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1016/20261015T090000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/95c87b7ec1728739dae800ccf9872d4324329c15.png" group-title="Sports",Milwaukee Bucks
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1021/20261015T091000Z/20261015T131000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8cc12d95c3a43277c68345cdd6db0917.png" group-title="News",LiveNOW from FOX
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2110/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/b9aaa7b1cc26af58fd3e3b32c3f972fd01f86cf7.PNG" group-title="True Crime",Investigation Discovery
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1108/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a0c24b40b12b52f88b3a678409b8f30c3636a0b3.png" group-title="Sports",Los Angeles Clippers
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1017/20261015T090500Z/20261015T130500Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/76721f00d62b621a8c31f1f7018ab9940d9f6c02.png" group-title="Sports",Houston Rockets
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1015/20261015T090000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/6ea458486ebce19e880626e6f33fbedba32a7cf0.png" group-title="Sports",MLB Network Alternate
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1174/20261015T100000Z/20261015T163000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/images/7fc6cf6af11c77cd1af7625db9792c6a06eec23a" group-title="Entertainment",MSG SportsZone
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1960/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/5f300d44341aa3e565ad72ea1c93aae40276d5c1.png" group-title="News",France 24 (English)
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/332/20261015T121500Z/20261015T123000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e48b950b867d0ea14bd63321f7c08280e841febc.png" group-title="News",France 24
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/754/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bf7f058337f505bafb8769428508959b0b5f8836.PNG" group-title="Entertainment",FX
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/558/20261015T110000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/32103898bc141adf8cbd5148ae05e8c1987f0e09.png" group-title="Sports",Golden State Warriors
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1014/20261015T093500Z/20261015T133500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bb2f2c6bcd77db3da0244ed2a71acefe9b88611f.PNG" group-title="Sports",ESPNU
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1292/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/7e81634f07da663019d668e9aa6ffbfc.png" group-title="Sports",Fubo Sports Network
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1914/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/557a9e5bb785d8d7d5a6655fed15d37a.png" group-title="Reality",History
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/156/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/76721f00d62b621a8c31f1f7018ab9940d9f6c02.png" group-title="Sports",Houston Rockets
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1015/20261015T090000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/4645a189ee67a696891f0398e609329044f11ab2.PNG" group-title="Lifestyle",HGTV
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/14/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1920x1080/d8b2601f1535de6fabe61a22373ab2f9.png" group-title="Sports",Golf Channel
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/631/20261015T113000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/b9aaa7b1cc26af58fd3e3b32c3f972fd01f86cf7.PNG" group-title="True Crime",Investigation Discovery
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1108/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/613745ce3cdf1b86fb79fd92b3b51a59c88a1221.png" group-title="Sports",Indiana Pacers
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1016/20261015T090000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a0c24b40b12b52f88b3a678409b8f30c3636a0b3.png" group-title="Sports",Los Angeles Clippers
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1017/20261015T090500Z/20261015T130500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8cc12d95c3a43277c68345cdd6db0917.png" group-title="News",LiveNOW from FOX
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2110/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/3278d0f70009c170f7a693f06056907b45264658.png" group-title="Sports",Los Angeles Lakers
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1018/20261015T130500Z/20261015T170500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/1144979f17ce64945ea1f7e799374e4a.png" group-title="Sports",ESPN 4K
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2586/20261015T100000Z/20261015T180000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e2ed6dd3226e489a00fb104daba6388d2022a2ae.png" group-title="Sports",Miami Heat
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1020/20261015T091000Z/20261015T131000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/95c87b7ec1728739dae800ccf9872d4324329c15.png" group-title="Sports",Milwaukee Bucks
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1021/20261015T091000Z/20261015T131000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/6ea458486ebce19e880626e6f33fbedba32a7cf0.png" group-title="Sports",MLB Network Alternate
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1174/20261015T100000Z/20261015T163000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/211ed96f681fae7564ed2640152dad979d219f5d.PNG" group-title="Docs & History",National Geographic
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/458/20261015T150000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/ea7a56b7cc09a8b983c176d9e80280caf6597076.PNG" group-title="Sports",MLB Strike Zone
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1173/20261015T140000Z/20261015T180000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/8cb76d905bbb9dd4b754e8a274e394ce92ce0ad8.png" group-title="Sports",Memphis Grizzlies
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1019/20261015T090500Z/20261015T130500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/7dfdd7a658edd41fb78047843ec4453f0a2e8ca0.PNG" group-title="Sports",NBA TV
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/733/20261015T153000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/images/7fc6cf6af11c77cd1af7625db9792c6a06eec23a" group-title="Entertainment",MSG SportsZone
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1960/20261015T100000Z/20261015T140000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/85467d7f42804deea06cfd55c0ee490e26a4f456.png" group-title="Sports",NFL Network
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/188/20261015T120000Z/20261015T140000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/1737d028df1687b29bda05a443a20274.png" group-title="News",NBC News Now
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2660/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/29ec2bd874c3a3b5b39cc4c2251a2059.png" group-title="Classics & Re-Runs",MeTV
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2621/20261015T150000Z/20261015T160000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/b12797d38045e53d3a06836346a43b0eed10b28a.png" group-title="Sports",New Orleans Pelicans
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1023/20261015T131500Z/20261015T171500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8ce88d415e177ad6397186f841278e4a.png" group-title="Sports",NFL Network Alt
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1500/20261015T100000Z/20261015T180000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/d37367e00e866696fb78279b440e346fdf94e1ef.png" group-title="Sports",Oklahoma City Thunder
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1025/20261015T092000Z/20261015T132000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e2ed6dd3226e489a00fb104daba6388d2022a2ae.png" group-title="Sports",Miami Heat
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1020/20261015T091000Z/20261015T131000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/7707e3e046129a12f7f8b241439e20eb.png" group-title="Sports",MLB Network
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1175/20261015T140000Z/20261015T160000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/f67f120cb04eff6612881dcd3b5e7e14c5f4ef8d.png" group-title="Sports",Portland Trail Blazers
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1029/20261015T093000Z/20261015T133000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/d6826bc30fea9919fc87a753f232dd45a285cc8a.png" group-title="Sports",Sacramento Kings
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1030/20261015T093000Z/20261015T133000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8ce88d415e177ad6397186f841278e4a.png" group-title="Sports",NFL Network Alt
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1500/20261015T100000Z/20261015T180000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/8dc69b37f0f2616d9229ad5bb7b4e320.png" group-title="Sports",SEC Network
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1294/20261015T050000Z/20261015T140000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/21960e2c793250753da05410f402fb46ed78d8e8.png" group-title="Sports",Philadelphia 76ers
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1027/20261015T092500Z/20261015T132500Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/ea811c0fe66802da319de214b790549c8e9b1034.png" group-title="Sports",San Antonio Spurs
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1031/20261015T093500Z/20261015T133500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/images/bdda5e1c7851ad85a2ffba26e03babf29d656730" group-title="Sports",NFL RedZone
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/189/20261015T100000Z/20261015T180000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e7614eaaeef904f751b164fcb16b627377410cca.png" group-title="Sports",Orlando Magic
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1026/20261015T092500Z/20261015T132500Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e82c6f3eefaa3e57f17e8a44784043c6c9924073.PNG" group-title="Entertainment",SYFY
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/632/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/b99d2a89a0cd16fa0a2f3b22708b474f642fd3da.png" group-title="Entertainment",Stories By AMC
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1356/20261015T152300Z/20261015T161000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/03569b989a6cbaf7095d9c42156b9f47f62da844.png" group-title="Sports",Phoenix Suns
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1028/20261015T132500Z/20261015T172500Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/21960e2c793250753da05410f402fb46ed78d8e8.png" group-title="Sports",Philadelphia 76ers
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1027/20261015T092500Z/20261015T132500Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/62f7c69bbfd0c8a894fd1d0937fba6214bee5f97.PNG" group-title="Entertainment",TNT
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/18/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/cd4c19b4e43ae96bfed015730a22aea8.png" group-title="Sports",T2
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2526/20261015T130000Z/20261015T170000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e7fd4763170a100a14e53f34ab627c7d3a12d787.PNG" group-title="Sports",Tennis Channel
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1148/20261015T150000Z/20261015T160000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/806c22a671d683bb0c0248aaf9f37290.png" group-title="Entertainment",truTV
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/50/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/07b633645a9db7d0d0b8bcf8c86a8f5c.png" group-title="Sports",Willow Sports
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2406/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a36f30bb124e028fc0a855ae3a8aed53f256081b.png" group-title="Sports",Washington Wizards
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1034/20261015T094000Z/20261015T134000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/e82c6f3eefaa3e57f17e8a44784043c6c9924073.PNG" group-title="Entertainment",SYFY
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/632/20261015T120000Z/20261015T123000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/images/d3ef4d3677491d925aa199b0b7f83e01b6621438" group-title="Sports",Zona TUDN
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1607/20261015T155500Z/20261015T162000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/3dca399cce2d5ddec3993ae3dc351399.png" group-title="Sports",Willow 2
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/672/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/bffad9b90e2200e43ae4ecf4a49a81238b643560.PNG" group-title="Entertainment",USA
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/633/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
-#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/a36f30bb124e028fc0a855ae3a8aed53f256081b.png" group-title="Sports",Washington Wizards
-https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/1034/20261015T094000Z/20261015T134000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/07b633645a9db7d0d0b8bcf8c86a8f5c.png" group-title="Sports",Willow Sports
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/2406/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
+#EXTINF:-1 tvg-logo="https://p-img.movetv.com/cms/images/b7c5841c82ec21c38cd43815c7c49791ae3bcc56.png" group-title="Sports",Willow Cricket HD
+https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/22/20261015T150000Z/20261015T160000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 tvg-logo="https://p-img.movetv.com/1280x720/2b342b892a27ca1f6397e0736f6d8a30.png" group-title="Reality",VICE
 https://p-cdn4-a-cg14-linear-cbd46b77.movetv.com/clipslist/155/20261015T120000Z/20261015T130000Z/master_7_3_widevine.m3u8
 #EXTINF:-1 group-title="BOXING",Filip Hrgovic @ Moses Itauma [STREAM 1]
 https://instreams.live/live3/F1/index.m3u8?st=xHm0aXgk-E2dGv84jGBEhw&e=1792077461
-#EXTINF:-1 group-title="F1",Qualifying @ Tag Heuer Spanish GP [STREAM 1]
-https://instreams.live/live3/SSF31/index.m3u8?st=o16SP2axIa8OKSLksVbo3g&e=1792077595
-#EXTINF:-1 group-title="F1",Race @ Tag Heuer Spanish GP [STREAM 1]
-https://instreams.xyz/live3/SSF31/index.m3u8?st=wspFOc--sxpySB2cfoMQuw&e=1792077599
 #EXTINF:-1 group-title="F1",Practice 1 @ Tag Heuer Spanish GP [STREAM 1]
-https://instreams.xyz/live3/SSF31/index.m3u8?st=MT1ImmoLBnBhKWq7WgQ1ww&e=1792077612
-#EXTINF:-1 group-title="F1",Practice 2 @ Tag Heuer Spanish GP [STREAM 1]
-https://instreams.live/live3/SSF31/index.m3u8?st=u4vQMxvskEOvykTEnkkH4g&e=1792077617
-#EXTINF:-1 group-title="F1",Practice 3 @ Tag Heuer Spanish GP [STREAM 1]
 https://instreams.live/live3/SSF31/index.m3u8?st=qSoo0nO9HYF-CtMCtgRvpg&e=1792077622
