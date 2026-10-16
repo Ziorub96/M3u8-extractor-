@@ -1,39 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v7
-==========================================
+StreamCorner / CornerStream Extractor — v7.1
+============================================
 Discovery strutturale: nessun nome di variabile minificato assunto.
   - worker pool -> array di stringhe che matchano HOST_RE (*.workers.dev)
   - vault        -> bruteforce di coppie (blob 16-64B, blob >=128B) finche'
                     esce un JSON con specs+consts **e** le specs si decodificano
-                    davvero. Validazione forte: non basta il match strutturale.
+                    davvero.
 
-Diagnostica profonda: distingue header / IP / servizio giu', confronta diretto
-vs proxy, legge cf-mitigated.
-
-Census dei campi: dopo un run sai con i dati se stream_url esiste o no.
-
-Novita' v7
-----------
-  * MAX_RUNTIME_AGE: la runtime cache scade (default 7 giorni).
-  * Decadimento delle penalita' worker (_bad_score), successo = -1.
-  * `gc` range-safe, `SC.__init__` fallisce con messaggio chiaro.
-  * `try_vault` verifica che le specs decodifichino, non solo la forma JSON.
-  * KODIPROP license_key sanificato da `|` negli header.
-  * resolve_embed cattura fino a MAX_REQUESTS_CAPTURED URL.
-  * Retry Cloudflare con backoff.
-  * Rimosso codice morto (`ok` mai settato, DETAIL_CACHE inutilizzato).
+Novita' v7.1
+------------
+  * Alias argomenti: --output, --playwright-workers, --playwright-limit
+    (retrocompatibili con workflow scritti per versioni precedenti).
+  * --output FILE.m3u scrive anche un file combinato, oltre ai 3 canonici.
 
 Requisiti:
     pip install requests pycryptodome
     pip install patchright && patchright install chromium
-
-Uso:
-    python sc7.py --diagnose
-    python sc7.py --diagnose --proxy http://utente:pass@ip-it:porta
-    python sc7.py
-    python sc7.py --proxy http://utente:pass@ip-it:porta
 """
 
 from __future__ import annotations
@@ -63,21 +47,15 @@ CANDIDATE_SITES = [
 
 PROVIDERS_DEFAULT = "admin"
 
-# Campi in cui puo' nascondersi la chiave pubblica di un evento.
-# L'ordine e' prioritario: il primo presente vince.
 KEY_FIELDS = ("stream_id", "game_id", "channel_id", "id")
 
-# --- Struttura reverse-engineered del vault ------------------------------
-# Questi indici sono le "magic positions" dentro `specs` e `consts`.
-# Se un giorno il sito li ruota, la discovery fallisce in modo esplicito
-# invece di produrre un client che sembra istanziarsi ma non decodifica.
-SPEC_TRANSCRIPT  = 0    # materiale condiviso
-SPEC_ENDPOINT    = 1    # materiale per-richiesta
-SPEC_NAMESPACE   = 3    # stringa di namespace nelle richieste
+# Indici "magic" dentro specs/consts del vault (reverse-engineered).
+SPEC_TRANSCRIPT  = 0
+SPEC_ENDPOINT    = 1
+SPEC_NAMESPACE   = 3
 CONST_TRANSCRIPT = 16
 CONST_NONCE      = 20
 CONST_BRAND      = 25
-# -------------------------------------------------------------------------
 
 DIRECT_RE     = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
 KEY_PAIR_RE   = re.compile(r"^[0-9a-f]{32}:[0-9a-f]{32}$", re.I)
@@ -94,9 +72,9 @@ LIVE_MARGIN_BEFORE     = 1800
 LIVE_MARGIN_AFTER      = 3600
 WORKER_TRIES           = 3
 MAX_ASSETS             = 26
-MAX_REQUESTS_CAPTURED  = 120        # prima era 40 (troppo basso)
-MAX_RUNTIME_AGE        = 7 * 86400  # runtime cache stantia dopo 7 giorni
-BAD_DECAY              = 300        # secondi dopo cui una penalita' si azzera
+MAX_REQUESTS_CAPTURED  = 120
+MAX_RUNTIME_AGE        = 7 * 86400
+BAD_DECAY              = 300
 
 CENSUS = {"detail": Counter(), "stream": Counter(),
           "events": 0, "sources": 0, "with_stream_url": 0}
@@ -107,7 +85,7 @@ def log(*a):
 
 
 # ============================================================
-# HTTP  (session per thread: requests.Session non e' thread-safe)
+# HTTP  (session per thread)
 # ============================================================
 _tls = threading.local()
 
@@ -177,7 +155,7 @@ def salsa20_12(k, n8, d, ctr=0):
 
 
 # ============================================================
-# VAULT  (primitivi invariati)
+# VAULT
 # ============================================================
 SBOX = [185, 243, 94, 251, 153, 162, 126, 77, 155, 41, 182, 62, 200, 173, 252, 244]
 
@@ -205,7 +183,6 @@ def dec_spec(s):
 
 
 def gc(v, i):
-    """Range-safe accesso a `consts[i]`. Solleva un errore chiaro."""
     consts = v.get("consts") or []
     if not isinstance(consts, list) or i < 0 or i >= len(consts):
         raise IndexError(f"consts[{i}] fuori range (len={len(consts)})")
@@ -227,7 +204,7 @@ def b64d(s):
 
 
 # ============================================================
-# LETTURA ARRAY — SENZA NOMI DI VARIABILE
+# LETTURA ARRAY
 # ============================================================
 def read_array(code, st):
     if st >= len(code) or code[st] != "[":
@@ -271,7 +248,6 @@ def find_workers(code):
 
 
 def _vault_is_valid(v):
-    """Non basta la forma: le specs devono decodificarsi a materiale non vuoto."""
     if not (isinstance(v, dict)
             and isinstance(v.get("specs"), list)
             and isinstance(v.get("consts"), list)
@@ -282,7 +258,6 @@ def _vault_is_valid(v):
         s1 = dec_spec(v["specs"][SPEC_ENDPOINT])
     except Exception:
         return False
-    # materiale minimo non vuoto per la sessione
     return len(s0) >= 8 and len(s1) >= 8
 
 
@@ -419,7 +394,7 @@ class SC:
         self.origin = rt["origin"]
         self.proxy = proxy
         self.use_origin = use_origin
-        self.bad = {}          # host -> (score, timestamp)
+        self.bad = {}
         self.lock = threading.Lock()
 
     def headers(self):
@@ -437,7 +412,6 @@ class SC:
         tag = hashlib.sha256(self.rk + n + ct + self.nr).digest()[:12]
         return bytes([0x0A]) + n + tag + ct, n, u
 
-    # --- penalita' con decadimento ------------------------------------
     def _bad_score(self, host):
         entry = self.bad.get(host)
         if not entry:
@@ -448,7 +422,6 @@ class SC:
         return score
 
     def _mark(self, host, penalty):
-        """penalty>0: fallimento. penalty==0: successo → decade di 1."""
         with self.lock:
             entry = self.bad.get(host)
             now = time.time()
@@ -479,7 +452,6 @@ class SC:
                 last = f"{host}: {type(e).__name__}"; self._mark(host, 3); continue
             if r.status_code != 200 or not r.content:
                 last = f"{host}: HTTP {r.status_code}"; self._mark(host, 1); continue
-            # framing robusto: provo con e senza prefisso, qualunque cosa decifri vince
             tries = [(r.content[1:9], r.content[21:]), (r.content[:8], r.content[20:])]
             for rn, rc in tries:
                 if len(rc) < 2:
@@ -497,7 +469,7 @@ class SC:
 
 
 # ============================================================
-# DIAGNOSTICA PROFONDA
+# DIAGNOSTICA
 # ============================================================
 def probe(url, headers, proxy, method="GET", data=None, timeout=15):
     try:
@@ -609,8 +581,7 @@ def cmd_diagnose(args):
     ok_proxy  = any_ok(pr)
 
     if ok_direct:
-        log(f"✅ HEADER: la variante «{ok_direct[0]}» passa. Problema risolto in codice.")
-        log("   → usa quel set di header (di default sono già quelli reali)")
+        log(f"✅ HEADER: la variante «{ok_direct[0]}» passa.")
     elif ok_proxy:
         log(f"✅ IP: diretto fallisce, via proxy passa («{ok_proxy[0]}»).")
         log("   → gira sempre con --proxy su IP italiano")
@@ -622,10 +593,9 @@ def cmd_diagnose(args):
             log("❌ Servizio giu' o discovery da rifare → --refresh-vault")
         elif sites_403 and w_403:
             log("❌ IP: 403 sia sul sito sia sui worker, tutte le varianti.")
-            log("   → è l'ASN. Serve un IP residenziale/italiano, gli header non bastano.")
+            log("   → è l'ASN. Serve un IP residenziale/italiano.")
         else:
             log("⚠️ Misto: nessuna variante passa ma i perimetri non sono tutti 403.")
-            log("   → guarda i codici sopra: se sono 5xx è il worker, se sono 000/err è rete.")
     log("")
 
 
@@ -892,7 +862,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
 # M3U
 # ============================================================
 def _kodi_safe(v):
-    """I `|` rompono il parsing di license_key in KODI. Li sostituiamo."""
     return str(v).replace("|", " ")
 
 
@@ -937,8 +906,11 @@ def write_m3u(path, rows):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner / CornerStream Extractor v7")
-    ap.add_argument("--output-dir", default=".")
+    ap = argparse.ArgumentParser(description="StreamCorner / CornerStream Extractor v7.1")
+    ap.add_argument("--output-dir", "--output", default=".",
+                    dest="output_dir",
+                    help="directory di output (o, con --output FILE.m3u, "
+                         "il file combinato; la dir diventa la sua parent)")
     ap.add_argument("--providers", default=PROVIDERS_DEFAULT)
     ap.add_argument("--refresh-vault", action="store_true")
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
@@ -948,9 +920,19 @@ def main():
     ap.add_argument("--no-direct", action="store_true")
     ap.add_argument("--all-events", action="store_true")
     ap.add_argument("--max-events", type=int, default=400)
-    ap.add_argument("--embed-workers", type=int, default=4)
-    ap.add_argument("--embed-limit", type=int, default=0)
+    ap.add_argument("--embed-workers", "--playwright-workers", type=int, default=4,
+                    dest="embed_workers",
+                    help="worker paralleli per resolve_embed")
+    ap.add_argument("--embed-limit", "--playwright-limit", type=int, default=0,
+                    dest="embed_limit",
+                    help="max embed da risolvere (0 = tutti)")
     args = ap.parse_args()
+
+    # Normalizza --output: se punta a un file .m3u, la dir e' la parent
+    combined_path = None
+    if args.output_dir.lower().endswith((".m3u", ".m3u8")):
+        combined_path = args.output_dir
+        args.output_dir = os.path.dirname(combined_path) or "."
 
     if args.diagnose:
         return cmd_diagnose(args)
@@ -961,7 +943,7 @@ def main():
         os.remove(drm_path)
 
     log("=" * 64)
-    log("📡 STREAMCORNER / CORNERSTREAM EXTRACTOR v7")
+    log("📡 STREAMCORNER / CORNERSTREAM EXTRACTOR v7.1")
     log("=" * 64)
 
     try:
@@ -995,6 +977,8 @@ def main():
         for fn in ("streamcorner_VLC.m3u", "streamcorner_KODI.m3u",
                    "streamcorner_EVENTS_LIVE.m3u"):
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
+        if combined_path:
+            open(combined_path, "w").write("#EXTM3U\n")
         return
 
     log("\n[4/6] Filtro live")
@@ -1092,11 +1076,15 @@ def main():
     log(f"   💾 VLC: {n}")
     n = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), rows)
     log(f"   💾 KODI: {n}")
+
+    if combined_path:
+        n = write_m3u(combined_path, rows)
+        log(f"   💾 COMBINED ({combined_path}): {n}")
+
     json.dump(live, open(os.path.join(args.output_dir, "streamcorner_events.json"),
                          "w", encoding="utf-8"), indent=2,
               ensure_ascii=False, default=str)
 
-    # ---------------- CENSUS ----------------
     log("\n" + "=" * 64)
     log("CENSUS CAMPI (dati, non ipotesi)")
     log(f"  eventi: {CENSUS['events']}   sorgenti viste: {CENSUS['sources']}"
