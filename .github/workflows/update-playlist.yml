@@ -1,4 +1,4 @@
-name: Update Playlist
+name: Update Playlists
 
 on:
   schedule:
