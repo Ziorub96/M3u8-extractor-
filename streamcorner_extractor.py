@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v10.0 (HTTP-puro + NinjaCorner protocol)
-================================================================================
-Ricostruzione completa del protocollo "NinjaCorner":
-  * Discovery dinamica del bundle + provider worker
-  * Decodifica vault (SBOX custom)
-  * Chiavi di sessione (spec_decode)
-  * POST cifrato a *.workers.dev/corner?p=admin[&id=...]
-  * Salsa20/12 + SHA-256 (pura stdlib Python)
-
-Niente Playwright per il catalogo. Niente Cloudflare, Turnstile, browser.
-Playwright rimane SOLO per risolvere gli embed (CDN terze parti).
-
-Output: streamcorner_EVENTS_LIVE.m3u, streamcorner_VLC.m3u, streamcorner_KODI.m3u
+StreamCorner / CornerStream Extractor — v10.1 (HTTP-puro + cache + curl_cffi)
+=============================================================================
+Novità v10.1:
+  * curl_cffi (impersonate Chrome) per bypassare Cloudflare TLS fingerprint
+  * Cache locale .sc_static_cache.json (provider worker + lista workers)
+  * Fallback automatico a cache se HTTP fallisce
+  * Cache TTL: 7 giorni (auto-refresh quando possibile)
 """
 
 from __future__ import annotations
-import argparse, hashlib, json, os, re, struct, sys, time
+import argparse, base64, hashlib, json, os, re, struct, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
 
-import requests
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ============================================================
 # CONFIG
@@ -30,8 +25,10 @@ UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
              "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
 
 SITE = "https://cornerstream.tech/"
-DOMAIN_PREFIX = re.compile(r'data\.[a-zA-Z0-9\-]+\.workers\.dev')
+STATIC_CACHE = ".sc_static_cache.json"
+CACHE_TTL = 7 * 24 * 3600  # 7 giorni
 
+PROVIDER_DEFAULT = "admin"
 LIVE_MARGIN_BEFORE = 1800
 LIVE_MARGIN_AFTER = 3600
 
@@ -39,58 +36,103 @@ M3U8_CACHE = ".sc_m3u8_cache.json"
 CAPTURE_FILE = "sc_capture.json"
 DRM_REPORT = "sc_drm_report.jsonl"
 
-PROVIDER_DEFAULT = "admin"
+DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
 
-# Embed "diretti": già stream utilizzabile, nessun Playwright
-DIRECT_EMBED_HINTS = (
-    "topembed.pw", "getsugatensho",
-)
 
-# ============================================================
-# LOG
-# ============================================================
 def log(*a):
     print(*a, flush=True)
 
 
 # ============================================================
-# HTTP CLIENT
+# HTTP CLIENT (curl_cffi → requests)
 # ============================================================
-_SESSION = requests.Session()
-_SESSION.headers.update({
-    "User-Agent": UA_IPHONE,
-    "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
-})
+def _make_session():
+    """Prova curl_cffi (impersonate Chrome), fallback a requests."""
+    try:
+        from curl_cffi import requests as cf
+        log("   ✅ curl_cffi attivo (impersonate=chrome)")
+        return "curl_cffi", cf.Session(impersonate="chrome")
+    except ImportError:
+        log("   ⚠️  curl_cffi assente → requests standard")
+        import requests
+        s = requests.Session()
+        s.headers.update({"User-Agent": UA_IPHONE,
+                          "Accept-Language": "it-IT,it;q=0.9,en;q=0.8"})
+        return "requests", s
 
 
-def http_get(url, timeout=20, referer=None):
-    h = {}
+_ENGINE, _SESSION = _make_session()
+
+
+def http_get(url, timeout=20, referer=None, extra_headers=None):
+    h = {"User-Agent": UA_IPHONE, "Accept": "*/*",
+         "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+         "Accept-Encoding": "gzip, deflate"}
     if referer:
         h["Referer"] = referer
+    if extra_headers:
+        h.update(extra_headers)
     try:
-        r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
+        if _ENGINE == "curl_cffi":
+            r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
+        else:
+            r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
         return r.status_code, r.content, dict(r.headers)
     except Exception as e:
         return None, str(e).encode(), {}
 
 
-def http_post_bin(url, body, timeout=20, referer="https://cornerstream.tech/",
+def http_post_bin(url, body, timeout=20,
+                  referer="https://cornerstream.tech/",
                   origin="https://cornerstream.tech"):
     h = {
+        "User-Agent": UA_IPHONE,
         "Accept": "application/octet-stream",
         "Content-Type": "text/plain",
         "Origin": origin,
         "Referer": referer,
     }
     try:
-        r = _SESSION.post(url, data=body, timeout=timeout, headers=h, verify=False)
+        if _ENGINE == "curl_cffi":
+            r = _SESSION.post(url, data=body, timeout=timeout,
+                              headers=h, verify=False)
+        else:
+            r = _SESSION.post(url, data=body, timeout=timeout,
+                              headers=h, verify=False)
         return r.status_code, r.content, dict(r.headers)
     except Exception as e:
         return None, str(e).encode(), {}
 
 
 # ============================================================
-# VAULT DECODER (SBOX custom)
+# CACHE STATICA (provider worker + workers list)
+# ============================================================
+def cache_load():
+    if not os.path.exists(STATIC_CACHE):
+        return None
+    try:
+        with open(STATIC_CACHE, encoding="utf-8") as f:
+            c = json.load(f)
+        c["_age"] = time.time() - c.get("ts", 0)
+        return c
+    except Exception:
+        return None
+
+
+def cache_save(main_js_url, provider_js_url, workers, provider_content_b64):
+    data = {
+        "ts": int(time.time()),
+        "main_js_url": main_js_url,
+        "provider_js_url": provider_js_url,
+        "workers": workers,
+        "provider_js_b64": provider_content_b64,
+    }
+    with open(STATIC_CACHE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+# ============================================================
+# VAULT DECODER
 # ============================================================
 MAGIC32 = 0xFFFFFFFF
 
@@ -119,8 +161,7 @@ def _vault_xor_pass(data, key):
     m = 190 ^ key[4]
     for a in range(len(data)):
         g = (key[15 & a] ^ SBOX_VAULT[15 & a] ^ m ^ (a & 0xFF)
-             ^ ((MAGIC_VAULT >> (8 * (3 & a))) & 0xFF)
-             ^ c) & 0xFF
+             ^ ((MAGIC_VAULT >> (8 * (3 & a))) & 0xFF) ^ c) & 0xFF
         w = data[a] ^ g
         out[a] = w
         m = data[a]
@@ -129,18 +170,13 @@ def _vault_xor_pass(data, key):
 
 
 def decode_vault(pt_b64_list, dt_b64_list):
-    """Decodifica il vault JSON (specs + consts + k6)."""
-    import base64
-
     def b64d(s):
         s = s.strip().replace("-", "+").replace("_", "/")
         s += "=" * ((4 - len(s) % 4) % 4)
         return base64.b64decode(s)
-
     pt_bytes = b64d("".join(pt_b64_list))
     dt_bytes = b64d("".join(dt_b64_list))
-    raw = _vault_xor_pass(pt_bytes, dt_bytes)
-    return json.loads(raw.decode("utf-8"))
+    return json.loads(_vault_xor_pass(pt_bytes, dt_bytes).decode("utf-8"))
 
 
 def spec_decode(spec):
@@ -178,7 +214,7 @@ def const_bytes(c):
 
 
 # ============================================================
-# SHA-256 + SALSA20/12 (pure stdlib)
+# SHA-256 + SALSA20/12
 # ============================================================
 def sha256(*chunks):
     h = hashlib.sha256()
@@ -202,7 +238,7 @@ def _salsa_block(key32, nonce8, ctr):
           ctr & MAGIC32, (ctr >> 32) & MAGIC32,
           0x79622d32, k[4], k[5], k[6], k[7], 0x6b206574]
     x = st[:]
-    for _ in range(6):  # 12 round
+    for _ in range(6):
         _salsa_qr(x, 0, 4, 8, 12); _salsa_qr(x, 5, 9, 13, 1)
         _salsa_qr(x, 10, 14, 2, 6); _salsa_qr(x, 15, 3, 7, 11)
         _salsa_qr(x, 0, 1, 2, 3); _salsa_qr(x, 5, 6, 7, 4)
@@ -222,97 +258,108 @@ def salsa20_12(key, nonce8, data):
 
 
 # ============================================================
-# DISCOVERY
+# DISCOVERY con cache
 # ============================================================
-def discover_bundle(site=SITE):
-    """Trova il bundle main JS dalla home."""
-    log(f"→ discovery bundle su {site}")
-    st, body, _ = http_get(site, timeout=15)
-    if st != 200:
-        raise RuntimeError(f"home non 200: {st}")
-    html = body.decode("utf-8", "replace")
-    m = re.search(r'<script[^>]+src="(/assets/[^"]+\.js)"', html)
-    if not m:
-        raise RuntimeError("bundle main non trovato in home")
-    return m.group(1)
+def _parse_provider_from_main(main_txt):
+    m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', main_txt)
+    return m.group(1) if m else None
 
 
-def discover_provider_worker(main_bundle_url, site=SITE):
-    """Trova il worker provider dal bundle main."""
-    log(f"→ discovery provider worker da {main_bundle_url}")
-    full = site.rstrip("/") + main_bundle_url
-    st, body, _ = http_get(full, timeout=30)
-    if st != 200:
-        raise RuntimeError(f"bundle main non 200: {st}")
-    txt = body.decode("utf-8", "replace")
-    m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
-    if not m:
-        raise RuntimeError("provider worker non trovato nel bundle")
-    return m.group(1)
+def _parse_workers_from_main(main_txt):
+    return sorted(set(re.findall(r'data\.[a-zA-Z0-9\-]+\.workers\.dev', main_txt)))
 
 
-def discover_workers(main_bundle_url, site=SITE):
-    """Estrai la lista di worker *.workers.dev dal bundle main."""
-    log(f"→ discovery worker pool da bundle")
-    full = site.rstrip("/") + main_bundle_url
-    st, body, _ = http_get(full, timeout=30)
-    if st != 200:
-        raise RuntimeError(f"bundle main non 200: {st}")
-    txt = body.decode("utf-8", "replace")
-    found = sorted(set(re.findall(r'data\.[a-zA-Z0-9\-]+\.workers\.dev', txt)))
-    log(f"   trovati {len(found)} worker")
-    return found
-
-
-def extract_vault_and_consts(provider_url, site=SITE):
-    """Scarica il worker provider e ne estrae vault + specs + consts."""
-    log(f"→ scarico provider worker {provider_url}")
-    full = site.rstrip("/") + provider_url
-    st, body, _ = http_get(full, timeout=30)
-    if st != 200:
-        raise RuntimeError(f"provider worker non 200: {st}")
-    txt = body.decode("utf-8", "replace")
-
-    # Estrai dt
-    m = re.search(r'\bdt\s*=\s*\[([^\]]+)\]', txt)
+def _extract_dt_pt(provider_txt):
+    m = re.search(r'\bdt\s*=\s*\[([^\]]+)\]', provider_txt)
     if not m:
         raise RuntimeError("dt non trovato")
     dt_strs = re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))
-
-    # Estrai pt
-    m = re.search(r'\bpt\s*=\s*\[(.*?)\]\s*,', txt, re.DOTALL)
+    m = re.search(r'\bpt\s*=\s*\[(.*?)\]\s*,', provider_txt, re.DOTALL)
     if not m:
         raise RuntimeError("pt non trovato")
     pt_strs = re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))
+    return dt_strs, pt_strs
 
-    log(f"   dt={len(dt_strs)} pt={len(pt_strs)}")
+
+def discover_all(site=SITE, force_refresh=False):
+    """
+    Ritorna (vault, workers, meta).
+    Usa cache locale se valida, altrimenti tenta refresh HTTP.
+    """
+    cache = cache_load()
+
+    # ---------- prova refresh HTTP se cache vecchia o assente ----------
+    need_refresh = (cache is None) or (cache.get("_age", 1e9) > CACHE_TTL) or force_refresh
+
+    if need_refresh:
+        log(f"→ tentativo refresh discovery (cache {'assente' if cache is None else f'{int(cache.get(\"_age\",0))}s'})")
+        try:
+            # 1. home
+            st, body, _ = http_get(site, timeout=15)
+            if st != 200:
+                raise RuntimeError(f"home non 200: {st}")
+            html = body.decode("utf-8", "replace")
+            m = re.search(r'<script[^>]+src="(/assets/[^"]+\.js)"', html)
+            if not m:
+                raise RuntimeError("bundle main non trovato in home")
+            main_url = m.group(1)
+            log(f"   bundle main: {main_url}")
+
+            # 2. main bundle
+            st, body, _ = http_get(site.rstrip("/") + main_url, timeout=30)
+            if st != 200:
+                raise RuntimeError(f"main bundle non 200: {st}")
+            main_txt = body.decode("utf-8", "replace")
+
+            provider_url = _parse_provider_from_main(main_txt)
+            workers = _parse_workers_from_main(main_txt)
+            if not provider_url or not workers:
+                raise RuntimeError(f"parse fallito: provider={provider_url} workers={len(workers)}")
+            log(f"   provider worker: {provider_url}")
+            log(f"   workers trovati: {len(workers)}")
+
+            # 3. provider worker
+            st, body, _ = http_get(site.rstrip("/") + provider_url, timeout=30)
+            if st != 200:
+                raise RuntimeError(f"provider worker non 200: {st}")
+            provider_txt = body.decode("utf-8", "replace")
+
+            # 4. decodifica vault
+            dt_strs, pt_strs = _extract_dt_pt(provider_txt)
+            vault = decode_vault(pt_strs, dt_strs)
+
+            # 5. salva cache
+            cache_save(main_url, provider_url, workers,
+                       base64.b64encode(body).decode("ascii"))
+            log(f"   ✅ cache aggiornata ({STATIC_CACHE})")
+            return vault, workers, {"source": "http", "main": main_url,
+                                     "provider": provider_url}
+
+        except Exception as e:
+            log(f"   ⚠️ refresh fallito: {e}")
+            if cache is None:
+                raise RuntimeError(f"refresh fallito e cache assente: {e}")
+            log(f"   → uso cache ({int(cache['_age'])}s fa)")
+
+    # ---------- usa cache ----------
+    log(f"→ uso cache statica (età: {int(cache['_age'])}s)")
+    provider_b64 = cache.get("provider_js_b64", "")
+    if not provider_b64:
+        raise RuntimeError("cache senza provider_js_b64")
+    provider_txt = base64.b64decode(provider_b64).decode("utf-8", "replace")
+    dt_strs, pt_strs = _extract_dt_pt(provider_txt)
     vault = decode_vault(pt_strs, dt_strs)
-
-    specs = vault.get("specs") or []
-    consts = vault.get("consts") or []
-    if len(specs) < 6 or len(consts) < 26:
-        raise RuntimeError(f"vault inatteso: specs={len(specs)} consts={len(consts)}")
-
-    # Sanity: consts[16] dovrebbe iniziare con "ninjacorner"
-    for idx, name in [(16, "rt"), (20, "nt"), (22, "Ct"), (25, "Mt")]:
-        b = const_bytes(consts[idx])
-        if not b.startswith(b"ninjacorner"):
-            log(f"   ⚠️  consts[{idx}] ({name}) non inizia con 'ninjacorner': {b[:40]}")
-
-    return vault
+    workers = cache.get("workers", [])
+    return vault, workers, {"source": "cache", "main": cache.get("main_js_url"),
+                             "provider": cache.get("provider_js_url")}
 
 
 # ============================================================
 # NINJACORNER CLIENT
 # ============================================================
 class NinjaClient:
-    """Client per il protocollo NinjaCorner."""
-
     def __init__(self, vault, workers):
-        specs = vault["specs"]
-        consts = vault["consts"]
-        self.specs = specs
-        self.consts = consts
+        specs = vault["specs"]; consts = vault["consts"]
         self.d_H = spec_decode(specs[0])
         self.d_et = spec_decode(specs[1])
         self.d_ot = spec_decode(specs[2])
@@ -326,7 +373,6 @@ class NinjaClient:
         self.workers = workers
         self.worker = None
 
-    # ----- cifratura richiesta -----
     def _build_body(self, provider):
         ts = int(time.time()) // 300
         lt_str = self.d_Lt.decode("utf-8", errors="replace")
@@ -334,8 +380,7 @@ class NinjaClient:
         nonce = os.urandom(8)
         cipher = salsa20_12(self.invio_key, nonce, plaintext)
         tag = sha256(self.invio_key, nonce, cipher, self.nt)[:12]
-        body = b"\x0a" + nonce + tag + cipher
-        return body, nonce, ts
+        return b"\x0a" + nonce + tag + cipher, nonce, ts
 
     def _build_resp_key(self, nonce_invio, provider, ts):
         ts_be = struct.pack(">I", ts)
@@ -345,31 +390,20 @@ class NinjaClient:
     def _decrypt_resp(self, resp, nonce_invio, provider, ts):
         if len(resp) < 21 or resp[0] != 0x04:
             return None, "bad_magic"
-        resp_nonce = resp[1:9]
-        resp_tag = resp[9:21]
-        cipher = resp[21:]
+        rn, rt, ct = resp[1:9], resp[9:21], resp[21:]
         key = self._build_resp_key(nonce_invio, provider, ts)
-        expected = sha256(key, resp_nonce, cipher, self.Ct)[:12]
-        if expected != resp_tag:
+        if sha256(key, rn, ct, self.Ct)[:12] != rt:
             return None, "tag_mismatch"
-        return salsa20_12(key, resp_nonce, cipher), None
+        return salsa20_12(key, rn, ct), None
 
-    # ----- POST con retry su worker pool -----
     def _post_corner(self, provider, extra_id=None, timeout=20):
         body, nonce_invio, ts = self._build_body(provider)
         qs = f"p={provider}"
         if extra_id:
             qs += f"&id={extra_id}"
-
-        # Prova worker noto, poi tutti
-        candidates = []
-        if self.worker:
-            candidates.append(self.worker)
-        for w in self.workers:
-            if w not in candidates:
-                candidates.append(w)
-
-        last_err = None
+        candidates = ([self.worker] if self.worker else []) + \
+                     [w for w in self.workers if w != self.worker]
+        last = None
         for w in candidates:
             url = f"https://{w}/corner?{qs}"
             st, resp, _ = http_post_bin(url, body, timeout=timeout)
@@ -377,18 +411,14 @@ class NinjaClient:
                 self.worker = w
                 plain, err = self._decrypt_resp(resp, nonce_invio, provider, ts)
                 if err:
-                    last_err = f"{w}: {err}"
-                    continue
+                    last = f"{w}: {err}"; continue
                 return plain, w
-            last_err = f"{w}: st={st} len={len(resp) if resp else 0}"
-        raise RuntimeError(f"tutti i worker falliti: {last_err}")
+            last = f"{w}: st={st}"
+        raise RuntimeError(f"tutti i worker falliti: {last}")
 
-    # ----- API pubblica -----
     def get_catalog(self, provider=PROVIDER_DEFAULT):
         raw, w = self._post_corner(provider)
-        data = json.loads(raw.decode("utf-8"))
-        log(f"   ✅ catalogo via {w}: {len(data)} item")
-        return data
+        return json.loads(raw.decode("utf-8"))
 
     def get_event_detail(self, event_id, provider=PROVIDER_DEFAULT):
         raw, w = self._post_corner(provider, extra_id=event_id)
@@ -396,12 +426,11 @@ class NinjaClient:
 
 
 # ============================================================
-# EMBED RESOLVER (Playwright, solo per embed non diretti)
+# EMBED RESOLVER (Playwright)
 # ============================================================
 LICENSE_HINTS = ("license", "widevine", "getlicense", "acquirelicense", "drm")
 MANIFEST_HINTS = (".m3u8", ".mpd", "manifest", "playlist")
 CF_HINTS = ("challenges.cloudflare.com", "cf-chl", "/cdn-cgi/challenge", "turnstile")
-DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
 
 
 def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
@@ -531,51 +560,52 @@ def is_live(ev, now=None):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.0")
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.1")
     ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
-    ap.add_argument("--output-dir", default=".")
+    ap.add_argument("--output-dir", default=None)
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
     ap.add_argument("--provider", default=PROVIDER_DEFAULT)
     ap.add_argument("--all-events", action="store_true")
     ap.add_argument("--no-embeds", action="store_true")
+    ap.add_argument("--refresh", action="store_true",
+                    help="Forza refresh cache statica")
     ap.add_argument("--embed-workers", "--playwright-workers",
                     type=int, default=4, dest="embed_workers")
     ap.add_argument("--embed-limit", "--playwright-limit",
                     type=int, default=0, dest="embed_limit")
-    args = ap.parse_args()
+    args, _unknown = ap.parse_known_args()
 
-    # /tmp non scrivibile da iOS: fallback
-    if args.output_dir == ".":
+    if args.output_dir is None:
         args.output_dir = os.path.dirname(args.output) or "."
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 STREAMCORNER EXTRACTOR v10.0 (HTTP-puro NinjaCorner)")
+    log("📡 STREAMCORNER EXTRACTOR v10.1 (HTTP-puro + cache + curl_cffi)")
     log("=" * 66)
 
     # ---- 1. Discovery ----
     log("\n[1/5] Discovery")
     try:
-        main_bundle = discover_bundle()
-        provider_url = discover_provider_worker(main_bundle)
-        workers = discover_workers(main_bundle)
-        vault = extract_vault_and_consts(provider_url)
+        vault, workers, meta = discover_all(force_refresh=args.refresh)
+        log(f"   vault: {len(vault.get('specs', []))} specs, "
+            f"{len(vault.get('consts', []))} consts")
+        log(f"   workers: {len(workers)}  (fonte: {meta['source']})")
     except Exception as e:
         log(f"   ❌ discovery fallita: {e}")
-        # placeholder outputs
         for fn in ("streamcorner_EVENTS_LIVE.m3u", "streamcorner_VLC.m3u",
                    "streamcorner_KODI.m3u"):
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
         open(args.output, "w").write("#EXTM3U\n")
         return
 
-    # ---- 2. Client NinjaCorner ----
+    # ---- 2. Client ----
     log("\n[2/5] Client NinjaCorner")
     client = NinjaClient(vault, workers)
     log(f"   invio_key: {client.invio_key.hex()[:32]}...")
 
     try:
         catalog = client.get_catalog(args.provider)
+        log(f"   ✅ catalogo via {client.worker}: {len(catalog)} item")
     except Exception as e:
         log(f"   ❌ get_catalog: {e}")
         for fn in ("streamcorner_EVENTS_LIVE.m3u", "streamcorner_VLC.m3u",
@@ -584,7 +614,7 @@ def main():
         open(args.output, "w").write("#EXTM3U\n")
         return
 
-    # ---- 3. Dettagli evento ----
+    # ---- 3. Dettagli ----
     log(f"\n[3/5] Dettagli per {len(catalog)} eventi")
     events_full = []
     for i, ev in enumerate(catalog, 1):
@@ -603,7 +633,7 @@ def main():
             log(f"   [{i}/{len(catalog)}] {name[:45]:45}  ❌ {str(e)[:50]}")
             events_full.append(ev)
 
-    # ---- 4. Filtro live ----
+    # ---- 4. Filtro ----
     log(f"\n[4/5] Filtro live")
     if args.all_events:
         live = events_full
@@ -697,11 +727,14 @@ def main():
     n = write_m3u(args.output, rows)
     log(f"   💾 {args.output}: {n}")
 
-    # ---- Capture summary ----
+    # ---- Summary ----
     try:
         summary = {
             "site": SITE,
             "provider": args.provider,
+            "discovery_source": meta.get("source"),
+            "main_js_url": meta.get("main"),
+            "provider_js_url": meta.get("provider"),
             "workers_count": len(workers),
             "winner_worker": client.worker,
             "catalog_size": len(catalog),
