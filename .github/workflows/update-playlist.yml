@@ -51,6 +51,23 @@ jobs:
             streamcorner-m3u8-cache-
 
       # ============================================================
+      # v10.1 — Cache statica (provider worker + worker pool)
+      # ------------------------------------------------------------
+      # Contiene il provider worker (base64) + lista di *.workers.dev.
+      # Serve per sopravvivere a eventuali blocchi Cloudflare momentanei
+      # che impediscono la discovery HTTP del bundle.
+      # Questo file è anche committato nel repo (≈25 KB), quindi la
+      # cache di GitHub è solo un backup extra.
+      # ============================================================
+      - name: Cache StreamCorner static config
+        uses: actions/cache@v4
+        with:
+          path: .sc_static_cache.json
+          key: sc-static-cache-${{ github.run_id }}
+          restore-keys: |
+            sc-static-cache-
+
+      # ============================================================
       # ESTRATTORI ATTIVI
       # ============================================================
       - name: Extract DAMITV streams
@@ -66,10 +83,12 @@ jobs:
         continue-on-error: true
 
       # ------------------------------------------------------------
-      # StreamCorner v9.2: Playwright-as-oracle (SPA cornerstream.tech)
-      # Timeout 45s per embed × 48 embed / 4 worker ≈ 9-15 min
+      # StreamCorner v10.1: HTTP-puro (NinjaCorner protocol)
       # ------------------------------------------------------------
-      - name: Extract StreamCorner streams (v9.2)
+      # Discovery + catalogo + dettagli in ~30s (zero Playwright).
+      # Playwright usato SOLO per risolvere gli embed (CDN terze parti).
+      # ------------------------------------------------------------
+      - name: Extract StreamCorner streams (v10.1)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
@@ -152,5 +171,6 @@ jobs:
             streamcorner_EVENTS_LIVE.m3u
             streamcorner_drm_report.json
             sc_capture.json
+            .sc_static_cache.json
             watchfooty_events.m3u
           skip_dirty_check: false
