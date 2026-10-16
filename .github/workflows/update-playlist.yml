@@ -150,7 +150,6 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
-            streamcorner_KODI.m3u
             streamcorner_drm_report.json
             sc_capture.json
             watchfooty_events.m3u
