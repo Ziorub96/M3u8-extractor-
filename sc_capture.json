@@ -1,7 +1,7 @@
 {
   "site": "https://cornerstream.tech/",
   "provider": "admin",
-  "discovery_source": "http",
+  "discovery_source": "cache",
   "main_js_url": "/assets/c4bS9Xkc.js",
   "provider_js_url": "/assets/provider-data.worker-DdPTVxb9.js",
   "workers_count": 25,
@@ -10,7 +10,7 @@
   "events_full": 5,
   "events_live": 5,
   "streams_total": 2,
-  "embed_jobs": 12,
-  "embed_resolved": 2,
-  "extracted_at": 1792175514
+  "embed_jobs": 11,
+  "embed_resolved": 0,
+  "extracted_at": 1792180216
 }
