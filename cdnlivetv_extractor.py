@@ -1,11 +1,14 @@
 # ================================================================
-# CDN Live TV - Extractor v4 (Soccer only + anti rate-limit + abort)
+# CDN Live TV - Extractor v5 (DNS-fallback IP+Host, Soccer only)
 # Estrae canali TV + eventi calcio dall'API cdnlivetv.is
 #
-# CHANGELOG v4:
-#  - RETRIES 4→2, BACKOFF_BASE 3→2, BACKOFF_MAX=6 (cap)
-#  - JITTER 0.5-1.2s → 0.3-0.7s
-#  - Abort automatico dopo 20 fallimenti consecutivi (canali)
+# CHANGELOG v5:
+#  - safe_get(): fallback IP (195.128.25.225) + Host header
+#    quando il DNS risolve a 127.0.0.1 / ::1 (dominio rotto)
+#  - resolve_m3u8(): usa safe_get() per la pagina player
+#  - fetch_api(): usa safe_get() per l'API
+#  - rewrite automatico di cdnlivetv.tv -> IP
+#  - resto invariato rispetto a v4
 # ================================================================
 
 import requests
@@ -15,45 +18,140 @@ import urllib3
 import time
 import random
 import unicodedata
+import urllib.parse
+import urllib.request
+import ssl
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # === CONFIGURAZIONE ===
 API_CHANNELS = "https://api.cdnlivetv.is/api/v1/channels/?user=cdnlivetv&plan=free"
-API_EVENTS = "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan=free"
+API_EVENTS   = "https://api.cdnlivetv.is/api/v1/events/sports/?user=cdnlivetv&plan=free"
 
 CHANNELS_OUTPUT = "cdnlivetv_channels.m3u"
-EVENTS_OUTPUT = "cdnlivetv_events.m3u"
+EVENTS_OUTPUT   = "cdnlivetv_events.m3u"
 
 # --- SOLO CALCIO ---
 ONLY_SPORT = "Soccer"
 
 # --- ANTI RATE-LIMIT ---
 MAX_WORKERS = 3
-TIMEOUT = 20
-RETRIES = 2
-JITTER_MIN = 0.3
-JITTER_MAX = 0.7
+TIMEOUT     = 20
+RETRIES     = 2
+JITTER_MIN  = 0.3
+JITTER_MAX  = 0.7
 PAUSE_BETWEEN_PHASES = 45
 BACKOFF_BASE = 2
-BACKOFF_MAX = 6
+BACKOFF_MAX  = 6
 MAX_CONSECUTIVE_FAIL = 20
 
 MAX_CHANNELS = 0
 EVENTS_ONLY_LIVE = False
+
+# === DNS FALLBACK ===
+# Il dominio cdnlivetv.* risolve a 127.0.0.1/::1 (DNS rotto).
+# Usiamo l'IP diretto + Host header per bypassare.
+DNS_FALLBACK = {
+    "api.cdnlivetv.is": "195.128.25.225",
+    "cdnlivetv.is":     "195.128.25.225",
+    "cdnlivetv.tv":     "195.128.25.225",
+    "api.cdnlivetv.tv": "195.128.25.225",
+    "www.cdnlivetv.tv": "195.128.25.225",
+}
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                   "AppleWebKit/537.36 (KHTML, like Gecko) "
                   "Chrome/131.0.0.0 Safari/537.36",
     "Referer": "https://cdnlivetv.tv/",
-    "Origin": "https://cdnlivetv.tv",
+    "Origin":  "https://cdnlivetv.tv",
     "Accept": "*/*",
     "Accept-Language": "en-US,en;q=0.9",
 }
 
 _resolve_cache: dict = {}
+
+# SSL context per urllib (bypass SNI check)
+_SSL_CTX = ssl.create_default_context()
+_SSL_CTX.check_hostname = False
+_SSL_CTX.verify_mode = ssl.CERT_NONE
+
+
+# ================================================================
+# FETCH LAYER con fallback DNS
+# ================================================================
+def _rewrite_url_to_ip(url: str):
+    """Se l'host è in DNS_FALLBACK, ritorna (url_ip, hostname) altrimenti None."""
+    try:
+        p = urllib.parse.urlparse(url)
+    except Exception:
+        return None
+    host = (p.hostname or "").lower()
+    ip = DNS_FALLBACK.get(host)
+    if not ip:
+        return None
+    new_url = url.replace(f"://{p.hostname}", f"://{ip}", 1)
+    return new_url, host
+
+
+def safe_get(url: str, extra_headers: dict = None, timeout: int = TIMEOUT):
+    """
+    GET con fallback IP + Host header.
+    Ritorna un oggetto simile a requests.Response (con .status_code, .text, .content).
+    """
+    headers = dict(HEADERS)
+    if extra_headers:
+        headers.update(extra_headers)
+
+    # 1. Tentativo diretto
+    try:
+        r = requests.get(url, headers=headers, timeout=timeout, verify=False,
+                         allow_redirects=True)
+        if r.status_code < 500:
+            return r
+    except Exception:
+        pass
+
+    # 2. Fallback IP + Host header
+    rw = _rewrite_url_to_ip(url)
+    if not rw:
+        return None
+    ip_url, original_host = rw
+    h = dict(headers)
+    h["Host"] = original_host
+
+    try:
+        req = urllib.request.Request(ip_url, headers=h, method="GET")
+        with urllib.request.urlopen(req, timeout=timeout,
+                                     context=_SSL_CTX) as resp:
+            body = resp.read()
+            class _R:
+                pass
+            r = _R()
+            r.status_code = resp.status
+            r.content = body
+            r.text = body.decode("utf-8", errors="replace")
+            r.headers = dict(resp.headers)
+            r.url = url
+            return r
+    except Exception as e:
+        # ultimo tentativo: requests sull'IP (SNI potrebbe fallire)
+        try:
+            return requests.get(ip_url, headers=h, timeout=timeout,
+                                verify=False, allow_redirects=True)
+        except Exception:
+            return None
+
+
+def safe_get_json(url: str, extra_headers: dict = None, timeout: int = TIMEOUT):
+    r = safe_get(url, extra_headers=extra_headers, timeout=timeout)
+    if r is None:
+        return None
+    try:
+        return r.json()
+    except Exception:
+        return None
 
 
 # ================================================================
@@ -101,8 +199,11 @@ def resolve_m3u8(player_url: str):
 
     for attempt in range(RETRIES):
         try:
-            r = requests.get(player_url, headers=HEADERS,
-                             timeout=TIMEOUT, verify=False)
+            r = safe_get(player_url, timeout=TIMEOUT)
+            if r is None:
+                last_err = "safe_get failed"
+                time.sleep(1 + attempt)
+                continue
 
             if r.status_code in (429, 502, 503):
                 wait = min((2 ** attempt) * BACKOFF_BASE, BACKOFF_MAX) + random.uniform(0, 1)
@@ -116,6 +217,8 @@ def resolve_m3u8(player_url: str):
                 return result
 
             html = r.text
+
+            # Pattern join: x = a(b)+c(d)+...
             join_match = re.search(
                 r"[A-Za-z_$][\w$]*\s*=\s*("
                 r"(?:[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*\)\s*\+\s*)+"
@@ -159,25 +262,25 @@ def process_channel(ch: dict) -> dict:
     return {
         "name": ch.get("name", "Unknown"),
         "code": ch.get("code", ""),
-        "img": ch.get("image", ""),
-        "url": url,
-        "err": err,
+        "img":  ch.get("image", ""),
+        "url":  url,
+        "err":  err,
     }
 
 
 def process_event_item(event: dict, sport: str) -> list:
     out = []
-    title = event.get("event") or event.get("title") or "Evento"
-    league = event.get("tournament") or event.get("league") or ""
+    title   = event.get("event") or event.get("title") or "Evento"
+    league  = event.get("tournament") or event.get("league") or ""
     country = event.get("country") or ""
-    status = (event.get("status") or "").lower()
+    status  = (event.get("status") or "").lower()
 
     if EVENTS_ONLY_LIVE and status not in ("in", "live", "playing"):
         return out
 
     for ch in event.get("channels", []) or []:
         ch_name = ch.get("channel_name", "")
-        ch_url = ch.get("url", "")
+        ch_url  = ch.get("url", "")
         if not ch_url:
             continue
         full_name = f"{title} - {ch_name}" if ch_name else title
@@ -196,14 +299,11 @@ def process_event_item(event: dict, sport: str) -> list:
 def fetch_api(url: str, label: str):
     for attempt in range(RETRIES):
         try:
-            r = requests.get(url, headers=HEADERS, timeout=TIMEOUT, verify=False)
-            if r.status_code in (429, 502, 503):
-                wait = min((2 ** attempt) * BACKOFF_BASE, BACKOFF_MAX) + random.uniform(0, 1)
-                print(f"  ⏸️ {label} HTTP {r.status_code}, attendo {wait:.1f}s...")
-                time.sleep(wait)
-                continue
-            r.raise_for_status()
-            return r.json()
+            data = safe_get_json(url, timeout=TIMEOUT)
+            if data is not None:
+                return data
+            print(f"  ⚠️ {label} attempt {attempt+1}: safe_get_json returned None")
+            time.sleep(2 + attempt)
         except Exception as e:
             print(f"  ⚠️ {label} attempt {attempt+1}: {type(e).__name__}: {e}")
             time.sleep(2 + attempt)
@@ -215,9 +315,9 @@ def fetch_api(url: str, label: str):
 # ================================================================
 def main():
     print("=" * 60)
-    print(" CDN Live TV - Extractor v4 (Soccer only + abort)")
+    print(" CDN Live TV - Extractor v5 (DNS-fallback IP+Host)")
     print(f" Workers: {MAX_WORKERS} | Jitter: {JITTER_MIN}-{JITTER_MAX}s")
-    print(f" Retries: {RETRIES} | Backoff max: {BACKOFF_MAX}s | Abort: {MAX_CONSECUTIVE_FAIL} KO di fila")
+    print(f" Retries: {RETRIES} | Backoff max: {BACKOFF_MAX}s | Abort: {MAX_CONSECUTIVE_FAIL} KO")
     if ONLY_SPORT:
         print(f" Filtro sport: {ONLY_SPORT}")
     print("=" * 60)
@@ -315,7 +415,7 @@ def main():
                     last_log = now
 
                 if consecutive_fail >= MAX_CONSECUTIVE_FAIL:
-                    print(f"\n🛑 Rate-limit rilevato: {consecutive_fail} KO consecutivi")
+                    print(f"\n🛑 Rate-limit: {consecutive_fail} KO consecutivi")
                     print(f"   Abort dopo {done}/{len(channels)} canali (~{now-t0:.0f}s)")
                     aborted = True
                     break
@@ -345,7 +445,7 @@ def main():
         f.write("#EXTM3U\n")
         for r in tv_ok:
             tvg_id = f' tvg-id="{r["code"]}"' if r["code"] else ""
-            logo = f' tvg-logo="{r["img"]}"' if r["img"] else ""
+            logo   = f' tvg-logo="{r["img"]}"' if r["img"] else ""
             f.write(f'#EXTINF:-1{tvg_id}{logo} '
                     f'group-title="CDN Live TV Channels",{r["name"]}\n')
             f.write(f'{r["url"]}\n')
@@ -354,8 +454,8 @@ def main():
         f.write("#EXTM3U\n")
         for r in results_ev:
             tvg_id = f' tvg-id="{r["code"]}"' if r.get("code") else ""
-            logo = f' tvg-logo="{r["img"]}"' if r.get("img") else ""
-            sport = r.get("sport", "Sport")
+            logo   = f' tvg-logo="{r["img"]}"' if r.get("img") else ""
+            sport  = r.get("sport", "Sport")
             f.write(f'#EXTINF:-1{tvg_id}{logo} '
                     f'group-title="CDN Live TV Events - {sport}",{r["name"]}\n')
             f.write(f'{r["url"]}\n')
