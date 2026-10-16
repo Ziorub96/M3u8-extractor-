@@ -1,152 +1,170 @@
-name: Combine and Check M3U Playlists
+name: Update Playlist
 
 on:
   schedule:
-    - cron: "42 * * * *"
+    - cron: "0 */3 * * *"     # ogni 3 ore
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "*.py"
+      - ".github/workflows/update-playlist.yml"
 
 permissions:
   contents: write
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: update-playlist
   cancel-in-progress: false
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 60
 
     steps:
-      - name: Checkout repository
+      # ----------------------------------------------------------
+      # CHECKOUT + PYTHON
+      # ----------------------------------------------------------
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
 
-      - name: Install system deps + Python packages
+      - name: Install system deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
-          pip install requests yt-dlp playwright curl_cffi
-          playwright install --with-deps chromium
+          sudo apt-get install -y libssl-dev curl
 
-      # ============================================================
-      # Cache persistente per m3u8 risolti (NON committata nel repo)
-      # ------------------------------------------------------------
-      # Pattern: rolling cache
-      #   - key univoca per run (run_id) → forza il salvataggio
-      #   - restore-keys con prefisso → recupera la cache più recente
-      # GitHub auto-pota le cache >7 giorni o quando supera 10 GB.
-      # ============================================================
-      - name: Cache StreamCorner m3u8 results
+      - name: Install Python deps
+        run: |
+          pip install --upgrade pip
+          pip install requests urllib3 pycryptodome patchright
+          patchright install chromium
+          playwright install-deps chromium || true
+
+      - name: Verify patchright
+        run: |
+          python -c "from patchright.sync_api import sync_playwright; print('patchright OK')"
+
+      # ----------------------------------------------------------
+      # CACHE
+      # ----------------------------------------------------------
+      - name: Restore StreamCorner caches
         uses: actions/cache@v4
         with:
-          path: .streamcorner_events_m3u8_cache.json
-          key: streamcorner-m3u8-cache-${{ github.run_id }}
+          path: |
+            .sc_runtime.json
+            .sc_m3u8_cache.json
+            .streamcorner_vault.json
+            .streamcorner_m3u8_cache.json
+            .streamcorner_events_m3u8_cache.json
+          key: sc-cache-${{ github.run_id }}
           restore-keys: |
-            streamcorner-m3u8-cache-
+            sc-cache-
 
-      # ============================================================
-      # ESTRATTORI ATTIVI
-      # ============================================================
-      - name: Extract DAMITV streams
-        run: python damitv_extractor.py
+      - name: Restore CDN Live TV caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cdnlivetv_cache.json
+          key: cdnltv-cache-${{ github.run_id }}
+          restore-keys: |
+            cdnltv-cache-
+
+      # ----------------------------------------------------------
+      # EXTRACTORS
+      # ----------------------------------------------------------
+      - name: Extract CDN Live TV
         continue-on-error: true
-
-      - name: Extract Daddylive streams
-        run: python daddylive_extractor.py
-        continue-on-error: true
-
-      - name: Extract CDN Live TV channels and events
-        run: python cdnlivetv_extractor.py
-        continue-on-error: true
-
-      # ------------------------------------------------------------
-      # StreamCorner v3: eventi live + stealth Playwright + DRM capture
-      # Timeout 45s per embed × 48 embed / 4 worker ≈ 9-15 min
-      # ------------------------------------------------------------
-      - name: Extract StreamCorner streams (v3)
         run: |
-          python streamcorner_extractor.py \
+          python cdnlivetv_extractor.py || echo "⚠️ CDN Live TV failed, continuing"
+
+      - name: Extract StreamCorner events (v9.2)
+        continue-on-error: true
+        env:
+          SC_PROXY: ${{ secrets.SC_PROXY }}
+        run: |
+          python sc9_2.py \
             --output streamcorner_COMPLETE.m3u \
             --playwright-workers 4 \
-            --playwright-limit 0
+            --playwright-limit 0 \
+            || echo "⚠️ StreamCorner failed, continuing"
+
+      - name: Extract DAMITV
         continue-on-error: true
-        timeout-minutes: 30
-
-      - name: Extract WatchFooty streams
-        if: false  # DISABILITATO — dominio api.watchfooty.st morto (2026-10-15)
-        run: python watchfooty_direct.py --max 20
-        continue-on-error: true
-        timeout-minutes: 25
-
-      # ============================================================
-      # STEP DISMESSI (commentati per storico)
-      # ------------------------------------------------------------
-      # xyzstreams  → proxy Node fragile, dipendenza esterna
-      # SMTK        → canali geobloccati (richiedono VPN russa)
-      # Extra Srces → 0 flussi funzionanti
-      # ============================================================
-
-      - name: Run combiner
-        run: python combine_playlist.py
-
-      - name: Check streams
-        run: python check_playlist.py
-        continue-on-error: true
-
-      # ============================================================
-      # SAFETY: crea file mancanti prima del commit
-      # ============================================================
-      - name: Ensure all output files exist
-        if: always()
         run: |
-          for f in \
-            combined_events.m3u \
-            combined_events_checked.m3u \
-            flussi_non_funzionanti.txt \
-            damitv_events.m3u \
-            daddylive_streams.m3u \
-            cdnlivetv_channels.m3u \
-            cdnlivetv_events.m3u \
-            streamcorner_COMPLETE.m3u \
-            streamcorner_VLC.m3u \
-            streamcorner_EVENTS_LIVE.m3u \
-            streamcorner_drm_report.json \
-            watchfooty_events.m3u; do
-            if [ ! -f "$f" ]; then
-              echo "Crea $f (mancante)"
-              if [[ "$f" == *.m3u ]]; then
-                echo "#EXTM3U" > "$f"
-              elif [[ "$f" == *.json ]]; then
-                echo "{}" > "$f"
-              else
-                touch "$f"
-              fi
-            fi
-          done
-          echo "--- Stato file ---"
-          ls -la *.m3u *.txt *.json 2>/dev/null || true
+          if [ -f damitv_extractor.py ]; then
+            python damitv_extractor.py || echo "⚠️ DAMITV failed"
+          fi
+
+      - name: Extract Daddylive
+        continue-on-error: true
+        run: |
+          if [ -f daddylive_extractor.py ]; then
+            python daddylive_extractor.py || echo "⚠️ Daddylive failed"
+          fi
+
+      # ----------------------------------------------------------
+      # UPLOAD DEBUG ARTIFACTS
+      # ----------------------------------------------------------
+      - name: Upload StreamCorner debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: streamcorner-debug-${{ github.run_number }}
+          path: |
+            sc_capture.json
+            sc_drm_report.jsonl
+            streamcorner_events.json
+            streamcorner_EVENTS_LIVE.m3u
+            streamcorner_VLC.m3u
+            streamcorner_KODI.m3u
+            streamcorner_COMPLETE.m3u
+          retention-days: 7
+          if-no-files-found: warn
+
+      # ----------------------------------------------------------
+      # COMBINE + CHECK
+      # ----------------------------------------------------------
+      - name: Combine playlists
+        continue-on-error: true
+        run: |
+          if [ -f combine_playlist.py ]; then
+            python combine_playlist.py || echo "⚠️ combine failed"
+          fi
+
+      - name: Check playlists
+        continue-on-error: true
+        run: |
+          if [ -f check_playlist.py ]; then
+            python check_playlist.py || echo "⚠️ check failed"
+          fi
+
+      # ----------------------------------------------------------
+      # COMMIT
+      # ----------------------------------------------------------
+      - name: Show git status
+        run: git status --short || true
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Commit and push
-        if: always()
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Update combined and checked playlists"
-          file_pattern: >-
-            combined_events.m3u
-            combined_events_checked.m3u
-            flussi_non_funzionanti.txt
-            damitv_events.m3u
-            daddylive_streams.m3u
-            cdnlivetv_channels.m3u
-            cdnlivetv_events.m3u
-            streamcorner_COMPLETE.m3u
-            streamcorner_VLC.m3u
-            streamcorner_EVENTS_LIVE.m3u
-            streamcorner_drm_report.json
-            watchfooty_events.m3u
-          skip_dirty_check: false
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare"
+            exit 0
+          fi
+          git commit -m "chore: update playlists [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git pull --rebase --autostash || true
+          git push || echo "⚠️ push failed (forse non-fast-forward)"
