@@ -1,1 +1,13 @@
 #EXTM3U
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fimg.dge-prod.dicelaboratory.com%2Foriginal%2F2026%2F10%2F07120249-dwi61qrrru2e6otz.png" group-title="Frosinone vs. Sassuolo",Frosinone vs. Sassuolo (SERIE A) — BEIN SPORTS 1 AU
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/ahhop66npg/out/v1/62dd3099ebe94506a623dd14d5cf2809/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fimg.dge-prod.dicelaboratory.com%2Foriginal%2F2026%2F10%2F07130246-lbtrtefma1ubfxjc.png" group-title="Deportivo vs. Levante",Deportivo vs. Levante (LALIGA) — BEIN SPORTS 2 AU
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/jag9aprhl1/out/v1/4728f4ca0eea4370a93e6eec5e507032/cenc.mpd
