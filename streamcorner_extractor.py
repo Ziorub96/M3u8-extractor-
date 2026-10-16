@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v10.1 (HTTP-puro + cache + curl_cffi)
+StreamCorner / CornerStream Extractor — v10.2 (HTTP-puro + cache + curl_cffi)
 =============================================================================
+Fix v10.2:
+  * Discovery ora esplora i chunk lazy del main bundle (__vite__mapDeps)
+    per trovare provider-data.worker-*.js e la lista *.workers.dev
+    (v10.1 cercava solo nel main → parse fallito)
+
 Novità v10.1:
-  * Protocollo "NinjaCorner" ricostruito end-to-end in Python puro
-    (Salsa20/12 + SHA-256 + decoder SBOX custom, nessuna dipendenza crypto)
   * curl_cffi (impersonate Chrome) per bypassare Cloudflare TLS fingerprint
   * Cache locale .sc_static_cache.json (provider worker + lista workers)
   * Fallback automatico a cache se HTTP fallisce
-  * Cache TTL: 7 giorni (auto-refresh quando possibile)
-
-Niente Playwright per il catalogo. Playwright rimane SOLO per risolvere
-gli embed (CDN terze parti).
-
-Output: streamcorner_EVENTS_LIVE.m3u, streamcorner_VLC.m3u, streamcorner_KODI.m3u
+  * Cache TTL: 7 giorni
 """
 
 from __future__ import annotations
@@ -39,7 +37,7 @@ PROVIDER_DEFAULT = "admin"
 LIVE_MARGIN_BEFORE = 1800
 LIVE_MARGIN_AFTER = 3600
 
-# Allineato al nome usato dal workflow (.github/workflows/update-playlist.yml)
+# Allineato al nome usato dal workflow
 M3U8_CACHE = ".streamcorner_events_m3u8_cache.json"
 CAPTURE_FILE = "sc_capture.json"
 DRM_REPORT = "sc_drm_report.jsonl"
@@ -55,7 +53,6 @@ def log(*a):
 # HTTP CLIENT (curl_cffi → requests)
 # ============================================================
 def _make_session():
-    """Prova curl_cffi (impersonate Chrome), fallback a requests."""
     try:
         from curl_cffi import requests as cf
         log("   ✅ curl_cffi attivo (impersonate=chrome)")
@@ -106,7 +103,7 @@ def http_post_bin(url, body, timeout=20,
 
 
 # ============================================================
-# CACHE STATICA (provider worker + workers list)
+# CACHE STATICA
 # ============================================================
 def cache_load():
     if not os.path.exists(STATIC_CACHE):
@@ -259,15 +256,21 @@ def salsa20_12(key, nonce8, data):
 
 
 # ============================================================
-# DISCOVERY con cache
+# DISCOVERY con cache + esplorazione chunk
 # ============================================================
-def _parse_provider_from_main(main_txt):
-    m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', main_txt)
-    return m.group(1) if m else None
+def _parse_provider(txt):
+    """Cerca il path del provider worker in qualsiasi forma."""
+    m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
+    if not m:
+        m = re.search(r'(provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
+        if m:
+            return "/assets/" + m.group(1)
+        return None
+    return m.group(1)
 
 
-def _parse_workers_from_main(main_txt):
-    return sorted(set(re.findall(r'data\.[a-zA-Z0-9\-]+\.workers\.dev', main_txt)))
+def _parse_workers(txt):
+    return sorted(set(re.findall(r'data\.[a-zA-Z0-9\-]+\.workers\.dev', txt)))
 
 
 def _extract_dt_pt(provider_txt):
@@ -286,6 +289,7 @@ def discover_all(site=SITE, force_refresh=False):
     """
     Ritorna (vault, workers, meta).
     Usa cache locale se valida, altrimenti tenta refresh HTTP.
+    v10.2: se provider/workers non sono nel main, esplora i chunk lazy.
     """
     cache = cache_load()
 
@@ -312,24 +316,58 @@ def discover_all(site=SITE, force_refresh=False):
                 raise RuntimeError(f"main bundle non 200: {st}")
             main_txt = body.decode("utf-8", "replace")
 
-            provider_url = _parse_provider_from_main(main_txt)
-            workers = _parse_workers_from_main(main_txt)
+            # 3. prova direttamente nel main
+            provider_url = _parse_provider(main_txt)
+            workers = _parse_workers(main_txt)
+
+            # 4. se manca qualcosa, esplora i chunk lazy
             if not provider_url or not workers:
-                raise RuntimeError(f"parse fallito: provider={provider_url} workers={len(workers)}")
+                log(f"   → provider/workers non nel main, esploro i chunk lazy")
+                # Estrai lista da __vite__mapDeps
+                chunks = re.findall(r'"(assets/[A-Za-z0-9_\-]+\.js)"', main_txt)
+                # dedup preservando ordine
+                seen = set()
+                chunks_unique = []
+                for c in chunks:
+                    if c not in seen:
+                        seen.add(c)
+                        chunks_unique.append(c)
+                log(f"   → {len(chunks_unique)} chunk da esplorare")
+
+                for i, chunk in enumerate(chunks_unique, 1):
+                    try:
+                        st, cbody, _ = http_get(site.rstrip("/") + "/" + chunk, timeout=20)
+                        if st != 200:
+                            continue
+                        ctxt = cbody.decode("utf-8", "replace")
+                        if not provider_url:
+                            provider_url = _parse_provider(ctxt)
+                        if not workers:
+                            workers = _parse_workers(ctxt)
+                        if provider_url and workers:
+                            log(f"   ✅ trovati in {chunk} (iter {i}/{len(chunks_unique)})")
+                            break
+                    except Exception as e:
+                        log(f"   ⚠️ chunk {chunk}: {str(e)[:60]}")
+
+            if not provider_url or not workers:
+                raise RuntimeError(
+                    f"parse fallito: provider={provider_url} workers={len(workers) if workers else 0}"
+                )
             log(f"   provider worker: {provider_url}")
             log(f"   workers trovati: {len(workers)}")
 
-            # 3. provider worker
+            # 5. provider worker
             st, body, _ = http_get(site.rstrip("/") + provider_url, timeout=30)
             if st != 200:
                 raise RuntimeError(f"provider worker non 200: {st}")
             provider_txt = body.decode("utf-8", "replace")
 
-            # 4. decodifica vault
+            # 6. decodifica vault
             dt_strs, pt_strs = _extract_dt_pt(provider_txt)
             vault = decode_vault(pt_strs, dt_strs)
 
-            # 5. salva cache
+            # 7. salva cache
             cache_save(main_url, provider_url, workers,
                        base64.b64encode(body).decode("ascii"))
             log(f"   ✅ cache aggiornata ({STATIC_CACHE})")
@@ -560,7 +598,7 @@ def is_live(ev, now=None):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.1")
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.2")
     ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=None)
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
@@ -580,7 +618,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 STREAMCORNER EXTRACTOR v10.1 (HTTP-puro + cache + curl_cffi)")
+    log("📡 STREAMCORNER EXTRACTOR v10.2 (HTTP-puro + cache + curl_cffi)")
     log("=" * 66)
 
     # ---- 1. Discovery ----
