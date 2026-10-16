@@ -73,13 +73,14 @@ SOURCES = [
 #   - keep_group_title=True  → mantiene il group-title originale del file
 #   - keep_group_title=False → forza group-title = nome_sorgente
 #
-# StreamCorner: usiamo streamcorner_VLC.m3u (solo m3u8 risolti, NO embed_url)
+# StreamCorner: usiamo streamcorner_EVENTS_LIVE.m3u (una partita per gruppo,
+# con tutte le fonti sotto). Sostituisce il vecchio streamcorner_VLC.m3u flat.
 LOCAL_SOURCES = [
     ("DAMITV", "damitv_events.m3u", False),
     ("Daddylive", "daddylive_streams.m3u", False),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u", False),
     ("CDN Live TV Events", "cdnlivetv_events.m3u", False),
-    ("StreamCorner", "streamcorner_VLC.m3u", False),   # solo m3u8 + gruppo unico
+    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", False),   # ← raggruppato per evento
     # ("WatchFooty", "watchfooty_events.m3u", False),  # DISABILITATO (dominio morto)
 ]
 
