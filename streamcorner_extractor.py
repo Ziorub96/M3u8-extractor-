@@ -4,11 +4,14 @@
 StreamCorner / CornerStream Extractor — v9.2 (Playwright-as-oracle)
 ====================================================================
 La nuova SPA cornerstream.tech decodifica il vault dentro un Web Worker
-caricato da blob. Non è possibile replicare il crypto in Python senza
-reverse engineering del worker.
+caricato da blob. Strategia: lasciare che la SPA faccia il lavoro e
+intercettare le risposte JSON già decifrate.
 
-Strategia: lasciare che la SPA faccia il suo lavoro e intercettare
-le risposte JSON già decifrate tramite hook su JSON.parse.
+Novità v9.2:
+  * Hook su fetch, XHR, JSON.parse, Response.json, Worker
+  * Navigazione multi-path + click su link per innescare il catalogo
+  * Stampa del capture nei log (nessun artifact richiesto per debug)
+  * Salvataggio opzionale sc_capture.json per artifact
 """
 
 from __future__ import annotations
@@ -35,9 +38,6 @@ PRIORITY_SITES = [
 PROVIDERS_DEFAULT = "admin"
 KEY_FIELDS = ("stream_id", "game_id", "channel_id", "id")
 DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
-KEY_PAIR_RE = re.compile(r"^[0-9a-f]{32}:[0-9a-f]{32}$", re.I)
-HOST_RE = re.compile(r"^[a-z0-9][a-z0-9\-]*\.workers\.dev$")
-SCRIPT_SRC_RE = re.compile(r'<script\b[^>]*\bsrc=["\']([^"\']+\.js)["\']', re.I)
 
 RUNTIME_CACHE = ".sc_runtime.json"
 M3U8_CACHE = ".sc_m3u8_cache.json"
@@ -53,7 +53,7 @@ def log(*a):
 
 
 # ============================================================
-# SALSA20/12 (retrocompatibilità — usato solo se il vecchio endpoint risponde)
+# SALSA20/12 (retrocompatibilità)
 # ============================================================
 M32 = 0xFFFFFFFF
 
@@ -141,22 +141,16 @@ def b64d(s):
 
 
 # ============================================================
-# BROWSER-AS-ORACLE
+# HOOK SCRIPT (iniettato PRIMA del boot SPA)
 # ============================================================
-# Script iniettato PRIMA che la SPA carichi.
-# Cattura: fetch/XHR, JSON.parse, window vars, worker urls.
 HOOK_SCRIPT = r"""
 (() => {
     if (window.__sc_hook_installed) return;
     window.__sc_hook_installed = true;
 
     window.__sc_capture = {
-        fetches: [],      // tutte le fetch/XHR (url, method, body cifrato)
-        parsed: [],       // tutte le chiamate JSON.parse (risposte DECIFRATE)
-        workers: [],      // URL dei worker creati
-        globals: {},      // snapshot variabili globali sospette
-        console: [],      // messaggi console
-        started: Date.now(),
+        fetches: [], parsed: [], workers: [], globals: {},
+        console: [], started: Date.now(),
     };
 
     // --- FETCH ---
@@ -165,13 +159,11 @@ HOOK_SCRIPT = r"""
         const req = args[0];
         const url = typeof req === 'string' ? req : (req?.url || '');
         let method = 'GET';
-        let body_b64 = null;
+        let body_sample = null;
         try {
             if (typeof req === 'object' && req.method) method = req.method;
-            if (typeof req === 'object' && req.body) {
-                if (typeof req.body === 'string') {
-                    body_b64 = req.body.slice(0, 4000);
-                }
+            if (typeof req === 'object' && req.body && typeof req.body === 'string') {
+                body_sample = req.body.slice(0, 4000);
             }
         } catch(e) {}
         const t0 = Date.now();
@@ -182,9 +174,9 @@ HOOK_SCRIPT = r"""
             window.__sc_capture.fetches.push({
                 url: url.slice(0, 500),
                 method: method,
-                body_sample: body_b64,
+                body_sample: body_sample,
                 status: resp.status,
-                resp_sample: text.slice(0, 8000),
+                resp_sample: text.slice(0, 50000),
                 resp_len: text.length,
                 ms: Date.now() - t0,
             });
@@ -207,7 +199,7 @@ HOOK_SCRIPT = r"""
                         url: String(_url).slice(0, 500),
                         method: _method,
                         status: x.status,
-                        resp_sample: String(x.responseText || '').slice(0, 8000),
+                        resp_sample: String(x.responseText || '').slice(0, 50000),
                         resp_len: (x.responseText || '').length,
                     });
                 } catch(e) {}
@@ -219,24 +211,45 @@ HOOK_SCRIPT = r"""
     HXHR.prototype = OrigXHR.prototype;
     window.XMLHttpRequest = HXHR;
 
-    // --- JSON.parse (chiave: cattura le risposte DECIFRATE) ---
+    // --- JSON.parse (chiave: cattura risposte decifrate) ---
     const orig_parse = JSON.parse;
     JSON.parse = function(text, reviver) {
         const result = orig_parse.call(this, text, reviver);
         try {
             if (result && typeof result === 'object') {
                 const s = JSON.stringify(result);
-                if (s.length > 200) {
+                if (s.length > 100) {
                     window.__sc_capture.parsed.push({
-                        ts: Date.now(),
-                        size: s.length,
-                        sample: s.slice(0, 8000),
+                        ts: Date.now(), size: s.length,
+                        sample: s.slice(0, 50000),
+                        source: 'JSON.parse',
                     });
                 }
             }
         } catch(e) {}
         return result;
     };
+
+    // --- Response.json (per fetch che usano .json() direttamente) ---
+    try {
+        const orig_rjson = Response.prototype.json;
+        Response.prototype.json = async function() {
+            const result = await orig_rjson.call(this);
+            try {
+                if (result && typeof result === 'object') {
+                    const s = JSON.stringify(result);
+                    if (s.length > 100) {
+                        window.__sc_capture.parsed.push({
+                            ts: Date.now(), size: s.length,
+                            sample: s.slice(0, 50000),
+                            source: 'Response.json',
+                        });
+                    }
+                }
+            } catch(e) {}
+            return result;
+        };
+    } catch(e) {}
 
     // --- Worker ---
     const OrigWorker = window.Worker;
@@ -253,14 +266,16 @@ HOOK_SCRIPT = r"""
             try {
                 window.__sc_capture.console.push({
                     level: k,
-                    msg: args.map(a => typeof a === 'object' ? JSON.stringify(a).slice(0,500) : String(a).slice(0,500)).join(' ')
+                    msg: args.map(a => typeof a === 'object'
+                        ? JSON.stringify(a).slice(0,300)
+                        : String(a).slice(0,300)).join(' ')
                 });
             } catch(e) {}
             return orig.apply(console, args);
         };
     });
 
-    // --- Snapshot globali (verrà chiamato dall'esterno) ---
+    // --- Snapshot globali (chiamato dall'esterno) ---
     window.__sc_snapshot_globals = function() {
         const keys = ['dr','Ar','vault','config','api','apiUrl','apiBase','corner',
                       'session','consts','specs','worker','streamcorner','sc'];
@@ -284,11 +299,10 @@ HOOK_SCRIPT = r"""
 """
 
 
-def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=15):
-    """
-    Apre la SPA, attende il boot e una navigazione, cattura tutto.
-    Ritorna dict con fetches, parsed, workers, globals.
-    """
+# ============================================================
+# BROWSER CAPTURE
+# ============================================================
+def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
     try:
         from patchright.sync_api import sync_playwright
         engine = "patchright"
@@ -296,8 +310,9 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=15):
         from playwright.sync_api import sync_playwright
         engine = "playwright"
 
-    log(f"   🌐 Browser-as-oracle su {site}")
-    out = {"site": site, "fetches": [], "parsed": [], "workers": [], "globals": {}}
+    log(f"   🌐 Browser-as-oracle su {site} [{engine}]")
+    out = {"site": site, "fetches": [], "parsed": [],
+           "workers": [], "globals": {}, "console": [], "route_info": {}}
 
     try:
         with sync_playwright() as p:
@@ -318,36 +333,74 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=15):
             ctx.add_init_script(HOOK_SCRIPT)
             page = ctx.new_page()
 
-            # Boot
+            # 1. Boot home
             try:
-                page.goto(site, wait_until="domcontentloaded",
-                          timeout=45000)
+                page.goto(site, wait_until="domcontentloaded", timeout=45000)
             except Exception as e:
-                log(f"      ⚠️ goto: {str(e)[:80]}")
-
-            # Attesa boot
+                log(f"      ⚠️ goto home: {str(e)[:80]}")
             page.wait_for_timeout(wait_boot * 1000)
+            log(f"      ✓ home caricata ({page.url[:80]})")
 
-            # Naviga a /live per forzare la fetch del catalogo
+            # 2. Snapshot route + link
             try:
-                page.goto(urljoin(site, "live"), wait_until="domcontentloaded",
-                          timeout=30000)
-            except Exception:
-                pass
-            page.wait_for_timeout(wait_nav * 1000)
+                route_info = page.evaluate("""() => ({
+                    url: location.href,
+                    hash: location.hash,
+                    pathname: location.pathname,
+                    links: Array.from(document.querySelectorAll('a[href]'))
+                            .map(a => ({text: (a.textContent||'').trim().slice(0,40),
+                                        href: a.href}))
+                            .filter(l => l.text.length > 0)
+                            .slice(0, 50)
+                })""")
+                out["route_info"] = route_info
+                log(f"      path={route_info.get('pathname')} hash={route_info.get('hash')}")
+                log(f"      link trovati: {len(route_info.get('links', []))}")
+                for l in route_info.get("links", [])[:20]:
+                    log(f"         [{l['text'][:35]}] → {l['href'][:90]}")
+            except Exception as e:
+                log(f"      ⚠️ route info: {str(e)[:80]}")
 
-            # Snapshot variabili globali
+            # 3. Naviga multi-path
+            for path in ["live", "#/live", "events", "#/events",
+                         "sport", "#/sport", "stream", "#/stream"]:
+                try:
+                    url_try = site.rstrip("/") + "/" + path
+                    page.goto(url_try, wait_until="domcontentloaded", timeout=15000)
+                    page.wait_for_timeout(5000)
+                    log(f"      → {path:10} URL={page.url[:70]}")
+                except Exception as e:
+                    log(f"      → {path:10} ⚠️ {str(e)[:60]}")
+
+            # 4. Click link con testo chiave
+            for kw in ["Live", "Sport", "Event", "24/7", "Channel", "Admin", "Home"]:
+                for sel in [f"a:has-text('{kw}')", f"button:has-text('{kw}')"]:
+                    try:
+                        el = page.locator(sel).first
+                        if el.count() > 0:
+                            el.click(timeout=2000)
+                            page.wait_for_timeout(4000)
+                            log(f"      ✓ click '{kw}'")
+                            break
+                    except Exception:
+                        continue
+
+            # 5. Attesa finale
+            page.wait_for_timeout(6000)
+
+            # 6. Snapshot globals
             try:
                 out["globals"] = page.evaluate("() => window.__sc_snapshot_globals()")
             except Exception:
                 pass
 
-            # Raccogli il capture
+            # 7. Raccogli capture
             try:
                 cap = page.evaluate("() => window.__sc_capture")
                 out["fetches"] = cap.get("fetches", [])
                 out["parsed"]  = cap.get("parsed", [])
                 out["workers"] = cap.get("workers", [])
+                out["console"] = cap.get("console", [])
             except Exception as e:
                 log(f"      ⚠️ capture read: {str(e)[:80]}")
 
@@ -356,30 +409,34 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=15):
         log(f"      ❌ browser: {str(e)[:120]}")
         return out
 
-    # Dedup fetches per URL+status
+    # Dedup fetch
     seen = set()
-    uniq_fetches = []
+    uniq = []
     for f in out["fetches"]:
         k = (f.get("url", "")[:200], f.get("method", ""), f.get("status", 0))
         if k in seen:
             continue
         seen.add(k)
-        uniq_fetches.append(f)
-    out["fetches"] = uniq_fetches
+        uniq.append(f)
+    out["fetches"] = uniq
 
-    log(f"      fetch={len(out['fetches'])} parsed={len(out['parsed'])} "
-        f"workers={len(out['workers'])}")
-    if out["workers"]:
-        for w in out["workers"][:5]:
-            log(f"         worker: {w[:100]}")
+    log(f"      TOTALE: fetch={len(out['fetches'])} parsed={len(out['parsed'])} "
+        f"workers={len(out['workers'])} console={len(out['console'])}")
     return out
 
 
+# ============================================================
+# ESTRAZIONE CATALOGO
+# ============================================================
+def key_of(row):
+    for f in KEY_FIELDS:
+        v = row.get(f)
+        if v:
+            return str(v).strip()
+    return ""
+
+
 def extract_catalog_from_capture(cap):
-    """
-    Cerca negli oggetti JSON.parse catturati qualcosa che somigli
-    a un catalogo eventi (lista di dict con stream_id/event_name/streams).
-    """
     candidates = []
     for p in cap.get("parsed", []):
         s = p.get("sample", "")
@@ -387,14 +444,10 @@ def extract_catalog_from_capture(cap):
             obj = json.loads(s)
         except Exception:
             continue
-
-        # Caso 1: lista diretta di eventi
         if isinstance(obj, list) and obj and isinstance(obj[0], dict):
             if any(k in obj[0] for k in KEY_FIELDS):
                 candidates.append(obj)
                 continue
-
-        # Caso 2: dict con chiave lista
         if isinstance(obj, dict):
             for k, v in obj.items():
                 if isinstance(v, list) and v and isinstance(v[0], dict):
@@ -404,16 +457,51 @@ def extract_catalog_from_capture(cap):
     return candidates
 
 
-def key_of(row):
-    for f in KEY_FIELDS:
-        v = row.get(f)
-        if v:
-            return str(v).strip()
-    return ""
+def print_capture_summary(cap):
+    log("\n   === CAPTURE SUMMARY ===")
+    log(f"   route: path={cap.get('route_info',{}).get('pathname')} "
+        f"hash={cap.get('route_info',{}).get('hash')}")
+    log(f"   link homepage: {len(cap.get('route_info',{}).get('links') or [])}")
+    for l in (cap.get("route_info", {}).get("links") or [])[:15]:
+        log(f"      [{l.get('text','')[:30]:30}] → {l.get('href','')[:90]}")
+
+    log(f"\n   fetches: {len(cap.get('fetches') or [])}")
+    for i, f in enumerate((cap.get("fetches") or [])[:15]):
+        log(f"      [{i}] {f.get('method','?'):6} {f.get('url','?')[:120]} "
+            f"→ {f.get('status','?')} ({f.get('resp_len', 0)}B)")
+        rs = (f.get("resp_sample") or "")[:400]
+        if rs:
+            log(f"           resp: {rs}")
+        bs = (f.get("body_sample") or "")[:200]
+        if bs:
+            log(f"           body: {bs}")
+
+    log(f"\n   parsed: {len(cap.get('parsed') or [])}")
+    for i, p in enumerate((cap.get("parsed") or [])[:8]):
+        log(f"      [{i}] size={p.get('size','?'):>8}  src={p.get('source','?')}")
+        sample = (p.get("sample") or "")[:1500]
+        if sample:
+            log(f"           {sample}")
+
+    log(f"\n   workers: {len(cap.get('workers') or [])}")
+    for w in (cap.get("workers") or [])[:5]:
+        log(f"      {w}")
+
+    log(f"\n   globals:")
+    gl = cap.get("globals") or {}
+    if not gl:
+        log("      (nessuna)")
+    for k, v in gl.items():
+        log(f"      {k} = {str(v)[:300]}")
+
+    log(f"\n   console (ultimi 10):")
+    for c in (cap.get("console") or [])[-10:]:
+        log(f"      [{c.get('level','?')}] {c.get('msg','')[:200]}")
+    log("   === END CAPTURE ===\n")
 
 
 # ============================================================
-# RESOLVE EMBED (invariato da v9.1)
+# RESOLVE EMBED
 # ============================================================
 LICENSE_HINTS = ("license", "widevine", "getlicense", "acquirelicense", "drm")
 MANIFEST_HINTS = (".m3u8", ".mpd", "manifest", "playlist")
@@ -552,11 +640,10 @@ def is_live(ev, now=None):
 def main():
     ap = argparse.ArgumentParser(description="StreamCorner Extractor v9.2")
     ap.add_argument("--output-dir", "--output", default=".", dest="output_dir")
-    ap.add_argument("--providers", default=PROVIDERS_DEFAULT)
     ap.add_argument("--site", default=None)
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
     ap.add_argument("--wait-boot", type=float, default=18)
-    ap.add_argument("--wait-nav", type=float, default=15)
+    ap.add_argument("--wait-nav", type=float, default=12)
     ap.add_argument("--no-embeds", action="store_true")
     ap.add_argument("--all-events", action="store_true")
     ap.add_argument("--embed-workers", "--playwright-workers",
@@ -592,22 +679,24 @@ def main():
                                 wait_boot=int(args.wait_boot),
                                 wait_nav=int(args.wait_nav))
 
-    # Salva il capture completo per debug
+    # Stampa capture nei log (debug senza artifact)
+    print_capture_summary(cap)
+
+    # Salva su file (per artifact)
     try:
         with open(os.path.join(args.output_dir, CAPTURE_FILE), "w",
                   encoding="utf-8") as f:
             json.dump(cap, f, ensure_ascii=False, indent=1, default=str)
-        log(f"   💾 {CAPTURE_FILE} salvato")
+        log(f"   💾 {CAPTURE_FILE} salvato (scaricalo via artifact)")
     except Exception as e:
         log(f"   ⚠️ salvataggio capture: {e}")
 
-    # ---- 2. Estrazione catalogo dai JSON.parse decifrati ----
+    # ---- 2. Estrazione catalogo ----
     log(f"\n[2/5] Estrazione catalogo dai JSON decifrati")
     catalogs = extract_catalog_from_capture(cap)
     if not catalogs:
         log("   ❌ nessun catalogo trovato nei JSON.parse")
-        log("   → controlla sc_capture.json per capire cosa ha parsato la SPA")
-        # Scrivi M3U vuoti per non rompere il workflow
+        log("   → guarda CAPTURE SUMMARY sopra per capire cosa fa la SPA")
         for fn in ("streamcorner_VLC.m3u", "streamcorner_KODI.m3u",
                    "streamcorner_EVENTS_LIVE.m3u"):
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
@@ -615,21 +704,19 @@ def main():
             open(combined_path, "w").write("#EXTM3U\n")
         return
 
-    # Prendi il catalogo più grande
     catalogs.sort(key=len, reverse=True)
     events = catalogs[0]
     log(f"   ✅ catalogo: {len(events)} item (da {len(catalogs)} candidati)")
 
-    # Cerca anche stream_url per census
-    n_src = 0
-    n_with_url = 0
+    # Census
+    n_src, n_url = 0, 0
     for ev in events:
         for s in (ev.get("streams") or []):
             if isinstance(s, dict):
                 n_src += 1
                 if s.get("stream_url"):
-                    n_with_url += 1
-    log(f"   census: sorgenti={n_src}  con stream_url={n_with_url}")
+                    n_url += 1
+    log(f"   census: sorgenti={n_src}  con stream_url={n_url}")
 
     # ---- 3. Filtro live ----
     log(f"\n[3/5] Filtro live")
@@ -648,7 +735,6 @@ def main():
         except Exception:
             cache = {}
 
-    # Ricava origin dal site
     p = urlparse(site)
     origin = f"{p.scheme}://{p.netloc}"
 
@@ -662,13 +748,11 @@ def main():
         for s in ev.get("streams") or []:
             if not isinstance(s, dict):
                 continue
-            # dirette
             u = str(s.get("stream_url") or "").strip()
             if u and DIRECT_RE.search(u.split("?")[0]):
                 rows.append((f"{base} — {s.get('source_name') or '?'} [DIRETTA]",
                              logo, name, {"url": u, "referer": origin + "/"}))
                 continue
-            # embed
             emb = s.get("embed_url")
             if not emb or args.no_embeds:
                 continue
