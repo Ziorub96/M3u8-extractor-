@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor — EVENTS LIVE ONLY (v3 - Stealth + DRM Capture)
+StreamCorner Extractor — EVENTS LIVE ONLY (v4 - Patchright + Full Log)
 =======================================================================
-Versione potenziata con:
-- Stealth avanzato (anti-bot detection bypass)
-- Emulazione WebGL (swiftshader) per far partire Bitmovin/Shaka
-- Intercettazione profonda di tutte le richieste di rete
-- Cattura PSSH + License URL (primo passo per decrittazione DRM)
-- Report DRM strutturato in JSON
+Novità v4:
+- Usa patchright (fork di Playwright anti-Cloudflare) invece di playwright
+- Log TUTTE le richieste di rete (non solo keyword)
+- Rileva esplicitamente challenge Cloudflare
+- Salva report DRM per OGNI embed (anche vuoto) per diagnosi
+- Salva URL finale e titolo pagina
 
-Output:
-    streamcorner_VLC.m3u          → m3u8 eventi live (usato dal combine)
-    streamcorner_EVENTS_LIVE.m3u  → eventi live, raggruppati per partita
-    streamcorner_COMPLETE.m3u     → mixed (embed + m3u8), debug
-    streamcorner_events.json      → dati grezzi
-    streamcorner_drm_report.json  → PSSH + license URL catturati
+Requisiti:
+    pip install patchright pycryptodome requests
+    patchright install chromium
 """
 
 import os, re, json, time, struct, hashlib, argparse, base64
@@ -215,10 +212,8 @@ def is_live_now(ev, now=None):
     if now is None: now = int(time.time())
     st = ev.get("start_time") or ev.get("timestamp") or 0
     et = ev.get("end_time") or 0
-    if not st:
-        return True
-    if not et:
-        et = st + 4*3600
+    if not st: return True
+    if not et: et = st + 4*3600
     return (st - LIVE_MARGIN_BEFORE) <= now <= (et + LIVE_MARGIN_AFTER)
 
 def filter_live(events):
@@ -235,19 +230,13 @@ def filter_live(events):
     return live
 
 # ============================================================
-# UTILITY: estrazione PSSH
+# UTILITY
 # ============================================================
 def extract_pssh_from_text(text):
-    """
-    Cerca PSSH box (base64) nel testo. I PSSH hanno un box 'pssh' a offset 4.
-    Ritorna la prima corrispondenza o None.
-    """
-    if not text:
-        return None
+    if not text: return None
     for match in re.findall(r'[A-Za-z0-9+/]{40,}={0,2}', text):
         try:
             decoded = base64.b64decode(match + "=" * ((4 - len(match) % 4) % 4))
-            # PSSH box: [4 byte size][4 byte 'pssh'][...]
             if len(decoded) >= 12 and decoded[4:8] == b'pssh':
                 return match
         except Exception:
@@ -255,62 +244,69 @@ def extract_pssh_from_text(text):
     return None
 
 def extract_kid_from_key_line(key_line):
-    """Estrae KID (Key ID) da #EXT-X-KEY se presente."""
     m = re.search(r'KEYID=0x([0-9a-fA-F]+)', key_line)
     return m.group(1) if m else None
 
 def extract_widevine_urn(key_line):
-    """Estrae l'UUID Widevine/PlayReady/FairPlay da KEYFORMAT."""
     m = re.search(r'KEYFORMAT="(urn:uuid:[0-9a-fA-F-]+)"', key_line)
     return m.group(1) if m else None
 
 # ============================================================
-# PLAYWRIGHT — v3 Stealth + DRM Capture
+# RESOLVE v4 — patchright + full logging
 # ============================================================
 def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="?"):
-    from playwright.sync_api import sync_playwright
+    try:
+        from patchright.sync_api import sync_playwright
+        engine = "patchright"
+    except ImportError:
+        from playwright.sync_api import sync_playwright
+        engine = "playwright"
 
     findings = {
-        "m3u8": None,
-        "mpd": None,
-        "license_url": None,
-        "license_method": None,
-        "license_headers": None,
-        "pssh": None,
-        "kid": None,
-        "drm_system": None,
-        "key_line": None,
-        "manifest_has_key": False,
-        "requests": [],
+        "m3u8": None, "mpd": None,
+        "license_url": None, "license_method": None, "license_headers": None,
+        "pssh": None, "kid": None, "drm_system": None,
+        "key_line": None, "manifest_has_key": False,
+        "requests": [], "all_requests": [],
+        "cloudflare_detected": False,
+        "final_url": None, "page_title": None,
+        "engine": engine,
     }
 
-    KEYWORDS_NET = [
-        '.m3u8', '.mpd', 'manifest', 'playlist',
-        'license', 'widevine', 'playready', 'fairplay',
-        'pssh', 'getlicense', 'acquirelicense', 'drm',
-    ]
+    KEYWORDS_NET = ['.m3u8', '.mpd', 'manifest', 'playlist',
+                    'license', 'widevine', 'playready', 'fairplay',
+                    'pssh', 'getlicense', 'acquirelicense', 'drm']
 
     def on_request(request):
-        url_lower = request.url.lower()
-        if any(k in url_lower for k in KEYWORDS_NET):
-            entry = {
+        url = request.url
+        url_lower = url.lower()
+
+        if len(findings["all_requests"]) < 200:
+            findings["all_requests"].append({
                 "method": request.method,
-                "url": request.url[:250],
-            }
-            findings["requests"].append(entry)
-            print(f"      [NET] {request.method} {request.url[:140]}")
+                "url": url[:200],
+                "type": request.resource_type,
+            })
+
+        if any(k in url_lower for k in ("challenges.cloudflare.com",
+                                         "cf-chl", "/cdn-cgi/challenge",
+                                         "turnstile")):
+            findings["cloudflare_detected"] = True
+            print(f"      🛡️ CLOUDFLARE CHALLENGE: {url[:120]}")
+
+        if any(k in url_lower for k in KEYWORDS_NET):
+            findings["requests"].append({
+                "method": request.method, "url": url[:250],
+            })
+            print(f"      [NET] {request.method} {url[:140]}")
 
             if any(k in url_lower for k in ['license', 'widevine',
                                              'getlicense', 'acquirelicense']):
-                findings["license_url"] = request.url
+                findings["license_url"] = url
                 findings["license_method"] = request.method
-                try:
-                    findings["license_headers"] = dict(request.headers)
-                except Exception:
-                    findings["license_headers"] = None
-                print(f"      🔑 LICENSE URL: {request.url[:150]}")
-                if request.post_data:
-                    print(f"      🔑 LICENSE BODY len: {len(request.post_data)}")
+                try: findings["license_headers"] = dict(request.headers)
+                except Exception: findings["license_headers"] = None
+                print(f"      🔑 LICENSE URL: {url[:150]}")
 
     def on_response(response):
         url = response.url
@@ -322,13 +318,11 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
         except Exception:
             pass
 
-        # --- m3u8 ---
         if '.m3u8' in url and findings["m3u8"] is None:
             try:
                 if "#EXTM3U" in body_text:
                     findings["m3u8"] = url
                     print(f"      🎯 M3U8: {url[:130]}")
-                    # Analizza chiavi DRM nel manifest
                     for line in body_text.splitlines():
                         if line.startswith("#EXT-X-KEY"):
                             findings["manifest_has_key"] = True
@@ -336,12 +330,9 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
                             findings["kid"] = extract_kid_from_key_line(line)
                             findings["drm_system"] = extract_widevine_urn(line)
                             print(f"      🔐 KEY LINE: {line[:180]}")
-                        if line.startswith("#EXT-X-SESSION-KEY"):
-                            print(f"      🔐 SESSION-KEY: {line[:180]}")
             except Exception:
                 pass
 
-        # --- mpd ---
         if '.mpd' in url and findings["mpd"] is None:
             try:
                 if "<MPD" in body_text:
@@ -350,18 +341,16 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
                     pssh = extract_pssh_from_text(body_text)
                     if pssh:
                         findings["pssh"] = pssh
-                        print(f"      🔐 PSSH nel MPD: {pssh[:80]}...")
+                        print(f"      🔐 PSSH: {pssh[:80]}...")
             except Exception:
                 pass
 
-        # --- PSSH nella risposta di licenza o manifest ---
         if body_text and findings["pssh"] is None:
             pssh = extract_pssh_from_text(body_text)
             if pssh:
                 findings["pssh"] = pssh
                 print(f"      🔐 PSSH: {pssh[:80]}...")
 
-        # --- License URL in header ---
         for h, v in response.headers.items():
             if 'license' in h.lower() or 'drm' in h.lower():
                 findings["license_url"] = v
@@ -373,14 +362,11 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
                 headless=True,
                 args=[
                     "--no-sandbox",
-                    "--disable-blink-features=AutomationControlled",
                     "--disable-dev-shm-usage",
                     "--use-gl=swiftshader",
                     "--enable-unsafe-swiftshader",
                     "--autoplay-policy=no-user-gesture-required",
                     "--mute-audio",
-                    "--disable-features=IsolateOrigins,site-per-process",
-                    "--allow-running-insecure-content",
                 ],
             )
             ctx = browser.new_context(
@@ -392,26 +378,21 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
                 permissions=["autoplay"],
             )
 
-            # Stealth init script
-            ctx.add_init_script("""
-                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                Object.defineProperty(navigator, 'plugins', {
-                    get: () => [
-                        {name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer'},
-                        {name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai'},
-                        {name: 'Native Client', filename: 'internal-nacl-plugin'}
-                    ]
-                });
-                Object.defineProperty(navigator, 'languages',
-                    {get: () => ['it-IT', 'it', 'en-US', 'en']});
-                window.chrome = { runtime: {} };
-                const _getParameter = WebGLRenderingContext.prototype.getParameter;
-                WebGLRenderingContext.prototype.getParameter = function(parameter) {
-                    if (parameter === 37445) return 'Intel Inc.';
-                    if (parameter === 37446) return 'Intel Iris OpenGL Engine';
-                    return _getParameter.apply(this, arguments);
-                };
-            """)
+            # Fallback stealth solo se NON usiamo patchright
+            if engine == "playwright":
+                ctx.add_init_script("""
+                    Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                    Object.defineProperty(navigator, 'plugins', {
+                        get: () => [
+                            {name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer'},
+                            {name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai'},
+                            {name: 'Native Client', filename: 'internal-nacl-plugin'}
+                        ]
+                    });
+                    Object.defineProperty(navigator, 'languages',
+                        {get: () => ['it-IT', 'it', 'en-US', 'en']});
+                    window.chrome = { runtime: {} };
+                """)
 
             page = ctx.new_page()
             page.on("request", on_request)
@@ -423,9 +404,16 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
             except Exception as e:
                 print(f"      ⚠️ goto: {str(e)[:80]}")
 
+            try:
+                findings["final_url"] = page.url
+                findings["page_title"] = page.title()
+                print(f"      📄 URL finale: {page.url[:100]}")
+                print(f"      📄 Titolo: {page.title()[:80]}")
+            except Exception:
+                pass
+
             page.wait_for_timeout(8000)
 
-            # Interazione realistica
             try:
                 page.mouse.move(960, 540)
                 page.wait_for_timeout(500)
@@ -436,15 +424,12 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
             except Exception:
                 pass
 
-            # Selettori play
-            for sel in [
-                "button[aria-label*='play' i]",
-                ".vjs-big-play-button",
-                ".jw-icon-playback",
-                ".bitmovinplayer-ui",
-                ".clappr-play-button",
-                "video",
-            ]:
+            for sel in ["button[aria-label*='play' i]",
+                        ".vjs-big-play-button",
+                        ".jw-icon-playback",
+                        ".bitmovinplayer-ui",
+                        ".clappr-play-button",
+                        "video"]:
                 try:
                     if page.locator(sel).count() > 0:
                         page.click(sel, timeout=2000)
@@ -453,7 +438,6 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
                 except Exception:
                     continue
 
-            # Fallback play() JS
             try:
                 page.evaluate("""() => {
                     const v = document.querySelector('video');
@@ -467,36 +451,38 @@ def resolve_with_playwright_v3(embed_url, timeout=45, event_name="?", src_name="
     except Exception as e:
         print(f"      ❌ {str(e)[:120]}")
 
-    # --- Salva report DRM ---
-    has_drm = bool(findings["license_url"] or findings["pssh"]
-                   or findings["manifest_has_key"])
-    if has_drm:
-        try:
-            record = {
-                "timestamp": int(time.time()),
-                "event": event_name,
-                "source": src_name,
-                "embed": embed_url[:200],
-                "m3u8": findings["m3u8"],
-                "mpd": findings["mpd"],
-                "license_url": findings["license_url"],
-                "license_method": findings["license_method"],
-                "pssh": findings["pssh"],
-                "kid": findings["kid"],
-                "drm_system": findings["drm_system"],
-                "key_line": findings["key_line"],
-                "requests": findings["requests"][:30],
-            }
-            with open(DRM_LOG_FILE, "a", encoding="utf-8") as f:
-                f.write(json.dumps(record, ensure_ascii=False) + "\n")
-            print(f"      📄 Report DRM salvato")
-        except Exception as e:
-            print(f"      ⚠️ report: {str(e)[:80]}")
+    # Salva report per OGNI embed (anche vuoto)
+    try:
+        record = {
+            "timestamp": int(time.time()),
+            "event": event_name,
+            "source": src_name,
+            "embed": embed_url[:200],
+            "engine": findings["engine"],
+            "m3u8": findings["m3u8"],
+            "mpd": findings["mpd"],
+            "license_url": findings["license_url"],
+            "license_method": findings["license_method"],
+            "pssh": findings["pssh"],
+            "kid": findings["kid"],
+            "drm_system": findings["drm_system"],
+            "key_line": findings["key_line"],
+            "manifest_has_key": findings["manifest_has_key"],
+            "cloudflare_detected": findings["cloudflare_detected"],
+            "final_url": findings["final_url"],
+            "page_title": findings["page_title"],
+            "interesting_requests": findings["requests"][:30],
+            "all_requests_sample": findings["all_requests"][:100],
+        }
+        with open(DRM_LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    except Exception as e:
+        print(f"      ⚠️ report: {str(e)[:80]}")
 
     return findings["m3u8"] or findings["mpd"]
 
 # ============================================================
-# RESOLVE
+# RESOLVE BATCH
 # ============================================================
 def resolve_all(events, workers=4, limit=0):
     cache = {}
@@ -638,7 +624,7 @@ def write_complete(events, filename, only_live=True):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Events Extractor v3")
+    ap = argparse.ArgumentParser(description="StreamCorner Events Extractor v4")
     ap.add_argument("--output", default="streamcorner_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=".")
     ap.add_argument("--providers", default="all")
@@ -653,7 +639,7 @@ def main():
     args = ap.parse_args()
 
     print("="*60)
-    print("📡 STREAMCORNER EXTRACTOR — EVENTS LIVE ONLY (v3)")
+    print("📡 STREAMCORNER EXTRACTOR — EVENTS LIVE ONLY (v4)")
     print("="*60)
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -663,6 +649,13 @@ def main():
     if os.path.exists(drm_path):
         try: os.remove(drm_path)
         except Exception: pass
+
+    # Verifica engine disponibile
+    try:
+        from patchright.sync_api import sync_playwright  # noqa
+        print("   ✅ patchright disponibile (anti-Cloudflare attivo)")
+    except ImportError:
+        print("   ⚠️  patchright NON installato — fallback a playwright")
 
     # 1. Vault
     print("\n[1/4] Vault")
@@ -684,7 +677,7 @@ def main():
     live_events = filter_live(events)
 
     # 4. Risoluzione
-    print("\n[4/4] Risoluzione m3u8 (Playwright v3 — Stealth + DRM)")
+    print("\n[4/4] Risoluzione m3u8 (Playwright v4)")
     if args.no_playwright:
         print("   ⏭️  saltata (--no-playwright)")
     else:
@@ -715,13 +708,18 @@ def main():
 
     # Riepilogo DRM
     drm_count = 0
+    cf_count = 0
     if os.path.exists(drm_path):
         try:
             with open(drm_path, encoding="utf-8") as f:
-                drm_count = sum(1 for _ in f)
-        except Exception:
-            pass
-    print(f"   💾 {DRM_LOG_FILE}: {drm_count} voci DRM catturate")
+                for line in f:
+                    drm_count += 1
+                    try:
+                        rec = json.loads(line)
+                        if rec.get("cloudflare_detected"): cf_count += 1
+                    except Exception: pass
+        except Exception: pass
+    print(f"   💾 {DRM_LOG_FILE}: {drm_count} voci ({cf_count} con Cloudflare)")
 
     # Riepilogo
     total = sum(len(ev.get("streams") or []) for ev in live_events)
@@ -735,7 +733,7 @@ def main():
     print(f"   Stream totali:         {total}")
     print(f"   Con embed_url:         {with_url}")
     print(f"   Con m3u8 risolto:      {with_m3u8}")
-    print(f"   Report DRM:            {drm_count} entries")
+    print(f"   Report DRM:            {drm_count} voci ({cf_count} Cloudflare)")
     print("="*60)
 
 if __name__ == "__main__":
