@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v7.1
+StreamCorner / CornerStream Extractor — v7.2
 ============================================
 Discovery strutturale: nessun nome di variabile minificato assunto.
   - worker pool -> array di stringhe che matchano HOST_RE (*.workers.dev)
@@ -9,11 +9,17 @@ Discovery strutturale: nessun nome di variabile minificato assunto.
                     esce un JSON con specs+consts **e** le specs si decodificano
                     davvero.
 
-Novita' v7.1
+Novita' v7.2
 ------------
-  * Alias argomenti: --output, --playwright-workers, --playwright-limit
-    (retrocompatibili con workflow scritti per versioni precedenti).
-  * --output FILE.m3u scrive anche un file combinato, oltre ai 3 canonici.
+  * CANDIDATE_SITES aggiornati: i vecchi cornerstream.* e streamcorner.tech
+    sono morti (NXDOMAIN / HTTPError). Il servizio ora vive su:
+        streamcorner.st   (canonico)
+        streamcorner.foo  (mirror)
+        streamcorner.cloud (mirror)
+        streamcorner.fun  (mirror)
+  * Log discovery piu' informativo: HTTP <code> invece di "HTTPError".
+  * Cache runtime invalidata automaticamente se `site` non e' piu' tra i
+    CANDIDATE_SITES (evita di usare un runtime salvato da domini morti).
 
 Requisiti:
     pip install requests pycryptodome
@@ -38,11 +44,14 @@ UA = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
 UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 
+# Domini vivi al 2026-10-16. I vecchi cornerstream.* e streamcorner.tech
+# sono morti (NXDOMAIN o HTTPError). streamninja.* sono elencati come mirror
+# dal sito ma al momento non rispondono: NON metterli qui finche' non tornano.
 CANDIDATE_SITES = [
-    "https://cornerstream.tech/",
     "https://streamcorner.st/",
-    "https://cornerstream.st/",
-    "https://streamcorner.tech/",
+    "https://streamcorner.foo/",
+    "https://streamcorner.cloud/",
+    "https://streamcorner.fun/",
 ]
 
 PROVIDERS_DEFAULT = "admin"
@@ -321,13 +330,32 @@ def crawl(start_urls, referer, proxy, max_assets=MAX_ASSETS):
     return workers, vault, assets
 
 
+def _site_error(site, proxy):
+    """Classifica l'errore di un sito candidato in una stringa leggibile."""
+    try:
+        r = session(proxy).get(site, headers={"User-Agent": UA},
+                               timeout=20, allow_redirects=True)
+        return f"{site} HTTP {r.status_code}"
+    except requests.exceptions.ConnectionError:
+        return f"{site} conn"
+    except requests.exceptions.Timeout:
+        return f"{site} timeout"
+    except requests.exceptions.SSLError:
+        return f"{site} ssl"
+    except requests.exceptions.HTTPError as e:
+        code = getattr(e.response, "status_code", "?")
+        return f"{site} HTTP {code}"
+    except Exception as e:
+        return f"{site} {type(e).__name__}"
+
+
 def discover(proxy=None):
     errors = []
     for site in CANDIDATE_SITES:
         try:
             html = get_text(site, proxy=proxy, timeout=20)
-        except Exception as e:
-            errors.append(f"{site} {type(e).__name__}"); continue
+        except Exception:
+            errors.append(_site_error(site, proxy)); continue
         host = urlparse(site).netloc
         srcs = [urljoin(site, s) for s in SCRIPT_SRC_RE.findall(html)]
         srcs = list(dict.fromkeys(s for s in srcs if urlparse(s).netloc == host))
@@ -352,10 +380,15 @@ def get_runtime(refresh=False, proxy=None):
         try:
             rt = json.load(open(RUNTIME_CACHE, encoding="utf-8"))
             age = int(time.time()) - rt.get("discovered_at", 0)
+            # Rifiuta cache che puntano a siti non piu' in CANDIDATE_SITES
+            # (es. runtime salvato da cornerstream.tech, ora morto).
+            site_ok = rt.get("site") in CANDIDATE_SITES
             if (rt.get("vault") and rt.get("workers") and rt.get("origin")
-                    and age < MAX_RUNTIME_AGE):
+                    and site_ok and age < MAX_RUNTIME_AGE):
                 return rt, f"cache ({age // 3600}h)"
-            if age >= MAX_RUNTIME_AGE:
+            if not site_ok:
+                log(f"   ⏳ runtime cache punta a sito dismesso ({rt.get('site')}) — refresh")
+            elif age >= MAX_RUNTIME_AGE:
                 log(f"   ⏳ runtime cache scaduta ({age // 86400}g) — refresh")
         except Exception:
             pass
@@ -365,8 +398,14 @@ def get_runtime(refresh=False, proxy=None):
         return rt, "live"
     except Exception as e:
         if os.path.exists(RUNTIME_CACHE):
-            log(f"   ⚠️ discovery fallita ({str(e)[:140]}) — uso cache scaduta")
-            return json.load(open(RUNTIME_CACHE, encoding="utf-8")), "fallback"
+            try:
+                cached = json.load(open(RUNTIME_CACHE, encoding="utf-8"))
+                if cached.get("site") in CANDIDATE_SITES:
+                    log(f"   ⚠️ discovery fallita ({str(e)[:140]}) — uso cache")
+                    return cached, "fallback"
+                log("   ⚠️ discovery fallita e cache stantia — niente da usare")
+            except Exception:
+                pass
         raise
 
 
@@ -514,7 +553,7 @@ def cmd_diagnose(args):
 
     sites   = [rt["site"]] if rt else CANDIDATE_SITES[:2]
     workers = (rt or {}).get("workers", [])[:3]
-    origin  = (rt or {}).get("origin", "https://cornerstream.tech")
+    origin  = (rt or {}).get("origin", "https://streamcorner.st")
 
     body = None
     if rt:
@@ -906,7 +945,7 @@ def write_m3u(path, rows):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner / CornerStream Extractor v7.1")
+    ap = argparse.ArgumentParser(description="StreamCorner / CornerStream Extractor v7.2")
     ap.add_argument("--output-dir", "--output", default=".",
                     dest="output_dir",
                     help="directory di output (o, con --output FILE.m3u, "
@@ -943,7 +982,7 @@ def main():
         os.remove(drm_path)
 
     log("=" * 64)
-    log("📡 STREAMCORNER / CORNERSTREAM EXTRACTOR v7.1")
+    log("📡 STREAMCORNER / CORNERSTREAM EXTRACTOR v7.2")
     log("=" * 64)
 
     try:
