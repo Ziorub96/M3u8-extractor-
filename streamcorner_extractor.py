@@ -4,10 +4,17 @@
 StreamCorner / CornerStream Extractor — v10.1 (HTTP-puro + cache + curl_cffi)
 =============================================================================
 Novità v10.1:
+  * Protocollo "NinjaCorner" ricostruito end-to-end in Python puro
+    (Salsa20/12 + SHA-256 + decoder SBOX custom, nessuna dipendenza crypto)
   * curl_cffi (impersonate Chrome) per bypassare Cloudflare TLS fingerprint
   * Cache locale .sc_static_cache.json (provider worker + lista workers)
   * Fallback automatico a cache se HTTP fallisce
   * Cache TTL: 7 giorni (auto-refresh quando possibile)
+
+Niente Playwright per il catalogo. Playwright rimane SOLO per risolvere
+gli embed (CDN terze parti).
+
+Output: streamcorner_EVENTS_LIVE.m3u, streamcorner_VLC.m3u, streamcorner_KODI.m3u
 """
 
 from __future__ import annotations
@@ -32,7 +39,8 @@ PROVIDER_DEFAULT = "admin"
 LIVE_MARGIN_BEFORE = 1800
 LIVE_MARGIN_AFTER = 3600
 
-M3U8_CACHE = ".sc_m3u8_cache.json"
+# Allineato al nome usato dal workflow (.github/workflows/update-playlist.yml)
+M3U8_CACHE = ".streamcorner_events_m3u8_cache.json"
 CAPTURE_FILE = "sc_capture.json"
 DRM_REPORT = "sc_drm_report.jsonl"
 
@@ -73,10 +81,7 @@ def http_get(url, timeout=20, referer=None, extra_headers=None):
     if extra_headers:
         h.update(extra_headers)
     try:
-        if _ENGINE == "curl_cffi":
-            r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
-        else:
-            r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
+        r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
         return r.status_code, r.content, dict(r.headers)
     except Exception as e:
         return None, str(e).encode(), {}
@@ -93,12 +98,8 @@ def http_post_bin(url, body, timeout=20,
         "Referer": referer,
     }
     try:
-        if _ENGINE == "curl_cffi":
-            r = _SESSION.post(url, data=body, timeout=timeout,
-                              headers=h, verify=False)
-        else:
-            r = _SESSION.post(url, data=body, timeout=timeout,
-                              headers=h, verify=False)
+        r = _SESSION.post(url, data=body, timeout=timeout,
+                          headers=h, verify=False)
         return r.status_code, r.content, dict(r.headers)
     except Exception as e:
         return None, str(e).encode(), {}
@@ -288,11 +289,11 @@ def discover_all(site=SITE, force_refresh=False):
     """
     cache = cache_load()
 
-    # ---------- prova refresh HTTP se cache vecchia o assente ----------
     need_refresh = (cache is None) or (cache.get("_age", 1e9) > CACHE_TTL) or force_refresh
 
     if need_refresh:
-        log(f"→ tentativo refresh discovery (cache {'assente' if cache is None else f'{int(cache.get(\"_age\",0))}s'})")
+        age_str = "assente" if cache is None else f"{int(cache.get('_age',0))}s"
+        log(f"→ tentativo refresh discovery (cache {age_str})")
         try:
             # 1. home
             st, body, _ = http_get(site, timeout=15)
@@ -341,7 +342,6 @@ def discover_all(site=SITE, force_refresh=False):
                 raise RuntimeError(f"refresh fallito e cache assente: {e}")
             log(f"   → uso cache ({int(cache['_age'])}s fa)")
 
-    # ---------- usa cache ----------
     log(f"→ uso cache statica (età: {int(cache['_age'])}s)")
     provider_b64 = cache.get("provider_js_b64", "")
     if not provider_b64:
