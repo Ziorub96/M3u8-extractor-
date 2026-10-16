@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v9.2 (Playwright-as-oracle)
-====================================================================
-La nuova SPA cornerstream.tech decodifica il vault dentro un Web Worker
-caricato da blob. Strategia: lasciare che la SPA faccia il lavoro e
-intercettare le risposte JSON già decifrate.
-
-Novità v9.2:
-  * Hook su fetch, XHR, JSON.parse, Response.json, Worker
-  * Navigazione multi-path + click su link per innescare il catalogo
-  * Stampa del capture nei log (nessun artifact richiesto per debug)
-  * Salvataggio opzionale sc_capture.json per artifact
+StreamCorner / CornerStream Extractor — v9.3 (Playwright-as-oracle + net-monitor)
+================================================================================
+Fix principali rispetto a v9.2:
+  * Doppio canale di capture:
+      - JS hooks (fetch/XHR/JSON.parse/Response.json/Worker) come prima
+      - Monitor Python nativo su ctx.on("response")  ← SAFETY NET
+  * Fallback injection se window.__sc_hook_installed è falso dopo il boot
+  * Navigazione corretta: click sui link reali della SPA
+    (/channels, /extra, /multiviewer, /faq) invece di rotte inventate
+  * Guard su page.evaluate → window.__sc_capture || {}
+  * Merge/dedup fra JS fetches e Python responses
+  * sc_capture.json ora include anche "responses" (dati Python-side)
 """
 
 from __future__ import annotations
@@ -47,13 +48,24 @@ CAPTURE_FILE = "sc_capture.json"
 LIVE_MARGIN_BEFORE = 1800
 LIVE_MARGIN_AFTER = 3600
 
+# rotte note della SPA (scoperte dal log del 16/10/2026)
+SPA_ROUTES = ["channels", "extra", "multiviewer", "faq"]
+
+# link testuali da cliccare per innescare fetch del catalogo
+SPA_CLICK_TEXTS = ["Channels", "Extra", "Multiviewer", "FAQ", "Live", "Sport",
+                   "Event", "Home", "24/7", "Admin", "Play"]
+
+# estensioni statiche da ignorare nel monitor di rete Python-side
+STATIC_EXT = (".js", ".mjs", ".css", ".png", ".jpg", ".jpeg", ".gif", ".svg",
+              ".webp", ".ico", ".woff", ".woff2", ".ttf", ".eot", ".map")
+
 
 def log(*a):
     print(*a, flush=True)
 
 
 # ============================================================
-# SALSA20/12 (retrocompatibilità)
+# SALSA20/12 (retrocompatibilità vecchio protocollo — non usato)
 # ============================================================
 M32 = 0xFFFFFFFF
 
@@ -230,7 +242,7 @@ HOOK_SCRIPT = r"""
         return result;
     };
 
-    // --- Response.json (per fetch che usano .json() direttamente) ---
+    // --- Response.json ---
     try {
         const orig_rjson = Response.prototype.json;
         Response.prototype.json = async function() {
@@ -275,10 +287,11 @@ HOOK_SCRIPT = r"""
         };
     });
 
-    // --- Snapshot globali (chiamato dall'esterno) ---
+    // --- Snapshot globali ---
     window.__sc_snapshot_globals = function() {
         const keys = ['dr','Ar','vault','config','api','apiUrl','apiBase','corner',
-                      'session','consts','specs','worker','streamcorner','sc'];
+                      'session','consts','specs','worker','streamcorner','sc',
+                      '__NEXT_DATA__','__INITIAL_STATE__','__APP_STATE__'];
         const out = {};
         for (const k of keys) {
             try {
@@ -300,8 +313,24 @@ HOOK_SCRIPT = r"""
 
 
 # ============================================================
-# BROWSER CAPTURE
+# BROWSER CAPTURE — v9.3 con net-monitor Python-side
 # ============================================================
+def _is_interesting_response(url, ct):
+    """Filtra le risposte che vale la pena catturare lato Python."""
+    lu = url.lower()
+    if any(lu.endswith(ext) for ext in STATIC_EXT):
+        return False
+    if "json" in ct:
+        return True
+    if "text/plain" in ct and any(k in lu for k in ("api", "corner", "admin", "list", "event", "channel")):
+        return True
+    if any(k in lu for k in ("/api", "corner", "admin", "workers.dev", "/feed", "/list")):
+        return True
+    if lu.endswith(".json") or ".json?" in lu:
+        return True
+    return False
+
+
 def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
     try:
         from patchright.sync_api import sync_playwright
@@ -311,8 +340,31 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
         engine = "playwright"
 
     log(f"   🌐 Browser-as-oracle su {site} [{engine}]")
-    out = {"site": site, "fetches": [], "parsed": [],
-           "workers": [], "globals": {}, "console": [], "route_info": {}}
+    out = {"site": site, "fetches": [], "parsed": [], "responses": [],
+           "workers": [], "globals": {}, "console": [],
+           "route_info": {}, "hook_installed": None, "nav_log": []}
+
+    def on_response(resp):
+        try:
+            url = resp.url
+            ct = (resp.headers.get("content-type") or "").lower()
+            if not _is_interesting_response(url, ct):
+                return
+            try:
+                body = resp.text()
+            except Exception:
+                return
+            if not body or len(body) < 40:
+                return
+            out["responses"].append({
+                "url": url[:600],
+                "status": resp.status,
+                "ct": ct[:80],
+                "len": len(body),
+                "body": body[:120000],
+            })
+        except Exception:
+            pass
 
     try:
         with sync_playwright() as p:
@@ -330,18 +382,44 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
                 locale="it-IT", timezone_id="Europe/Rome",
                 ignore_https_errors=True,
             )
+            # doppia iniezione: context + page (patchright a volte ignora la prima)
             ctx.add_init_script(HOOK_SCRIPT)
+            ctx.on("response", on_response)
+
             page = ctx.new_page()
+            try:
+                page.add_init_script(HOOK_SCRIPT)
+            except Exception:
+                pass
 
             # 1. Boot home
             try:
                 page.goto(site, wait_until="domcontentloaded", timeout=45000)
             except Exception as e:
                 log(f"      ⚠️ goto home: {str(e)[:80]}")
-            page.wait_for_timeout(wait_boot * 1000)
+            page.wait_for_timeout(int(wait_boot) * 1000)
             log(f"      ✓ home caricata ({page.url[:80]})")
 
-            # 2. Snapshot route + link
+            # 2. Verifica hook
+            try:
+                installed = page.evaluate("() => !!window.__sc_hook_installed")
+            except Exception:
+                installed = None
+            out["hook_installed"] = installed
+            log(f"      hook installato: {installed}")
+
+            if not installed:
+                log("      ⚠️ hook non attivo → fallback inject via evaluate")
+                try:
+                    page.evaluate(HOOK_SCRIPT)
+                    page.wait_for_timeout(500)
+                    installed = page.evaluate("() => !!window.__sc_hook_installed")
+                    out["hook_installed"] = installed
+                    log(f"      fallback inject → hook installato: {installed}")
+                except Exception as e:
+                    log(f"      ❌ fallback inject: {str(e)[:100]}")
+
+            # 3. Snapshot route + link iniziali
             try:
                 route_info = page.evaluate("""() => ({
                     url: location.href,
@@ -351,65 +429,89 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
                             .map(a => ({text: (a.textContent||'').trim().slice(0,40),
                                         href: a.href}))
                             .filter(l => l.text.length > 0)
-                            .slice(0, 50)
+                            .slice(0, 60)
                 })""")
                 out["route_info"] = route_info
                 log(f"      path={route_info.get('pathname')} hash={route_info.get('hash')}")
                 log(f"      link trovati: {len(route_info.get('links', []))}")
-                for l in route_info.get("links", [])[:20]:
+                for l in route_info.get("links", [])[:25]:
                     log(f"         [{l['text'][:35]}] → {l['href'][:90]}")
             except Exception as e:
                 log(f"      ⚠️ route info: {str(e)[:80]}")
 
-            # 3. Naviga multi-path
-            for path in ["live", "#/live", "events", "#/events",
-                         "sport", "#/sport", "stream", "#/stream"]:
-                try:
-                    url_try = site.rstrip("/") + "/" + path
-                    page.goto(url_try, wait_until="domcontentloaded", timeout=15000)
-                    page.wait_for_timeout(5000)
-                    log(f"      → {path:10} URL={page.url[:70]}")
-                except Exception as e:
-                    log(f"      → {path:10} ⚠️ {str(e)[:60]}")
-
-            # 4. Click link con testo chiave
-            for kw in ["Live", "Sport", "Event", "24/7", "Channel", "Admin", "Home"]:
-                for sel in [f"a:has-text('{kw}')", f"button:has-text('{kw}')"]:
+            # 4. Click sui link SPA reali (NON goto — non ricaricare la SPA)
+            clicked_any = False
+            for text in SPA_CLICK_TEXTS:
+                for sel in [f"a:has-text('{text}')", f"button:has-text('{text}')"]:
                     try:
                         el = page.locator(sel).first
                         if el.count() > 0:
-                            el.click(timeout=2000)
-                            page.wait_for_timeout(4000)
-                            log(f"      ✓ click '{kw}'")
+                            el.click(timeout=2500)
+                            page.wait_for_timeout(5000)
+                            log(f"      ✓ click '{text}' → {page.url[:70]}")
+                            out["nav_log"].append({"click": text, "url": page.url})
+                            clicked_any = True
                             break
                     except Exception:
                         continue
 
-            # 5. Attesa finale
-            page.wait_for_timeout(6000)
+            # 5. Come fallback, visita le rotte SPA con goto (una sola volta)
+            for route in SPA_ROUTES:
+                try:
+                    url_try = site.rstrip("/") + "/" + route
+                    page.goto(url_try, wait_until="domcontentloaded", timeout=12000)
+                    page.wait_for_timeout(4500)
+                    log(f"      → /{route:12} URL={page.url[:70]}")
+                    out["nav_log"].append({"goto": route, "url": page.url})
+                    # prova a clickare elementi "Live"/"Play" dentro la pagina
+                    for sub in ("Live", "Play", "Event", "Sport"):
+                        try:
+                            el = page.locator(f"a:has-text('{sub}'), button:has-text('{sub}')").first
+                            if el.count() > 0:
+                                el.click(timeout=1500)
+                                page.wait_for_timeout(3500)
+                        except Exception:
+                            pass
+                except Exception as e:
+                    log(f"      → /{route:12} ⚠️ {str(e)[:60]}")
 
-            # 6. Snapshot globals
+            # 6. Attesa finale per lasciar fluire eventuali fetch
+            page.wait_for_timeout(7000)
+
+            # 7. Snapshot globals
             try:
-                out["globals"] = page.evaluate("() => window.__sc_snapshot_globals()")
+                out["globals"] = page.evaluate("() => (window.__sc_snapshot_globals ? window.__sc_snapshot_globals() : {})")
             except Exception:
                 pass
 
-            # 7. Raccogli capture
+            # 8. Raccogli capture JS-side (con guard)
             try:
-                cap = page.evaluate("() => window.__sc_capture")
-                out["fetches"] = cap.get("fetches", [])
-                out["parsed"]  = cap.get("parsed", [])
-                out["workers"] = cap.get("workers", [])
-                out["console"] = cap.get("console", [])
+                cap = page.evaluate("() => window.__sc_capture || {}") or {}
+                out["fetches"] = cap.get("fetches", []) or []
+                out["parsed"]  = cap.get("parsed", []) or []
+                out["workers"] = cap.get("workers", []) or []
+                out["console"] = cap.get("console", []) or []
             except Exception as e:
-                log(f"      ⚠️ capture read: {str(e)[:80]}")
+                log(f"      ⚠️ capture read: {str(e)[:100]}")
+
+            # 9. Ultimo tentativo: se hook non era installato, riprova su ogni frame
+            if not out["hook_installed"]:
+                for fr in page.frames:
+                    try:
+                        cap = fr.evaluate("() => window.__sc_capture || null")
+                        if cap:
+                            out["fetches"].extend(cap.get("fetches", []) or [])
+                            out["parsed"].extend(cap.get("parsed", []) or [])
+                            out["workers"].extend(cap.get("workers", []) or [])
+                    except Exception:
+                        continue
 
             browser.close()
     except Exception as e:
         log(f"      ❌ browser: {str(e)[:120]}")
         return out
 
-    # Dedup fetch
+    # Dedup fetch JS
     seen = set()
     uniq = []
     for f in out["fetches"]:
@@ -420,8 +522,20 @@ def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
         uniq.append(f)
     out["fetches"] = uniq
 
+    # Dedup responses Python
+    seen_r = set()
+    uniq_r = []
+    for r in out["responses"]:
+        k = r.get("url", "")[:200]
+        if k in seen_r:
+            continue
+        seen_r.add(k)
+        uniq_r.append(r)
+    out["responses"] = uniq_r
+
     log(f"      TOTALE: fetch={len(out['fetches'])} parsed={len(out['parsed'])} "
-        f"workers={len(out['workers'])} console={len(out['console'])}")
+        f"responses={len(out['responses'])} workers={len(out['workers'])} "
+        f"console={len(out['console'])}")
     return out
 
 
@@ -436,50 +550,99 @@ def key_of(row):
     return ""
 
 
+def _catalog_from_obj(obj):
+    """Cerca un array di eventi dentro un oggetto JSON qualsiasi."""
+    if isinstance(obj, list) and obj and isinstance(obj[0], dict):
+        if any(k in obj[0] for k in KEY_FIELDS):
+            return obj
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, list) and v and isinstance(v[0], dict):
+                if any(kk in v[0] for kk in KEY_FIELDS):
+                    return v
+    return None
+
+
 def extract_catalog_from_capture(cap):
     candidates = []
+    seen_hash = set()
+
+    def add(obj):
+        c = _catalog_from_obj(obj)
+        if not c:
+            return
+        h = hashlib.md5(json.dumps(c[:5], sort_keys=True, default=str).encode()).hexdigest()
+        if h in seen_hash:
+            return
+        seen_hash.add(h)
+        candidates.append(c)
+
+    # 1. Da JSON.parse / Response.json
     for p in cap.get("parsed", []):
         s = p.get("sample", "")
         try:
-            obj = json.loads(s)
+            add(json.loads(s))
         except Exception:
             continue
-        if isinstance(obj, list) and obj and isinstance(obj[0], dict):
-            if any(k in obj[0] for k in KEY_FIELDS):
-                candidates.append(obj)
-                continue
-        if isinstance(obj, dict):
-            for k, v in obj.items():
-                if isinstance(v, list) and v and isinstance(v[0], dict):
-                    if any(kk in v[0] for kk in KEY_FIELDS):
-                        candidates.append(v)
-                        break
+
+    # 2. Da responses Python-side
+    for r in cap.get("responses", []):
+        body = r.get("body") or ""
+        try:
+            add(json.loads(body))
+        except Exception:
+            # magari body è un array o JSON "sporco"; prova estrazione grezza
+            m = re.search(r"(\[.*\]|\{.*\})", body, re.DOTALL)
+            if m:
+                try:
+                    add(json.loads(m.group(1)))
+                except Exception:
+                    pass
+
+    # 3. Da fetches JS (resp_sample)
+    for f in cap.get("fetches", []):
+        s = f.get("resp_sample") or ""
+        try:
+            add(json.loads(s))
+        except Exception:
+            continue
+
     return candidates
 
 
 def print_capture_summary(cap):
     log("\n   === CAPTURE SUMMARY ===")
+    log(f"   hook_installed: {cap.get('hook_installed')}")
     log(f"   route: path={cap.get('route_info',{}).get('pathname')} "
         f"hash={cap.get('route_info',{}).get('hash')}")
     log(f"   link homepage: {len(cap.get('route_info',{}).get('links') or [])}")
     for l in (cap.get("route_info", {}).get("links") or [])[:15]:
         log(f"      [{l.get('text','')[:30]:30}] → {l.get('href','')[:90]}")
 
-    log(f"\n   fetches: {len(cap.get('fetches') or [])}")
+    log(f"\n   nav_log: {len(cap.get('nav_log') or [])}")
+    for n in (cap.get("nav_log") or [])[:20]:
+        log(f"      {n}")
+
+    log(f"\n   fetches (JS-side): {len(cap.get('fetches') or [])}")
     for i, f in enumerate((cap.get("fetches") or [])[:15]):
         log(f"      [{i}] {f.get('method','?'):6} {f.get('url','?')[:120]} "
             f"→ {f.get('status','?')} ({f.get('resp_len', 0)}B)")
         rs = (f.get("resp_sample") or "")[:400]
         if rs:
             log(f"           resp: {rs}")
-        bs = (f.get("body_sample") or "")[:200]
-        if bs:
-            log(f"           body: {bs}")
+
+    log(f"\n   responses (Python-side): {len(cap.get('responses') or [])}")
+    for i, r in enumerate((cap.get("responses") or [])[:20]):
+        log(f"      [{i}] {r.get('status','?'):>4} ({r.get('len',0)}B) {r.get('ct','')[:40]}")
+        log(f"           {r.get('url','')[:140]}")
+        body = (r.get("body") or "")[:300]
+        if body:
+            log(f"           body: {body}")
 
     log(f"\n   parsed: {len(cap.get('parsed') or [])}")
     for i, p in enumerate((cap.get("parsed") or [])[:8]):
         log(f"      [{i}] size={p.get('size','?'):>8}  src={p.get('source','?')}")
-        sample = (p.get("sample") or "")[:1500]
+        sample = (p.get("sample") or "")[:1200]
         if sample:
             log(f"           {sample}")
 
@@ -638,7 +801,7 @@ def is_live(ev, now=None):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Extractor v9.2")
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v9.3")
     ap.add_argument("--output-dir", "--output", default=".", dest="output_dir")
     ap.add_argument("--site", default=None)
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
@@ -663,7 +826,7 @@ def main():
         os.remove(drm_path)
 
     log("=" * 66)
-    log("📡 STREAMCORNER EXTRACTOR v9.2 (Playwright-as-oracle)")
+    log("📡 STREAMCORNER EXTRACTOR v9.3 (Playwright-as-oracle + net-monitor)")
     log("=" * 66)
 
     try:
@@ -679,24 +842,22 @@ def main():
                                 wait_boot=int(args.wait_boot),
                                 wait_nav=int(args.wait_nav))
 
-    # Stampa capture nei log (debug senza artifact)
     print_capture_summary(cap)
 
-    # Salva su file (per artifact)
     try:
         with open(os.path.join(args.output_dir, CAPTURE_FILE), "w",
                   encoding="utf-8") as f:
             json.dump(cap, f, ensure_ascii=False, indent=1, default=str)
-        log(f"   💾 {CAPTURE_FILE} salvato (scaricalo via artifact)")
+        log(f"   💾 {CAPTURE_FILE} salvato")
     except Exception as e:
         log(f"   ⚠️ salvataggio capture: {e}")
 
     # ---- 2. Estrazione catalogo ----
-    log(f"\n[2/5] Estrazione catalogo dai JSON decifrati")
+    log(f"\n[2/5] Estrazione catalogo")
     catalogs = extract_catalog_from_capture(cap)
     if not catalogs:
-        log("   ❌ nessun catalogo trovato nei JSON.parse")
-        log("   → guarda CAPTURE SUMMARY sopra per capire cosa fa la SPA")
+        log("   ❌ nessun catalogo trovato")
+        log("   → guarda CAPTURE SUMMARY sopra (specialmente 'responses')")
         for fn in ("streamcorner_VLC.m3u", "streamcorner_KODI.m3u",
                    "streamcorner_EVENTS_LIVE.m3u"):
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
@@ -708,7 +869,6 @@ def main():
     events = catalogs[0]
     log(f"   ✅ catalogo: {len(events)} item (da {len(catalogs)} candidati)")
 
-    # Census
     n_src, n_url = 0, 0
     for ev in events:
         for s in (ev.get("streams") or []):
