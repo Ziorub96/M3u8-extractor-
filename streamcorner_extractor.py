@@ -1,29 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v9.3 (Playwright-as-oracle + net-monitor)
+StreamCorner / CornerStream Extractor — v10.0 (HTTP-puro + NinjaCorner protocol)
 ================================================================================
-Fix principali rispetto a v9.2:
-  * Doppio canale di capture:
-      - JS hooks (fetch/XHR/JSON.parse/Response.json/Worker) come prima
-      - Monitor Python nativo su ctx.on("response")  ← SAFETY NET
-  * Fallback injection se window.__sc_hook_installed è falso dopo il boot
-  * Navigazione corretta: click sui link reali della SPA
-    (/channels, /extra, /multiviewer, /faq) invece di rotte inventate
-  * Guard su page.evaluate → window.__sc_capture || {}
-  * Merge/dedup fra JS fetches e Python responses
-  * sc_capture.json ora include anche "responses" (dati Python-side)
+Ricostruzione completa del protocollo "NinjaCorner":
+  * Discovery dinamica del bundle + provider worker
+  * Decodifica vault (SBOX custom)
+  * Chiavi di sessione (spec_decode)
+  * POST cifrato a *.workers.dev/corner?p=admin[&id=...]
+  * Salsa20/12 + SHA-256 (pura stdlib Python)
+
+Niente Playwright per il catalogo. Niente Cloudflare, Turnstile, browser.
+Playwright rimane SOLO per risolvere gli embed (CDN terze parti).
+
+Output: streamcorner_EVENTS_LIVE.m3u, streamcorner_VLC.m3u, streamcorner_KODI.m3u
 """
 
 from __future__ import annotations
-import argparse, base64, hashlib, json, os, random, re, struct, sys, threading, time
-from collections import Counter
+import argparse, hashlib, json, os, re, struct, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 
 import requests
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ============================================================
 # CONFIG
@@ -31,644 +29,379 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
              "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
 
-PRIORITY_SITES = [
-    "https://cornerstream.tech/",
-    "https://streamcorner.st/",
-]
-
-PROVIDERS_DEFAULT = "admin"
-KEY_FIELDS = ("stream_id", "game_id", "channel_id", "id")
-DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
-
-RUNTIME_CACHE = ".sc_runtime.json"
-M3U8_CACHE = ".sc_m3u8_cache.json"
-DRM_REPORT = "sc_drm_report.jsonl"
-CAPTURE_FILE = "sc_capture.json"
+SITE = "https://cornerstream.tech/"
+DOMAIN_PREFIX = re.compile(r'data\.[a-zA-Z0-9\-]+\.workers\.dev')
 
 LIVE_MARGIN_BEFORE = 1800
 LIVE_MARGIN_AFTER = 3600
 
-# rotte note della SPA (scoperte dal log del 16/10/2026)
-SPA_ROUTES = ["channels", "extra", "multiviewer", "faq"]
+M3U8_CACHE = ".sc_m3u8_cache.json"
+CAPTURE_FILE = "sc_capture.json"
+DRM_REPORT = "sc_drm_report.jsonl"
 
-# link testuali da cliccare per innescare fetch del catalogo
-SPA_CLICK_TEXTS = ["Channels", "Extra", "Multiviewer", "FAQ", "Live", "Sport",
-                   "Event", "Home", "24/7", "Admin", "Play"]
+PROVIDER_DEFAULT = "admin"
 
-# estensioni statiche da ignorare nel monitor di rete Python-side
-STATIC_EXT = (".js", ".mjs", ".css", ".png", ".jpg", ".jpeg", ".gif", ".svg",
-              ".webp", ".ico", ".woff", ".woff2", ".ttf", ".eot", ".map")
+# Embed "diretti": già stream utilizzabile, nessun Playwright
+DIRECT_EMBED_HINTS = (
+    "topembed.pw", "getsugatensho",
+)
 
-
+# ============================================================
+# LOG
+# ============================================================
 def log(*a):
     print(*a, flush=True)
 
 
 # ============================================================
-# SALSA20/12 (retrocompatibilità vecchio protocollo — non usato)
+# HTTP CLIENT
 # ============================================================
-M32 = 0xFFFFFFFF
+_SESSION = requests.Session()
+_SESSION.headers.update({
+    "User-Agent": UA_IPHONE,
+    "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+})
+
+
+def http_get(url, timeout=20, referer=None):
+    h = {}
+    if referer:
+        h["Referer"] = referer
+    try:
+        r = _SESSION.get(url, timeout=timeout, headers=h, verify=False)
+        return r.status_code, r.content, dict(r.headers)
+    except Exception as e:
+        return None, str(e).encode(), {}
+
+
+def http_post_bin(url, body, timeout=20, referer="https://cornerstream.tech/",
+                  origin="https://cornerstream.tech"):
+    h = {
+        "Accept": "application/octet-stream",
+        "Content-Type": "text/plain",
+        "Origin": origin,
+        "Referer": referer,
+    }
+    try:
+        r = _SESSION.post(url, data=body, timeout=timeout, headers=h, verify=False)
+        return r.status_code, r.content, dict(r.headers)
+    except Exception as e:
+        return None, str(e).encode(), {}
+
+
+# ============================================================
+# VAULT DECODER (SBOX custom)
+# ============================================================
+MAGIC32 = 0xFFFFFFFF
+
+
+def rotl8(v, c):
+    c &= 7
+    return ((v << c) | (v >> (8 - c))) & 0xFF if c else v & 0xFF
+
+
+def rotr8(v, c):
+    c &= 7
+    return ((v >> c) | (v << (8 - c))) & 0xFF if c else v & 0xFF
 
 
 def rotl32(v, c):
-    return ((v << c) & M32) | (v >> (32 - c))
+    return ((v << c) & MAGIC32) | (v >> (32 - c))
 
 
-def x8(t, e):
-    n = 7 & e
-    return 255 & ((t << n) | (t >> (8 - n)))
+SBOX_VAULT = [3, 235, 241, 97, 237, 84, 185, 89, 53, 108, 201, 89, 159, 92, 225, 67]
+MAGIC_VAULT = (-1237694027) & 0xFFFFFFFF
 
 
-def Y8(t, e):
-    n = 7 & e
-    return 255 & ((t >> n) | (t << (8 - n)))
-
-
-def _qr(s, a, b, c, d):
-    s[b] ^= rotl32((s[a] + s[d]) & M32, 7); s[c] ^= rotl32((s[b] + s[a]) & M32, 9)
-    s[d] ^= rotl32((s[c] + s[b]) & M32, 13); s[a] ^= rotl32((s[d] + s[c]) & M32, 18)
-
-
-def _blk(k32, n8, ctr):
-    k = list(struct.unpack("<8I", k32)); n0, n1 = struct.unpack("<2I", n8)
-    st = [0x61707865, k[0], k[1], k[2], k[3], 0x3320646e, n0, n1,
-          ctr & M32, (ctr >> 32) & M32, 0x79622d32, k[4], k[5], k[6], k[7], 0x6b206574]
-    x = st[:]
-    for _ in range(6):
-        _qr(x, 0, 4, 8, 12); _qr(x, 5, 9, 13, 1); _qr(x, 10, 14, 2, 6); _qr(x, 15, 3, 7, 11)
-        _qr(x, 0, 1, 2, 3); _qr(x, 5, 6, 7, 4); _qr(x, 10, 11, 8, 9); _qr(x, 15, 12, 13, 14)
-    return struct.pack("<16I", *[(x[i] + st[i]) & M32 for i in range(16)])
-
-
-def salsa20_12(k, n8, d, ctr=0):
-    out = bytearray(); i = 0
-    while i < len(d):
-        ks = _blk(k, n8, ctr + i // 64)
-        out.extend(bytes(a ^ b for a, b in zip(d[i:i + 64], ks))); i += 64
+def _vault_xor_pass(data, key):
+    out = bytearray(len(data))
+    c = 87
+    m = 190 ^ key[4]
+    for a in range(len(data)):
+        g = (key[15 & a] ^ SBOX_VAULT[15 & a] ^ m ^ (a & 0xFF)
+             ^ ((MAGIC_VAULT >> (8 * (3 & a))) & 0xFF)
+             ^ c) & 0xFF
+        w = data[a] ^ g
+        out[a] = w
+        m = data[a]
+        c = rotl8((c ^ data[a] ^ key[(a + 7) & 15]) & 0xFF, 1)
     return bytes(out)
 
 
-SBOX = [185, 243, 94, 251, 153, 162, 126, 77, 155, 41, 182, 62, 200, 173, 252, 244]
+def decode_vault(pt_b64_list, dt_b64_list):
+    """Decodifica il vault JSON (specs + consts + k6)."""
+    import base64
+
+    def b64d(s):
+        s = s.strip().replace("-", "+").replace("_", "/")
+        s += "=" * ((4 - len(s) % 4) % 4)
+        return base64.b64decode(s)
+
+    pt_bytes = b64d("".join(pt_b64_list))
+    dt_bytes = b64d("".join(dt_b64_list))
+    raw = _vault_xor_pass(pt_bytes, dt_bytes)
+    return json.loads(raw.decode("utf-8"))
 
 
-def dec_payload(p, k):
-    out = bytearray(len(p)); c = 117; y = 84 ^ k[1]
-    for a in range(len(p)):
-        h = (k[15 & a] ^ SBOX[15 & a] ^ y ^ ((139 * a) & 0xFF)
-             ^ ((1293491885 >> (8 * (3 & a))) & 0xFF) ^ c) & 0xFF
-        out[a] = p[a] ^ h; y = p[a]; c = x8((c ^ p[a] ^ k[(a + 7) & 15]) & 0xFF, 1)
+def spec_decode(spec):
+    seed = int(spec[0]); xor1 = int(spec[1])
+    b_arr = list(spec[2]); sbox = list(spec[3])
+    b2_arr = list(spec[4]); idx = list(spec[5])
+    out = bytearray(len(b_arr))
+    n = seed
+    for o in range(len(b_arr)):
+        u = idx[o]
+        inner = rotl8(b_arr[o], 7 & (n ^ xor1))
+        stuff = ((sbox[u] + (n ^ ((13 * o) & 0xFF))) & 0xFF) ^ ((xor1 + 17 * o) & 0xFF)
+        t = rotr8(inner ^ stuff, 7 & (b2_arr[o] ^ n))
+        out[o] = t
+        n = rotl8(n, 1) ^ ((t + b2_arr[o] + o) & 0xFF)
     return bytes(out)
 
 
-def dec_spec(s):
-    t0, t1, t2, t3, t4, t5 = s[:6]
-    al = lambda v: v["v"] if isinstance(v, dict) else v
-    t2, t3, t4, t5 = al(t2), al(t3), al(t4), al(t5)
-    e = bytearray(len(t2)); n = t0
-    for o in range(len(t2)):
-        i = t5[o]; inner = x8(t2[o], 7 & (n ^ t1))
-        m1 = (t3[i] + (n ^ ((13 * o) & 255))) & 255; m2 = (t1 + 17 * o) & 255
-        r = Y8((inner ^ m1 ^ m2) & 255, 7 & (t4[o] ^ n)); e[o] = r
-        n = (x8(n, 1) ^ ((r + t4[o] + o) & 255)) & 255
-    return bytes(e)
-
-
-def gc(v, i):
-    consts = v.get("consts") or []
-    c = consts[i]
+def const_bytes(c):
     if isinstance(c, dict):
-        t = c.get("t", "u8"); val = c.get("v")
-        if t == "u8":  return bytes(val)
-        if t == "u32": return b"".join(struct.pack("<I", x) for x in val)
-        if t == "s":   return val.encode()
-        if t == "a":   return b"".join(x.encode() for x in val)
-        if t == "n":   return bytes([val])
+        t, v = c.get("t"), c.get("v")
+        if t == "u8": return bytes(v)
+        if t == "u32": return b"".join(struct.pack("<I", x) for x in v)
+        if t == "s": return v.encode()
+        if t == "n": return bytes([v])
+        if t == "a": return b"".join(x.encode() for x in v)
+        if t == "bi": return int(v).to_bytes(32, "big")
+        if isinstance(v, list): return bytes(v)
+        if isinstance(v, int): return bytes([v])
+        if isinstance(v, str): return v.encode()
+    if isinstance(c, list): return bytes(c)
+    if isinstance(c, int): return bytes([c])
+    if isinstance(c, str): return c.encode()
     return b""
 
 
-def b64d(s):
-    s = s.strip().replace("-", "+").replace("_", "/")
-    s += "=" * ((4 - len(s) % 4) % 4)
-    return base64.b64decode(s)
+# ============================================================
+# SHA-256 + SALSA20/12 (pure stdlib)
+# ============================================================
+def sha256(*chunks):
+    h = hashlib.sha256()
+    for c in chunks:
+        if isinstance(c, str): c = c.encode()
+        h.update(c)
+    return h.digest()
+
+
+def _salsa_qr(s, a, b, c, d):
+    s[b] ^= rotl32((s[a] + s[d]) & MAGIC32, 7)
+    s[c] ^= rotl32((s[b] + s[a]) & MAGIC32, 9)
+    s[d] ^= rotl32((s[c] + s[b]) & MAGIC32, 13)
+    s[a] ^= rotl32((s[d] + s[c]) & MAGIC32, 18)
+
+
+def _salsa_block(key32, nonce8, ctr):
+    k = list(struct.unpack("<8I", key32))
+    n0, n1 = struct.unpack("<2I", nonce8)
+    st = [0x61707865, k[0], k[1], k[2], k[3], 0x3320646e, n0, n1,
+          ctr & MAGIC32, (ctr >> 32) & MAGIC32,
+          0x79622d32, k[4], k[5], k[6], k[7], 0x6b206574]
+    x = st[:]
+    for _ in range(6):  # 12 round
+        _salsa_qr(x, 0, 4, 8, 12); _salsa_qr(x, 5, 9, 13, 1)
+        _salsa_qr(x, 10, 14, 2, 6); _salsa_qr(x, 15, 3, 7, 11)
+        _salsa_qr(x, 0, 1, 2, 3); _salsa_qr(x, 5, 6, 7, 4)
+        _salsa_qr(x, 10, 11, 8, 9); _salsa_qr(x, 15, 12, 13, 14)
+    return struct.pack("<16I", *[(x[i] + st[i]) & MAGIC32 for i in range(16)])
+
+
+def salsa20_12(key, nonce8, data):
+    out = bytearray(); i = 0; ctr = 0
+    while i < len(data):
+        ks = _salsa_block(key, nonce8, ctr)
+        for j in range(64):
+            if i + j >= len(data): break
+            out.append(data[i + j] ^ ks[j])
+        i += 64; ctr += 1
+    return bytes(out)
 
 
 # ============================================================
-# HOOK SCRIPT (iniettato PRIMA del boot SPA)
+# DISCOVERY
 # ============================================================
-HOOK_SCRIPT = r"""
-(() => {
-    if (window.__sc_hook_installed) return;
-    window.__sc_hook_installed = true;
+def discover_bundle(site=SITE):
+    """Trova il bundle main JS dalla home."""
+    log(f"→ discovery bundle su {site}")
+    st, body, _ = http_get(site, timeout=15)
+    if st != 200:
+        raise RuntimeError(f"home non 200: {st}")
+    html = body.decode("utf-8", "replace")
+    m = re.search(r'<script[^>]+src="(/assets/[^"]+\.js)"', html)
+    if not m:
+        raise RuntimeError("bundle main non trovato in home")
+    return m.group(1)
 
-    window.__sc_capture = {
-        fetches: [], parsed: [], workers: [], globals: {},
-        console: [], started: Date.now(),
-    };
 
-    // --- FETCH ---
-    const orig_fetch = window.fetch;
-    window.fetch = async function(...args) {
-        const req = args[0];
-        const url = typeof req === 'string' ? req : (req?.url || '');
-        let method = 'GET';
-        let body_sample = null;
-        try {
-            if (typeof req === 'object' && req.method) method = req.method;
-            if (typeof req === 'object' && req.body && typeof req.body === 'string') {
-                body_sample = req.body.slice(0, 4000);
-            }
-        } catch(e) {}
-        const t0 = Date.now();
-        const resp = await orig_fetch.apply(this, args);
-        try {
-            const clone = resp.clone();
-            const text = await clone.text();
-            window.__sc_capture.fetches.push({
-                url: url.slice(0, 500),
-                method: method,
-                body_sample: body_sample,
-                status: resp.status,
-                resp_sample: text.slice(0, 50000),
-                resp_len: text.length,
-                ms: Date.now() - t0,
-            });
-        } catch(e) {}
-        return resp;
-    };
+def discover_provider_worker(main_bundle_url, site=SITE):
+    """Trova il worker provider dal bundle main."""
+    log(f"→ discovery provider worker da {main_bundle_url}")
+    full = site.rstrip("/") + main_bundle_url
+    st, body, _ = http_get(full, timeout=30)
+    if st != 200:
+        raise RuntimeError(f"bundle main non 200: {st}")
+    txt = body.decode("utf-8", "replace")
+    m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
+    if not m:
+        raise RuntimeError("provider worker non trovato nel bundle")
+    return m.group(1)
 
-    // --- XHR ---
-    const OrigXHR = window.XMLHttpRequest;
-    function HXHR() {
-        const x = new OrigXHR();
-        const orig_open = x.open;
-        const orig_send = x.send;
-        let _method = 'GET', _url = '';
-        x.open = function(m, u, ...rest) { _method = m; _url = u; return orig_open.call(x, m, u, ...rest); };
-        x.send = function(b) {
-            x.addEventListener('load', () => {
-                try {
-                    window.__sc_capture.fetches.push({
-                        url: String(_url).slice(0, 500),
-                        method: _method,
-                        status: x.status,
-                        resp_sample: String(x.responseText || '').slice(0, 50000),
-                        resp_len: (x.responseText || '').length,
-                    });
-                } catch(e) {}
-            });
-            return orig_send.call(x, b);
-        };
-        return x;
-    }
-    HXHR.prototype = OrigXHR.prototype;
-    window.XMLHttpRequest = HXHR;
 
-    // --- JSON.parse (chiave: cattura risposte decifrate) ---
-    const orig_parse = JSON.parse;
-    JSON.parse = function(text, reviver) {
-        const result = orig_parse.call(this, text, reviver);
-        try {
-            if (result && typeof result === 'object') {
-                const s = JSON.stringify(result);
-                if (s.length > 100) {
-                    window.__sc_capture.parsed.push({
-                        ts: Date.now(), size: s.length,
-                        sample: s.slice(0, 50000),
-                        source: 'JSON.parse',
-                    });
-                }
-            }
-        } catch(e) {}
-        return result;
-    };
+def discover_workers(main_bundle_url, site=SITE):
+    """Estrai la lista di worker *.workers.dev dal bundle main."""
+    log(f"→ discovery worker pool da bundle")
+    full = site.rstrip("/") + main_bundle_url
+    st, body, _ = http_get(full, timeout=30)
+    if st != 200:
+        raise RuntimeError(f"bundle main non 200: {st}")
+    txt = body.decode("utf-8", "replace")
+    found = sorted(set(re.findall(r'data\.[a-zA-Z0-9\-]+\.workers\.dev', txt)))
+    log(f"   trovati {len(found)} worker")
+    return found
 
-    // --- Response.json ---
-    try {
-        const orig_rjson = Response.prototype.json;
-        Response.prototype.json = async function() {
-            const result = await orig_rjson.call(this);
-            try {
-                if (result && typeof result === 'object') {
-                    const s = JSON.stringify(result);
-                    if (s.length > 100) {
-                        window.__sc_capture.parsed.push({
-                            ts: Date.now(), size: s.length,
-                            sample: s.slice(0, 50000),
-                            source: 'Response.json',
-                        });
-                    }
-                }
-            } catch(e) {}
-            return result;
-        };
-    } catch(e) {}
 
-    // --- Worker ---
-    const OrigWorker = window.Worker;
-    window.Worker = function(url, opts) {
-        try { window.__sc_capture.workers.push(String(url).slice(0, 500)); } catch(e) {}
-        return new OrigWorker(url, opts);
-    };
-    window.Worker.prototype = OrigWorker.prototype;
+def extract_vault_and_consts(provider_url, site=SITE):
+    """Scarica il worker provider e ne estrae vault + specs + consts."""
+    log(f"→ scarico provider worker {provider_url}")
+    full = site.rstrip("/") + provider_url
+    st, body, _ = http_get(full, timeout=30)
+    if st != 200:
+        raise RuntimeError(f"provider worker non 200: {st}")
+    txt = body.decode("utf-8", "replace")
 
-    // --- Console ---
-    ['log','warn','error'].forEach(k => {
-        const orig = console[k];
-        console[k] = function(...args) {
-            try {
-                window.__sc_capture.console.push({
-                    level: k,
-                    msg: args.map(a => typeof a === 'object'
-                        ? JSON.stringify(a).slice(0,300)
-                        : String(a).slice(0,300)).join(' ')
-                });
-            } catch(e) {}
-            return orig.apply(console, args);
-        };
-    });
+    # Estrai dt
+    m = re.search(r'\bdt\s*=\s*\[([^\]]+)\]', txt)
+    if not m:
+        raise RuntimeError("dt non trovato")
+    dt_strs = re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))
 
-    // --- Snapshot globali ---
-    window.__sc_snapshot_globals = function() {
-        const keys = ['dr','Ar','vault','config','api','apiUrl','apiBase','corner',
-                      'session','consts','specs','worker','streamcorner','sc',
-                      '__NEXT_DATA__','__INITIAL_STATE__','__APP_STATE__'];
-        const out = {};
-        for (const k of keys) {
-            try {
-                const v = window[k];
-                if (v !== undefined) {
-                    if (typeof v === 'object' || typeof v === 'function') {
-                        try { out[k] = JSON.stringify(v).slice(0, 3000); }
-                        catch(e) { out[k] = '<unserializable ' + typeof v + '>'; }
-                    } else {
-                        out[k] = String(v).slice(0, 3000);
-                    }
-                }
-            } catch(e) {}
-        }
-        return out;
-    };
-})();
-"""
+    # Estrai pt
+    m = re.search(r'\bpt\s*=\s*\[(.*?)\]\s*,', txt, re.DOTALL)
+    if not m:
+        raise RuntimeError("pt non trovato")
+    pt_strs = re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))
+
+    log(f"   dt={len(dt_strs)} pt={len(pt_strs)}")
+    vault = decode_vault(pt_strs, dt_strs)
+
+    specs = vault.get("specs") or []
+    consts = vault.get("consts") or []
+    if len(specs) < 6 or len(consts) < 26:
+        raise RuntimeError(f"vault inatteso: specs={len(specs)} consts={len(consts)}")
+
+    # Sanity: consts[16] dovrebbe iniziare con "ninjacorner"
+    for idx, name in [(16, "rt"), (20, "nt"), (22, "Ct"), (25, "Mt")]:
+        b = const_bytes(consts[idx])
+        if not b.startswith(b"ninjacorner"):
+            log(f"   ⚠️  consts[{idx}] ({name}) non inizia con 'ninjacorner': {b[:40]}")
+
+    return vault
 
 
 # ============================================================
-# BROWSER CAPTURE — v9.3 con net-monitor Python-side
+# NINJACORNER CLIENT
 # ============================================================
-def _is_interesting_response(url, ct):
-    """Filtra le risposte che vale la pena catturare lato Python."""
-    lu = url.lower()
-    if any(lu.endswith(ext) for ext in STATIC_EXT):
-        return False
-    if "json" in ct:
-        return True
-    if "text/plain" in ct and any(k in lu for k in ("api", "corner", "admin", "list", "event", "channel")):
-        return True
-    if any(k in lu for k in ("/api", "corner", "admin", "workers.dev", "/feed", "/list")):
-        return True
-    if lu.endswith(".json") or ".json?" in lu:
-        return True
-    return False
+class NinjaClient:
+    """Client per il protocollo NinjaCorner."""
 
+    def __init__(self, vault, workers):
+        specs = vault["specs"]
+        consts = vault["consts"]
+        self.specs = specs
+        self.consts = consts
+        self.d_H = spec_decode(specs[0])
+        self.d_et = spec_decode(specs[1])
+        self.d_ot = spec_decode(specs[2])
+        self.d_Lt = spec_decode(specs[3])
+        self.d_St = spec_decode(specs[4])
+        self.rt = const_bytes(consts[16])
+        self.nt = const_bytes(consts[20])
+        self.Ct = const_bytes(consts[22])
+        self.Mt = const_bytes(consts[25])
+        self.invio_key = sha256(self.d_H, self.d_et, self.rt)
+        self.workers = workers
+        self.worker = None
 
-def capture_from_browser(site, proxy=None, wait_boot=18, wait_nav=12):
-    try:
-        from patchright.sync_api import sync_playwright
-        engine = "patchright"
-    except ImportError:
-        from playwright.sync_api import sync_playwright
-        engine = "playwright"
+    # ----- cifratura richiesta -----
+    def _build_body(self, provider):
+        ts = int(time.time()) // 300
+        lt_str = self.d_Lt.decode("utf-8", errors="replace")
+        plaintext = json.dumps([lt_str, provider, ts]).encode("utf-8")
+        nonce = os.urandom(8)
+        cipher = salsa20_12(self.invio_key, nonce, plaintext)
+        tag = sha256(self.invio_key, nonce, cipher, self.nt)[:12]
+        body = b"\x0a" + nonce + tag + cipher
+        return body, nonce, ts
 
-    log(f"   🌐 Browser-as-oracle su {site} [{engine}]")
-    out = {"site": site, "fetches": [], "parsed": [], "responses": [],
-           "workers": [], "globals": {}, "console": [],
-           "route_info": {}, "hook_installed": None, "nav_log": []}
+    def _build_resp_key(self, nonce_invio, provider, ts):
+        ts_be = struct.pack(">I", ts)
+        return sha256(self.d_H, self.d_et, self.d_Lt,
+                      nonce_invio, provider.encode(), ts_be, self.Mt)
 
-    def on_response(resp):
-        try:
-            url = resp.url
-            ct = (resp.headers.get("content-type") or "").lower()
-            if not _is_interesting_response(url, ct):
-                return
-            try:
-                body = resp.text()
-            except Exception:
-                return
-            if not body or len(body) < 40:
-                return
-            out["responses"].append({
-                "url": url[:600],
-                "status": resp.status,
-                "ct": ct[:80],
-                "len": len(body),
-                "body": body[:120000],
-            })
-        except Exception:
-            pass
+    def _decrypt_resp(self, resp, nonce_invio, provider, ts):
+        if len(resp) < 21 or resp[0] != 0x04:
+            return None, "bad_magic"
+        resp_nonce = resp[1:9]
+        resp_tag = resp[9:21]
+        cipher = resp[21:]
+        key = self._build_resp_key(nonce_invio, provider, ts)
+        expected = sha256(key, resp_nonce, cipher, self.Ct)[:12]
+        if expected != resp_tag:
+            return None, "tag_mismatch"
+        return salsa20_12(key, resp_nonce, cipher), None
 
-    try:
-        with sync_playwright() as p:
-            kw = {"headless": True,
-                  "args": ["--no-sandbox", "--disable-dev-shm-usage",
-                           "--use-gl=swiftshader", "--enable-unsafe-swiftshader",
-                           "--autoplay-policy=no-user-gesture-required",
-                           "--mute-audio"]}
-            if proxy:
-                kw["proxy"] = {"server": proxy}
-            browser = p.chromium.launch(**kw)
-            ctx = browser.new_context(
-                user_agent=UA_IPHONE,
-                viewport={"width": 1280, "height": 800},
-                locale="it-IT", timezone_id="Europe/Rome",
-                ignore_https_errors=True,
-            )
-            # doppia iniezione: context + page (patchright a volte ignora la prima)
-            ctx.add_init_script(HOOK_SCRIPT)
-            ctx.on("response", on_response)
+    # ----- POST con retry su worker pool -----
+    def _post_corner(self, provider, extra_id=None, timeout=20):
+        body, nonce_invio, ts = self._build_body(provider)
+        qs = f"p={provider}"
+        if extra_id:
+            qs += f"&id={extra_id}"
 
-            page = ctx.new_page()
-            try:
-                page.add_init_script(HOOK_SCRIPT)
-            except Exception:
-                pass
+        # Prova worker noto, poi tutti
+        candidates = []
+        if self.worker:
+            candidates.append(self.worker)
+        for w in self.workers:
+            if w not in candidates:
+                candidates.append(w)
 
-            # 1. Boot home
-            try:
-                page.goto(site, wait_until="domcontentloaded", timeout=45000)
-            except Exception as e:
-                log(f"      ⚠️ goto home: {str(e)[:80]}")
-            page.wait_for_timeout(int(wait_boot) * 1000)
-            log(f"      ✓ home caricata ({page.url[:80]})")
+        last_err = None
+        for w in candidates:
+            url = f"https://{w}/corner?{qs}"
+            st, resp, _ = http_post_bin(url, body, timeout=timeout)
+            if st == 200 and len(resp) > 21 and resp[0] == 0x04:
+                self.worker = w
+                plain, err = self._decrypt_resp(resp, nonce_invio, provider, ts)
+                if err:
+                    last_err = f"{w}: {err}"
+                    continue
+                return plain, w
+            last_err = f"{w}: st={st} len={len(resp) if resp else 0}"
+        raise RuntimeError(f"tutti i worker falliti: {last_err}")
 
-            # 2. Verifica hook
-            try:
-                installed = page.evaluate("() => !!window.__sc_hook_installed")
-            except Exception:
-                installed = None
-            out["hook_installed"] = installed
-            log(f"      hook installato: {installed}")
+    # ----- API pubblica -----
+    def get_catalog(self, provider=PROVIDER_DEFAULT):
+        raw, w = self._post_corner(provider)
+        data = json.loads(raw.decode("utf-8"))
+        log(f"   ✅ catalogo via {w}: {len(data)} item")
+        return data
 
-            if not installed:
-                log("      ⚠️ hook non attivo → fallback inject via evaluate")
-                try:
-                    page.evaluate(HOOK_SCRIPT)
-                    page.wait_for_timeout(500)
-                    installed = page.evaluate("() => !!window.__sc_hook_installed")
-                    out["hook_installed"] = installed
-                    log(f"      fallback inject → hook installato: {installed}")
-                except Exception as e:
-                    log(f"      ❌ fallback inject: {str(e)[:100]}")
-
-            # 3. Snapshot route + link iniziali
-            try:
-                route_info = page.evaluate("""() => ({
-                    url: location.href,
-                    hash: location.hash,
-                    pathname: location.pathname,
-                    links: Array.from(document.querySelectorAll('a[href]'))
-                            .map(a => ({text: (a.textContent||'').trim().slice(0,40),
-                                        href: a.href}))
-                            .filter(l => l.text.length > 0)
-                            .slice(0, 60)
-                })""")
-                out["route_info"] = route_info
-                log(f"      path={route_info.get('pathname')} hash={route_info.get('hash')}")
-                log(f"      link trovati: {len(route_info.get('links', []))}")
-                for l in route_info.get("links", [])[:25]:
-                    log(f"         [{l['text'][:35]}] → {l['href'][:90]}")
-            except Exception as e:
-                log(f"      ⚠️ route info: {str(e)[:80]}")
-
-            # 4. Click sui link SPA reali (NON goto — non ricaricare la SPA)
-            clicked_any = False
-            for text in SPA_CLICK_TEXTS:
-                for sel in [f"a:has-text('{text}')", f"button:has-text('{text}')"]:
-                    try:
-                        el = page.locator(sel).first
-                        if el.count() > 0:
-                            el.click(timeout=2500)
-                            page.wait_for_timeout(5000)
-                            log(f"      ✓ click '{text}' → {page.url[:70]}")
-                            out["nav_log"].append({"click": text, "url": page.url})
-                            clicked_any = True
-                            break
-                    except Exception:
-                        continue
-
-            # 5. Come fallback, visita le rotte SPA con goto (una sola volta)
-            for route in SPA_ROUTES:
-                try:
-                    url_try = site.rstrip("/") + "/" + route
-                    page.goto(url_try, wait_until="domcontentloaded", timeout=12000)
-                    page.wait_for_timeout(4500)
-                    log(f"      → /{route:12} URL={page.url[:70]}")
-                    out["nav_log"].append({"goto": route, "url": page.url})
-                    # prova a clickare elementi "Live"/"Play" dentro la pagina
-                    for sub in ("Live", "Play", "Event", "Sport"):
-                        try:
-                            el = page.locator(f"a:has-text('{sub}'), button:has-text('{sub}')").first
-                            if el.count() > 0:
-                                el.click(timeout=1500)
-                                page.wait_for_timeout(3500)
-                        except Exception:
-                            pass
-                except Exception as e:
-                    log(f"      → /{route:12} ⚠️ {str(e)[:60]}")
-
-            # 6. Attesa finale per lasciar fluire eventuali fetch
-            page.wait_for_timeout(7000)
-
-            # 7. Snapshot globals
-            try:
-                out["globals"] = page.evaluate("() => (window.__sc_snapshot_globals ? window.__sc_snapshot_globals() : {})")
-            except Exception:
-                pass
-
-            # 8. Raccogli capture JS-side (con guard)
-            try:
-                cap = page.evaluate("() => window.__sc_capture || {}") or {}
-                out["fetches"] = cap.get("fetches", []) or []
-                out["parsed"]  = cap.get("parsed", []) or []
-                out["workers"] = cap.get("workers", []) or []
-                out["console"] = cap.get("console", []) or []
-            except Exception as e:
-                log(f"      ⚠️ capture read: {str(e)[:100]}")
-
-            # 9. Ultimo tentativo: se hook non era installato, riprova su ogni frame
-            if not out["hook_installed"]:
-                for fr in page.frames:
-                    try:
-                        cap = fr.evaluate("() => window.__sc_capture || null")
-                        if cap:
-                            out["fetches"].extend(cap.get("fetches", []) or [])
-                            out["parsed"].extend(cap.get("parsed", []) or [])
-                            out["workers"].extend(cap.get("workers", []) or [])
-                    except Exception:
-                        continue
-
-            browser.close()
-    except Exception as e:
-        log(f"      ❌ browser: {str(e)[:120]}")
-        return out
-
-    # Dedup fetch JS
-    seen = set()
-    uniq = []
-    for f in out["fetches"]:
-        k = (f.get("url", "")[:200], f.get("method", ""), f.get("status", 0))
-        if k in seen:
-            continue
-        seen.add(k)
-        uniq.append(f)
-    out["fetches"] = uniq
-
-    # Dedup responses Python
-    seen_r = set()
-    uniq_r = []
-    for r in out["responses"]:
-        k = r.get("url", "")[:200]
-        if k in seen_r:
-            continue
-        seen_r.add(k)
-        uniq_r.append(r)
-    out["responses"] = uniq_r
-
-    log(f"      TOTALE: fetch={len(out['fetches'])} parsed={len(out['parsed'])} "
-        f"responses={len(out['responses'])} workers={len(out['workers'])} "
-        f"console={len(out['console'])}")
-    return out
+    def get_event_detail(self, event_id, provider=PROVIDER_DEFAULT):
+        raw, w = self._post_corner(provider, extra_id=event_id)
+        return json.loads(raw.decode("utf-8"))
 
 
 # ============================================================
-# ESTRAZIONE CATALOGO
-# ============================================================
-def key_of(row):
-    for f in KEY_FIELDS:
-        v = row.get(f)
-        if v:
-            return str(v).strip()
-    return ""
-
-
-def _catalog_from_obj(obj):
-    """Cerca un array di eventi dentro un oggetto JSON qualsiasi."""
-    if isinstance(obj, list) and obj and isinstance(obj[0], dict):
-        if any(k in obj[0] for k in KEY_FIELDS):
-            return obj
-    if isinstance(obj, dict):
-        for k, v in obj.items():
-            if isinstance(v, list) and v and isinstance(v[0], dict):
-                if any(kk in v[0] for kk in KEY_FIELDS):
-                    return v
-    return None
-
-
-def extract_catalog_from_capture(cap):
-    candidates = []
-    seen_hash = set()
-
-    def add(obj):
-        c = _catalog_from_obj(obj)
-        if not c:
-            return
-        h = hashlib.md5(json.dumps(c[:5], sort_keys=True, default=str).encode()).hexdigest()
-        if h in seen_hash:
-            return
-        seen_hash.add(h)
-        candidates.append(c)
-
-    # 1. Da JSON.parse / Response.json
-    for p in cap.get("parsed", []):
-        s = p.get("sample", "")
-        try:
-            add(json.loads(s))
-        except Exception:
-            continue
-
-    # 2. Da responses Python-side
-    for r in cap.get("responses", []):
-        body = r.get("body") or ""
-        try:
-            add(json.loads(body))
-        except Exception:
-            # magari body è un array o JSON "sporco"; prova estrazione grezza
-            m = re.search(r"(\[.*\]|\{.*\})", body, re.DOTALL)
-            if m:
-                try:
-                    add(json.loads(m.group(1)))
-                except Exception:
-                    pass
-
-    # 3. Da fetches JS (resp_sample)
-    for f in cap.get("fetches", []):
-        s = f.get("resp_sample") or ""
-        try:
-            add(json.loads(s))
-        except Exception:
-            continue
-
-    return candidates
-
-
-def print_capture_summary(cap):
-    log("\n   === CAPTURE SUMMARY ===")
-    log(f"   hook_installed: {cap.get('hook_installed')}")
-    log(f"   route: path={cap.get('route_info',{}).get('pathname')} "
-        f"hash={cap.get('route_info',{}).get('hash')}")
-    log(f"   link homepage: {len(cap.get('route_info',{}).get('links') or [])}")
-    for l in (cap.get("route_info", {}).get("links") or [])[:15]:
-        log(f"      [{l.get('text','')[:30]:30}] → {l.get('href','')[:90]}")
-
-    log(f"\n   nav_log: {len(cap.get('nav_log') or [])}")
-    for n in (cap.get("nav_log") or [])[:20]:
-        log(f"      {n}")
-
-    log(f"\n   fetches (JS-side): {len(cap.get('fetches') or [])}")
-    for i, f in enumerate((cap.get("fetches") or [])[:15]):
-        log(f"      [{i}] {f.get('method','?'):6} {f.get('url','?')[:120]} "
-            f"→ {f.get('status','?')} ({f.get('resp_len', 0)}B)")
-        rs = (f.get("resp_sample") or "")[:400]
-        if rs:
-            log(f"           resp: {rs}")
-
-    log(f"\n   responses (Python-side): {len(cap.get('responses') or [])}")
-    for i, r in enumerate((cap.get("responses") or [])[:20]):
-        log(f"      [{i}] {r.get('status','?'):>4} ({r.get('len',0)}B) {r.get('ct','')[:40]}")
-        log(f"           {r.get('url','')[:140]}")
-        body = (r.get("body") or "")[:300]
-        if body:
-            log(f"           body: {body}")
-
-    log(f"\n   parsed: {len(cap.get('parsed') or [])}")
-    for i, p in enumerate((cap.get("parsed") or [])[:8]):
-        log(f"      [{i}] size={p.get('size','?'):>8}  src={p.get('source','?')}")
-        sample = (p.get("sample") or "")[:1200]
-        if sample:
-            log(f"           {sample}")
-
-    log(f"\n   workers: {len(cap.get('workers') or [])}")
-    for w in (cap.get("workers") or [])[:5]:
-        log(f"      {w}")
-
-    log(f"\n   globals:")
-    gl = cap.get("globals") or {}
-    if not gl:
-        log("      (nessuna)")
-    for k, v in gl.items():
-        log(f"      {k} = {str(v)[:300]}")
-
-    log(f"\n   console (ultimi 10):")
-    for c in (cap.get("console") or [])[-10:]:
-        log(f"      [{c.get('level','?')}] {c.get('msg','')[:200]}")
-    log("   === END CAPTURE ===\n")
-
-
-# ============================================================
-# RESOLVE EMBED
+# EMBED RESOLVER (Playwright, solo per embed non diretti)
 # ============================================================
 LICENSE_HINTS = ("license", "widevine", "getlicense", "acquirelicense", "drm")
 MANIFEST_HINTS = (".m3u8", ".mpd", "manifest", "playlist")
 CF_HINTS = ("challenges.cloudflare.com", "cf-chl", "/cdn-cgi/challenge", "turnstile")
+DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
 
 
 def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
@@ -698,17 +431,17 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
         ct = (resp.headers.get("content-type") or "").lower()
         if ".m3u8" in lu or "mpegurl" in ct:
             try:
-                txt = resp.text()
+                t = resp.text()
             except Exception:
                 return
-            if "#EXTM3U" in txt and rec["m3u8"] is None:
+            if "#EXTM3U" in t and rec["m3u8"] is None:
                 rec["m3u8"] = u
         elif ".mpd" in lu or "dash+xml" in ct:
             try:
-                txt = resp.text()
+                t = resp.text()
             except Exception:
                 return
-            if "<MPD" in txt and rec["mpd"] is None:
+            if "<MPD" in t and rec["mpd"] is None:
                 rec["mpd"] = u
 
     try:
@@ -726,9 +459,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
                 locale="it-IT", timezone_id="Europe/Rome",
                 extra_http_headers={"Referer": origin + "/"},
                 ignore_https_errors=True)
-            if engine == "playwright":
-                ctx.add_init_script(
-                    "Object.defineProperty(navigator,'webdriver',{get:()=>undefined});")
             ctx.on("request", on_request)
             ctx.on("response", on_response)
             page = ctx.new_page()
@@ -801,102 +531,94 @@ def is_live(ev, now=None):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Extractor v9.3")
-    ap.add_argument("--output-dir", "--output", default=".", dest="output_dir")
-    ap.add_argument("--site", default=None)
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.0")
+    ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
+    ap.add_argument("--output-dir", default=".")
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
-    ap.add_argument("--wait-boot", type=float, default=18)
-    ap.add_argument("--wait-nav", type=float, default=12)
-    ap.add_argument("--no-embeds", action="store_true")
+    ap.add_argument("--provider", default=PROVIDER_DEFAULT)
     ap.add_argument("--all-events", action="store_true")
+    ap.add_argument("--no-embeds", action="store_true")
     ap.add_argument("--embed-workers", "--playwright-workers",
                     type=int, default=4, dest="embed_workers")
     ap.add_argument("--embed-limit", "--playwright-limit",
                     type=int, default=0, dest="embed_limit")
     args = ap.parse_args()
 
-    combined_path = None
-    if args.output_dir.lower().endswith((".m3u", ".m3u8")):
-        combined_path = args.output_dir
-        args.output_dir = os.path.dirname(combined_path) or "."
-
+    # /tmp non scrivibile da iOS: fallback
+    if args.output_dir == ".":
+        args.output_dir = os.path.dirname(args.output) or "."
     os.makedirs(args.output_dir, exist_ok=True)
-    drm_path = os.path.join(args.output_dir, DRM_REPORT)
-    if os.path.exists(drm_path):
-        os.remove(drm_path)
 
     log("=" * 66)
-    log("📡 STREAMCORNER EXTRACTOR v9.3 (Playwright-as-oracle + net-monitor)")
+    log("📡 STREAMCORNER EXTRACTOR v10.0 (HTTP-puro NinjaCorner)")
     log("=" * 66)
 
+    # ---- 1. Discovery ----
+    log("\n[1/5] Discovery")
     try:
-        from patchright.sync_api import sync_playwright  # noqa
-        log("   ✅ patchright attivo")
-    except ImportError:
-        log("   ⚠️ patchright assente — fallback playwright")
-
-    # ---- 1. Capture ----
-    site = args.site or PRIORITY_SITES[0]
-    log(f"\n[1/5] Browser capture su {site}")
-    cap = capture_from_browser(site, args.proxy,
-                                wait_boot=int(args.wait_boot),
-                                wait_nav=int(args.wait_nav))
-
-    print_capture_summary(cap)
-
-    try:
-        with open(os.path.join(args.output_dir, CAPTURE_FILE), "w",
-                  encoding="utf-8") as f:
-            json.dump(cap, f, ensure_ascii=False, indent=1, default=str)
-        log(f"   💾 {CAPTURE_FILE} salvato")
+        main_bundle = discover_bundle()
+        provider_url = discover_provider_worker(main_bundle)
+        workers = discover_workers(main_bundle)
+        vault = extract_vault_and_consts(provider_url)
     except Exception as e:
-        log(f"   ⚠️ salvataggio capture: {e}")
-
-    # ---- 2. Estrazione catalogo ----
-    log(f"\n[2/5] Estrazione catalogo")
-    catalogs = extract_catalog_from_capture(cap)
-    if not catalogs:
-        log("   ❌ nessun catalogo trovato")
-        log("   → guarda CAPTURE SUMMARY sopra (specialmente 'responses')")
-        for fn in ("streamcorner_VLC.m3u", "streamcorner_KODI.m3u",
-                   "streamcorner_EVENTS_LIVE.m3u"):
+        log(f"   ❌ discovery fallita: {e}")
+        # placeholder outputs
+        for fn in ("streamcorner_EVENTS_LIVE.m3u", "streamcorner_VLC.m3u",
+                   "streamcorner_KODI.m3u"):
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
-        if combined_path:
-            open(combined_path, "w").write("#EXTM3U\n")
+        open(args.output, "w").write("#EXTM3U\n")
         return
 
-    catalogs.sort(key=len, reverse=True)
-    events = catalogs[0]
-    log(f"   ✅ catalogo: {len(events)} item (da {len(catalogs)} candidati)")
+    # ---- 2. Client NinjaCorner ----
+    log("\n[2/5] Client NinjaCorner")
+    client = NinjaClient(vault, workers)
+    log(f"   invio_key: {client.invio_key.hex()[:32]}...")
 
-    n_src, n_url = 0, 0
-    for ev in events:
-        for s in (ev.get("streams") or []):
-            if isinstance(s, dict):
-                n_src += 1
-                if s.get("stream_url"):
-                    n_url += 1
-    log(f"   census: sorgenti={n_src}  con stream_url={n_url}")
+    try:
+        catalog = client.get_catalog(args.provider)
+    except Exception as e:
+        log(f"   ❌ get_catalog: {e}")
+        for fn in ("streamcorner_EVENTS_LIVE.m3u", "streamcorner_VLC.m3u",
+                   "streamcorner_KODI.m3u"):
+            open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
+        open(args.output, "w").write("#EXTM3U\n")
+        return
 
-    # ---- 3. Filtro live ----
-    log(f"\n[3/5] Filtro live")
+    # ---- 3. Dettagli evento ----
+    log(f"\n[3/5] Dettagli per {len(catalog)} eventi")
+    events_full = []
+    for i, ev in enumerate(catalog, 1):
+        sid = ev.get("stream_id")
+        name = ev.get("event_name", "?")
+        if not sid:
+            continue
+        try:
+            detail = client.get_event_detail(sid, args.provider)
+            streams = detail.get("streams") or []
+            if streams:
+                ev["streams"] = streams
+            events_full.append(ev)
+            log(f"   [{i}/{len(catalog)}] {name[:45]:45}  streams={len(streams)}")
+        except Exception as e:
+            log(f"   [{i}/{len(catalog)}] {name[:45]:45}  ❌ {str(e)[:50]}")
+            events_full.append(ev)
+
+    # ---- 4. Filtro live ----
+    log(f"\n[4/5] Filtro live")
     if args.all_events:
-        live = events
+        live = events_full
     else:
-        live = [e for e in events if is_live(e)]
-        log(f"   🔴 {len(live)}/{len(events)} in onda adesso")
+        live = [e for e in events_full if is_live(e)]
+        log(f"   🔴 {len(live)}/{len(events_full)} in onda adesso")
 
-    # ---- 4. Sorgenti ----
-    log(f"\n[4/5] Sorgenti")
+    # ---- 5. Sorgenti ----
+    log(f"\n[5/5] Sorgenti")
     cache = {}
     if os.path.exists(M3U8_CACHE):
         try:
             cache = json.load(open(M3U8_CACHE, encoding="utf-8"))
         except Exception:
             cache = {}
-
-    p = urlparse(site)
-    origin = f"{p.scheme}://{p.netloc}"
 
     rows, embed_jobs = [], []
     for ev in live:
@@ -911,7 +633,7 @@ def main():
             u = str(s.get("stream_url") or "").strip()
             if u and DIRECT_RE.search(u.split("?")[0]):
                 rows.append((f"{base} — {s.get('source_name') or '?'} [DIRETTA]",
-                             logo, name, {"url": u, "referer": origin + "/"}))
+                             logo, name, {"url": u, "referer": SITE}))
                 continue
             emb = s.get("embed_url")
             if not emb or args.no_embeds:
@@ -919,7 +641,7 @@ def main():
             sname = s.get("source_name") or "?"
             if cache.get(emb):
                 rows.append((f"{base} — {sname}", logo, name,
-                             {"url": cache[emb], "referer": origin + "/"}))
+                             {"url": cache[emb], "referer": SITE}))
             else:
                 embed_jobs.append((emb, f"{base} — {sname}", logo, name))
 
@@ -934,7 +656,7 @@ def main():
         def job(item):
             emb, label, logo, grp = item
             return emb, label, logo, grp, resolve_embed(
-                emb, origin, args.proxy, tag=label[:28])
+                emb, SITE, args.proxy, tag=label[:28])
 
         with ThreadPoolExecutor(max_workers=args.embed_workers) as ex:
             for f in as_completed([ex.submit(job, i) for i in embed_jobs]):
@@ -959,12 +681,12 @@ def main():
             pass
 
     if report:
+        drm_path = os.path.join(args.output_dir, DRM_REPORT)
         with open(drm_path, "w", encoding="utf-8") as f:
             for r in report:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
-    # ---- 5. Output ----
-    log(f"\n[5/5] Output")
+    # ---- Output ----
     n = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), rows)
     log(f"   💾 EVENTS_LIVE: {n}")
     n = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
@@ -972,12 +694,33 @@ def main():
     log(f"   💾 VLC: {n}")
     n = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), rows)
     log(f"   💾 KODI: {n}")
-    if combined_path:
-        n = write_m3u(combined_path, rows)
-        log(f"   💾 COMBINED: {n}")
+    n = write_m3u(args.output, rows)
+    log(f"   💾 {args.output}: {n}")
+
+    # ---- Capture summary ----
+    try:
+        summary = {
+            "site": SITE,
+            "provider": args.provider,
+            "workers_count": len(workers),
+            "winner_worker": client.worker,
+            "catalog_size": len(catalog),
+            "events_full": len(events_full),
+            "events_live": len(live),
+            "streams_total": len(rows),
+            "embed_jobs": len(embed_jobs),
+            "embed_resolved": sum(1 for r in report if r.get("url")),
+            "extracted_at": int(time.time()),
+        }
+        with open(os.path.join(args.output_dir, CAPTURE_FILE), "w",
+                  encoding="utf-8") as f:
+            json.dump(summary, f, indent=2, ensure_ascii=False)
+        log(f"   💾 {CAPTURE_FILE} salvato")
+    except Exception as e:
+        log(f"   ⚠️ capture: {e}")
 
     log("\n" + "=" * 66)
-    log(f"✅ eventi={len(live)} stream={len(rows)} report={len(report)}")
+    log(f"✅ eventi={len(live)}  stream={len(rows)}  report={len(report)}")
     log("=" * 66)
 
 
