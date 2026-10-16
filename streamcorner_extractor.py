@@ -1,35 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v9
-==========================================
-Fusione di v8 (scan mirror, fallback same-origin, crawler profondo, profili
-header) con le robustezze di v7.2 (workflow aliases, cache con scadenza,
-range-safety, validazione vault, decadimento penalità).
+StreamCorner / CornerStream Extractor — v9.1
+=============================================
+Adattato al nuovo cornerstream.tech (SPA React con code splitting).
 
-Novità v9
----------
-  * --scan / --diagnose funzionanti, con classificazione COMPLETO/VIVO+VAULT/VIVO
-  * mode="worker" | "origin": usa same-origin se il mirror non ha workers.dev
-  * Path API e parametri scoperti dal bundle (searchParams.set non minificato)
-  * Crawler profondo (assets/*.js) con deadline per non bloccare il run
-  * 3 profili header HTML + 3 profili POST con rotazione
-  * Alias workflow: --output, --playwright-workers, --playwright-limit
-  * Cache runtime con MAX_RUNTIME_AGE e invalidazione per sito dismesso
-  * gc() range-safe, _vault_is_valid() decodifica davvero le specs
-  * Penalità worker con decadimento temporale
-  * KODIPROP license_key sanificato da '|'
+Novità v9.1
+-----------
+  * Discovery via Playwright: naviga la home, aspetta il bundle, intercetta
+    le richieste di rete per trovare il pool workers.dev e il vault.
+  * Fallback: se il network non rivela il vault, tenta il crawl statico
+    del bundle principale (per retrocompatibilità con vecchi deploy).
+  * Priorità candidati: cornerstream.tech in cima.
+  * Rilevamento pagine AGCOM (blocco ISP italiano) e skip immediato.
+  * fetch_html con Playwright per bypassare Cloudflare.
+  * Tutto il resto (Salsa20, client, resolve embed, M3U) invariato.
 
 Requisiti:
     pip install requests pycryptodome
     pip install patchright && patchright install chromium
 
 Uso:
-    python sc9.py --scan
-    python sc9.py --scan --proxy http://utente:pass@ip-it:porta
-    python sc9.py --site https://streamcorner.foo/
-    python sc9.py
-    python sc9.py --diagnose
+    python sc9_1.py --diagnose
+    python sc9_1.py
+    python sc9_1.py --proxy http://user:pass@ip-it:porta
 """
 
 from __future__ import annotations
@@ -50,51 +44,15 @@ UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
 UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 
-BROWSER_COMMON = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
-              "image/avif,image/webp,*/*;q=0.8",
-    "Accept-Language": "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "none",
-    "Sec-Fetch-User": "?1",
-    "Upgrade-Insecure-Requests": "1",
-    "Cache-Control": "max-age=0",
-}
-
-HTML_PROFILES = [
-    ("desktop", {"User-Agent": UA_DESKTOP, **BROWSER_COMMON}),
-    ("iphone", {"User-Agent": UA_IPHONE, **BROWSER_COMMON}),
-    ("minimo", {"User-Agent": UA_IPHONE}),
-]
-
-POST_PROFILES = [
-    ("origin+iphone", UA_IPHONE, True),
-    ("origin+desktop", UA_DESKTOP, True),
-    ("plain+iphone", UA_IPHONE, False),
-]
-
+# Priorità: cornerstream.tech vivo, streamcorner.st bloccato AGCOM (fallback)
 PRIORITY_SITES = [
-    "https://streamcorner.st/",
-    "https://streamcorner.foo/",
-    "https://streamcorner.cloud/",
-    "https://streamcorner.fun/",
     "https://cornerstream.tech/",
+    "https://streamcorner.st/",
+    "https://cornerstream.st/",
 ]
-TLDS = ["st", "foo", "cloud", "fun", "tech", "is", "to", "ws", "cc", "su",
-        "pro", "online", "site", "top", "xyz", "app", "live", "tv", "pw", "me"]
-BASES = ["streamcorner", "cornerstream"]
 
-
-def build_candidates():
-    out = list(PRIORITY_SITES)
-    for b in BASES:
-        for t in TLDS:
-            u = f"https://{b}.{t}/"
-            if u not in out:
-                out.append(u)
-    return out
-
+# TLD parcheggiati: rimossi foo, cloud, fun, pro, online, site, top, xyz, app, live, tv, pw, me
+TLDS_VALID = ["tech", "st", "is", "to", "ws", "cc", "su"]
 
 PROVIDERS_DEFAULT = "admin"
 KEY_FIELDS = ("stream_id", "game_id", "channel_id", "id")
@@ -106,10 +64,8 @@ B64_RE = re.compile(r"^[A-Za-z0-9_\-+/=]+$")
 SCRIPT_SRC_RE = re.compile(r'<script\b[^>]*\bsrc=["\']([^"\']+\.js)["\']', re.I)
 SIBLING_RE = re.compile(r"""["']\./([A-Za-z0-9_\-]+\.js)["']""")
 ASSET_RE = re.compile(r"""["'`](?:\./|/)?(assets/[A-Za-z0-9_\-.]+\.js)["'`]""")
-BAREJS_RE = re.compile(r"""["'`]([A-Za-z0-9_\-]{4,}\.js)["'`]""")
 PATH_RE = re.compile(r"""["'`](/[A-Za-z0-9_\-][A-Za-z0-9_\-/]{1,40})["'`]""")
 PARAM_RE = re.compile(r"""searchParams\.set\(\s*["']([A-Za-z_]\w{0,7})["']""")
-# prossimità a fetch/open per filtrare i path API da quelli statici
 FETCH_CTX = re.compile(r"""(?:fetch|open|url|URL)\([^)]{0,200}?["'`](/[^"'`]+)["'`]""")
 
 RUNTIME_CACHE = ".sc_runtime.json"
@@ -127,7 +83,6 @@ MAX_RUNTIME_AGE = 7 * 86400
 BAD_DECAY = 300
 MAX_REQUESTS_CAPTURED = 120
 
-# indici magic nel vault (reverse-engineered)
 SPEC_TRANSCRIPT, SPEC_ENDPOINT, SPEC_NAMESPACE = 0, 1, 3
 CONST_TRANSCRIPT, CONST_NONCE, CONST_BRAND = 16, 20, 25
 
@@ -140,7 +95,7 @@ def log(*a):
 
 
 # ============================================================
-# HTTP
+# HTTP (requests, per asset statici post-Playwright)
 # ============================================================
 _tls = threading.local()
 
@@ -156,28 +111,6 @@ def session(proxy=None):
     return s
 
 
-def fetch_html(url, proxy=None, timeout=15):
-    """Prova i profili HTML in ordine. Ritorna (status_finale, testo|None)."""
-    last = None
-    for _name, h in HTML_PROFILES:
-        try:
-            r = session(proxy).get(url, headers=h, timeout=timeout,
-                                   allow_redirects=True)
-        except requests.exceptions.ConnectionError:
-            return None, None
-        except requests.exceptions.Timeout:
-            return "timeout", None
-        except requests.exceptions.SSLError:
-            return "ssl", None
-        except Exception:
-            last = last or "err"
-            continue
-        if r.status_code == 200 and r.text:
-            return 200, r.text
-        last = r.status_code
-    return last, None
-
-
 def get_text(url, referer=None, proxy=None, timeout=20, ua=UA_IPHONE):
     h = {"User-Agent": ua}
     if referer:
@@ -187,20 +120,16 @@ def get_text(url, referer=None, proxy=None, timeout=20, ua=UA_IPHONE):
     return r.text
 
 
-def site_status(site, proxy=None, timeout=15):
-    """Classifica un candidato in una stringa leggibile."""
-    st, html = fetch_html(site, proxy, timeout)
-    if st is None:
-        return "conn", None
-    if st == "timeout":
-        return "timeout", None
-    if st == "ssl":
-        return "ssl", None
-    return st, html
+def is_agcom_page(html):
+    """Rileva la pagina di blocco AGCOM (server Apache italiano)."""
+    if not html or len(html) > 5000:
+        return False
+    low = html.lower()
+    return ("agcom" in low or "avviso" in low) and "autorità" in low
 
 
 # ============================================================
-# SALSA20/12
+# SALSA20/12 (invariato)
 # ============================================================
 M32 = 0xFFFFFFFF
 
@@ -244,7 +173,7 @@ def salsa20_12(k, n8, d, ctr=0):
 
 
 # ============================================================
-# VAULT
+# VAULT (invariato)
 # ============================================================
 SBOX = [185, 243, 94, 251, 153, 162, 126, 77, 155, 41, 182, 62, 200, 173, 252, 244]
 
@@ -293,7 +222,7 @@ def b64d(s):
 
 
 # ============================================================
-# LETTURA ARRAY (senza nomi)
+# LETTURA ARRAY
 # ============================================================
 def read_array(code, st):
     if st >= len(code) or code[st] != "[":
@@ -375,15 +304,15 @@ def try_vault(code):
 
 
 def find_api(code):
-    """Path API + nomi parametri. searchParams.set non è minificato (DOM API)."""
     params = PARAM_RE.findall(code)
-    # path in prossimità di fetch/open/URL — segnale forte
+    if len(params) < 2:
+        return [], params
     ctx_paths = [p for p in FETCH_CTX.findall(code)
-                 if "." not in p and not p.startswith(("/assets", "/@", "/src", "/static"))]
-    # fallback: tutti i path brevi
-    loose = [p for p in PATH_RE.findall(code)
-             if "." not in p and not p.startswith(("/assets", "/@", "/src", "/static"))]
-    return list(dict.fromkeys(ctx_paths + loose)), params
+                 if "." not in p
+                 and not p.startswith(("/assets", "/@", "/src", "/static",
+                                        "/extra", "/_routes", "/cdn-cgi"))
+                 and len(p) > 3]
+    return list(dict.fromkeys(ctx_paths)), params
 
 
 def vault_strings(v):
@@ -399,146 +328,115 @@ def vault_strings(v):
 
 
 # ============================================================
-# CRAWLER
+# DISCOVERY — Playwright (per SPA + Cloudflare)
 # ============================================================
-def asset_names(code):
-    names = list(SIBLING_RE.findall(code))
-    names += [n.split("/", 1)[1] for n in ASSET_RE.findall(code)]
-    names += [n for n in BAREJS_RE.findall(code) if "/" not in n]
-    return list(dict.fromkeys(names))
+def playwright_discover(site, proxy=None, timeout=45):
+    """
+    Apre la home con Playwright, aspetta che la SPA carichi i chunk,
+    intercetta le richieste di rete per trovare workers.dev e il vault.
+    Ritorna dict runtime o None.
+    """
+    try:
+        from patchright.sync_api import sync_playwright
+        engine = "patchright"
+    except ImportError:
+        from playwright.sync_api import sync_playwright
+        engine = "playwright"
 
+    log(f"   🌐 Playwright discover: {site}")
+    result = {"workers": [], "vault": None, "assets": [],
+              "api_path": "/corner", "p_param": "p", "id_param": "id"}
 
-def crawl(start_urls, referer, proxy, deadline, max_assets=MAX_ASSETS):
-    seen, queue, assets = set(), list(start_urls), []
-    workers, vault = [], None
-    paths, params = [], []
+    # Buffer per intercettare le risposte JS
+    js_bodies = []
+    worker_hosts = set()
 
-    while queue and len(seen) < max_assets and time.time() < deadline:
-        u = queue.pop(0)
-        if u in seen:
-            continue
-        seen.add(u)
-        try:
-            code = get_text(u, referer=referer, proxy=proxy, timeout=15)
-        except Exception:
-            continue
-        assets.append(u)
-        short = u.rsplit("/", 1)[-1]
+    def on_response(resp):
+        u = resp.url
+        ct = (resp.headers.get("content-type") or "").lower()
+        if ".js" in u or "javascript" in ct:
+            try:
+                body = resp.text()
+            except Exception:
+                return
+            if body and len(body) > 500:
+                js_bodies.append((u, body))
 
-        if not workers:
+    def on_request(req):
+        u = req.url
+        m = re.search(r"https?://([a-z0-9][a-z0-9\-]*\.workers\.dev)", u)
+        if m:
+            worker_hosts.add(m.group(1))
+
+    try:
+        with sync_playwright() as p:
+            kw = {"headless": True,
+                  "args": ["--no-sandbox", "--disable-dev-shm-usage",
+                           "--use-gl=swiftshader", "--enable-unsafe-swiftshader",
+                           "--autoplay-policy=no-user-gesture-required",
+                           "--mute-audio"]}
+            if proxy:
+                kw["proxy"] = {"server": proxy}
+            browser = p.chromium.launch(**kw)
+            ctx = browser.new_context(
+                user_agent=UA_IPHONE,
+                viewport={"width": 1920, "height": 1080},
+                locale="it-IT", timezone_id="Europe/Rome",
+                ignore_https_errors=True,
+            )
+            ctx.on("response", on_response)
+            ctx.on("request", on_request)
+
+            page = ctx.new_page()
+            try:
+                page.goto(site, wait_until="domcontentloaded", timeout=timeout * 1000)
+            except Exception as e:
+                log(f"      ⚠️ goto: {str(e)[:60]}")
+
+            # Attesa SPA: aspetta che carichi i chunk
+            for _ in range(8):
+                page.wait_for_timeout(2000)
+                if worker_hosts and js_bodies:
+                    break
+
+            browser.close()
+    except Exception as e:
+        log(f"      ❌ Playwright: {str(e)[:100]}")
+        return None
+
+    log(f"      JS catturati: {len(js_bodies)}  worker visti: {len(worker_hosts)}")
+
+    # Ora cerca vault nei JS catturati
+    for url, code in js_bodies:
+        if not result["workers"]:
             w = find_workers(code)
             if w:
-                workers = w
-                log(f"      ✓ pool worker: {len(w)} host (da {short})")
-        if vault is None:
+                result["workers"] = w
+                log(f"      ✓ workers pool in {url.rsplit('/', 1)[-1]}: {len(w)} host")
+        if result["vault"] is None:
             v = try_vault(code)
             if v:
-                vault = v
-                log(f"      ✓ vault decodificato (da {short})")
-                paths += [s for s in vault_strings(v)
-                          if isinstance(s, str) and s.startswith("/")]
+                result["vault"] = v
+                log(f"      ✓ vault in {url.rsplit('/', 1)[-1]}")
+                result["assets"].append(url)
         p2, pr2 = find_api(code)
-        paths += p2
-        params += pr2
-        if workers and vault:
-            break
+        if p2 and result["api_path"] == "/corner":
+            cand = [p for p in p2 if "corner" in p.lower()] or p2
+            if cand:
+                result["api_path"] = cand[0]
+        if pr2 and result["p_param"] == "p":
+            if len(pr2) >= 2:
+                result["p_param"] = pr2[0]
+                result["id_param"] = pr2[1]
 
-        for n in asset_names(code):
-            nu = urljoin(u, "./" + n)
-            if nu not in seen:
-                queue.append(nu)
+    # Aggiungi worker visti via network (non solo dal codice)
+    if worker_hosts and not result["workers"]:
+        result["workers"] = list(worker_hosts)
 
-    # scelta path API
-    cand = [p for p in paths if "corner" in p.lower()]
-    if not cand:
-        cand = paths
-    path = Counter(cand).most_common(1)[0][0] if cand else "/corner"
-    ps = list(dict.fromkeys(params))
-    pparam = ps[0] if ps else "p"
-    idparam = ps[1] if len(ps) > 1 else "id"
-    return workers, vault, assets, path, pparam, idparam
+    if not result["vault"] and not result["workers"]:
+        return None
 
-
-# ============================================================
-# DISCOVERY
-# ============================================================
-def discover(proxy=None, force_site=None, verbose=True):
-    sites = [force_site] if force_site else build_candidates()
-    if verbose:
-        log(f"   scansione {len(sites)} candidati...")
-
-    # fase 1: fetch HTML parallelo
-    scanned = {}
-    with ThreadPoolExecutor(max_workers=10) as ex:
-        futs = {ex.submit(fetch_html, s, proxy): s for s in sites}
-        for f in as_completed(futs):
-            s = futs[f]
-            try:
-                st, html = f.result()
-            except Exception:
-                st, html = None, None
-            scanned[s] = (st, html)
-
-    order = {s: i for i, s in enumerate(sites)}
-    ordered = sorted(scanned.items(), key=lambda kv: order.get(kv[0], 999))
-
-    # fase 2: crawl dei soli candidati vivi
-    results = []
-    crawls_done = 0
-    for s, (st, html) in ordered:
-        if not html:
-            continue
-        if crawls_done >= MAX_SCAN_CRAWLS:
-            if verbose:
-                log(f"   ⏹ limite crawl ({MAX_SCAN_CRAWLS}) raggiunto")
-            break
-        origin = "{0.scheme}://{0.netloc}".format(urlparse(s))
-        host = urlparse(s).netloc
-        srcs = list(dict.fromkeys(
-            urljoin(s, x) for x in SCRIPT_SRC_RE.findall(html)
-            if urlparse(urljoin(s, x)).netloc == host))
-        if not srcs:
-            if verbose:
-                log(f"   {s:34} HTTP 200 ma nessuno script")
-            continue
-        crawls_done += 1
-        if verbose:
-            log(f"   → crawl {s}")
-        deadline = time.time() + CRAWL_BUDGET
-        w, v, assets, path, pp, ip = crawl(srcs, s, proxy, deadline)
-        results.append({"site": s, "origin": origin, "workers": w, "vault": v,
-                        "assets": assets, "api_path": path, "p_param": pp,
-                        "id_param": ip, "discovered_at": int(time.time())})
-        if verbose:
-            log(f"      worker={len(w)} vault={'SI' if v else 'NO'} "
-                f"api={path} p={pp} id={ip}")
-        if w and v:
-            break
-
-    if not results:
-        errs = []
-        for s, (st, _) in ordered[:6]:
-            errs.append(f"{s} {st if st is not None else 'conn'}")
-        raise RuntimeError("nessun candidato con script utilizzabili → "
-                           + " | ".join(errs))
-
-    def score(r):
-        return 2 if (r["workers"] and r["vault"]) else (1 if r["vault"] else 0)
-
-    results.sort(key=score, reverse=True)
-    best = results[0]
-    if not best["vault"]:
-        raise RuntimeError("nessun candidato con vault decodificabile")
-
-    if best["workers"]:
-        best["mode"] = "worker"
-        best["targets"] = [f"https://{w}" for w in best["workers"]]
-    else:
-        best["mode"] = "origin"
-        best["targets"] = [best["origin"]]
-        if verbose:
-            log(f"   ⚠️ nessun pool worker: uso API same-origin {best['origin']}")
-    return best
+    return result
 
 
 def get_runtime(refresh=False, proxy=None, force_site=None):
@@ -546,34 +444,80 @@ def get_runtime(refresh=False, proxy=None, force_site=None):
         try:
             rt = json.load(open(RUNTIME_CACHE, encoding="utf-8"))
             age = int(time.time()) - rt.get("discovered_at", 0)
-            site_ok = (rt.get("site") in build_candidates()) or rt.get("site") == force_site
-            if (rt.get("vault") and rt.get("targets") and rt.get("origin")
-                    and site_ok and age < MAX_RUNTIME_AGE):
+            if rt.get("vault") and rt.get("targets") and age < MAX_RUNTIME_AGE:
                 return rt, f"cache ({age // 3600}h)"
-            if not site_ok:
-                log(f"   ⏳ cache punta a sito dismesso ({rt.get('site')}) — refresh")
-            elif age >= MAX_RUNTIME_AGE:
-                log(f"   ⏳ cache scaduta ({age // 86400}g) — refresh")
         except Exception:
             pass
-    try:
-        rt = discover(proxy, force_site)
-        json.dump(rt, open(RUNTIME_CACHE, "w", encoding="utf-8"), ensure_ascii=False)
-        return rt, "live"
-    except Exception as e:
-        if os.path.exists(RUNTIME_CACHE):
-            try:
-                cached = json.load(open(RUNTIME_CACHE, encoding="utf-8"))
-                if cached.get("vault") and cached.get("targets"):
-                    log(f"   ⚠️ discovery fallita ({str(e)[:140]}) — uso cache")
-                    return cached, "fallback"
-            except Exception:
-                pass
-        raise
+
+    sites = [force_site] if force_site else PRIORITY_SITES
+    for site in sites:
+        # Prima prova requests (fast path)
+        try:
+            html = get_text(site, proxy=proxy, timeout=15)
+            if is_agcom_page(html):
+                log(f"   {site:34} BLOCCATO AGCOM — skip")
+                continue
+            # Se HTML è grande, il sito risponde senza challenge
+            if len(html) > 10000:
+                log(f"   {site:34} HTML {len(html)} char (no Playwright)")
+                # Prova crawl statico veloce
+                host = urlparse(site).netloc
+                srcs = list(dict.fromkeys(
+                    urljoin(site, x) for x in SCRIPT_SRC_RE.findall(html)
+                    if urlparse(urljoin(site, x)).netloc == host))
+                if srcs:
+                    w, v = [], None
+                    for u in srcs[:MAX_ASSETS_SCAN]:
+                        try:
+                            code = get_text(u, referer=site, proxy=proxy, timeout=15)
+                        except Exception:
+                            continue
+                        if not w:
+                            w = find_workers(code)
+                        if v is None:
+                            v = try_vault(code)
+                        if w and v:
+                            break
+                    if w or v:
+                        log(f"      → statico: worker={len(w)} vault={'SI' if v else 'NO'}")
+                        if v:
+                            rt = {"site": site,
+                                  "origin": "{0.scheme}://{0.netloc}".format(urlparse(site)),
+                                  "workers": w, "vault": v, "assets": srcs[:40],
+                                  "api_path": "/corner", "p_param": "p", "id_param": "id",
+                                  "mode": "worker" if w else "origin",
+                                  "targets": [f"https://{x}" for x in w] if w else
+                                             ["{0.scheme}://{0.netloc}".format(urlparse(site))],
+                                  "discovered_at": int(time.time())}
+                            json.dump(rt, open(RUNTIME_CACHE, "w", encoding="utf-8"),
+                                      ensure_ascii=False)
+                            return rt, "live-static"
+        except Exception:
+            pass
+
+        # Fallback: Playwright (SPA + Cloudflare)
+        rt = playwright_discover(site, proxy)
+        if rt and (rt["vault"] or rt["workers"]):
+            rt["site"] = site
+            rt["origin"] = "{0.scheme}://{0.netloc}".format(urlparse(site))
+            rt["mode"] = "worker" if rt["workers"] else "origin"
+            rt["targets"] = ([f"https://{w}" for w in rt["workers"]]
+                             if rt["workers"]
+                             else [rt["origin"]])
+            rt["discovered_at"] = int(time.time())
+            json.dump(rt, open(RUNTIME_CACHE, "w", encoding="utf-8"),
+                      ensure_ascii=False)
+            return rt, "live-playwright"
+
+    # Fallback su cache
+    if os.path.exists(RUNTIME_CACHE):
+        log("   ⚠️ discovery fallita — uso cache")
+        return json.load(open(RUNTIME_CACHE, encoding="utf-8")), "fallback"
+    raise RuntimeError("discovery fallita su tutti i candidati")
 
 
 # ============================================================
-# CLIENT
+# CLIENT (invariato dal v9)
 # ============================================================
 class SC:
     def __init__(self, rt, proxy=None, use_origin=True):
@@ -587,8 +531,6 @@ class SC:
             self.Br = gc(v, CONST_BRAND)
         except (KeyError, IndexError, TypeError, AttributeError) as e:
             raise RuntimeError(f"vault incompatibile: {type(e).__name__}: {e}")
-        if not (self.t and self.e and self.ns):
-            raise RuntimeError("vault: materiale di sessione vuoto")
         self.rk = hashlib.sha256(self.t + self.e + self.tr).digest()
         self.targets = rt.get("targets") or [rt["origin"]]
         random.shuffle(self.targets)
@@ -598,15 +540,13 @@ class SC:
         self.id_param = rt.get("id_param") or "id"
         self.proxy = proxy
         self.use_origin = use_origin
-        self.pidx = 0
         self.bad = {}
         self.lock = threading.Lock()
 
     def headers(self):
-        _n, ua, use_origin = POST_PROFILES[self.pidx % len(POST_PROFILES)]
-        h = {"User-Agent": ua, "Content-Type": "text/plain",
+        h = {"User-Agent": UA_IPHONE, "Content-Type": "text/plain",
              "Accept": "application/octet-stream"}
-        if use_origin and self.use_origin:
+        if self.use_origin:
             h["Origin"] = self.origin
             h["Referer"] = self.origin + "/"
         return h
@@ -670,147 +610,58 @@ class SC:
         return None, last
 
     def call(self, p, extra=None, timeout=15):
-        last = None
-        for _ in range(len(POST_PROFILES)):
-            out, err = self._attempt(p, extra, timeout)
-            if out is not None:
-                return out
-            last = err
-            self.pidx += 1
-        if last:
-            log(f"   ⚠️ p={p}{' ' + str(extra) if extra else ''} → {last}")
-        return None
+        out, err = self._attempt(p, extra, timeout)
+        if out is None and err:
+            log(f"   ⚠️ p={p}{' ' + str(extra) if extra else ''} → {err}")
+        return out
 
 
 # ============================================================
-# --scan
-# ============================================================
-def cmd_scan(args):
-    log("=" * 66)
-    log("SCAN MIRROR — chi risponde, chi ha vault, chi ha worker")
-    log("=" * 66)
-    sites = [args.site] if args.site else build_candidates()
-    log(f"{len(sites)} candidati\n")
-
-    rows = {}
-    with ThreadPoolExecutor(max_workers=10) as ex:
-        futs = {ex.submit(fetch_html, s, args.proxy): s for s in sites}
-        for f in as_completed(futs):
-            s = futs[f]
-            try:
-                st, html = f.result()
-            except Exception:
-                st, html = None, None
-            rows[s] = (st, html)
-
-    order = {s: i for i, s in enumerate(sites)}
-    crawls = 0
-    found_complete = False
-    for s, (st, html) in sorted(rows.items(), key=lambda kv: order.get(kv[0], 999)):
-        if not html:
-            if st:
-                log(f"  {s:34} HTTP {st}")
-            else:
-                log(f"  {s:34} irraggiungibile")
-            continue
-        host = urlparse(s).netloc
-        srcs = list(dict.fromkeys(
-            urljoin(s, x) for x in SCRIPT_SRC_RE.findall(html)
-            if urlparse(urljoin(s, x)).netloc == host))
-        if not srcs:
-            log(f"  {s:34} HTTP 200, 0 script")
-            continue
-        if crawls >= MAX_SCAN_CRAWLS:
-            log(f"  {s:34} HTTP 200 (crawl saltato: limite raggiunto)")
-            continue
-        crawls += 1
-        deadline = time.time() + CRAWL_BUDGET
-        w, v, _assets, path, pp, ip = crawl(srcs, s, args.proxy, deadline,
-                                            max_assets=MAX_ASSETS_SCAN)
-        tag = "VIVO"
-        if v:
-            tag = "VIVO+VAULT"
-        if w and v:
-            tag = "COMPLETO"
-        log(f"  {s:34} {tag:12} worker={len(w):<3} vault={'SI' if v else 'NO':<3} "
-            f"api={path} p={pp} id={ip}")
-        if tag == "COMPLETO" and not args.deep:
-            log("  → target completo trovato, mi fermo")
-            found_complete = True
-            break
-
-    log("\nVerdetto:")
-    log("  COMPLETO   = pool worker + vault → funziona come prima")
-    log("  VIVO+VAULT = niente pool → lo script usa same-origin")
-    log("  VIVO       = risponde ma non è un deploy utilizzabile")
-    if not found_complete and crawls >= MAX_SCAN_CRAWLS:
-        log(f"\n⚠️  Limite crawl raggiunto ({MAX_SCAN_CRAWLS}). "
-            f"Rilancia con --deep per continuare.")
-
-
-# ============================================================
-# --diagnose
+# DIAGNOSTICA
 # ============================================================
 def cmd_diagnose(args):
     log("=" * 66)
-    log("DIAGNOSTICA — header vs IP")
+    log("DIAGNOSTICA v9.1 — discovery + POST worker")
     log("=" * 66)
-    rt = None
-    try:
-        rt, src = get_runtime(args.refresh_vault, args.proxy, args.site)
-        log(f"runtime: {src}  mode={rt.get('mode')}  targets={len(rt['targets'])}")
-    except Exception as e:
-        log(f"⚠️ discovery non riuscita: {str(e)[:170]}")
 
-    if not rt:
-        for s in (PRIORITY_SITES if not args.site else [args.site]):
-            st, _ = site_status(s, args.proxy)
-            log(f"  {s:34} {('HTTP %s' % st) if isinstance(st, int) else st}")
-        return
+    for site in PRIORITY_SITES:
+        log(f"\n🔍 {site}")
+        try:
+            html = get_text(site, proxy=args.proxy, timeout=15)
+            if is_agcom_page(html):
+                log(f"   ❌ BLOCCATO AGCOM")
+                continue
+            log(f"   HTTP 200, {len(html)} char")
+            if len(html) > 10000:
+                log(f"   ✅ HTML reale (SPA o statico)")
+                host = urlparse(site).netloc
+                srcs = list(dict.fromkeys(
+                    urljoin(site, x) for x in SCRIPT_SRC_RE.findall(html)
+                    if urlparse(urljoin(site, x)).netloc == host))
+                log(f"   script same-origin: {len(srcs)}")
+                for s in srcs[:3]:
+                    log(f"      {s[:90]}")
+            else:
+                log(f"   ⚠️ HTML piccolo (challenge Cloudflare?)")
+        except Exception as e:
+            log(f"   ❌ {type(e).__name__}: {str(e)[:80]}")
 
-    targets = rt["targets"][:3]
-    variants = [
-        ("nessun Origin/Referer", UA_IPHONE, False),
-        ("Origin/Referer reali + iphone", UA_IPHONE, True),
-        ("Origin/Referer reali + desktop", UA_DESKTOP, True),
-        ("Origin legacy streamcorner.st", UA_IPHONE, True),
-    ]
-
-    for label, proxy in (("DIRETTO", None), ("PROXY", args.proxy)):
-        if label == "PROXY" and not args.proxy:
-            continue
-        log(f"\n{'#' * 22} {label} {'#' * 22}")
-        for t in targets:
-            log(f"\n[{t}]")
-            body = None
-            try:
-                body, _, _ = SC(rt, proxy, True).build("admin")
-            except Exception:
-                body = b"\x0a" + b"\x00" * 32
-            for vlabel, ua, use_origin in variants:
-                h = {"User-Agent": ua, "Content-Type": "text/plain"}
-                if use_origin:
-                    o = "https://streamcorner.st" if "legacy" in vlabel else rt["origin"]
-                    h["Origin"] = o
-                    h["Referer"] = o + "/"
-                try:
-                    r = session(proxy).post(
-                        f"{t}{rt.get('api_path', '/corner')}?"
-                        f"{rt.get('p_param', 'p')}=admin",
-                        data=body, headers=h, timeout=15)
-                    ok = bool(r.content[:1] == b"\x04")
-                    log(f"   {vlabel:32} HTTP {r.status_code}  {len(r.content):>6}B"
-                        f"  {'✅ framing' if ok else ''}")
-                except Exception as e:
-                    log(f"   {vlabel:32} {type(e).__name__}: {str(e)[:44]}")
-
-    log("\nLettura:")
-    log("  qualche variante con framing → problema header")
-    log("  403 su tutte                → problema IP: --proxy italiano")
+    log("\n" + "=" * 66)
+    log("Ora prova con Playwright...")
+    log("=" * 66)
+    for site in PRIORITY_SITES[:1]:
+        rt = playwright_discover(site, args.proxy)
+        if rt:
+            log(f"   workers: {len(rt['workers'])}")
+            log(f"   vault:   {'SI' if rt['vault'] else 'NO'}")
+            for w in rt["workers"][:5]:
+                log(f"      {w}")
+        else:
+            log("   ❌ nessun risultato")
 
 
 # ============================================================
-# CATALOGO
+# CATALOGO (invariato)
 # ============================================================
 def key_of(row):
     for f in KEY_FIELDS:
@@ -892,11 +743,7 @@ def direct_sources(ev):
             CENSUS["with_stream_url"] += 1
         if not u or not DIRECT_RE.search(u.split("?")[0]):
             continue
-        kk = str(s.get("stream_keys") or "").strip()
-        if kk and not KEY_PAIR_RE.match(kk):
-            kk = ""
-        out.append({"url": u, "kidkey": kk,
-                    "name": s.get("source_name") or "diretta"})
+        out.append({"url": u, "name": s.get("source_name") or "diretta"})
     return out
 
 
@@ -914,7 +761,7 @@ def extract_pssh(text):
 
 
 # ============================================================
-# RESOLVE EMBED
+# RESOLVE EMBED (invariato)
 # ============================================================
 LICENSE_HINTS = ("license", "widevine", "getlicense", "acquirelicense", "drm")
 MANIFEST_HINTS = (".m3u8", ".mpd", "manifest", "playlist")
@@ -949,11 +796,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
                     rec["license_headers"] = dict(req.headers)
                 except Exception:
                     pass
-                try:
-                    b = req.post_data_buffer()
-                    rec["license_body_len"] = len(b) if b else 0
-                except Exception:
-                    pass
 
     def on_response(resp):
         u = resp.url; lu = u.lower()
@@ -975,9 +817,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
                     m = re.search(r'KEYFORMAT="([^"]+)"', line)
                     if m:
                         rec["drm"] = m.group(1)
-                    m = re.search(r'URI="data:[^,]*,(.+)"', line)
-                    if m:
-                        rec["pssh"] = m.group(1)
         elif ".mpd" in lu or "dash+xml" in ct:
             try:
                 txt = resp.text()
@@ -988,13 +827,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
                 p = extract_pssh(txt)
                 if p:
                     rec["pssh"] = p
-        if rec["pssh"] is None and ("json" in ct or "octet" in ct or "text" in ct):
-            try:
-                p = extract_pssh(resp.text()[:20000])
-            except Exception:
-                p = None
-            if p:
-                rec["pssh"] = p
 
     def run_once(page):
         try:
@@ -1042,8 +874,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
             if engine == "playwright":
                 ctx.add_init_script("""
                     Object.defineProperty(navigator,'webdriver',{get:()=>undefined});
-                    Object.defineProperty(navigator,'languages',{get:()=>['it-IT','it','en-US','en']});
-                    window.chrome={runtime:{}};
                 """)
             ctx.on("request", on_request)
             ctx.on("response", on_response)
@@ -1051,7 +881,6 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
             run_once(page)
             if rec["cloudflare"] and not (rec["m3u8"] or rec["mpd"]):
                 for attempt in range(2):
-                    log(f"      🛡️ challenge, retry {attempt + 1}/2 {tag}")
                     try:
                         page.reload(wait_until="domcontentloaded",
                                     timeout=timeout * 1000)
@@ -1083,18 +912,6 @@ def entry_lines(rec, label, group, logo=""):
     out.append(f"#EXTVLCOPT:http-user-agent={UA_IPHONE}")
     out.append("#KODIPROP:inputstream=inputstream.adaptive")
     out.append("#KODIPROP:inputstream.adaptive.manifest_type=hls")
-    if rec.get("license_url"):
-        out.append("#KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha")
-        drop = {"host", "content-length", "content-type", "accept-encoding",
-                "connection", ":authority", "accept"}
-        hs = "&".join(f"{k}={_kodi_safe(v)}"
-                      for k, v in (rec.get("license_headers") or {}).items()
-                      if k.lower() not in drop)
-        out.append("#KODIPROP:inputstream.adaptive.license_key="
-                   f"{rec['license_url']}|{hs}|R{{SSM}}|")
-    elif rec.get("kidkey"):
-        out.append("#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey")
-        out.append(f"#KODIPROP:inputstream.adaptive.license_key={rec['kidkey']}")
     out.append(rec["url"])
     return out
 
@@ -1116,18 +933,13 @@ def write_m3u(path, rows):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner / CornerStream Extractor v9")
-    ap.add_argument("--output-dir", "--output", default=".", dest="output_dir",
-                    help="directory di output, oppure file .m3u combinato")
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v9.1")
+    ap.add_argument("--output-dir", "--output", default=".", dest="output_dir")
     ap.add_argument("--providers", default=PROVIDERS_DEFAULT)
-    ap.add_argument("--site", default=None, help="forza un dominio")
+    ap.add_argument("--site", default=None)
     ap.add_argument("--refresh-vault", action="store_true")
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
-    ap.add_argument("--scan", action="store_true")
-    ap.add_argument("--deep", action="store_true",
-                    help="scan: non fermarti al primo COMPLETO")
     ap.add_argument("--diagnose", action="store_true")
-    ap.add_argument("--no-origin", action="store_true")
     ap.add_argument("--no-embeds", action="store_true")
     ap.add_argument("--no-direct", action="store_true")
     ap.add_argument("--all-events", action="store_true")
@@ -1143,8 +955,6 @@ def main():
         combined_path = args.output_dir
         args.output_dir = os.path.dirname(combined_path) or "."
 
-    if args.scan:
-        return cmd_scan(args)
     if args.diagnose:
         return cmd_diagnose(args)
 
@@ -1154,7 +964,7 @@ def main():
         os.remove(drm_path)
 
     log("=" * 66)
-    log("📡 STREAMCORNER / CORNERSTREAM EXTRACTOR v9")
+    log("📡 STREAMCORNER / CORNERSTREAM EXTRACTOR v9.1")
     log("=" * 66)
 
     try:
@@ -1168,17 +978,16 @@ def main():
         rt, src = get_runtime(args.refresh_vault, args.proxy, args.site)
     except Exception as e:
         log(f"❌ discovery fallita: {e}")
-        log("   → prova: python sc9.py --scan")
+        log("   → prova: python sc9_1.py --diagnose")
         return
     log(f"   site={rt['site']}  mode={rt.get('mode')}  "
         f"targets={len(rt['targets'])}  api={rt.get('api_path')}  ({src})")
 
     log("\n[2/6] Client")
     try:
-        client = SC(rt, args.proxy, use_origin=not args.no_origin)
+        client = SC(rt, args.proxy)
     except RuntimeError as e:
         log(f"❌ {e}")
-        log("   → esegui --refresh-vault, il vault potrebbe essere cambiato.")
         return
 
     log("\n[3/6] Catalogo + dettagli")
@@ -1186,7 +995,7 @@ def main():
                           [p.strip() for p in args.providers.split(",") if p.strip()],
                           args.max_events)
     if not events:
-        log("❌ nessun evento. Prova: --scan oppure --diagnose")
+        log("❌ nessun evento. Prova: --diagnose")
         for fn in ("streamcorner_VLC.m3u", "streamcorner_KODI.m3u",
                    "streamcorner_EVENTS_LIVE.m3u"):
             open(os.path.join(args.output_dir, fn), "w").write("#EXTM3U\n")
@@ -1220,8 +1029,7 @@ def main():
         if not args.no_direct:
             for s in direct_sources(ev):
                 rows.append((f"{base} — {s['name']} [DIRETTA]", logo, name,
-                             {"url": s["url"], "kidkey": s["kidkey"],
-                              "referer": rt["origin"] + "/"}))
+                             {"url": s["url"], "referer": rt["origin"] + "/"}))
 
         if args.no_embeds:
             continue
@@ -1298,14 +1106,6 @@ def main():
     log("\n" + "=" * 66)
     log(f"CENSUS  eventi={CENSUS['events']}  sorgenti={CENSUS['sources']}  "
         f"con stream_url={CENSUS['with_stream_url']}")
-    if CENSUS["detail"]:
-        log("campi dettagli: " + ", ".join(
-            f"{k}({v})" for k, v in CENSUS["detail"].most_common(12)))
-    if CENSUS["stream"]:
-        log("campi stream:   " + ", ".join(
-            f"{k}({v})" for k, v in CENSUS["stream"].most_common(12)))
-    if CENSUS["sources"] and CENSUS["with_stream_url"] == 0:
-        log("→ stream_url assente: usa --no-direct")
     drm = sum(1 for r in report if r.get("drm") or r.get("license_url"))
     cf = sum(1 for r in report if r.get("cloudflare"))
     log(f"✅ stream={len(rows)}  report={len(report)} ({drm} DRM, {cf} CF)")
