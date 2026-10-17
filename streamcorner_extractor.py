@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.1 — Playwright stealth su streamcorner.st.
+StreamCorner Extractor v13.2 — Playwright stealth su streamcorner.st.
 
-Changelog v13.0 → v13.1:
-- Salva SEMPRE sc_homepage.html (anche se non bloccata) per debug
-- Salva sc_network.json con tutte le richieste "interessanti" + status + mime
-- Pattern categoria/partita molto più larghi (football, live-tv, -vs-, ?channel=...)
+Changelog v13.1 → v13.2:
+- Aggiunto listener on_requestfailed: logga ogni richiesta fallita con URL + errore
+  (net::ERR_NAME_NOT_RESOLVED, ERR_CONNECTION_TIMED_OUT, HTTP_RESPONSE_CODE_FAILURE...)
+- Aggiunto listener on_frame_navigated: logga ogni navigazione di frame
+  (rivela gli URL degli iframe player, anche quando falliscono)
+- Le richieste fallite vengono salvate in sc_network.json con status="FAILED" + error
+- Bump versione log a 13.2
+
+Invariato da v13.1:
+- Salva SEMPRE sc_homepage.html
+- Salva sc_network.json
+- Pattern categoria/partita larghi
 - Esplorazione a 3 livelli: home → categorie → partite
-- Cattura manifest anche dagli iframe (page.frames)
-- Sniffing risposte JSON (API eventi) per stream_url/play_url/embed_url/src
-- Log di ogni frame presente sulla pagina partita
-- Budget di tempo massimo (max_total_time_s) per non sforare il workflow
-- Scrive comunque i 4 file attesi (EVENTS_LIVE, VLC, KODI, COMPLETE)
-- CLI identica al v13.0 (drop-in replacement)
+- Cattura manifest da iframe e sniffing JSON
+- Budget max_total_time_s
+- Scrive i 4 file attesi (EVENTS_LIVE, VLC, KODI, COMPLETE)
+- CLI identica (drop-in replacement)
 - Exit 0 SEMPRE (graceful)
 """
 from __future__ import annotations
@@ -46,7 +52,6 @@ CAPTURE_FILE = "sc_capture.json"
 NETWORK_FILE = "sc_network.json"
 HOMEPAGE_FILE = "sc_homepage.html"
 
-# Pattern per i link (re.search su href)
 CATEGORY_PATTERNS = [
     r'/fifa', r'/world-cup', r'/serie-a', r'/champions',
     r'/premier', r'/liga', r'/soccer', r'/football',
@@ -60,14 +65,12 @@ MATCH_PATTERNS = [
     r'\?channel=', r'\?stream=',
 ]
 
-# Keyword per richieste "interessanti" (da loggare in sc_network.json)
 INTERESTING_REQ_KW = (
     ".m3u8", ".mpd", "/api/", "/corner", "workers.dev",
     "embed", "/stream", "/channel", "/match", "/event",
     "playlist", ".json", "manifest", "worker",
 )
 
-# Chiavi JSON che possono contenere URL di stream
 JSON_STREAM_KEYS = ("stream_url", "play_url", "embed_url", "m3u8",
                     "manifest_url", "hls_url", "dash_url", "src",
                     "url", "link", "source", "video_url")
@@ -103,7 +106,6 @@ def find_links(html, base, patterns):
     return list(dict.fromkeys(found))
 
 def scan_json_for_streams(obj, base_url, results, depth=0):
-    """Ricorsivamente cerca URL di stream in strutture JSON."""
     if depth > 8: return
     if isinstance(obj, dict):
         for k, v in obj.items():
@@ -132,7 +134,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         engine = "playwright"
 
     found = []
-    network_map = {}       # url -> {method, url, type, status, mime}
+    network_map = {}       # url -> {method, url, type, status, mime, error?}
     cf_hit = {"cloudflare": False}
     start_time = time.time()
     cat_links, match_links = [], []
@@ -248,8 +250,36 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             except Exception:
                 pass
 
+        # === v13.2: listener per richieste fallite ===
+        def on_requestfailed(req):
+            try:
+                u = req.url
+                err = req.failure or "unknown"
+                log(f"    ❌ FAILED: {req.method} {u[:110]} ({err})")
+                network_map[u] = {
+                    "method": req.method,
+                    "url": u[:300],
+                    "type": req.resource_type,
+                    "status": "FAILED",
+                    "mime": "",
+                    "error": str(err)[:200],
+                }
+            except Exception:
+                pass
+
+        # === v13.2: listener per navigazione frame ===
+        def on_frame_navigated(frame):
+            try:
+                u = frame.url
+                if u and u != "about:blank" and "chrome-error" not in u:
+                    log(f"    🖼️ FRAME NAV: {u[:120]}")
+            except Exception:
+                pass
+
         page.on("request", on_request)
         page.on("response", on_response)
+        page.on("requestfailed", on_requestfailed)
+        page.on("framenavigated", on_frame_navigated)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
 
         # ===== Livello 1: homepage =====
@@ -270,14 +300,12 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         log(f"[*] Titolo: '{title[:80]}'  HTML: {html_len} byte")
         log(f"[*] Cloudflare hints: {cf_hit['cloudflare']}")
 
-        # Salva SEMPRE la homepage
         try:
             Path(os.path.join(debug_dir, HOMEPAGE_FILE)).write_text(html, encoding="utf-8")
             log(f"   💾 {HOMEPAGE_FILE} ({html_len} byte)")
         except Exception as e:
             log(f"   ⚠️ salvataggio homepage: {e}")
 
-        # Bloccata?
         if "avviso" in title.lower() or html_len < 2000:
             log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
             try:
@@ -347,7 +375,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     pass
                 page.wait_for_timeout(4000)
 
-                # Log frame presenti
+                # Log frame presenti (post-navigazione)
                 try:
                     for f in page.frames:
                         if f.url and f.url != "about:blank":
@@ -447,7 +475,7 @@ def main():
     ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
 
     log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.1 (Playwright stealth, UA={args.ua})")
+    log(f"📡 STREAMCORNER EXTRACTOR v13.2 (Playwright stealth, UA={args.ua})")
     log("=" * 66)
 
     found, network_map, meta = run_playwright(
@@ -457,7 +485,7 @@ def main():
     log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
     log(f"[*] Meta: {meta}")
 
-    # Salva sc_network.json
+    # Salva sc_network.json (ora include anche i FAILED con campo error)
     try:
         net_list = list(network_map.values())
         net_path = os.path.join(args.output_dir, NETWORK_FILE)
@@ -493,7 +521,7 @@ def main():
                    entries, group_override="StreamCorner")
     log(f"   💾 VLC: {n2}")
     n3 = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), entries)
-    log(f"   💾 KODI: {n3} (non committato se rimosso da file_pattern)")
+    log(f"   💾 KODI: {n3} (non committato — rimosso da file_pattern)")
     n4 = write_m3u(args.output, entries)
     log(f"   💾 {args.output}: {n4}")
 
