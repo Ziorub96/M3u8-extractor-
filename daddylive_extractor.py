@@ -14,7 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 
 BASE_CANDIDATES = [
-    "https://daddylive.app",
+    "https://daddylive.pk",
     "https://dlhd.so",
     "https://daddylive.sx",
     "https://daddylive.li",
