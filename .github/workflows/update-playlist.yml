@@ -69,13 +69,9 @@ jobs:
         continue-on-error: true
 
       # ============================================================
-      # StreamCorner v13.0 — Playwright stealth su streamcorner.st
-      # ------------------------------------------------------------
-      # Prova zero-cost: usa Playwright/Patchright per superare
-      # il challenge Cloudflare. Se GitHub Actions IP è bloccato,
-      # lo step fallisce gracefully e produce M3U vuote.
+      # StreamCorner v13.2 — Playwright stealth + debug requestfailed
       # ============================================================
-      - name: Extract StreamCorner streams (v13.0, Playwright stealth)
+      - name: Extract StreamCorner streams (v13.2, Playwright stealth)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
@@ -134,6 +130,27 @@ jobs:
           echo "--- Stato file ---"
           ls -la *.m3u *.txt *.json 2>/dev/null || true
 
+      # ============================================================
+      # ARTIFACT: sc_network.json + sc_homepage.html sempre scaricabili
+      # (funziona anche se il commit fallisce)
+      # ============================================================
+      - name: Upload StreamCorner debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: streamcorner-debug
+          path: |
+            sc_capture.json
+            sc_network.json
+            sc_homepage.html
+            sc_homepage_blocked.html
+          retention-days: 14
+          if-no-files-found: ignore
+
+      # ============================================================
+      # COMMIT: KODI rimosso (ignorato da .gitignore)
+      # sc_network.json + sc_homepage.html aggiunti
+      # ============================================================
       - name: Commit and push
         if: always()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -151,6 +168,8 @@ jobs:
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
             sc_capture.json
+            sc_network.json
+            sc_homepage.html
             .sc_static_cache.json
             watchfooty_events.m3u
           skip_dirty_check: false
