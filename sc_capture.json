@@ -6,18 +6,17 @@
   "provider_js_url": "/assets/provider-data.worker-DdPTVxb9.js",
   "workers_count": 25,
   "winner_worker": "data.5j181.workers.dev",
-  "catalog_size": 12,
-  "events_full": 12,
-  "events_live": 3,
+  "catalog_size": 14,
+  "events_full": 14,
+  "events_live": 6,
   "streams_skipped_pre_resolve": 0,
-  "embed_jobs": 7,
+  "embed_jobs": 12,
   "embed_resolved": 0,
-  "embed_failed": 7,
+  "embed_failed": 12,
   "failures_by_reason": {
-    "manifest_not_observed": 6,
-    "cloudflare_challenge": 1
+    "manifest_not_observed": 12
   },
   "ua_used": "desktop",
   "verify_cache": false,
-  "extracted_at": 1792240424
+  "extracted_at": 1792247807
 }
