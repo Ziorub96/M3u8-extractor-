@@ -1,7 +1,61 @@
 #EXTM3U
-#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.bfc82a09-ebda-41a0-8b45-9fb66df0330b%2F3%2FBOXART-16X9%2Fen-US%2F1920x1080._UR1920%2C1080_.png" group-title="Venezia vs. Napoli",Venezia vs. Napoli (SERIE A) — BEIN SPORTS 2 AU
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6da9af8d-0103-4ec6-8f24-fa3cc7844c0e%2F3%2FBOXART-16X9%2Fen-US%2F1920x1080._UR1920%2C1080_.png" group-title="Bologna vs. Inter Milan",Bologna vs. Inter Milan (SERIE A) — BEIN SPORTS 2 AU
 #EXTVLCOPT:http-referrer=https://cornerstream.tech/
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=dash
 https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/jag9aprhl1/out/v1/4728f4ca0eea4370a93e6eec5e507032/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.66638c2a-837c-4ed4-ac18-34af4990870c%2F3%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Bayern Munich vs. RB Leipzig",Bayern Munich vs. RB Leipzig (BUNDESLIGA) — BEIN SPORTS 1 AU
+#EXTVLCOPT:http-referrer=https://cornerstream.tech/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/ahhop66npg/out/v1/62dd3099ebe94506a623dd14d5cf2809/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6da9af8d-0103-4ec6-8f24-fa3cc7844c0e%2F3%2FBOXART-16X9%2Fen-US%2F1920x1080._UR1920%2C1080_.png" group-title="Bologna vs. Inter Milan",Bologna vs. Inter Milan (SERIE A) — CBS SPORTS GOLAZO NETWORK
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/rbem8rorcw/out/v1/5318821e2c3c44c2a439681b9aa86e9b/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6ac2fb99-08c6-49bc-9250-468c4cddea0b%2F2%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Real Betis vs. Barcelona",Real Betis vs. Barcelona (LALIGA) — BEIN SPORTS 3 AU
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/iwybdhwci8/out/v1/825bc872edec45aa8afc062a9e3e31ce/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6ac2fb99-08c6-49bc-9250-468c4cddea0b%2F2%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Real Betis vs. Barcelona",Real Betis vs. Barcelona (LALIGA) — PREMIER SPORTS 2 UK
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/bcj3iscpd6/out/v1/fcd137b391214f7cb99dd4d7be90ca87/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6ac2fb99-08c6-49bc-9250-468c4cddea0b%2F2%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Real Betis vs. Barcelona",Real Betis vs. Barcelona (LALIGA) — D SPORTS (ES)
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/iad-nitro/live/clients/dash/enc/z5oyxzsxdk/out/v1/7695a0f64a0e424b973d5b09a2a3eb91/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6ac2fb99-08c6-49bc-9250-468c4cddea0b%2F2%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Real Betis vs. Barcelona",Real Betis vs. Barcelona (LALIGA) — CAZETV (PT)
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/dftidtyzam/out/v1/9831c30f5dbe4d36810b62714432ecdb/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6ac2fb99-08c6-49bc-9250-468c4cddea0b%2F2%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Real Betis vs. Barcelona",Real Betis vs. Barcelona (LALIGA) — CAZETV 2 (PT)
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/vzeco5ty0v/out/v1/44c6b8f31a2544e3b2a9bb41ed5e241e/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.6ac2fb99-08c6-49bc-9250-468c4cddea0b%2F2%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Real Betis vs. Barcelona",Real Betis vs. Barcelona (LALIGA) — CAZETV 3 (PT)
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/ui54qo0g6h/out/v1/620e1448188d4bbe9a28d0dd52f45bb7/cenc.mpd
+#EXTINF:-1 tvg-logo="https://wsrv.nl/?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FS%2Fle-target-images-prod%2Famzn1.dv.gti.66638c2a-837c-4ed4-ac18-34af4990870c%2F3%2FBOXART-16X9%2Fen-AU%2F1920x1080._UR1920%2C1080_.png" group-title="Bayern Munich vs. RB Leipzig",Bayern Munich vs. RB Leipzig (BUNDESLIGA) — SPORTV BRAZIL (PT)
+#EXTVLCOPT:http-referrer=https://cornerstream.tech//
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=dash
+https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/w8kwdfmlgs/out/v1/3aa321e477504937a439b602e078eb18/cenc.mpd
