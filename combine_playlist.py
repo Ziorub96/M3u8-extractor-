@@ -1,262 +1,167 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Combina playlist M3U da sorgenti remote e locali.
-
-Filtra via qualsiasi URL che punta a una pagina embed HTML (NON m3u8).
-Include solo stream m3u8 diretti per un player IPTV pulito.
+combine_playlist.py — v2.0
+Unisce sorgenti con priorità, deduplica per URL e per titolo.
+Filtra host morti, embed HTML e endpoint API cifrati.
 """
 import re
-import requests
 from pathlib import Path
+from urllib.parse import urlparse
 
-# URL della guida TV combinata (generata da epg_combiner.py)
 EPG_URL = "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/combined_epg.xml"
 
-# Mapping canale -> tvg-id per nazionalità multiple
 TVG_ID_MAP = {
-    "Digi Sport 1": "DigiSport1.it",
-    "Digi Sport 2 HD": "DigiSport2.it",
-    "Digi Sport 3": "DigiSport3.it",
-    "Digi Sport 4": "DigiSport4.it",
-    "Match!Ultra": "MatchTV.ru",
-    "DAZN 1 Italia": "DAZN1.it",
-    "Sky Sport 24": "SkySport24.it",
-    "Sky Sport Calcio": "SkySportCalcio.it",
-    "Sky Sport UNO": "SkySportUno.it",
+    "Digi Sport 1": "DigiSport1.it", "Digi Sport 2 HD": "DigiSport2.it",
+    "Digi Sport 3": "DigiSport3.it", "Digi Sport 4": "DigiSport4.it",
+    "DAZN 1 Italia": "DAZN1.it", "Sky Sport 24": "SkySport24.it",
+    "Sky Sport Calcio": "SkySportCalcio.it", "Sky Sport UNO": "SkySportUno.it",
     "Sky Sports Main Event": "SkySportsMainEvent.uk",
     "Sky Sports Premier League": "SkySportsPremierLeague.uk",
-    "TNT Sports 1": "TNTSports1.uk",
-    "TNT Sports 2": "TNTSports2.uk",
-    "ESPN": "ESPN.us",
-    "ESPN2": "ESPN2.us",
-    "FOX Sports 1": "FoxSports1.us",
-    "beIN Sports 1": "beINSports1.fr",
-    "Bundesliga 1": "Bundesliga1.de",
-    "Movistar Deportes": "MovistarDeportes.es",
-    "Sport TV1": "SportTV1.pt",
-    "Eleven Sports 1": "ElevenSports1.pl",
+    "TNT Sports 1": "TNTSports1.uk", "TNT Sports 2": "TNTSports2.uk",
+    "ESPN": "ESPN.us", "ESPN2": "ESPN2.us",
+    "FOX Sports 1": "FoxSports1.us", "beIN Sports 1": "beINSports1.fr",
 }
 
-# ============================================================
-# EMBED_URL_PATTERNS — URL che NON sono m3u8 diretti
-# ------------------------------------------------------------
-# Questi sono pattern di pagine HTML che contengono un player JS
-# (Bitmovin/Shaka), NON flussi m3u8. Il player IPTV non li apre.
-# Vengono scartati SEMPRE, indipendentemente dalla sorgente.
-# ============================================================
-EMBED_URL_PATTERNS = [
-    # StreamCorner (embed HTML)
-    "getsugatensho",
-    "sportsembed",
-    # Embed morti residui
-    "amazon.com.pandecocogaming.sbs",
-    "taifood-blog.asia",
-    "embedhd.click",
-    "embedhd.pk",
-    "embedme.st",
-    "streamsgate.co",
-    "sportsonnline.click",
-    "instream.click",
-    "instream.live",
-    "instream.xyz",
-]
+# Host morti (scartati sempre)
+DEAD_HOSTS = {
+    "23.237.104.106", "cache0.wonvt.st", "edgestream1.pro", "edgestream2.pro",
+    "edgestream3.pro", "edgestream4.pro", "edgestream5.pro", "edgestream6.pro",
+    "edgestream7.pro", "193.47.62.41", "193.47.62.44", "193.47.62.50",
+    "193.47.62.55", "193.47.62.59", "futbolx.ryzn.pro", "judiaslevels.embeds.gay",
+    "chatgpt.hereisman.net", "karimianian.store", "instreams.xyz",
+    "instreams.live", "instreams.pro", "rtmpcdn.com", "streamfree.top",
+    "khala.futlivehd.com", "ftlly.com", "fubo18.com", "webcast-origin.b-cdn.net",
+}
 
-# === SORGENTI REMOTE ===
-SOURCES = [
-    ("doms9", "https://s.id/d9M3U8"),
-    ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u"),
-]
-
-# === SORGENTI LOCALI (prodotte dagli estrattori attivi) ===
-# Formato: (nome_sorgente, file_path, keep_group_title)
-#   - keep_group_title=True  → mantiene il group-title originale del file
-#   - keep_group_title=False → forza group-title = nome_sorgente
-#
-# StreamCorner: usiamo streamcorner_EVENTS_LIVE.m3u (una partita per gruppo,
-# con tutte le fonti sotto). Sostituisce il vecchio streamcorner_VLC.m3u flat.
-LOCAL_SOURCES = [
-    ("DAMITV", "damitv_events.m3u", False),
-    ("Daddylive", "daddylive_streams.m3u", False),
-    ("CDN Live TV Channels", "cdnlivetv_channels.m3u", False),
-    ("CDN Live TV Events", "cdnlivetv_events.m3u", False),
-    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", False),   # ← raggruppato per evento
-    # ("WatchFooty", "watchfooty_events.m3u", False),  # DISABILITATO (dominio morto)
-]
-
-# === SORGENTI DISMESSE (commentate per storico) ===
-# ("XYZStreams", "xyzstreams_events.m3u"),      # proxy Node fragile
-# ("SMTK Sport", "smtk_sport.m3u"),             # geobloccati (VPN russa)
-# ("Extra Sources", "extra_sources.m3u"),       # 0 flussi funzionanti
-
-OUTPUT_FILE = "combined_events.m3u"
-USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/120.0.0.0 Safari/537.36"
+EMBED_PATTERNS = (
+    "getsugatensho", "sportsembed", "embed.st/embed/", "pandecocogaming.sbs",
+    "embedhd.", "embedme.st", "taifood-blog.asia", "streamsgate.co",
 )
 
+# (nome, file, priorità) — numero più alto = più prioritario
+LOCAL_SOURCES = [
+    ("DAMITV", "damitv_events.m3u", 10),
+    ("Streamed", "streamed.m3u", 10),
+    ("Daddylive", "daddylive_streams.m3u", 5),
+    ("CDN Live TV Channels", "cdnlivetv_channels.m3u", 3),
+    ("CDN Live TV Events", "cdnlivetv_events.m3u", 3),
+    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", 2),
+]
 
-def fetch_playlist(url):
-    headers = {"User-Agent": USER_AGENT}
-    try:
-        r = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
-        r.raise_for_status()
-        return r.text.splitlines()
-    except Exception as e:
-        print(f"❌ Errore scaricando {url}: {e}")
-        return []
+REMOTE_SOURCES = [
+    ("doms9", "https://s.id/d9M3U8", 1),
+    ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u", 1),
+]
 
+OUTPUT_FILE = "combined_events.m3u"
 
-def fetch_local_playlist(path):
-    try:
-        return Path(path).read_text(encoding="utf-8", errors="ignore").splitlines()
-    except FileNotFoundError:
-        print(f"⚠️  File locale non trovato, skip: {path}")
-        return []
+def host_of(u):
+    return (urlparse(u).hostname or "").lower()
 
+def is_embed(u):
+    u = u.lower()
+    return any(p in u for p in EMBED_PATTERNS)
 
-def is_embed_url(url):
-    """True se l'URL punta a una pagina embed HTML (NON m3u8 diretto)."""
-    url_lower = url.lower()
-    return any(pattern in url_lower for pattern in EMBED_URL_PATTERNS)
+def is_api_endpoint(u):
+    """Scarta endpoint API cifrati (workers.dev/?p=...)."""
+    u = u.lower()
+    return "workers.dev/?p=" in u or "workers.dev?p=" in u
 
+def is_localhost(u):
+    return any(b in u.lower() for b in ("://127.0.0.1", "://localhost", "://0.0.0.0"))
 
-def set_group_title(extinf_line, group_title):
-    if 'group-title="' in extinf_line:
-        return re.sub(r'group-title="[^"]*"',
-                      f'group-title="{group_title}"',
-                      extinf_line)
-    if ',' in extinf_line:
-        head, tail = extinf_line.rsplit(',', 1)
-        return f'{head} group-title="{group_title}",{tail}'
-    return f'{extinf_line} group-title="{group_title}"'
+def set_group_title(line, grp):
+    if 'group-title="' in line:
+        return re.sub(r'group-title="[^"]*"', f'group-title="{grp}"', line)
+    if ',' in line:
+        h, t = line.rsplit(',', 1)
+        return f'{h} group-title="{grp}",{t}'
+    return f'{line} group-title="{grp}"'
 
-
-def set_tvg_id(extinf_line, channel_name, group_title):
-    if 'tvg-id="' in extinf_line:
-        return extinf_line
-    tvg_id = TVG_ID_MAP.get(channel_name)
-    if not tvg_id:
-        return extinf_line
-    if 'group-title="' in extinf_line:
-        return extinf_line.replace('group-title="',
-                                   f'tvg-id="{tvg_id}" group-title="')
-    if ',' in extinf_line:
-        head, tail = extinf_line.rsplit(',', 1)
-        return f'{head} tvg-id="{tvg_id}",{tail}'
-    return extinf_line
-
+def set_tvg_id(line, name):
+    if 'tvg-id="' in line:
+        return line
+    tid = TVG_ID_MAP.get(name)
+    if not tid:
+        return line
+    if 'group-title="' in line:
+        return line.replace('group-title="', f'tvg-id="{tid}" group-title="')
+    if ',' in line:
+        h, t = line.rsplit(',', 1)
+        return f'{h} tvg-id="{tid}",{t}'
+    return line
 
 def parse_m3u(lines):
-    blocks = []
-    current_block = []
-    for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("#EXTINF"):
-            if current_block:
-                blocks.append(current_block)
-            current_block = [stripped]
-        elif stripped and not stripped.startswith("#"):
-            current_block.append(stripped)
-            blocks.append(current_block)
-            current_block = []
-        elif stripped.startswith("#") and current_block:
-            current_block.append(stripped)
-    if current_block:
-        blocks.append(current_block)
+    blocks, cur = [], []
+    for l in lines:
+        s = l.strip()
+        if s.startswith("#EXTINF"):
+            if cur: blocks.append(cur)
+            cur = [s]
+        elif s and not s.startswith("#"):
+            cur.append(s); blocks.append(cur); cur = []
+        elif s.startswith("#") and cur:
+            cur.append(s)
+    if cur: blocks.append(cur)
     return blocks
 
-
-def process_blocks(blocks, name, all_lines, seen_urls, keep_group_title=False):
-    """Aggiunge i blocchi alla playlist combinata.
-
-    Filtri applicati:
-      - Rimuove YouTube (youtube.com, youtu.be, googlevideo.com)
-      - Rimuove URL embed HTML (EMBED_URL_PATTERNS) — NON sono m3u8
-      - Deduplica per URL
-
-    Se keep_group_title=True, mantiene il group-title originale del file.
-    Se False, forza group-title = nome sorgente.
-    """
+def process(blocks, name, prio, out, seen_urls, seen_titles):
     added = 0
-    skipped_embed = 0
-    for block in blocks:
-        stream_url = block[-1]
-
-        # Filtra YouTube
-        if any(domain in stream_url for domain in
-               ["youtube.com", "youtu.be", "googlevideo.com"]):
+    for b in blocks:
+        url = b[-1]
+        if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
             continue
-
-        # Filtra URL embed HTML (NON sono m3u8 → player non li apre)
-        if is_embed_url(stream_url):
-            skipped_embed += 1
+        if is_embed(url) or is_api_endpoint(url) or is_localhost(url):
             continue
-
-        # Deduplica per URL
-        if stream_url in seen_urls:
+        if host_of(url) in DEAD_HOSTS:
             continue
-        seen_urls.add(stream_url)
-
-        # Applica group-title e tvg-id
-        if block[0].startswith("#EXTINF"):
-            if not keep_group_title:
-                block[0] = set_group_title(block[0], name)
-            channel_name = block[0].split(",")[-1].strip()
-            block[0] = set_tvg_id(block[0], channel_name, name)
-        all_lines.extend(block)
+        if url in seen_urls:
+            continue
+        title = b[0].split(",")[-1].strip() if "," in b[0] else ""
+        if title and title in seen_titles:
+            continue
+        seen_urls.add(url)
+        if title: seen_titles.add(title)
+        if b[0].startswith("#EXTINF"):
+            b[0] = set_group_title(b[0], name)
+            b[0] = set_tvg_id(b[0], title)
+        out.append((prio, b))
         added += 1
-
-    if skipped_embed > 0:
-        print(f"   🚫 {skipped_embed} URL embed HTML scartati")
-
     return added
 
-
 def main():
-    all_lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
-    seen_urls = set()
+    import requests
+    out_blocks = []
+    seen_urls, seen_titles = set(), set()
 
-    # --- Sorgenti remote ---
-    for name, url in SOURCES:
-        print(f"📡 Scarico {name}...")
-        lines = fetch_playlist(url)
-        blocks = parse_m3u(lines)
-        print(f"   -> {len(blocks)} voci trovate")
-        if blocks:
-            all_lines.append(f"# ===== SORGENTE: {name} =====")
-            added = process_blocks(blocks, name, all_lines, seen_urls,
-                                   keep_group_title=False)
-            print(f"   -> {added} voci aggiunte (dopo deduplica)")
-
-    # --- Sorgenti locali ---
-    for entry in LOCAL_SOURCES:
-        # Supporto sia per tuple a 2 che a 3 elementi (retrocompatibilità)
-        if len(entry) == 3:
-            name, path, keep_group = entry
-        else:
-            name, path = entry
-            keep_group = False
-
-        if not Path(path).exists():
-            print(f"⚠️  Skip {name} (file assente: {path})")
+    for name, path, prio in LOCAL_SOURCES:
+        p = Path(path)
+        if not p.exists():
+            print(f"⚠️ {name}: file assente")
             continue
-        print(f"📂 Leggo file locale {name}...")
-        lines = fetch_local_playlist(path)
+        lines = p.read_text(encoding="utf-8", errors="ignore").splitlines()
         blocks = parse_m3u(lines)
-        print(f"   -> {len(blocks)} voci trovate")
-        if blocks:
-            all_lines.append(f"# ===== SORGENTE: {name} =====")
-            added = process_blocks(blocks, name, all_lines, seen_urls,
-                                   keep_group_title=keep_group)
-            print(f"   -> {added} voci aggiunte (dopo deduplica)")
+        n = process(blocks, name, prio, out_blocks, seen_urls, seen_titles)
+        print(f"📂 {name}: {n}/{len(blocks)} aggiunti (prio {prio})")
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write("\n".join(all_lines))
+    for name, url, prio in REMOTE_SOURCES:
+        try:
+            r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+            r.raise_for_status()
+            blocks = parse_m3u(r.text.splitlines())
+            n = process(blocks, name, prio, out_blocks, seen_urls, seen_titles)
+            print(f"📡 {name}: {n}/{len(blocks)} aggiunti (prio {prio})")
+        except Exception as e:
+            print(f"❌ {name}: {e}")
 
-    print(f"\n✅ Salvato {OUTPUT_FILE} con {len(seen_urls)} flussi unici")
-
+    # Ordina per priorità decrescente
+    out_blocks.sort(key=lambda x: -x[0])
+    lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
+    for _, b in out_blocks:
+        lines.extend(b)
+    Path(OUTPUT_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"\n✅ {OUTPUT_FILE}: {len(out_blocks)} flussi unici")
 
 if __name__ == "__main__":
     main()
