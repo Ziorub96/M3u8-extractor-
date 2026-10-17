@@ -69,9 +69,13 @@ jobs:
         continue-on-error: true
 
       # ============================================================
-      # StreamCorner v13.2 — Playwright stealth + debug requestfailed
+      # StreamCorner v13.2 — SOSPESO
+      # brunhild.challenges.cloudflare.com non risolve da GH Actions
+      # (IP Azure datacenter non accettato da Turnstile).
+      # Tenuto qui come riferimento; riattivare con proxy IT residenziale.
       # ============================================================
-      - name: Extract StreamCorner streams (v13.2, Playwright stealth)
+      - name: Extract StreamCorner streams (v13.2, sospeso)
+        if: false
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
@@ -87,6 +91,9 @@ jobs:
         continue-on-error: true
         timeout-minutes: 25
 
+      # ============================================================
+      # PirloTV / Rojadirecta / Liveru — famiglia "tR"
+      # ============================================================
       - name: Extract PirloTV streams (v1.0)
         run: |
           python pirlotv_extractor.py \
@@ -123,10 +130,10 @@ jobs:
             streamcorner_COMPLETE.m3u \
             streamcorner_VLC.m3u \
             streamcorner_EVENTS_LIVE.m3u \
-            pirlotv_COMPLETE.m3u
-            pirlotv_VLC.m3u
-            pirlotv_EVENTS_LIVE.m3u
-            pirlotv_capture.json
+            pirlotv_COMPLETE.m3u \
+            pirlotv_VLC.m3u \
+            pirlotv_EVENTS_LIVE.m3u \
+            pirlotv_capture.json \
             sc_capture.json \
             watchfooty_events.m3u; do
             if [ ! -f "$f" ]; then
@@ -144,8 +151,7 @@ jobs:
           ls -la *.m3u *.txt *.json 2>/dev/null || true
 
       # ============================================================
-      # ARTIFACT: sc_network.json + sc_homepage.html sempre scaricabili
-      # (funziona anche se il commit fallisce)
+      # ARTIFACT StreamCorner (per debug futuro)
       # ============================================================
       - name: Upload StreamCorner debug artifacts
         if: always()
@@ -161,8 +167,27 @@ jobs:
           if-no-files-found: ignore
 
       # ============================================================
-      # COMMIT: KODI rimosso (ignorato da .gitignore)
-      # sc_network.json + sc_homepage.html aggiunti
+      # ARTIFACT PirloTV (scarica anche se il commit fallisce)
+      # ============================================================
+      - name: Upload PirloTV debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pirlotv-debug
+          path: |
+            pirlotv_capture.json
+            pirlotv_COMPLETE.m3u
+            pirlotv_EVENTS_LIVE.m3u
+            pirlotv_VLC.m3u
+          retention-days: 14
+          if-no-files-found: ignore
+
+      # ============================================================
+      # COMMIT
+      # - KODI rimosso (ignorato da .gitignore)
+      # - StreamCorner: sc_capture + sc_network + sc_homepage
+      # - PirloTV: COMPLETE + VLC + EVENTS_LIVE + capture.json
+      # - NIENTE backslash nel file_pattern (YAML folded scalar)
       # ============================================================
       - name: Commit and push
         if: always()
@@ -180,10 +205,10 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
-            pirlotv_COMPLETE.m3u \
-            pirlotv_VLC.m3u \
-            pirlotv_EVENTS_LIVE.m3u \
-            pirlotv_capture.json \
+            pirlotv_COMPLETE.m3u
+            pirlotv_VLC.m3u
+            pirlotv_EVENTS_LIVE.m3u
+            pirlotv_capture.json
             sc_capture.json
             sc_network.json
             sc_homepage.html
