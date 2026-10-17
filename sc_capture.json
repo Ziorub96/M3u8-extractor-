@@ -1,23 +1,13 @@
 {
-  "site": "https://cornerstream.tech/",
-  "provider": "admin",
-  "discovery_source": "cache",
-  "main_js_url": "/assets/c4bS9Xkc.js",
-  "provider_js_url": "/assets/provider-data.worker-DdPTVxb9.js",
-  "workers_count": 25,
-  "winner_worker": "data.5j181.workers.dev",
-  "catalog_size": 6,
-  "events_full": 6,
-  "events_live": 5,
-  "streams_skipped_pre_resolve": 0,
-  "embed_jobs": 18,
-  "embed_resolved": 4,
-  "embed_failed": 14,
-  "failures_by_reason": {
-    "manifest_not_observed": 12,
-    "cloudflare_challenge": 2
-  },
-  "ua_used": "desktop",
-  "verify_cache": false,
-  "extracted_at": 1792266790
+  "site": "https://streamcorner.st",
+  "engine": "patchright",
+  "title": "StreamCorner - Free Live Sports, 24/7 Channels, MLB, NFL, SOCCER, UFC, PPV Events, NBA League Pass Live and VOD Full HQ, Sling TV, Paramount+",
+  "html_len": 110330,
+  "cloudflare_detected": true,
+  "blocked": false,
+  "categories_found": 3,
+  "matches_found": 24,
+  "manifests_found": 0,
+  "entries_final": 0,
+  "extracted_at": 1792278679
 }
