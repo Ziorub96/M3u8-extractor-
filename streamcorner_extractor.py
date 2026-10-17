@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v10.3
+StreamCorner / CornerStream Extractor — v10.4
 ==============================================
-Basato su v10.2 (HTTP-puro + cache + curl_cffi + chunk lazy discovery).
+Basato su v10.3.
 
-Novità v10.3 (4 fix):
-  FIX 1  Skip DRM manifest (schemeIdUri Widevine/PlayReady/…)
-  FIX 2  manifest_type dinamico (dash per .mpd, hls per .m3u8) — non più hls fisso
-  FIX 3  Skip host che sprecano Playwright (Widevine su pandecocogaming.sbs)
-  FIX 4  Filtro finale .mpd/DRM: scarta dalla M3U, non dalla cache
+Novità v10.4:
+  FIX A  Separazione formato (HLS/DASH) da protezione (confirmed/absent/unknown)
+  FIX B  Logging diagnostico di OGNI esito (non solo ogni 5)
+  FIX C  final_url e title valorizzati
+  FIX D  page.on("pageerror") e page.on("requestfailed")
+  FIX E  rec["error"] valorizzato su ogni fallimento
+  FIX F  Timeout Playwright aumentati (30s totali vs 17s)
+  FIX G  UA configurabile: --ua desktop|mobile (default desktop)
+  FIX H  entry_lines: manifest_type dinamico; .mpd non-DRM incluso
+  FIX I  Cache opzionalmente verificata (--verify-cache)
 """
 
 from __future__ import annotations
@@ -26,6 +31,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
              "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1")
 
+UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) "
+              "Chrome/124.0.0.0 Safari/537.36")
+
 SITE = "https://cornerstream.tech/"
 STATIC_CACHE = ".sc_static_cache.json"
 CACHE_TTL = 7 * 24 * 3600
@@ -40,7 +49,7 @@ DRM_REPORT = "sc_drm_report.jsonl"
 
 DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
 
-# v10.3 FIX 1/3: DRM detection + host skip
+# FIX A: separazione formato / protezione
 DRM_SCHEMES = ("edef8ba9", "9a04f079", "1077efecc0b24d02",
                "urn:uuid:edef8ba9", "urn:uuid:9a04f079",
                "urn:uuid:1077efecc0b24d02")
@@ -132,7 +141,7 @@ def cache_save(main_js_url, provider_js_url, workers, provider_content_b64):
 
 
 # ============================================================
-# VAULT DECODER (invariato v10.2)
+# VAULT DECODER (invariato)
 # ============================================================
 MAGIC32 = 0xFFFFFFFF
 
@@ -258,7 +267,7 @@ def salsa20_12(key, nonce8, data):
 
 
 # ============================================================
-# DISCOVERY con cache + esplorazione chunk (invariato)
+# DISCOVERY (invariato)
 # ============================================================
 def _parse_provider(txt):
     m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
@@ -379,7 +388,7 @@ def discover_all(site=SITE, force_refresh=False):
 
 
 # ============================================================
-# NINJACORNER CLIENT (invariato v10.2)
+# NINJACORNER CLIENT (invariato)
 # ============================================================
 class NinjaClient:
     def __init__(self, vault, workers):
@@ -450,21 +459,34 @@ class NinjaClient:
 
 
 # ============================================================
-# EMBED RESOLVER (Playwright) — v10.3 con FIX 1+3
+# EMBED RESOLVER (Playwright) — v10.4 con FIX C/D/E/F/G
 # ============================================================
 LICENSE_HINTS = ("license", "widevine", "getlicense", "acquirelicense", "drm")
 MANIFEST_HINTS = (".m3u8", ".mpd", "manifest", "playlist")
 CF_HINTS = ("challenges.cloudflare.com", "cf-chl", "/cdn-cgi/challenge", "turnstile")
 
 
-def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
-    # v10.3 FIX 1+3: skip DRM manifest o host Widevine PRIMA di lanciare Playwright.
-    # Risparmia ~30-45s per stream. Stream filtrati NON entrano nella M3U.
-    if is_drm_manifest(embed_url) or host_of(embed_url) in SKIP_HOSTS:
+def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag="", ua=None):
+    """
+    Ritorna un dict con:
+      url          : manifest trovato (o None)
+      m3u8, mpd    : manifest per formato
+      license_url  : URL di licenza osservato (indizio DRM)
+      cloudflare   : challenge rilevato
+      final_url    : URL finale del browser (FIX C)
+      title        : titolo pagina (FIX C)
+      requests     : indizi di rete
+      engine       : engine usato
+      error        : motivo del fallimento (FIX E)
+      referer      : referer originale
+      skipped      : True se scartato a priori
+    """
+    if has_explicit_drm_hint(embed_url) or host_of(embed_url) in SKIP_HOSTS:
         return {"url": None, "m3u8": None, "mpd": None, "license_url": None,
                 "cloudflare": False, "final_url": None, "title": None,
                 "requests": [], "engine": "skipped",
-                "referer": origin + "/", "skipped": "drm_or_host"}
+                "referer": origin + "/", "skipped": "drm_or_host",
+                "error": "skipped_before_resolve"}
 
     try:
         from patchright.sync_api import sync_playwright
@@ -473,9 +495,12 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
         from playwright.sync_api import sync_playwright
         engine = "playwright"
 
+    user_agent = ua or UA_DESKTOP  # FIX G
+
     rec = {"url": None, "m3u8": None, "mpd": None, "license_url": None,
            "cloudflare": False, "final_url": None, "title": None,
-           "requests": [], "engine": engine, "referer": origin + "/"}
+           "requests": [], "engine": engine, "referer": origin + "/",
+           "error": None}
 
     def on_request(req):
         u = req.url; lu = u.lower()
@@ -516,19 +541,29 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
                 kw["proxy"] = {"server": proxy}
             browser = p.chromium.launch(**kw)
             ctx = browser.new_context(
-                user_agent=UA_IPHONE, viewport={"width": 1280, "height": 800},
+                user_agent=user_agent, viewport={"width": 1280, "height": 800},
                 locale="it-IT", timezone_id="Europe/Rome",
                 extra_http_headers={"Referer": origin + "/"},
                 ignore_https_errors=True)
             ctx.on("request", on_request)
             ctx.on("response", on_response)
             page = ctx.new_page()
+
+            # FIX D: diagnosi JS e richieste fallite
+            page.on("pageerror", lambda exc: log(
+                f"      JS ERROR [{tag}]: {str(exc)[:180]}"))
+            page.on("requestfailed", lambda req: log(
+                f"      REQ FAILED [{tag}]: {req.url[:140]} | {req.failure}"))
+
             try:
                 page.goto(embed_url, wait_until="domcontentloaded",
                           timeout=timeout * 1000)
-            except Exception:
-                pass
-            page.wait_for_timeout(8000)
+            except Exception as exc:
+                rec["error"] = f"goto: {type(exc).__name__}: {str(exc)[:120]}"
+
+            # FIX F: timeout aumentati
+            page.wait_for_timeout(15000)
+
             for sel in ("button[aria-label*='play' i]", ".vjs-big-play-button",
                         ".jw-icon-playback", ".bitmovinplayer-ui",
                         ".clappr-play-button", "video"):
@@ -539,55 +574,94 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
                         break
                 except Exception:
                     continue
-            page.wait_for_timeout(9000)
+
+            page.wait_for_timeout(15000)
+
+            # FIX C: valorizza final_url e title prima di chiudere
+            try:
+                rec["final_url"] = page.url
+                rec["title"] = page.title()
+                log(f"      PAGE [{tag}]: {rec['final_url'][:180]}")
+                log(f"      TITLE [{tag}]: {rec['title'][:120]}")
+            except Exception as exc:
+                log(f"      PAGE INFO ERROR [{tag}]: {str(exc)[:120]}")
+
             browser.close()
     except Exception as e:
-        log(f"      ❌ {tag}: {str(e)[:100]}")
+        rec["error"] = f"playwright: {type(e).__name__}: {str(e)[:150]}"
+        log(f"      ❌ {tag}: {rec['error']}")
 
     rec["url"] = rec["m3u8"] or rec["mpd"]
+    if not rec["url"] and not rec.get("error"):
+        rec["error"] = "manifest_not_observed"
     return rec
 
 
 # ============================================================
-# v10.3 FIX helper (manifest_type dinamico, DRM, host)
+# FIX A: helper formato/protezione
 # ============================================================
-def is_drm_manifest(u: str) -> bool:
-    u = (u or "").lower()
-    if not u:
-        return False
-    if u.split("?")[0].endswith(".mpd"):
-        return True
-    return any(s in u for s in DRM_SCHEMES)
-
-
 def manifest_type(u: str) -> str | None:
-    u = (u or "").lower().split("?")[0]
-    if u.endswith(".mpd"):
-        return "dash"
-    if u.endswith(".m3u8"):
+    """Ritorna 'hls' | 'dash' | None. NON deduce DRM."""
+    path = urlparse(u or "").path.lower()
+    if path.endswith(".m3u8"):
         return "hls"
+    if path.endswith(".mpd"):
+        return "dash"
     return None
+
+
+def has_explicit_drm_hint(u: str) -> bool:
+    """Indizio DRM nell'URL (schemeIdUri, ecc.). NON prova assenza di DRM."""
+    v = (u or "").lower()
+    return any(s in v for s in DRM_SCHEMES)
 
 
 def host_of(u: str) -> str:
     return (urlparse(u).hostname or "").lower()
 
 
-def should_skip(url: str) -> bool:
-    return is_drm_manifest(url) or host_of(url) in SKIP_HOSTS
+def drm_status(rec: dict) -> str:
+    """Ritorna 'confirmed' | 'absent' | 'unknown'."""
+    if not rec.get("url"):
+        return "unknown"
+    if rec.get("license_url"):
+        return "confirmed"
+    if any("license" in (r.get("u") or "").lower() for r in rec.get("requests", [])):
+        return "confirmed"
+    if has_explicit_drm_hint(rec["url"]):
+        return "confirmed"
+    mt = manifest_type(rec["url"])
+    if mt == "hls":
+        return "absent"
+    if mt == "dash":
+        # DASH può essere protetto o no; senza info sul manifest, unknown.
+        return "unknown"
+    return "unknown"
+
+
+def is_unplayable(rec: dict) -> bool:
+    """Sostituisce should_skip(url). Decide sulla base di rec completo."""
+    if rec.get("skipped"):
+        return True
+    if not rec.get("url"):
+        return True
+    if host_of(rec["url"]) in SKIP_HOSTS:
+        return True
+    if drm_status(rec) == "confirmed":
+        return True
+    return False
 
 
 # ============================================================
-# M3U — v10.3 FIX 2 (manifest_type dinamico)
+# M3U — FIX H (manifest_type dinamico, .mpd non-DRM incluso)
 # ============================================================
 def entry_lines(rec, label, group, logo=""):
     lo = f' tvg-logo="{logo}"' if logo else ""
     out = [f'#EXTINF:-1{lo} group-title="{group}",{label}']
     if rec.get("referer"):
         out.append(f"#EXTVLCOPT:http-referrer={rec['referer']}")
-    out.append(f"#EXTVLCOPT:http-user-agent={UA_IPHONE}")
+    out.append(f"#EXTVLCOPT:http-user-agent={UA_DESKTOP}")
     out.append("#KODIPROP:inputstream=inputstream.adaptive")
-    # v10.3 FIX 2: NON più hls fisso — usa il tipo reale dell'URL
     mt = manifest_type(rec.get("url"))
     if mt:
         out.append(f"#KODIPROP:inputstream.adaptive.manifest_type={mt}")
@@ -596,16 +670,19 @@ def entry_lines(rec, label, group, logo=""):
 
 
 def write_m3u(path, rows):
-    seen, n = set(), 0
+    seen, n, skipped = set(), 0, 0
     with open(path, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         for label, logo, grp, rec in rows:
             if not rec.get("url") or rec["url"] in seen:
                 continue
+            if is_unplayable(rec):
+                skipped += 1
+                continue
             seen.add(rec["url"])
             f.write("\n".join(entry_lines(rec, label, grp, logo)) + "\n")
             n += 1
-    return n
+    return n, skipped
 
 
 def is_live(ev, now=None):
@@ -621,30 +698,52 @@ def is_live(ev, now=None):
 
 
 # ============================================================
+# FIX I: cache opzionale con verifica
+# ============================================================
+def verify_cached_url(u: str) -> bool:
+    if not u:
+        return False
+    try:
+        st, body, hdr = http_get(u, timeout=10, referer=SITE)
+        if st != 200 or not body:
+            return False
+        ct = (hdr.get("content-type") or "").lower()
+        return ("mpegurl" in ct or "dash+xml" in ct
+                or body[:7] == b"#EXTM3U" or b"<MPD" in body[:2048])
+    except Exception:
+        return False
+
+
+# ============================================================
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.3")
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.4")
     ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=None)
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
     ap.add_argument("--provider", default=PROVIDER_DEFAULT)
     ap.add_argument("--all-events", action="store_true")
     ap.add_argument("--no-embeds", action="store_true")
-    ap.add_argument("--refresh", action="store_true",
-                    help="Forza refresh cache statica")
+    ap.add_argument("--refresh", action="store_true")
+    ap.add_argument("--verify-cache", action="store_true",
+                    help="Verifica HTTP i cached URL prima di riusarli")
     ap.add_argument("--embed-workers", "--playwright-workers",
                     type=int, default=4, dest="embed_workers")
     ap.add_argument("--embed-limit", "--playwright-limit",
                     type=int, default=0, dest="embed_limit")
+    ap.add_argument("--ua", choices=["desktop", "mobile"], default="desktop",
+                    help="User-Agent Playwright (FIX G, default desktop)")
     args, _unknown = ap.parse_known_args()
 
     if args.output_dir is None:
         args.output_dir = os.path.dirname(args.output) or "."
     os.makedirs(args.output_dir, exist_ok=True)
 
+    ua = UA_DESKTOP if args.ua == "desktop" else UA_IPHONE
+
     log("=" * 66)
-    log("📡 STREAMCORNER EXTRACTOR v10.3 (DRM-safe)")
+    log(f"📡 STREAMCORNER EXTRACTOR v10.4 (UA={args.ua})")
     log("=" * 66)
 
     # ---- 1. Discovery ----
@@ -715,7 +814,8 @@ def main():
             cache = {}
 
     rows, embed_jobs = [], []
-    skipped_drm = 0
+    skipped_pre = 0
+
     for ev in live:
         name = ev.get("event_name") or ev.get("title") or "?"
         league = ev.get("league") or ""
@@ -726,31 +826,29 @@ def main():
             if not isinstance(s, dict):
                 continue
             u = str(s.get("stream_url") or "").strip()
-            # v10.3 FIX 1+4: URL diretto .mpd → scarta
             if u and DIRECT_RE.search(u.split("?")[0]):
-                if should_skip(u):
-                    skipped_drm += 1
+                if host_of(u) in SKIP_HOSTS or has_explicit_drm_hint(u):
+                    skipped_pre += 1
                     continue
+                rec = {"url": u, "referer": SITE, "requests": [],
+                       "license_url": None, "skipped": None}
                 rows.append((f"{base} — {s.get('source_name') or '?'} [DIRETTA]",
-                             logo, name, {"url": u, "referer": SITE}))
+                             logo, name, rec))
                 continue
             emb = s.get("embed_url")
             if not emb or args.no_embeds:
                 continue
             sname = s.get("source_name") or "?"
-            if cache.get(emb):
-                cached = cache[emb]
-                # v10.3 FIX 4: cache vecchia con DRM → scarta
-                if should_skip(cached):
-                    skipped_drm += 1
-                    continue
-                rows.append((f"{base} — {sname}", logo, name,
-                             {"url": cached, "referer": SITE}))
+            cached = cache.get(emb)
+            if cached and not (args.verify_cache and not verify_cached_url(cached)):
+                rec = {"url": cached, "referer": SITE, "requests": [],
+                       "license_url": None, "skipped": None}
+                rows.append((f"{base} — {sname}", logo, name, rec))
             else:
                 embed_jobs.append((emb, f"{base} — {sname}", logo, name))
 
-    if skipped_drm:
-        log(f"   🚫 {skipped_drm} stream DRM/host-skip scartati prima del resolve")
+    if skipped_pre:
+        log(f"   🚫 {skipped_pre} stream DRM/host-skip scartati prima del resolve")
     log(f"   dirette: {len(rows)}   embed da risolvere: {len(embed_jobs)}")
     if args.embed_limit:
         embed_jobs = embed_jobs[:args.embed_limit]
@@ -762,7 +860,7 @@ def main():
         def job(item):
             emb, label, logo, grp = item
             return emb, label, logo, grp, resolve_embed(
-                emb, SITE, args.proxy, tag=label[:28])
+                emb, SITE, args.proxy, tag=label[:28], ua=ua)
 
         with ThreadPoolExecutor(max_workers=args.embed_workers) as ex:
             for f in as_completed([ex.submit(job, i) for i in embed_jobs]):
@@ -770,15 +868,26 @@ def main():
                 try:
                     emb, label, logo, grp, r = f.result()
                 except Exception as e:
-                    log(f"   ❌ {str(e)[:90]}"); continue
+                    log(f"   ❌ [{done}/{len(embed_jobs)}] {str(e)[:90]}")
+                    continue
                 r["embed"] = emb; r["label"] = label
                 report.append(r)
+
+                # FIX B + E: log di OGNI esito con causa
                 if r.get("url"):
                     cache[emb] = r["url"]
                     rows.append((label, logo, grp, r))
-                    log(f"   🎯 [{done}/{len(embed_jobs)}] {label[:45]}")
-                elif done % 5 == 0:
-                    log(f"   · [{done}/{len(embed_jobs)}]")
+                    st = drm_status(r)
+                    mt = manifest_type(r["url"]) or "?"
+                    log(f"   🎯 [{done}/{len(embed_jobs)}] {label[:45]} "
+                        f"| {mt} | drm={st}")
+                else:
+                    reason = r.get("error") or "manifest_not_observed"
+                    if r.get("cloudflare"):
+                        reason = "cloudflare_challenge"
+                    elif r.get("requests"):
+                        reason = f"network({len(r['requests'])})_no_manifest"
+                    log(f"   ⚠️ [{done}/{len(embed_jobs)}] {label[:45]} — {reason}")
 
         try:
             json.dump(cache, open(M3U8_CACHE, "w", encoding="utf-8"),
@@ -790,24 +899,22 @@ def main():
         drm_path = os.path.join(args.output_dir, DRM_REPORT)
         with open(drm_path, "w", encoding="utf-8") as f:
             for r in report:
-                f.write(json.dumps(r, ensure_ascii=False) + "\n")
-
-    # ---- v10.3 FIX 4: filtro finale prima di scrivere i file ----
-    before = len(rows)
-    rows = [(l, lg, g, r) for (l, lg, g, r) in rows if not should_skip(r.get("url"))]
-    if len(rows) != before:
-        log(f"   🚫 filtro finale: -{before - len(rows)} stream DRM/host-skip")
+                # FIX E: includi status sintetico
+                r2 = dict(r)
+                r2["drm_status"] = drm_status(r)
+                r2["manifest_type"] = manifest_type(r.get("url"))
+                f.write(json.dumps(r2, ensure_ascii=False) + "\n")
 
     # ---- Output ----
-    n = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), rows)
-    log(f"   💾 EVENTS_LIVE: {n}")
-    n = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
-                  [(l, lg, "StreamCorner", r) for l, lg, _, r in rows])
-    log(f"   💾 VLC: {n}")
-    n = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), rows)
-    log(f"   💾 KODI: {n}")
-    n = write_m3u(args.output, rows)
-    log(f"   💾 {args.output}: {n}")
+    n, sk = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), rows)
+    log(f"   💾 EVENTS_LIVE: {n} (skipped: {sk})")
+    n, sk = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
+                      [(l, lg, "StreamCorner", r) for l, lg, _, r in rows])
+    log(f"   💾 VLC: {n} (skipped: {sk})")
+    n, sk = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), rows)
+    log(f"   💾 KODI: {n} (skipped: {sk})")
+    n, sk = write_m3u(args.output, rows)
+    log(f"   💾 {args.output}: {n} (skipped: {sk})")
 
     # ---- Summary ----
     try:
@@ -822,10 +929,13 @@ def main():
             "catalog_size": len(catalog),
             "events_full": len(events_full),
             "events_live": len(live),
-            "streams_total": len(rows),
-            "streams_skipped_drm": skipped_drm,
+            "streams_skipped_pre_resolve": skipped_pre,
             "embed_jobs": len(embed_jobs),
             "embed_resolved": sum(1 for r in report if r.get("url")),
+            "embed_failed": sum(1 for r in report if not r.get("url")),
+            "failures_by_reason": _summarize(report),
+            "ua_used": args.ua,
+            "verify_cache": args.verify_cache,
             "extracted_at": int(time.time()),
         }
         with open(os.path.join(args.output_dir, CAPTURE_FILE), "w",
@@ -836,8 +946,23 @@ def main():
         log(f"   ⚠️ capture: {e}")
 
     log("\n" + "=" * 66)
-    log(f"✅ eventi={len(live)}  stream={len(rows)}  report={len(report)}")
+    log(f"✅ eventi={len(live)}  resolved={summary['embed_resolved']}  "
+        f"failed={summary['embed_failed']}")
     log("=" * 66)
+
+
+def _summarize(report):
+    out = {}
+    for r in report:
+        if r.get("url"):
+            continue
+        key = r.get("error") or "manifest_not_observed"
+        if r.get("cloudflare"):
+            key = "cloudflare_challenge"
+        elif r.get("requests"):
+            key = f"network_no_manifest"
+        out[key] = out.get(key, 0) + 1
+    return out
 
 
 if __name__ == "__main__":
