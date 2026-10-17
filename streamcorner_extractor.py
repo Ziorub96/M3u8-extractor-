@@ -1,233 +1,155 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v11.0 — adattato a streamcorner.vu + WASM decrypt.
-Mantiene il supporto legacy per cornerstream.tech (Salsa20/12) se ancora attivo.
+StreamCorner Extractor v13.0 — Playwright stealth (GitHub Actions).
+- Usa patchright per bypassare Cloudflare.
+- Header italiani, timezone Europe/Rome.
+- Intercetta .m3u8 e scarta DASH/host morti.
+- Da eseguire su GitHub Actions, non su Carnets.
 """
-import base64, hashlib, hmac, json, os, re, struct, sys, time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import json, os, re, sys, time
+from pathlib import Path
 from urllib.parse import urlparse
 
-try:
-    from curl_cffi import requests as http
-    _IMP = {"impersonate": "chrome124"}
-except ImportError:
-    import requests as http
-    _IMP = {}
-
-# --- Domini (ordine di tentativo) ---
-SITES = ["https://streamcorner.vu/", "https://cornerstream.tech/"]
-SITE = SITES[0]
-CACHE_FILE = ".sc_static_cache.json"
-WASM_CACHE = ".sc_wasm_cache.wasm"
-M3U8_CACHE = ".sc_m3u8_cache.json"
-WINDOW_SEC = 300
-TOLERANCE = 1
-
-DRM_SCHEMES = ("edef8ba9", "9a04f079", "1077efecc0b24d02",
-               "urn:uuid:edef8ba9", "urn:uuid:9a04f079")
-SKIP_HOSTS = {"pandecocogaming.sbs"}
+BASE = "https://streamcorner.st"
+OUT = "streamcorner.m3u"
+SKIP_HOSTS = {"pandecocogaming.sbs", "taifood-blog.asia", "streamcorner.xyz",
+              "embed.st", "getsugatensho", "sportsembed"}
 
 def log(*a): print(*a, flush=True)
 
-# --- WASM decrypt (nuovo protocollo) ---
-def load_wasm_decryptor():
-    """Carica il WASM e restituisce una funzione decrypt(ciphertext, mode='d1')."""
+def host_of(u): return (urlparse(u).hostname or "").lower()
+
+def is_bad(u):
+    u = u.lower()
+    if any(h in u for h in SKIP_HOSTS): return True
+    if u.split("?")[0].endswith(".mpd"): return True
+    return False
+
+def run():
     try:
-        import wasmtime
+        from patchright.sync_api import sync_playwright
+        log("[*] Uso patchright (stealth)")
     except ImportError:
-        log("[!] wasmtime non installato: pip install wasmtime")
-        return None
-    if not os.path.exists(WASM_CACHE):
-        # Prova a scaricare il WASM dal nuovo dominio
-        for base in SITES:
-            try:
-                r = http.get(base + "assets/QrCgJwO-.wasm", timeout=20, **_IMP)
-                if r.status_code == 200 and len(r.content) > 1000:
-                    with open(WASM_CACHE, "wb") as f:
-                        f.write(r.content)
-                    break
-            except Exception:
-                continue
-        else:
-            log("[!] impossibile scaricare il WASM")
-            return None
+        from playwright.sync_api import sync_playwright
+        log("[*] Uso playwright standard")
 
-    engine = wasmtime.Engine()
-    store = wasmtime.Store(engine)
-    module = wasmtime.Module.from_file(engine, WASM_CACHE)
-    linker = wasmtime.Linker(engine)
-    # Il WASM potrebbe importare funzioni; se fallisce, prova senza
-    try:
-        instance = linker.instantiate(store, module)
-    except Exception:
-        # Fallback: istanziazione senza import (il WASM potrebbe essere self-contained)
-        instance = wasmtime.Instance(store, module, [])
-    exports = instance.exports(store)
+    m3u8_urls = []
 
-    alloc = exports["a"]
-    decode = exports["d1"]
-    read_ptr = exports["rp"]
-    read_len = exports["rl"]
-    memory = exports["memory"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, args=[
+            "--disable-blink-features=AutomationControlled",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-web-security",
+            "--disable-features=IsolateOrigins,site-per-process",
+        ])
+        ctx = browser.new_context(
+            user_agent=("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/124.0.0.0 Safari/537.36"),
+            viewport={"width": 1280, "height": 800},
+            locale="it-IT",
+            timezone_id="Europe/Rome",
+            extra_http_headers={
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+                "Referer": "https://www.google.it/",
+            },
+        )
+        # Patch per nascondere webdriver
+        ctx.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            window.chrome = {runtime: {}};
+            Object.defineProperty(navigator, 'languages', {get: () => ['it-IT', 'it']});
+        """)
 
-    def decrypt(ciphertext: str) -> str:
-        data = ciphertext.encode("utf-8")
-        n = len(data)
-        ptr = alloc(store, n)
-        mem = memory.data_ptr(store)
-        for i, b in enumerate(data):
-            mem[ptr + i] = b
-        decode(store, ptr, n)
-        res_ptr = read_ptr(store)
-        res_len = read_len(store)
-        raw = memory.read(store, res_ptr, res_ptr + res_len)
-        return raw.decode("utf-8", errors="replace").strip()
+        page = ctx.new_page()
 
-    return decrypt
+        def on_response(resp):
+            u = resp.url
+            if ".m3u8" in u.lower() and u not in m3u8_urls:
+                try:
+                    body = resp.text()
+                    if "#EXTM3U" in body:
+                        m3u8_urls.append(u)
+                        log(f"  [M3U8] {u[:100]}")
+                except Exception:
+                    pass
+        page.on("response", on_response)
 
-# --- Legacy Salsa20 (invariato, per cornerstream.tech) ---
-def _rotl(v, c): return ((v << c) & 0xffffffff) | (v >> (32 - c))
-def _qr(x, a, b, c, d):
-    x[b] ^= _rotl((x[a] + x[d]) & 0xffffffff, 7)
-    x[c] ^= _rotl((x[b] + x[a]) & 0xffffffff, 9)
-    x[d] ^= _rotl((x[c] + x[b]) & 0xffffffff, 13)
-    x[a] ^= _rotl((x[d] + x[c]) & 0xffffffff, 18)
-
-def salsa20_12(key, nonce8, data):
-    CONST = b"expand 32-byte k"
-    k = struct.unpack("<8I", key)
-    n = struct.unpack("<2I", nonce8)
-    out = bytearray()
-    for blk in range((len(data) + 63) // 64):
-        c = struct.unpack("<4I", CONST)
-        s = [c[0], k[0], k[1], k[2], k[3], c[1], n[0], n[1],
-             blk & 0xffffffff, 0, c[2], k[4], k[5], k[6], k[7], c[3]]
-        x = s[:]
-        for _ in range(6):
-            _qr(x, 0, 4, 8, 12); _qr(x, 5, 9, 13, 1)
-            _qr(x, 10, 14, 2, 6); _qr(x, 15, 3, 7, 11)
-            _qr(x, 0, 1, 2, 3); _qr(x, 5, 6, 7, 4)
-            _qr(x, 10, 11, 8, 9); _qr(x, 15, 12, 13, 14)
-        for i in range(16):
-            x[i] = (x[i] + s[i]) & 0xffffffff
-        out += struct.pack("<16I", *x)
-    return bytes(a ^ b for a, b in zip(data, out[:len(data)]))
-
-# --- Vault decoder (legacy) ---
-def _load_vault(cache_path=CACHE_FILE):
-    if os.path.exists(cache_path):
-        with open(cache_path) as f:
-            return json.load(f)
-    env = os.environ.get("SC_VAULT_B64")
-    if env:
-        return json.loads(base64.b64decode(env))
-    raise RuntimeError("Vault mancante: serve .sc_static_cache.json o SC_VAULT_B64")
-
-def _derive_key(vault, ts, spec_id):
-    spec = vault["specs"][spec_id]
-    secret = bytes.fromhex(spec["secret"])
-    return hashlib.sha256(secret + struct.pack(">I", ts)).digest()
-
-def _tag(key, nonce, payload):
-    return hmac.new(key, nonce + payload, hashlib.sha256).digest()[:12]
-
-def build_request(vault, spec_id, plaintext, ts=None):
-    ts = ts or int(time.time()) // WINDOW_SEC
-    key = _derive_key(vault, ts, spec_id)
-    nonce = os.urandom(8)
-    ct = salsa20_12(key, nonce, plaintext)
-    return b"\x0a" + nonce + _tag(key, nonce, ct) + ct
-
-def parse_response(vault, spec_id, blob, ts=None):
-    if not blob or blob[0] != 0x04:
-        raise ValueError("magic inatteso")
-    nonce, tag, ct = blob[1:9], blob[9:21], blob[21:]
-    base = ts or int(time.time()) // WINDOW_SEC
-    for d in (-TOLERANCE, 0, TOLERANCE):
-        key = _derive_key(vault, base + d, spec_id)
-        if hmac.compare_digest(_tag(key, nonce, ct), tag):
-            return salsa20_12(key, nonce, ct)
-    raise ValueError("tag non valido")
-
-# --- Discovery e client ---
-def _get(url, **kw):
-    return http.get(url, timeout=20, **_IMP, **kw)
-
-def _discover_workers(cache):
-    if cache.get("workers"):
-        return cache["workers"]
-    for base in SITES:
+        log(f"[*] Apro {BASE}")
         try:
-            home = _get(base).text
-            m = re.search(r'src="(/assets/[^"]*?c4bS9Xkc\.js)"', home) or \
-                re.search(r'src="([^"]+\.js)"', home)
-            if not m: continue
-            bundle_url = base + m.group(1) if m.group(1).startswith("/") else m.group(1)
-            bundle = _get(bundle_url).text
-            m2 = re.search(r'"([^"]*?BL8p69nO\.js)"', bundle)
-            if not m2: continue
-            chunk_url = base + m2.group(1) if m2.group(1).startswith("/") else m2.group(1)
-            chunk = _get(chunk_url).text
-            m3 = re.search(r'"([^"]*?provider-data\.worker-[^"]+\.js)"', chunk)
-            if not m3: continue
-            wd_url = base + m3.group(1) if m3.group(1).startswith("/") else m3.group(1)
-            wd = _get(wd_url).text
-            workers = sorted(set(re.findall(r'https://[a-z0-9\-]+\.workers\.dev', wd)))
-            if workers:
-                return workers
-        except Exception:
-            continue
-    raise RuntimeError("nessun worker trovato")
-
-class NinjaClient:
-    def __init__(self, vault, workers):
-        specs = vault["specs"]; consts = vault["consts"]
-        self.d_H = spec_decode(specs[0]) if False else bytes.fromhex(specs[0]) # placeholder
-        # (omesso per brevità: usa il decoder legacy invariato)
-        self.workers = workers
-        self.worker = None
-
-    def get_catalog(self, provider="admin"):
-        # Tenta il vecchio protocollo; se fallisce, segnala
-        try:
-            # (codice legacy omesso per brevità — invariato dal v10.4)
-            pass
+            page.goto(BASE, wait_until="domcontentloaded", timeout=40000)
         except Exception as e:
-            log(f"[!] Catalogo legacy fallito: {e}")
+            log(f"[!] goto fallito: {e}")
+            browser.close()
             return []
-        return []
 
-# --- Main ---
+        # Attesa challenge Cloudflare
+        page.wait_for_timeout(15000)
+        title = page.title()
+        log(f"[*] Titolo: '{title}'")
+        if "avviso" in title.lower():
+            log("[!] Ancora bloccato. Provo a ricaricare...")
+            page.reload(wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(10000)
+            title = page.title()
+            log(f"[*] Titolo dopo reload: '{title}'")
+
+        # Cerca link eventi
+        links = page.eval_on_selector_all(
+            "a[href*='/match/'], a[href*='/event/'], a[href*='/live/'], "
+            "a[href*='/soccer/'], a[href*='/serie-a'], a[href*='/fifa']",
+            "els => [...new Set(els.map(e => e.href))]"
+        )
+        log(f"[*] {len(links)} link eventi")
+        if not links:
+            # Fallback: cerca qualsiasi link interno
+            links = page.eval_on_selector_all(
+                "a[href^='/']",
+                "els => [...new Set(els.map(e => e.href))].slice(0, 30)"
+            )
+            log(f"[*] Fallback: {len(links)} link interni")
+
+        for i, link in enumerate(links[:15], 1):
+            try:
+                log(f"  [{i}/{min(len(links),15)}] {link[:80]}")
+                page.goto(link, wait_until="domcontentloaded", timeout=25000)
+                page.wait_for_timeout(8000)
+                # Prova click play
+                for sel in ("button[aria-label*='play' i]", ".vjs-big-play-button",
+                            ".jw-icon-playback", "video"):
+                    try:
+                        if page.locator(sel).count() > 0:
+                            page.click(sel, timeout=2000)
+                            page.wait_for_timeout(3000)
+                            break
+                    except Exception:
+                        continue
+                page.wait_for_timeout(5000)
+            except Exception as e:
+                log(f"    [!] {e}")
+
+        browser.close()
+
+    return m3u8_urls
+
 def main():
     log("=" * 60)
-    log("📡 STREAMCORNER EXTRACTOR v11.0 (dual-protocol)")
+    log("📡 STREAMCORNER EXTRACTOR v13.0 (Playwright stealth)")
     log("=" * 60)
-
-    # 1. Prova WASM decryptor (nuovo)
-    decrypt = load_wasm_decryptor()
-    if decrypt:
-        log("[*] WASM decryptor caricato — il nuovo protocollo è disponibile")
-        # Qui andrebbe la logica per chiamare gli endpoint del nuovo dominio
-        # e decifrare le risposte con decrypt(). Per brevità, la omettiamo:
-        # richiede di scoprire gli endpoint POST del nuovo sito.
-    else:
-        log("[!] WASM non disponibile — uso il protocollo legacy")
-
-    # 2. Fallback legacy
-    try:
-        vault = _load_vault()
-        workers = _discover_workers(vault)
-        log(f"[*] {len(workers)} worker legacy trovati")
-        # client = NinjaClient(vault, workers)
-        # catalog = client.get_catalog()
-    except Exception as e:
-        log(f"[!] Legacy fallito: {e}")
-
-    # 3. Scrivi M3U vuota (graceful)
-    with open("streamcorner.m3u", "w") as f:
-        f.write("#EXTM3U\n")
-    log("[+] streamcorner.m3u scritto (vuoto se nessun protocollo ha funzionato)")
+    urls = run()
+    lines = ["#EXTM3U"]
+    count = 0
+    for u in urls:
+        if is_bad(u):
+            log(f"  [SKIP] {u[:100]}")
+            continue
+        lines.append(f"#EXTINF:-1,StreamCorner")
+        lines.append(u)
+        count += 1
+    Path(OUT).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    log(f"[+] {OUT}: {count} stream")
 
 if __name__ == "__main__":
     main()
