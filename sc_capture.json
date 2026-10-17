@@ -6,11 +6,11 @@
   "provider_js_url": "/assets/provider-data.worker-DdPTVxb9.js",
   "workers_count": 25,
   "winner_worker": "data.5j181.workers.dev",
-  "catalog_size": 1,
-  "events_full": 1,
+  "catalog_size": 9,
+  "events_full": 9,
   "events_live": 1,
   "streams_total": 0,
   "embed_jobs": 3,
   "embed_resolved": 0,
-  "extracted_at": 1792201067
+  "extracted_at": 1792217791
 }
