@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner / CornerStream Extractor — v10.2 (HTTP-puro + cache + curl_cffi)
-=============================================================================
-Fix v10.2:
-  * Discovery ora esplora i chunk lazy del main bundle (__vite__mapDeps)
-    per trovare provider-data.worker-*.js e la lista *.workers.dev
-    (v10.1 cercava solo nel main → parse fallito)
+StreamCorner / CornerStream Extractor — v10.3
+==============================================
+Basato su v10.2 (HTTP-puro + cache + curl_cffi + chunk lazy discovery).
 
-Novità v10.1:
-  * curl_cffi (impersonate Chrome) per bypassare Cloudflare TLS fingerprint
-  * Cache locale .sc_static_cache.json (provider worker + lista workers)
-  * Fallback automatico a cache se HTTP fallisce
-  * Cache TTL: 7 giorni
+Novità v10.3 (4 fix):
+  FIX 1  Skip DRM manifest (schemeIdUri Widevine/PlayReady/…)
+  FIX 2  manifest_type dinamico (dash per .mpd, hls per .m3u8) — non più hls fisso
+  FIX 3  Skip host che sprecano Playwright (Widevine su pandecocogaming.sbs)
+  FIX 4  Filtro finale .mpd/DRM: scarta dalla M3U, non dalla cache
 """
 
 from __future__ import annotations
@@ -31,18 +28,23 @@ UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
 
 SITE = "https://cornerstream.tech/"
 STATIC_CACHE = ".sc_static_cache.json"
-CACHE_TTL = 7 * 24 * 3600  # 7 giorni
+CACHE_TTL = 7 * 24 * 3600
 
 PROVIDER_DEFAULT = "admin"
 LIVE_MARGIN_BEFORE = 1800
 LIVE_MARGIN_AFTER = 3600
 
-# Allineato al nome usato dal workflow
 M3U8_CACHE = ".streamcorner_events_m3u8_cache.json"
 CAPTURE_FILE = "sc_capture.json"
 DRM_REPORT = "sc_drm_report.jsonl"
 
 DIRECT_RE = re.compile(r"\.(?:m3u8|mpd)(?:$|\?)", re.I)
+
+# v10.3 FIX 1/3: DRM detection + host skip
+DRM_SCHEMES = ("edef8ba9", "9a04f079", "1077efecc0b24d02",
+               "urn:uuid:edef8ba9", "urn:uuid:9a04f079",
+               "urn:uuid:1077efecc0b24d02")
+SKIP_HOSTS = {"pandecocogaming.sbs"}
 
 
 def log(*a):
@@ -130,7 +132,7 @@ def cache_save(main_js_url, provider_js_url, workers, provider_content_b64):
 
 
 # ============================================================
-# VAULT DECODER
+# VAULT DECODER (invariato v10.2)
 # ============================================================
 MAGIC32 = 0xFFFFFFFF
 
@@ -212,7 +214,7 @@ def const_bytes(c):
 
 
 # ============================================================
-# SHA-256 + SALSA20/12
+# SHA-256 + SALSA20/12 (invariato)
 # ============================================================
 def sha256(*chunks):
     h = hashlib.sha256()
@@ -256,10 +258,9 @@ def salsa20_12(key, nonce8, data):
 
 
 # ============================================================
-# DISCOVERY con cache + esplorazione chunk
+# DISCOVERY con cache + esplorazione chunk (invariato)
 # ============================================================
 def _parse_provider(txt):
-    """Cerca il path del provider worker in qualsiasi forma."""
     m = re.search(r'(/assets/provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
     if not m:
         m = re.search(r'(provider-data\.worker-[A-Za-z0-9_\-]+\.js)', txt)
@@ -286,20 +287,13 @@ def _extract_dt_pt(provider_txt):
 
 
 def discover_all(site=SITE, force_refresh=False):
-    """
-    Ritorna (vault, workers, meta).
-    Usa cache locale se valida, altrimenti tenta refresh HTTP.
-    v10.2: se provider/workers non sono nel main, esplora i chunk lazy.
-    """
     cache = cache_load()
-
     need_refresh = (cache is None) or (cache.get("_age", 1e9) > CACHE_TTL) or force_refresh
 
     if need_refresh:
         age_str = "assente" if cache is None else f"{int(cache.get('_age',0))}s"
         log(f"→ tentativo refresh discovery (cache {age_str})")
         try:
-            # 1. home
             st, body, _ = http_get(site, timeout=15)
             if st != 200:
                 raise RuntimeError(f"home non 200: {st}")
@@ -310,22 +304,17 @@ def discover_all(site=SITE, force_refresh=False):
             main_url = m.group(1)
             log(f"   bundle main: {main_url}")
 
-            # 2. main bundle
             st, body, _ = http_get(site.rstrip("/") + main_url, timeout=30)
             if st != 200:
                 raise RuntimeError(f"main bundle non 200: {st}")
             main_txt = body.decode("utf-8", "replace")
 
-            # 3. prova direttamente nel main
             provider_url = _parse_provider(main_txt)
             workers = _parse_workers(main_txt)
 
-            # 4. se manca qualcosa, esplora i chunk lazy
             if not provider_url or not workers:
                 log(f"   → provider/workers non nel main, esploro i chunk lazy")
-                # Estrai lista da __vite__mapDeps
                 chunks = re.findall(r'"(assets/[A-Za-z0-9_\-]+\.js)"', main_txt)
-                # dedup preservando ordine
                 seen = set()
                 chunks_unique = []
                 for c in chunks:
@@ -357,17 +346,14 @@ def discover_all(site=SITE, force_refresh=False):
             log(f"   provider worker: {provider_url}")
             log(f"   workers trovati: {len(workers)}")
 
-            # 5. provider worker
             st, body, _ = http_get(site.rstrip("/") + provider_url, timeout=30)
             if st != 200:
                 raise RuntimeError(f"provider worker non 200: {st}")
             provider_txt = body.decode("utf-8", "replace")
 
-            # 6. decodifica vault
             dt_strs, pt_strs = _extract_dt_pt(provider_txt)
             vault = decode_vault(pt_strs, dt_strs)
 
-            # 7. salva cache
             cache_save(main_url, provider_url, workers,
                        base64.b64encode(body).decode("ascii"))
             log(f"   ✅ cache aggiornata ({STATIC_CACHE})")
@@ -393,7 +379,7 @@ def discover_all(site=SITE, force_refresh=False):
 
 
 # ============================================================
-# NINJACORNER CLIENT
+# NINJACORNER CLIENT (invariato v10.2)
 # ============================================================
 class NinjaClient:
     def __init__(self, vault, workers):
@@ -464,7 +450,7 @@ class NinjaClient:
 
 
 # ============================================================
-# EMBED RESOLVER (Playwright)
+# EMBED RESOLVER (Playwright) — v10.3 con FIX 1+3
 # ============================================================
 LICENSE_HINTS = ("license", "widevine", "getlicense", "acquirelicense", "drm")
 MANIFEST_HINTS = (".m3u8", ".mpd", "manifest", "playlist")
@@ -472,6 +458,14 @@ CF_HINTS = ("challenges.cloudflare.com", "cf-chl", "/cdn-cgi/challenge", "turnst
 
 
 def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
+    # v10.3 FIX 1+3: skip DRM manifest o host Widevine PRIMA di lanciare Playwright.
+    # Risparmia ~30-45s per stream. Stream filtrati NON entrano nella M3U.
+    if is_drm_manifest(embed_url) or host_of(embed_url) in SKIP_HOSTS:
+        return {"url": None, "m3u8": None, "mpd": None, "license_url": None,
+                "cloudflare": False, "final_url": None, "title": None,
+                "requests": [], "engine": "skipped",
+                "referer": origin + "/", "skipped": "drm_or_host"}
+
     try:
         from patchright.sync_api import sync_playwright
         engine = "patchright"
@@ -555,7 +549,36 @@ def resolve_embed(embed_url, origin, proxy=None, timeout=45, tag=""):
 
 
 # ============================================================
-# M3U
+# v10.3 FIX helper (manifest_type dinamico, DRM, host)
+# ============================================================
+def is_drm_manifest(u: str) -> bool:
+    u = (u or "").lower()
+    if not u:
+        return False
+    if u.split("?")[0].endswith(".mpd"):
+        return True
+    return any(s in u for s in DRM_SCHEMES)
+
+
+def manifest_type(u: str) -> str | None:
+    u = (u or "").lower().split("?")[0]
+    if u.endswith(".mpd"):
+        return "dash"
+    if u.endswith(".m3u8"):
+        return "hls"
+    return None
+
+
+def host_of(u: str) -> str:
+    return (urlparse(u).hostname or "").lower()
+
+
+def should_skip(url: str) -> bool:
+    return is_drm_manifest(url) or host_of(url) in SKIP_HOSTS
+
+
+# ============================================================
+# M3U — v10.3 FIX 2 (manifest_type dinamico)
 # ============================================================
 def entry_lines(rec, label, group, logo=""):
     lo = f' tvg-logo="{logo}"' if logo else ""
@@ -564,7 +587,10 @@ def entry_lines(rec, label, group, logo=""):
         out.append(f"#EXTVLCOPT:http-referrer={rec['referer']}")
     out.append(f"#EXTVLCOPT:http-user-agent={UA_IPHONE}")
     out.append("#KODIPROP:inputstream=inputstream.adaptive")
-    out.append("#KODIPROP:inputstream.adaptive.manifest_type=hls")
+    # v10.3 FIX 2: NON più hls fisso — usa il tipo reale dell'URL
+    mt = manifest_type(rec.get("url"))
+    if mt:
+        out.append(f"#KODIPROP:inputstream.adaptive.manifest_type={mt}")
     out.append(rec["url"])
     return out
 
@@ -598,7 +624,7 @@ def is_live(ev, now=None):
 # MAIN
 # ============================================================
 def main():
-    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.2")
+    ap = argparse.ArgumentParser(description="StreamCorner Extractor v10.3")
     ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=None)
     ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
@@ -618,7 +644,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 STREAMCORNER EXTRACTOR v10.2 (HTTP-puro + cache + curl_cffi)")
+    log("📡 STREAMCORNER EXTRACTOR v10.3 (DRM-safe)")
     log("=" * 66)
 
     # ---- 1. Discovery ----
@@ -671,7 +697,7 @@ def main():
             log(f"   [{i}/{len(catalog)}] {name[:45]:45}  ❌ {str(e)[:50]}")
             events_full.append(ev)
 
-    # ---- 4. Filtro ----
+    # ---- 4. Filtro live ----
     log(f"\n[4/5] Filtro live")
     if args.all_events:
         live = events_full
@@ -689,6 +715,7 @@ def main():
             cache = {}
 
     rows, embed_jobs = [], []
+    skipped_drm = 0
     for ev in live:
         name = ev.get("event_name") or ev.get("title") or "?"
         league = ev.get("league") or ""
@@ -699,7 +726,11 @@ def main():
             if not isinstance(s, dict):
                 continue
             u = str(s.get("stream_url") or "").strip()
+            # v10.3 FIX 1+4: URL diretto .mpd → scarta
             if u and DIRECT_RE.search(u.split("?")[0]):
+                if should_skip(u):
+                    skipped_drm += 1
+                    continue
                 rows.append((f"{base} — {s.get('source_name') or '?'} [DIRETTA]",
                              logo, name, {"url": u, "referer": SITE}))
                 continue
@@ -708,11 +739,18 @@ def main():
                 continue
             sname = s.get("source_name") or "?"
             if cache.get(emb):
+                cached = cache[emb]
+                # v10.3 FIX 4: cache vecchia con DRM → scarta
+                if should_skip(cached):
+                    skipped_drm += 1
+                    continue
                 rows.append((f"{base} — {sname}", logo, name,
-                             {"url": cache[emb], "referer": SITE}))
+                             {"url": cached, "referer": SITE}))
             else:
                 embed_jobs.append((emb, f"{base} — {sname}", logo, name))
 
+    if skipped_drm:
+        log(f"   🚫 {skipped_drm} stream DRM/host-skip scartati prima del resolve")
     log(f"   dirette: {len(rows)}   embed da risolvere: {len(embed_jobs)}")
     if args.embed_limit:
         embed_jobs = embed_jobs[:args.embed_limit]
@@ -754,6 +792,12 @@ def main():
             for r in report:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
+    # ---- v10.3 FIX 4: filtro finale prima di scrivere i file ----
+    before = len(rows)
+    rows = [(l, lg, g, r) for (l, lg, g, r) in rows if not should_skip(r.get("url"))]
+    if len(rows) != before:
+        log(f"   🚫 filtro finale: -{before - len(rows)} stream DRM/host-skip")
+
     # ---- Output ----
     n = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), rows)
     log(f"   💾 EVENTS_LIVE: {n}")
@@ -779,6 +823,7 @@ def main():
             "events_full": len(events_full),
             "events_live": len(live),
             "streams_total": len(rows),
+            "streams_skipped_drm": skipped_drm,
             "embed_jobs": len(embed_jobs),
             "embed_resolved": sum(1 for r in report if r.get("url")),
             "extracted_at": int(time.time()),
