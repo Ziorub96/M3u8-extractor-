@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.0 — Playwright stealth su streamcorner.st.
-- Bypassa Cloudflare con patchright (fallback: playwright).
-- Header italiani, timezone Europe/Rome, UA desktop.
-- Intercetta .m3u8 (HLS) e .mpd (DASH, log solo).
-- Scarta host morti (embed.st, pandecocogaming, taifood, ecc.).
-- Produce i 4 file attesi dal workflow: EVENTS_LIVE, VLC, KODI, COMPLETE.
-- CLI compatibile col v10.4 (--output, --playwright-workers, ecc.).
+StreamCorner Extractor v13.1 — Playwright stealth su streamcorner.st.
+
+Changelog v13.0 → v13.1:
+- Salva SEMPRE sc_homepage.html (anche se non bloccata) per debug
+- Salva sc_network.json con tutte le richieste "interessanti" + status + mime
+- Pattern categoria/partita molto più larghi (football, live-tv, -vs-, ?channel=...)
+- Esplorazione a 3 livelli: home → categorie → partite
+- Cattura manifest anche dagli iframe (page.frames)
+- Sniffing risposte JSON (API eventi) per stream_url/play_url/embed_url/src
+- Log di ogni frame presente sulla pagina partita
+- Budget di tempo massimo (max_total_time_s) per non sforare il workflow
+- Scrive comunque i 4 file attesi (EVENTS_LIVE, VLC, KODI, COMPLETE)
+- CLI identica al v13.0 (drop-in replacement)
+- Exit 0 SEMPRE (graceful)
 """
 from __future__ import annotations
 import argparse, json, os, re, sys, time
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 BASE = "https://streamcorner.st"
 UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -36,6 +43,34 @@ CF_HINTS = ("challenges.cloudflare.com", "cf-chl",
             "/cdn-cgi/challenge", "turnstile", "challenge-platform")
 
 CAPTURE_FILE = "sc_capture.json"
+NETWORK_FILE = "sc_network.json"
+HOMEPAGE_FILE = "sc_homepage.html"
+
+# Pattern per i link (re.search su href)
+CATEGORY_PATTERNS = [
+    r'/fifa', r'/world-cup', r'/serie-a', r'/champions',
+    r'/premier', r'/liga', r'/soccer', r'/football',
+    r'/nba', r'/nfl', r'/mlb', r'/ufc', r'/sport',
+    r'/live-tv', r'/channels',
+]
+MATCH_PATTERNS = [
+    r'/match/', r'/event/', r'/live/', r'/watch/',
+    r'/game/', r'/play/', r'/stream/',
+    r'-vs-', r'\?match=', r'\?id=', r'\?event=',
+    r'\?channel=', r'\?stream=',
+]
+
+# Keyword per richieste "interessanti" (da loggare in sc_network.json)
+INTERESTING_REQ_KW = (
+    ".m3u8", ".mpd", "/api/", "/corner", "workers.dev",
+    "embed", "/stream", "/channel", "/match", "/event",
+    "playlist", ".json", "manifest", "worker",
+)
+
+# Chiavi JSON che possono contenere URL di stream
+JSON_STREAM_KEYS = ("stream_url", "play_url", "embed_url", "m3u8",
+                    "manifest_url", "hls_url", "dash_url", "src",
+                    "url", "link", "source", "video_url")
 
 def log(*a): print(*a, flush=True)
 
@@ -58,8 +93,37 @@ def is_skipped(u):
     if has_drm_hint(u): return True
     return False
 
+def find_links(html, base, patterns):
+    found = []
+    for m in re.finditer(r'href=["\']([^"\']+)["\']', html):
+        href = m.group(1)
+        if any(re.search(p, href) for p in patterns):
+            full = href if href.startswith("http") else urljoin(base, href)
+            found.append(full)
+    return list(dict.fromkeys(found))
+
+def scan_json_for_streams(obj, base_url, results, depth=0):
+    """Ricorsivamente cerca URL di stream in strutture JSON."""
+    if depth > 8: return
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, str) and k.lower() in JSON_STREAM_KEYS:
+                if v.startswith("http") or v.startswith("/"):
+                    full = v if v.startswith("http") else urljoin(base_url, v)
+                    if ".m3u8" in full or ".mpd" in full:
+                        results.append({"url": full, "key": k, "base": base_url})
+                    elif "/stream" in full or "/embed" in full:
+                        results.append({"url": full, "key": k, "base": base_url})
+            elif isinstance(v, (dict, list)):
+                scan_json_for_streams(v, base_url, results, depth + 1)
+    elif isinstance(obj, list):
+        for item in obj:
+            scan_json_for_streams(item, base_url, results, depth + 1)
+
 # ------------------------------------------------------------ Playwright
-def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True):
+def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
+                   max_categories=10, max_matches=25, debug_dir=".",
+                   max_total_time_s=900):
     try:
         from patchright.sync_api import sync_playwright
         engine = "patchright"
@@ -67,8 +131,11 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True):
         from playwright.sync_api import sync_playwright
         engine = "playwright"
 
-    found = []      # list of dict(url, referer, title, source)
+    found = []
+    network_map = {}       # url -> {method, url, type, status, mime}
     cf_hit = {"cloudflare": False}
+    start_time = time.time()
+    cat_links, match_links = [], []
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless, args=[
@@ -90,7 +157,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True):
                 "Referer": BASE + "/",
             },
         )
-        # Stealth init script
         ctx.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
             window.chrome = {runtime: {}};
@@ -100,127 +166,234 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True):
 
         page = ctx.new_page()
 
-        def on_response(resp):
-            u = resp.url; lu = u.lower()
-            if any(k in lu for k in CF_HINTS):
-                cf_hit["cloudflare"] = True
-            if ".m3u8" in lu:
-                try:
-                    t = resp.text()
-                except Exception:
+        def on_request(req):
+            try:
+                u = req.url
+                lu = u.lower()
+                if not any(k in lu for k in INTERESTING_REQ_KW):
                     return
-                if "#EXTM3U" in t:
-                    found.append({"url": u, "referer": BASE + "/",
-                                  "title": page.title() if page else "",
-                                  "source": "network"})
-                    log(f"    🎯 M3U8: {u[:120]}")
-            elif ".mpd" in lu:
-                try:
-                    t = resp.text()
-                except Exception:
+                if u in network_map:
                     return
-                if "<MPD" in t:
-                    found.append({"url": u, "referer": BASE + "/",
-                                  "title": page.title() if page else "",
-                                  "source": "network"})
-                    log(f"    🎯 MPD: {u[:120]}")
+                network_map[u] = {
+                    "method": req.method,
+                    "url": u[:300],
+                    "type": req.resource_type,
+                    "status": None,
+                    "mime": "",
+                }
+            except Exception:
+                pass
 
+        def on_response(resp):
+            try:
+                u = resp.url
+                lu = u.lower()
+
+                if u in network_map:
+                    network_map[u]["status"] = resp.status
+                    network_map[u]["mime"] = (resp.headers.get("content-type") or "")[:80]
+
+                if any(k in lu for k in CF_HINTS):
+                    cf_hit["cloudflare"] = True
+
+                # Manifest HLS
+                if ".m3u8" in lu:
+                    try:
+                        t = resp.text()
+                    except Exception:
+                        return
+                    if "#EXTM3U" in t:
+                        found.append({"url": u,
+                                      "referer": page.url or (BASE + "/"),
+                                      "title": page.title() if page else "",
+                                      "source": "network"})
+                        log(f"    🎯 M3U8: {u[:120]}")
+
+                # Manifest DASH
+                elif ".mpd" in lu:
+                    try:
+                        t = resp.text()
+                    except Exception:
+                        return
+                    if "<MPD" in t:
+                        found.append({"url": u,
+                                      "referer": page.url or (BASE + "/"),
+                                      "title": page.title() if page else "",
+                                      "source": "network"})
+                        log(f"    🎯 MPD: {u[:120]}")
+
+                # JSON: sniff per URL di stream
+                elif "json" in (resp.headers.get("content-type") or "").lower():
+                    cl = resp.headers.get("content-length")
+                    try:
+                        if cl and int(cl) > 500_000:
+                            return
+                    except Exception:
+                        pass
+                    try:
+                        body = resp.text()
+                        if len(body) > 500_000:
+                            return
+                        j = json.loads(body)
+                        hits = []
+                        scan_json_for_streams(j, u, hits)
+                        for h in hits:
+                            found.append({"url": h["url"],
+                                          "referer": page.url or (BASE + "/"),
+                                          "title": page.title() if page else "",
+                                          "source": f"json:{h['key']}"})
+                            log(f"    🎯 JSON[{h['key']}]: {h['url'][:120]}")
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+
+        page.on("request", on_request)
         page.on("response", on_response)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
 
-        # 1. Homepage
+        # ===== Livello 1: homepage =====
         log(f"[*] Apro {BASE}")
         try:
             page.goto(BASE, wait_until="domcontentloaded", timeout=timeout_s * 1000)
         except Exception as e:
             log(f"[!] goto home: {type(e).__name__}: {str(e)[:120]}")
-        page.wait_for_timeout(15000)
+        try:
+            page.wait_for_load_state("networkidle", timeout=20000)
+        except Exception:
+            log(f"[*] networkidle timeout, proseguo")
+        page.wait_for_timeout(8000)
 
         title = page.title()
-        html_len = len(page.content())
+        html = page.content()
+        html_len = len(html)
         log(f"[*] Titolo: '{title[:80]}'  HTML: {html_len} byte")
         log(f"[*] Cloudflare hints: {cf_hit['cloudflare']}")
 
-        # 2. Se "Avviso", reload e aspetta ancora
+        # Salva SEMPRE la homepage
+        try:
+            Path(os.path.join(debug_dir, HOMEPAGE_FILE)).write_text(html, encoding="utf-8")
+            log(f"   💾 {HOMEPAGE_FILE} ({html_len} byte)")
+        except Exception as e:
+            log(f"   ⚠️ salvataggio homepage: {e}")
+
+        # Bloccata?
         if "avviso" in title.lower() or html_len < 2000:
             log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
             try:
                 page.reload(wait_until="domcontentloaded", timeout=timeout_s * 1000)
-            except Exception as e:
-                log(f"[!] reload: {type(e).__name__}")
-            page.wait_for_timeout(15000)
+                page.wait_for_timeout(15000)
+            except Exception:
+                pass
             title = page.title()
-            html_len = len(page.content())
+            html = page.content()
+            html_len = len(html)
             log(f"[*] Dopo reload — titolo: '{title[:80]}'  HTML: {html_len} byte")
+            if "avviso" in title.lower() or html_len < 2000:
+                try:
+                    Path(os.path.join(debug_dir, "sc_homepage_blocked.html")).write_text(
+                        html, encoding="utf-8")
+                except Exception:
+                    pass
+                browser.close()
+                return found, network_map, {"engine": engine, "title": title,
+                                            "html_len": html_len,
+                                            "cloudflare": cf_hit["cloudflare"],
+                                            "blocked": True}
 
-        # 3. Se ancora "Avviso", salva HTML per debug e ritorna
-        if "avviso" in title.lower() or html_len < 2000:
-            try:
-                Path("sc_homepage_blocked.html").write_text(
-                    page.content(), encoding="utf-8")
-                log(f"[!] Salvato sc_homepage_blocked.html ({html_len} byte) per debug")
-            except Exception:
-                pass
-            # Chiudi browser e ritorna vuoto
-            browser.close()
-            return found, {"engine": engine, "title": title,
-                           "html_len": html_len, "cloudflare": cf_hit["cloudflare"],
-                           "blocked": True}
+        # ===== Livello 2: estrai link =====
+        cat_links = find_links(html, BASE, CATEGORY_PATTERNS)[:max_categories]
+        match_links = find_links(html, BASE, MATCH_PATTERNS)[:max_matches]
+        log(f"[*] {len(cat_links)} categorie, {len(match_links)} partite dirette")
+        for c in cat_links:  log(f"    📂 {c[:100]}")
+        for m in match_links: log(f"    🎬 {m[:100]}")
 
-        # 4. Estrai link eventi
-        selectors = [
-            "a[href*='/match/']", "a[href*='/event/']", "a[href*='/live/']",
-            "a[href*='/soccer/']", "a[href*='/serie-a']", "a[href*='/champions']",
-            "a[href*='/fifa']", "a[href*='/world-cup']",
-        ]
-        links = []
-        for sel in selectors:
+        # ===== Livello 3a: esplora categorie =====
+        for cat_url in cat_links:
+            if time.time() - start_time > max_total_time_s:
+                log(f"[!] Budget tempo esaurito, interrompo l'esplorazione")
+                break
+            log(f"  📂 categoria: {cat_url[:100]}")
             try:
-                ls = page.eval_on_selector_all(
-                    sel, "els => [...new Set(els.map(e => e.href))]")
-                links.extend(ls)
-            except Exception:
-                continue
-        # Fallback: qualsiasi link interno
-        if not links:
-            try:
-                ls = page.eval_on_selector_all(
-                    "a[href^='/']",
-                    "els => [...new Set(els.map(e => e.href))].slice(0, 40)")
-                links.extend(ls)
-            except Exception:
-                pass
-        # Dedup + ordina
-        links = list(dict.fromkeys(links))
-        log(f"[*] {len(links)} link candidati")
+                page.goto(cat_url, wait_until="domcontentloaded", timeout=25000)
+                try:
+                    page.wait_for_load_state("networkidle", timeout=10000)
+                except Exception:
+                    pass
+                page.wait_for_timeout(3000)
+                cat_html = page.content()
+                inner = find_links(cat_html, cat_url, MATCH_PATTERNS)
+                log(f"      → {len(inner)} partite dentro")
+                for il in inner[:8]:
+                    if il not in match_links:
+                        match_links.append(il)
+            except Exception as e:
+                log(f"      ⚠️ {type(e).__name__}")
 
-        # 5. Visita ogni link (max 20 per non andare in timeout)
-        for i, link in enumerate(links[:20], 1):
-            if not link.startswith("http"):
-                continue
-            log(f"  [{i}/{min(len(links),20)}] {link[:100]}")
+        match_links = list(dict.fromkeys(match_links))[:max_matches]
+        log(f"[*] Totale partite da visitare: {len(match_links)}")
+
+        # ===== Livello 3b: visita partite =====
+        for i, link in enumerate(match_links, 1):
+            if time.time() - start_time > max_total_time_s:
+                log(f"[!] Budget tempo esaurito, interrompo")
+                break
+            log(f"  [{i}/{len(match_links)}] {link[:100]}")
             try:
                 page.goto(link, wait_until="domcontentloaded", timeout=25000)
-            except Exception as e:
-                log(f"    [!] goto: {type(e).__name__}")
-                continue
-            page.wait_for_timeout(8000)
-            # click play se presente
-            for sel in ("button[aria-label*='play' i]", ".vjs-big-play-button",
-                        ".jw-icon-playback", ".bitmovinplayer-ui", "video"):
                 try:
-                    if page.locator(sel).count() > 0:
-                        page.click(sel, timeout=2000)
-                        page.wait_for_timeout(3000)
-                        break
+                    page.wait_for_load_state("networkidle", timeout=10000)
                 except Exception:
-                    continue
-            page.wait_for_timeout(5000)
+                    pass
+                page.wait_for_timeout(4000)
+
+                # Log frame presenti
+                try:
+                    for f in page.frames:
+                        if f.url and f.url != "about:blank":
+                            log(f"      🖼️ frame: {f.url[:100]}")
+                except Exception:
+                    pass
+
+                # Click play aggressivo
+                for sel in ("button[aria-label*='play' i]",
+                            ".vjs-big-play-button", ".jw-icon-playback",
+                            ".bitmovinplayer-ui",
+                            "button:has-text('Play')",
+                            "button:has-text('Guarda')",
+                            "[class*='play']", "[id*='play']",
+                            "video"):
+                    try:
+                        if page.locator(sel).count() > 0:
+                            page.click(sel, timeout=2000)
+                            page.wait_for_timeout(1500)
+                    except Exception:
+                        continue
+
+                page.wait_for_timeout(5000)
+
+                # Manifest dagli iframe (URL diretti)
+                for frame in page.frames:
+                    try:
+                        furl = frame.url
+                        if furl and (".m3u8" in furl or ".mpd" in furl):
+                            found.append({"url": furl, "referer": link,
+                                          "title": page.title() or "StreamCorner",
+                                          "source": "frame-url"})
+                            log(f"    🎯 FRAME: {furl[:120]}")
+                    except Exception:
+                        pass
+            except Exception as e:
+                log(f"      ⚠️ {type(e).__name__}")
 
         browser.close()
-        return found, {"engine": engine, "title": title,
-                       "html_len": html_len, "cloudflare": cf_hit["cloudflare"],
-                       "blocked": False, "links_examined": min(len(links), 20)}
+
+    return found, network_map, {"engine": engine, "title": title,
+                                "html_len": html_len,
+                                "cloudflare": cf_hit["cloudflare"],
+                                "blocked": False,
+                                "categories": len(cat_links),
+                                "matches": len(match_links)}
 
 # ------------------------------------------------------------ M3U
 def entry_lines(url, title, group, referer, mtype):
@@ -235,7 +408,6 @@ def entry_lines(url, title, group, referer, mtype):
     return out
 
 def write_m3u(path, entries, group_override=None):
-    """entries: list of dict {url, title, group, referer, mtype}"""
     seen = set(); n = 0
     with open(path, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -275,41 +447,56 @@ def main():
     ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
 
     log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.0 (Playwright stealth, UA={args.ua})")
+    log(f"📡 STREAMCORNER EXTRACTOR v13.1 (Playwright stealth, UA={args.ua})")
     log("=" * 66)
 
-    found, meta = run_playwright(
-        timeout_s=45, ua=ua, headless=not args.headful)
+    found, network_map, meta = run_playwright(
+        timeout_s=45, ua=ua, headless=not args.headful,
+        debug_dir=args.output_dir, max_total_time_s=900)
 
     log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
     log(f"[*] Meta: {meta}")
 
-    # Filtra
+    # Salva sc_network.json
+    try:
+        net_list = list(network_map.values())
+        net_path = os.path.join(args.output_dir, NETWORK_FILE)
+        Path(net_path).write_text(
+            json.dumps({"total": len(net_list), "requests": net_list},
+                       indent=2, ensure_ascii=False), encoding="utf-8")
+        log(f"   💾 {NETWORK_FILE} ({len(net_list)} richieste)")
+    except Exception as e:
+        log(f"   ⚠️ salvataggio network: {e}")
+
+    # Filtra + dedup
+    seen = set()
     entries = []
     for f in found:
-        if is_skipped(f["url"]):
-            log(f"    ⏭️  SKIP {f['url'][:100]}")
+        u = f["url"]
+        if is_skipped(u):
+            log(f"    ⏭️  SKIP {u[:100]}")
             continue
+        if u in seen:
+            continue
+        seen.add(u)
         entries.append({
-            "url": f["url"],
+            "url": u,
             "title": (f.get("title") or "StreamCorner")[:60],
             "group": (f.get("title") or "StreamCorner")[:60],
             "referer": f.get("referer") or (BASE + "/"),
-            "mtype": manifest_type(f["url"]),
+            "mtype": manifest_type(u),
         })
 
-    # Scrittura file (nomi invariati)
     n1 = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), entries)
     log(f"   💾 EVENTS_LIVE: {n1}")
     n2 = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
                    entries, group_override="StreamCorner")
     log(f"   💾 VLC: {n2}")
     n3 = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), entries)
-    log(f"   💾 KODI: {n3}")
+    log(f"   💾 KODI: {n3} (non committato se rimosso da file_pattern)")
     n4 = write_m3u(args.output, entries)
     log(f"   💾 {args.output}: {n4}")
 
-    # Summary
     summary = {
         "site": BASE,
         "engine": meta.get("engine"),
@@ -317,7 +504,8 @@ def main():
         "html_len": meta.get("html_len"),
         "cloudflare_detected": meta.get("cloudflare"),
         "blocked": meta.get("blocked"),
-        "links_examined": meta.get("links_examined"),
+        "categories_found": meta.get("categories"),
+        "matches_found": meta.get("matches"),
         "manifests_found": len(found),
         "entries_final": len(entries),
         "extracted_at": int(time.time()),
@@ -333,7 +521,6 @@ def main():
     log(f"✅ blocked={meta.get('blocked')}  entries={len(entries)}")
     log("=" * 66)
 
-    # Exit 0 SEMPRE (graceful: il workflow non si rompe)
     return 0
 
 if __name__ == "__main__":
