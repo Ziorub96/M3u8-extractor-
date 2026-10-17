@@ -8,10 +8,16 @@
   "winner_worker": "data.5j181.workers.dev",
   "catalog_size": 12,
   "events_full": 12,
-  "events_live": 2,
-  "streams_total": 0,
-  "streams_skipped_drm": 0,
+  "events_live": 3,
+  "streams_skipped_pre_resolve": 0,
   "embed_jobs": 7,
-  "embed_resolved": 1,
-  "extracted_at": 1792236010
+  "embed_resolved": 0,
+  "embed_failed": 7,
+  "failures_by_reason": {
+    "manifest_not_observed": 6,
+    "cloudflare_challenge": 1
+  },
+  "ua_used": "desktop",
+  "verify_cache": false,
+  "extracted_at": 1792240424
 }
