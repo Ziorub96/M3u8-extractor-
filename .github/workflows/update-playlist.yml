@@ -87,6 +87,15 @@ jobs:
         continue-on-error: true
         timeout-minutes: 25
 
+      - name: Extract PirloTV streams (v1.0)
+        run: |
+          python pirlotv_extractor.py \
+            --output pirlotv_COMPLETE.m3u \
+            --max-per-site 20 \
+            --timeout-per-site 300
+        continue-on-error: true
+        timeout-minutes: 25
+
       # ============================================================
       # COMBINE + CHECK
       # ============================================================
@@ -114,6 +123,10 @@ jobs:
             streamcorner_COMPLETE.m3u \
             streamcorner_VLC.m3u \
             streamcorner_EVENTS_LIVE.m3u \
+            pirlotv_COMPLETE.m3u
+            pirlotv_VLC.m3u
+            pirlotv_EVENTS_LIVE.m3u
+            pirlotv_capture.json
             sc_capture.json \
             watchfooty_events.m3u; do
             if [ ! -f "$f" ]; then
@@ -167,6 +180,10 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
+            pirlotv_COMPLETE.m3u \
+            pirlotv_VLC.m3u \
+            pirlotv_EVENTS_LIVE.m3u \
+            pirlotv_capture.json \
             sc_capture.json
             sc_network.json
             sc_homepage.html
