@@ -1,26 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.2 — Playwright stealth su streamcorner.st.
+StreamCorner Extractor v13.3 — Playwright stealth + CLIENT-SIDE NAV.
 
-Changelog v13.1 → v13.2:
-- Aggiunto listener on_requestfailed: logga ogni richiesta fallita con URL + errore
-  (net::ERR_NAME_NOT_RESOLVED, ERR_CONNECTION_TIMED_OUT, HTTP_RESPONSE_CODE_FAILURE...)
-- Aggiunto listener on_frame_navigated: logga ogni navigazione di frame
-  (rivela gli URL degli iframe player, anche quando falliscono)
-- Le richieste fallite vengono salvate in sc_network.json con status="FAILED" + error
-- Bump versione log a 13.2
-
-Invariato da v13.1:
-- Salva SEMPRE sc_homepage.html
-- Salva sc_network.json
-- Pattern categoria/partita larghi
-- Esplorazione a 3 livelli: home → categorie → partite
-- Cattura manifest da iframe e sniffing JSON
-- Budget max_total_time_s
-- Scrive i 4 file attesi (EVENTS_LIVE, VLC, KODI, COMPLETE)
-- CLI identica (drop-in replacement)
-- Exit 0 SEMPRE (graceful)
+Changelog v13.2 → v13.3:
+- FIX CRITICO: le pagine /stream/admin/* restituiscono 403 se caricate con
+  page.goto() (navigazione server-side = Turnstile challenge di Cloudflare).
+  Soluzione: la homepage è accessibile e contiene link <a href="/stream/admin/...">.
+  Clicchiamo quei link (React Router = client-side), NON navighiamo con goto().
+- Fallback: pushState() + PopStateEvent se il click fallisce.
+- Fallback finale: page.goto() (nel caso il click non sia possibile).
+- Rimozione --disable-blink-features=AutomationControlled (interferisce con Turnstile)
+- Aggiunto --disable-web-security (aiuta Turnstile con CORS)
+- Attesa post-click aumentata a 12s (React Router + API)
+- Salvataggio HTML delle pagine di dettaglio per debug (sc_stream_<hash>.html)
+- Le categorie sono esplorate per click anch'esse (non con goto)
 """
 from __future__ import annotations
 import argparse, json, os, re, sys, time
@@ -134,19 +128,20 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         engine = "playwright"
 
     found = []
-    network_map = {}       # url -> {method, url, type, status, mime, error?}
+    network_map = {}
     cf_hit = {"cloudflare": False}
     start_time = time.time()
     cat_links, match_links = [], []
 
     with sync_playwright() as p:
+        # v13.3: rimossi --disable-blink-features=AutomationControlled (interferisce con Turnstile)
+        # aggiunto --disable-web-security per CORS Turnstile
         browser = p.chromium.launch(headless=headless, args=[
             "--no-sandbox", "--disable-dev-shm-usage",
-            "--disable-blink-features=AutomationControlled",
             "--use-gl=swiftshader", "--enable-unsafe-swiftshader",
             "--autoplay-policy=no-user-gesture-required",
             "--mute-audio",
-            "--disable-features=IsolateOrigins,site-per-process",
+            "--disable-web-security",
         ])
         ctx = browser.new_context(
             user_agent=ua,
@@ -156,7 +151,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             ignore_https_errors=True,
             extra_http_headers={
                 "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
-                "Referer": BASE + "/",
             },
         )
         ctx.add_init_script("""
@@ -198,7 +192,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 if any(k in lu for k in CF_HINTS):
                     cf_hit["cloudflare"] = True
 
-                # Manifest HLS
                 if ".m3u8" in lu:
                     try:
                         t = resp.text()
@@ -211,7 +204,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                                       "source": "network"})
                         log(f"    🎯 M3U8: {u[:120]}")
 
-                # Manifest DASH
                 elif ".mpd" in lu:
                     try:
                         t = resp.text()
@@ -224,7 +216,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                                       "source": "network"})
                         log(f"    🎯 MPD: {u[:120]}")
 
-                # JSON: sniff per URL di stream
                 elif "json" in (resp.headers.get("content-type") or "").lower():
                     cl = resp.headers.get("content-length")
                     try:
@@ -250,7 +241,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             except Exception:
                 pass
 
-        # === v13.2: listener per richieste fallite ===
         def on_requestfailed(req):
             try:
                 u = req.url
@@ -267,7 +257,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             except Exception:
                 pass
 
-        # === v13.2: listener per navigazione frame ===
         def on_frame_navigated(frame):
             try:
                 u = frame.url
@@ -281,6 +270,42 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         page.on("requestfailed", on_requestfailed)
         page.on("framenavigated", on_frame_navigated)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
+
+        # ===== Helper: naviga client-side (NON server-side) =====
+        def navigate_client_side(relative_path):
+            """Click sul link <a href="relative_path">, oppure pushState fallback."""
+            # 1. Assicurati di essere sulla homepage
+            if page.url.rstrip("/") != BASE:
+                try:
+                    page.goto(BASE, wait_until="domcontentloaded", timeout=timeout_s * 1000)
+                    page.wait_for_timeout(3000)
+                except Exception:
+                    return False
+            # 2. Cerca il link e clicca
+            try:
+                sel = f'a[href="{relative_path}"]'
+                loc = page.locator(sel).first
+                if loc.count() > 0:
+                    try:
+                        loc.scroll_into_view_if_needed(timeout=5000)
+                    except Exception:
+                        pass
+                    loc.click(timeout=5000)
+                    log(f"    ✅ click client-side su {relative_path}")
+                    return True
+            except Exception as e:
+                log(f"    ⚠️ click failed: {type(e).__name__}")
+            # 3. Fallback: pushState + PopStateEvent (React Router ascolta popstate)
+            try:
+                page.evaluate(f"""() => {{
+                    history.pushState({{}}, '', '{relative_path}');
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                }}""")
+                log(f"    ⚠️ pushState fallback su {relative_path}")
+                return True
+            except Exception as e:
+                log(f"    ❌ pushState failed: {type(e).__name__}")
+            return False
 
         # ===== Livello 1: homepage =====
         log(f"[*] Apro {BASE}")
@@ -306,29 +331,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         except Exception as e:
             log(f"   ⚠️ salvataggio homepage: {e}")
 
-        if "avviso" in title.lower() or html_len < 2000:
-            log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
-            try:
-                page.reload(wait_until="domcontentloaded", timeout=timeout_s * 1000)
-                page.wait_for_timeout(15000)
-            except Exception:
-                pass
-            title = page.title()
-            html = page.content()
-            html_len = len(html)
-            log(f"[*] Dopo reload — titolo: '{title[:80]}'  HTML: {html_len} byte")
-            if "avviso" in title.lower() or html_len < 2000:
-                try:
-                    Path(os.path.join(debug_dir, "sc_homepage_blocked.html")).write_text(
-                        html, encoding="utf-8")
-                except Exception:
-                    pass
-                browser.close()
-                return found, network_map, {"engine": engine, "title": title,
-                                            "html_len": html_len,
-                                            "cloudflare": cf_hit["cloudflare"],
-                                            "blocked": True}
-
         # ===== Livello 2: estrai link =====
         cat_links = find_links(html, BASE, CATEGORY_PATTERNS)[:max_categories]
         match_links = find_links(html, BASE, MATCH_PATTERNS)[:max_matches]
@@ -336,19 +338,18 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         for c in cat_links:  log(f"    📂 {c[:100]}")
         for m in match_links: log(f"    🎬 {m[:100]}")
 
-        # ===== Livello 3a: esplora categorie =====
+        # ===== Livello 3a: esplora categorie (CLIENT-SIDE) =====
         for cat_url in cat_links:
             if time.time() - start_time > max_total_time_s:
-                log(f"[!] Budget tempo esaurito, interrompo l'esplorazione")
+                log(f"[!] Budget tempo esaurito")
                 break
-            log(f"  📂 categoria: {cat_url[:100]}")
+            log(f"  📂 categoria (client-side): {cat_url[:100]}")
             try:
-                page.goto(cat_url, wait_until="domcontentloaded", timeout=25000)
-                try:
-                    page.wait_for_load_state("networkidle", timeout=10000)
-                except Exception:
-                    pass
-                page.wait_for_timeout(3000)
+                path = urlparse(cat_url).path
+                if not navigate_client_side(path):
+                    log(f"      ⚠️ skip (navigazione fallita)")
+                    continue
+                page.wait_for_timeout(5000)
                 cat_html = page.content()
                 inner = find_links(cat_html, cat_url, MATCH_PATTERNS)
                 log(f"      → {len(inner)} partite dentro")
@@ -361,29 +362,35 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         match_links = list(dict.fromkeys(match_links))[:max_matches]
         log(f"[*] Totale partite da visitare: {len(match_links)}")
 
-        # ===== Livello 3b: visita partite =====
+        # ===== Livello 3b: visita partite (CLIENT-SIDE!) =====
         for i, link in enumerate(match_links, 1):
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito, interrompo")
                 break
-            log(f"  [{i}/{len(match_links)}] {link[:100]}")
+            log(f"  [{i}/{len(match_links)}] (client-side) {link[:100]}")
             try:
-                page.goto(link, wait_until="domcontentloaded", timeout=25000)
+                path = urlparse(link).path
+                if not navigate_client_side(path):
+                    log(f"      ⚠️ skip")
+                    continue
+
+                # Attesa estesa (React Router + API + eventuale player)
+                page.wait_for_timeout(12000)
+
+                # Salva HTML per debug
                 try:
-                    page.wait_for_load_state("networkidle", timeout=10000)
+                    slug = re.sub(r'[^a-z0-9]', '_', path.split("/")[-1])[:40]
+                    dbg = os.path.join(debug_dir, f"sc_stream_{slug}.html")
+                    Path(dbg).write_text(page.content(), encoding="utf-8")
                 except Exception:
                     pass
-                page.wait_for_timeout(4000)
 
-                # Log frame presenti (post-navigazione)
-                try:
-                    for f in page.frames:
-                        if f.url and f.url != "about:blank":
-                            log(f"      🖼️ frame: {f.url[:100]}")
-                except Exception:
-                    pass
+                # Log frame
+                for f in page.frames:
+                    if f.url and f.url != "about:blank":
+                        log(f"      🖼️ frame: {f.url[:100]}")
 
-                # Click play aggressivo
+                # Click play
                 for sel in ("button[aria-label*='play' i]",
                             ".vjs-big-play-button", ".jw-icon-playback",
                             ".bitmovinplayer-ui",
@@ -400,7 +407,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
 
                 page.wait_for_timeout(5000)
 
-                # Manifest dagli iframe (URL diretti)
+                # Manifest dagli iframe
                 for frame in page.frames:
                     try:
                         furl = frame.url
@@ -475,7 +482,7 @@ def main():
     ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
 
     log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.2 (Playwright stealth, UA={args.ua})")
+    log(f"📡 STREAMCORNER EXTRACTOR v13.3 (client-side nav, UA={args.ua})")
     log("=" * 66)
 
     found, network_map, meta = run_playwright(
@@ -485,7 +492,6 @@ def main():
     log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
     log(f"[*] Meta: {meta}")
 
-    # Salva sc_network.json (ora include anche i FAILED con campo error)
     try:
         net_list = list(network_map.values())
         net_path = os.path.join(args.output_dir, NETWORK_FILE)
@@ -496,7 +502,6 @@ def main():
     except Exception as e:
         log(f"   ⚠️ salvataggio network: {e}")
 
-    # Filtra + dedup
     seen = set()
     entries = []
     for f in found:
@@ -521,7 +526,7 @@ def main():
                    entries, group_override="StreamCorner")
     log(f"   💾 VLC: {n2}")
     n3 = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), entries)
-    log(f"   💾 KODI: {n3} (non committato — rimosso da file_pattern)")
+    log(f"   💾 KODI: {n3} (non committato)")
     n4 = write_m3u(args.output, entries)
     log(f"   💾 {args.output}: {n4}")
 
