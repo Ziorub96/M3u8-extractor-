@@ -35,12 +35,7 @@ jobs:
           patchright install chromium
 
       # ============================================================
-      # Cache persistente per m3u8 risolti (NON committata nel repo)
-      # ------------------------------------------------------------
-      # Pattern: rolling cache
-      #   - key univoca per run (run_id) → forza il salvataggio
-      #   - restore-keys con prefisso → recupera la cache più recente
-      # GitHub auto-pota le cache >7 giorni o quando supera 10 GB.
+      # Cache StreamCorner m3u8 + static config
       # ============================================================
       - name: Cache StreamCorner m3u8 results
         uses: actions/cache@v4
@@ -50,15 +45,6 @@ jobs:
           restore-keys: |
             streamcorner-m3u8-cache-
 
-      # ============================================================
-      # v10.1 — Cache statica (provider worker + worker pool)
-      # ------------------------------------------------------------
-      # Contiene il provider worker (base64) + lista di *.workers.dev.
-      # Serve per sopravvivere a eventuali blocchi Cloudflare momentanei
-      # che impediscono la discovery HTTP del bundle.
-      # Questo file è anche committato nel repo (≈25 KB), quindi la
-      # cache di GitHub è solo un backup extra.
-      # ============================================================
       - name: Cache StreamCorner static config
         uses: actions/cache@v4
         with:
@@ -82,35 +68,32 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
+      # ============================================================
+      # StreamCorner v13.0 — Playwright stealth su streamcorner.st
       # ------------------------------------------------------------
-      # StreamCorner v10.1: HTTP-puro (NinjaCorner protocol)
-      # ------------------------------------------------------------
-      # Discovery + catalogo + dettagli in ~30s (zero Playwright).
-      # Playwright usato SOLO per risolvere gli embed (CDN terze parti).
-      # ------------------------------------------------------------
-      - name: Extract StreamCorner streams (v10.1)
+      # Prova zero-cost: usa Playwright/Patchright per superare
+      # il challenge Cloudflare. Se GitHub Actions IP è bloccato,
+      # lo step fallisce gracefully e produce M3U vuote.
+      # ============================================================
+      - name: Extract StreamCorner streams (v13.0, Playwright stealth)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
-            --playwright-workers 4 \
-            --playwright-limit 0
+            --playwright-workers 1 \
+            --playwright-limit 0 \
+            --ua desktop
         continue-on-error: true
         timeout-minutes: 30
 
       - name: Extract WatchFooty streams
-        if: false  # DISABILITATO — dominio api.watchfooty.st morto (2026-10-15)
+        if: false  # DISABILITATO — dominio api.watchfooty.st morto
         run: python watchfooty_direct.py --max 20
         continue-on-error: true
         timeout-minutes: 25
 
       # ============================================================
-      # STEP DISMESSI (commentati per storico)
-      # ------------------------------------------------------------
-      # xyzstreams  → proxy Node fragile, dipendenza esterna
-      # SMTK        → canali geobloccati (richiedono VPN russa)
-      # Extra Srces → 0 flussi funzionanti
+      # COMBINE + CHECK
       # ============================================================
-
       - name: Run combiner
         run: python combine_playlist.py
 
@@ -136,7 +119,6 @@ jobs:
             streamcorner_VLC.m3u \
             streamcorner_EVENTS_LIVE.m3u \
             streamcorner_KODI.m3u \
-            streamcorner_drm_report.json \
             sc_capture.json \
             watchfooty_events.m3u; do
             if [ ! -f "$f" ]; then
@@ -169,7 +151,7 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
-            streamcorner_drm_report.json
+            streamcorner_KODI.m3u
             sc_capture.json
             .sc_static_cache.json
             watchfooty_events.m3u
