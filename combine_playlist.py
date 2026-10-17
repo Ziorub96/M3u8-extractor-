@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-combine_playlist.py — v2.0
-Unisce sorgenti con priorità, deduplica per URL e per titolo.
-Filtra host morti, embed HTML e endpoint API cifrati.
+combine_playlist.py — v2.3
+Unisce sorgenti con priorità, deduplica per URL e titolo.
+Filtra host morti, embed HTML, endpoint API e placeholder.
 """
 import re
 from pathlib import Path
@@ -23,30 +23,50 @@ TVG_ID_MAP = {
     "FOX Sports 1": "FoxSports1.us", "beIN Sports 1": "beINSports1.fr",
 }
 
-# Host morti (scartati sempre)
+# Host definitivamente morti: scartati sempre
 DEAD_HOSTS = {
-    "23.237.104.106", "cache0.wonvt.st", "edgestream1.pro", "edgestream2.pro",
-    "edgestream3.pro", "edgestream4.pro", "edgestream5.pro", "edgestream6.pro",
-    "edgestream7.pro", "193.47.62.41", "193.47.62.44", "193.47.62.50",
-    "193.47.62.55", "193.47.62.59", "futbolx.ryzn.pro", "judiaslevels.embeds.gay",
-    "chatgpt.hereisman.net", "karimianian.store", "instreams.xyz",
-    "instreams.live", "instreams.pro", "rtmpcdn.com", "streamfree.top",
-    "khala.futlivehd.com", "ftlly.com", "fubo18.com", "webcast-origin.b-cdn.net",
+    "23.237.104.106", "cache0.wonvt.st",
+    "edgestream1.pro", "edgestream2.pro", "edgestream3.pro",
+    "edgestream4.pro", "edgestream5.pro", "edgestream6.pro", "edgestream7.pro",
+    "193.47.62.41", "193.47.62.44", "193.47.62.50", "193.47.62.55", "193.47.62.59",
+    "futbolx.ryzn.pro", "judiaslevels.embeds.gay", "chatgpt.hereisman.net",
+    "karimianian.store", "instreams.xyz", "instreams.live", "instreams.pro",
+    "rtmpcdn.com", "streamfree.top", "khala.futlivehd.com", "ftlly.com",
+    "fubo18.com", "webcast-origin.b-cdn.net", "88.212.15.19", "89.33.29.115",
+    "envivosenhd.beer", "cdn-5.nxplay.com.br", "stream.mcquack.net",
+    "bozztv.com", "lbgo.bozztv.com", "live20.bozztv.com", "telekomsrbije.com",
+    "31.148.48.15", "88.212.15.27", "162.19.255.233", "185.49.107.6",
+    "190.83.2.182", "190.197.41.183", "195.178.110.110", "201.190.41.246",
+    "45.4.1.201", "45.134.141.161", "45.167.2.101", "45.5.119.43",
+    "46.32.176.50", "58.8.186.128", "74.91.26.218", "87.229.103.60",
+    "91.228.35.249", "103.250.28.74", "103.151.60.162", "121.91.61.106",
+    "143.14.134.107", "145.239.5.177", "158.101.222.193", "162.250.201.58",
+    "168.228.44.241", "178.33.11.6", "180.188.254.253", "183.207.248.71",
+    "192.162.64.99", "202.150.172.59", "xn.futbolx.ryzn.pro",
+    "lb.iptvnetwork.net", "instream.click", "tvsen7.aynascope.net",
+    "tvsen5.aynaott.com", "tvsen5.aynascope.net",
+    "d2xeo83q8fcni6.cloudfront.net", "d12a2vxqkkh1bo.cloudfront.net",
+    "live-stream.iblups.com", "soultv.com.br",
+    # Domini StreamCorner morti/bloccati (test Carnets)
+    "streamcorner.st", "streamcorner.cloud", "streamcorner.fyi",
+    "streamcorner.vu", "streamcorner.foo", "streamcorner.info",
+    "streamcorner.xyz", "streamcorner.to", "streamcorner.site",
 }
 
 EMBED_PATTERNS = (
     "getsugatensho", "sportsembed", "embed.st/embed/", "pandecocogaming.sbs",
     "embedhd.", "embedme.st", "taifood-blog.asia", "streamsgate.co",
+    "streamcorner.xyz",
 )
 
-# (nome, file, priorità) — numero più alto = più prioritario
+# (nome, file, priorità). Priorità più alta vince in caso di duplicato per titolo.
 LOCAL_SOURCES = [
     ("DAMITV", "damitv_events.m3u", 10),
     ("Streamed", "streamed.m3u", 10),
+    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", 8),
     ("Daddylive", "daddylive_streams.m3u", 5),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u", 3),
     ("CDN Live TV Events", "cdnlivetv_events.m3u", 3),
-    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", 2),
 ]
 
 REMOTE_SOURCES = [
@@ -56,20 +76,24 @@ REMOTE_SOURCES = [
 
 OUTPUT_FILE = "combined_events.m3u"
 
+
 def host_of(u):
     return (urlparse(u).hostname or "").lower()
+
 
 def is_embed(u):
     u = u.lower()
     return any(p in u for p in EMBED_PATTERNS)
 
+
 def is_api_endpoint(u):
-    """Scarta endpoint API cifrati (workers.dev/?p=...)."""
     u = u.lower()
     return "workers.dev/?p=" in u or "workers.dev?p=" in u
 
+
 def is_localhost(u):
     return any(b in u.lower() for b in ("://127.0.0.1", "://localhost", "://0.0.0.0"))
+
 
 def set_group_title(line, grp):
     if 'group-title="' in line:
@@ -78,6 +102,7 @@ def set_group_title(line, grp):
         h, t = line.rsplit(',', 1)
         return f'{h} group-title="{grp}",{t}'
     return f'{line} group-title="{grp}"'
+
 
 def set_tvg_id(line, name):
     if 'tvg-id="' in line:
@@ -92,19 +117,25 @@ def set_tvg_id(line, name):
         return f'{h} tvg-id="{tid}",{t}'
     return line
 
+
 def parse_m3u(lines):
     blocks, cur = [], []
     for l in lines:
         s = l.strip()
         if s.startswith("#EXTINF"):
-            if cur: blocks.append(cur)
+            if cur:
+                blocks.append(cur)
             cur = [s]
         elif s and not s.startswith("#"):
-            cur.append(s); blocks.append(cur); cur = []
+            cur.append(s)
+            blocks.append(cur)
+            cur = []
         elif s.startswith("#") and cur:
             cur.append(s)
-    if cur: blocks.append(cur)
+    if cur:
+        blocks.append(cur)
     return blocks
+
 
 def process(blocks, name, prio, out, seen_urls, seen_titles):
     added = 0
@@ -122,13 +153,15 @@ def process(blocks, name, prio, out, seen_urls, seen_titles):
         if title and title in seen_titles:
             continue
         seen_urls.add(url)
-        if title: seen_titles.add(title)
+        if title:
+            seen_titles.add(title)
         if b[0].startswith("#EXTINF"):
             b[0] = set_group_title(b[0], name)
             b[0] = set_tvg_id(b[0], title)
         out.append((prio, b))
         added += 1
     return added
+
 
 def main():
     import requests
@@ -138,7 +171,7 @@ def main():
     for name, path, prio in LOCAL_SOURCES:
         p = Path(path)
         if not p.exists():
-            print(f"⚠️ {name}: file assente")
+            print(f"⚠️ {name}: file assente ({path})")
             continue
         lines = p.read_text(encoding="utf-8", errors="ignore").splitlines()
         blocks = parse_m3u(lines)
@@ -155,13 +188,13 @@ def main():
         except Exception as e:
             print(f"❌ {name}: {e}")
 
-    # Ordina per priorità decrescente
     out_blocks.sort(key=lambda x: -x[0])
     lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
     for _, b in out_blocks:
         lines.extend(b)
     Path(OUTPUT_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"\n✅ {OUTPUT_FILE}: {len(out_blocks)} flussi unici")
+
 
 if __name__ == "__main__":
     main()
