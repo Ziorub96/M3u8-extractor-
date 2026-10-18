@@ -63,11 +63,9 @@ jobs:
         continue-on-error: true
 
       # ═══════════════════════════════════════════════════════════════
-      # MODIFICATO v13.5 → v13.6:
-      #   • timeout 3 min → 10 min (obbligatorio: la nuova logica clicca
-      #     i .stream-source-btn e attende il load dell'iframe → ~6-8 min
-      #     per 25 match. Con 3 min il job veniva ucciso a metà)
-      #   • step name aggiornato (v13.4 → v13.6)
+      # v13.6: source-click fix. Serve timeout ≥ 10 min perché ogni
+      # match richiede wait_for_selector(.stream-source-btn) + click +
+      # attesa iframe → ~6-8 min per 25 match totali.
       # ═══════════════════════════════════════════════════════════════
       - name: Extract StreamCorner streams (v13.6, source-click fix)
         run: |
@@ -86,9 +84,7 @@ jobs:
         timeout-minutes: 25
 
       # ═══════════════════════════════════════════════════════════════
-      # MODIFICATO v1.5 → v1.5.3:
-      #   • step name aggiornato (v1.5 → v1.5.3)
-      #   • codice invariato (fix atob regex è interna al file .py)
+      # v1.5.3: regex atob multi-line. Catena zonalivetv sbloccata.
       # ═══════════════════════════════════════════════════════════════
       - name: Extract PirloTV streams (v1.5.3, atob-regex multi-line)
         run: |
@@ -146,13 +142,6 @@ jobs:
           echo "--- sc_stream_* post-click (v13.6) ---"
           ls -la sc_stream_*.html 2>/dev/null | head -30 || true
 
-      # ═══════════════════════════════════════════════════════════════
-      # MODIFICATO:
-      #   • aggiunto sc_stream_*.html (post-click v13.6, diagnostica
-      #     per capire quale iframe/m3u8 viene montato dentro ogni
-      #     match page dopo il click sul source button)
-      #   • aggiunto streamcorner_KODI.m3u
-      # ═══════════════════════════════════════════════════════════════
       - name: Upload StreamCorner debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -172,11 +161,6 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
-      # ═══════════════════════════════════════════════════════════════
-      # INVARIATO (già include pirlotv_debug/ con i player HTML
-      # salvati durante le catene atob — utili per verificare che
-      # canal-5/81/94/109/161 abbiano effettivamente zonalivetv)
-      # ═══════════════════════════════════════════════════════════════
       - name: Upload PirloTV debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -192,10 +176,11 @@ jobs:
           if-no-files-found: ignore
 
       # ═══════════════════════════════════════════════════════════════
-      # MODIFICATO:
-      #   • aggiunto streamcorner_KODI.m3u al commit pattern
-      #     (prima veniva prodotto ma non committato)
-      #   • tutto il resto invariato (pull: --rebase già corretto)
+      # FIX COMMIT FALLITO:
+      #   • streamcorner_KODI.m3u RIMOSSO dal file_pattern (bloccato
+      #     da .gitignore → faceva fallire l'intera action con
+      #     "Invalid status code: 1")
+      #   • pull: --rebase RIMOSSO (deprecato in v5, warning)
       # ═══════════════════════════════════════════════════════════════
       - name: Commit and push
         if: always()
@@ -213,7 +198,6 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
-            streamcorner_KODI.m3u
             pirlotv_COMPLETE.m3u
             pirlotv_VLC.m3u
             pirlotv_EVENTS_LIVE.m3u
@@ -224,4 +208,3 @@ jobs:
             .sc_static_cache.json
             watchfooty_events.m3u
           skip_dirty_check: false
-          pull: --rebase
