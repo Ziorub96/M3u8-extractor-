@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-combine_playlist.py — v2.3
+combine_playlist.py — v2.4
 Unisce sorgenti con priorità, deduplica per URL e titolo.
 Filtra host morti, embed HTML, endpoint API e placeholder.
+
+Changelog v2.3 → v2.4:
+- RIMOSSO ("Streamed", "streamed.m3u", 10) — file fantasma, nessuno
+  step del workflow produce streamed.m3u. Loggava warning ad ogni run
+  e occupava priorità 10 inutilmente.
+- Aggiunto commento esplicativo: PirloTV (pirlotv_EVENTS_LIVE.m3u) NON
+  è incluso di proposito. Tutti i suoi stream sono IP-locked sul runner
+  GitHub Actions (Azure) con token scadenza ~15h e `?ip=<runner-ip>`.
+  Funzionano solo dal runner che li genera, non dal TV/telefono finale.
+  Restano disponibili separatamente in pirlotv_EVENTS_LIVE.m3u,
+  pirlotv_VLC.m3u, pirlotv_COMPLETE.m3u.
 """
 import re
 from pathlib import Path
@@ -20,7 +31,7 @@ TVG_ID_MAP = {
     "Sky Sports Premier League": "SkySportsPremierLeague.uk",
     "TNT Sports 1": "TNTSports1.uk", "TNT Sports 2": "TNTSports2.uk",
     "ESPN": "ESPN.us", "ESPN2": "ESPN2.us",
-    "FOX Sports 1": "FoxSports1.us", "beIN Sports 1": "beINSports1.fr",
+    "FOX Sports 1": "FoxSports1.us", "beIN Sports 1": "beINSPorts1.fr",
 }
 
 # Host definitivamente morti: scartati sempre
@@ -60,13 +71,17 @@ EMBED_PATTERNS = (
 )
 
 # (nome, file, priorità). Priorità più alta vince in caso di duplicato per titolo.
+#
+# NOTE PirloTV: NON incluso di proposito. Tutti i suoi stream sono IP-locked
+# sul runner GitHub Actions (Azure): URL contiene `?ip=<runner-ip>` e token
+# con scadenza ~15h. Funzionano solo dal runner che li genera, non dal
+# dispositivo finale (TV/telefono). Restano in pirlotv_EVENTS_LIVE.m3u.
 LOCAL_SOURCES = [
-    ("DAMITV", "damitv_events.m3u", 10),
-    ("Streamed", "streamed.m3u", 10),
-    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", 8),
-    ("Daddylive", "daddylive_streams.m3u", 5),
-    ("CDN Live TV Channels", "cdnlivetv_channels.m3u", 3),
-    ("CDN Live TV Events", "cdnlivetv_events.m3u", 3),
+    ("DAMITV",                "damitv_events.m3u",             10),
+    ("StreamCorner",          "streamcorner_EVENTS_LIVE.m3u",   8),
+    ("Daddylive",             "daddylive_streams.m3u",          5),
+    ("CDN Live TV Channels",  "cdnlivetv_channels.m3u",         3),
+    ("CDN Live TV Events",    "cdnlivetv_events.m3u",           3),
 ]
 
 REMOTE_SOURCES = [
