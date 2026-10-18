@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-combine_playlist.py — v2.4
-Unisce sorgenti con priorità, deduplica per URL e titolo.
-Filtra host morti, embed HTML, endpoint API e placeholder.
+combine_playlist.py — v2.6
 
-Changelog v2.3 → v2.4:
-- RIMOSSO ("Streamed", "streamed.m3u", 10) — file fantasma, nessuno
-  step del workflow produce streamed.m3u. Loggava warning ad ogni run
-  e occupava priorità 10 inutilmente.
-- Aggiunto commento esplicativo: PirloTV (pirlotv_EVENTS_LIVE.m3u) NON
-  è incluso di proposito. Tutti i suoi stream sono IP-locked sul runner
-  GitHub Actions (Azure) con token scadenza ~15h e `?ip=<runner-ip>`.
-  Funzionano solo dal runner che li genera, non dal TV/telefono finale.
-  Restano disponibili separatamente in pirlotv_EVENTS_LIVE.m3u,
-  pirlotv_VLC.m3u, pirlotv_COMPLETE.m3u.
+Cambiamenti:
+- PRESERVA #EXTVLCOPT dal blocco sorgente (necessari per DAMITV/DokAgents)
+- Ignora # CHECK: residui
+- Mantiene priority DAMITV=10 (vince su doms9=1)
 """
 import re
 from pathlib import Path
@@ -23,18 +15,10 @@ from urllib.parse import urlparse
 EPG_URL = "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/combined_epg.xml"
 
 TVG_ID_MAP = {
-    "Digi Sport 1": "DigiSport1.it", "Digi Sport 2 HD": "DigiSport2.it",
-    "Digi Sport 3": "DigiSport3.it", "Digi Sport 4": "DigiSport4.it",
-    "DAZN 1 Italia": "DAZN1.it", "Sky Sport 24": "SkySport24.it",
-    "Sky Sport Calcio": "SkySportCalcio.it", "Sky Sport UNO": "SkySportUno.it",
-    "Sky Sports Main Event": "SkySportsMainEvent.uk",
-    "Sky Sports Premier League": "SkySportsPremierLeague.uk",
-    "TNT Sports 1": "TNTSports1.uk", "TNT Sports 2": "TNTSports2.uk",
-    "ESPN": "ESPN.us", "ESPN2": "ESPN2.us",
-    "FOX Sports 1": "FoxSports1.us", "beIN Sports 1": "beINSPorts1.fr",
+    "Digi Sport 1": "DigiSport1.it", "DAZN 1 Italia": "DAZN1.it",
+    "Sky Sport 24": "SkySport24.it", "ESPN": "ESPN.us", "ESPN2": "ESPN2.us",
 }
 
-# Host definitivamente morti: scartati sempre
 DEAD_HOSTS = {
     "23.237.104.106", "cache0.wonvt.st",
     "edgestream1.pro", "edgestream2.pro", "edgestream3.pro",
@@ -58,30 +42,21 @@ DEAD_HOSTS = {
     "tvsen5.aynaott.com", "tvsen5.aynascope.net",
     "d2xeo83q8fcni6.cloudfront.net", "d12a2vxqkkh1bo.cloudfront.net",
     "live-stream.iblups.com", "soultv.com.br",
-    # Domini StreamCorner morti/bloccati (test Carnets)
     "streamcorner.st", "streamcorner.cloud", "streamcorner.fyi",
     "streamcorner.vu", "streamcorner.foo", "streamcorner.info",
     "streamcorner.xyz", "streamcorner.to", "streamcorner.site",
 }
 
-EMBED_PATTERNS = (
-    "getsugatensho", "sportsembed", "embed.st/embed/", "pandecocogaming.sbs",
-    "embedhd.", "embedme.st", "taifood-blog.asia", "streamsgate.co",
-    "streamcorner.xyz",
-)
+EMBED_PATTERNS = ("getsugatensho", "sportsembed", "embed.st/embed/",
+                  "pandecocogaming.sbs", "embedhd.", "embedme.st",
+                  "taifood-blog.asia", "streamsgate.co")
 
-# (nome, file, priorità). Priorità più alta vince in caso di duplicato per titolo.
-#
-# NOTE PirloTV: NON incluso di proposito. Tutti i suoi stream sono IP-locked
-# sul runner GitHub Actions (Azure): URL contiene `?ip=<runner-ip>` e token
-# con scadenza ~15h. Funzionano solo dal runner che li genera, non dal
-# dispositivo finale (TV/telefono). Restano in pirlotv_EVENTS_LIVE.m3u.
 LOCAL_SOURCES = [
-    ("DAMITV",                "damitv_events.m3u",             10),
-    ("StreamCorner",          "streamcorner_EVENTS_LIVE.m3u",   8),
-    ("Daddylive",             "daddylive_streams.m3u",          5),
-    ("CDN Live TV Channels",  "cdnlivetv_channels.m3u",         3),
-    ("CDN Live TV Events",    "cdnlivetv_events.m3u",           3),
+    ("DAMITV", "damitv_events.m3u", 10),
+    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", 8),
+    ("Daddylive", "daddylive_streams.m3u", 5),
+    ("CDN Live TV Channels", "cdnlivetv_channels.m3u", 3),
+    ("CDN Live TV Events", "cdnlivetv_events.m3u", 3),
 ]
 
 REMOTE_SOURCES = [
@@ -97,17 +72,12 @@ def host_of(u):
 
 
 def is_embed(u):
-    u = u.lower()
-    return any(p in u for p in EMBED_PATTERNS)
+    return any(p in u.lower() for p in EMBED_PATTERNS)
 
 
 def is_api_endpoint(u):
     u = u.lower()
     return "workers.dev/?p=" in u or "workers.dev?p=" in u
-
-
-def is_localhost(u):
-    return any(b in u.lower() for b in ("://127.0.0.1", "://localhost", "://0.0.0.0"))
 
 
 def set_group_title(line, grp):
@@ -119,35 +89,26 @@ def set_group_title(line, grp):
     return f'{line} group-title="{grp}"'
 
 
-def set_tvg_id(line, name):
-    if 'tvg-id="' in line:
-        return line
-    tid = TVG_ID_MAP.get(name)
-    if not tid:
-        return line
-    if 'group-title="' in line:
-        return line.replace('group-title="', f'tvg-id="{tid}" group-title="')
-    if ',' in line:
-        h, t = line.rsplit(',', 1)
-        return f'{h} tvg-id="{tid}",{t}'
-    return line
-
-
 def parse_m3u(lines):
+    """Parsing che PRESERVA #EXTVLCOPT e #KODIPROP. Scarta # CHECK: e altri."""
     blocks, cur = [], []
     for l in lines:
         s = l.strip()
         if s.startswith("#EXTINF"):
-            if cur:
+            if cur and cur[-1] and not cur[-1].startswith("#"):
                 blocks.append(cur)
             cur = [s]
+        elif s.startswith("#EXTVLCOPT") and cur:
+            cur.append(s)
+        elif s.startswith("#KODIPROP") and cur:
+            cur.append(s)
         elif s and not s.startswith("#"):
-            cur.append(s)
-            blocks.append(cur)
-            cur = []
-        elif s.startswith("#") and cur:
-            cur.append(s)
-    if cur:
+            if cur:
+                cur.append(s)
+                blocks.append(cur)
+                cur = []
+        # altri # qualunque: scartati (# CHECK:, commenti vari)
+    if cur and cur[-1] and not cur[-1].startswith("#"):
         blocks.append(cur)
     return blocks
 
@@ -158,7 +119,7 @@ def process(blocks, name, prio, out, seen_urls, seen_titles):
         url = b[-1]
         if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
             continue
-        if is_embed(url) or is_api_endpoint(url) or is_localhost(url):
+        if is_embed(url) or is_api_endpoint(url):
             continue
         if host_of(url) in DEAD_HOSTS:
             continue
@@ -172,7 +133,6 @@ def process(blocks, name, prio, out, seen_urls, seen_titles):
             seen_titles.add(title)
         if b[0].startswith("#EXTINF"):
             b[0] = set_group_title(b[0], name)
-            b[0] = set_tvg_id(b[0], title)
         out.append((prio, b))
         added += 1
     return added
