@@ -47,10 +47,10 @@ jobs:
       # ============================================================
       # STEP DISMESSI (commentati per storico)
       # ------------------------------------------------------------
-      # WatchFooty  â sempre vuoto
-      # xyzstreams  â proxy Node fragile, dipendenza esterna
-      # SMTK        â canali geobloccati (richiedono VPN russa)
-      # Extra Srces â 0 flussi funzionanti
+      # WatchFooty  → sempre vuoto
+      # xyzstreams  → proxy Node fragile, dipendenza esterna
+      # SMTK        → canali geobloccati (richiedono VPN russa)
+      # Extra Srces → 0 flussi funzionanti
       # ============================================================
 
       - name: Run combiner
