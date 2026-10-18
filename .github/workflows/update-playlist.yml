@@ -71,17 +71,18 @@ jobs:
       # ============================================================
       # StreamCorner v13.3 — Playwright stealth (ATTIVO)
       # Nota: brunhild.challenges.cloudflare.com non risolve da GH Actions,
-      #       quindi /stream/admin/* dà 403. Tenuto attivo come richiesto.
+      #       quindi /stream/admin/* dà 403. Tenuto attivo come richiesto,
+      #       ma con --playwright-limit 20 e timeout 10 min per non sprecare tempo.
       # ============================================================
       - name: Extract StreamCorner streams (v13.3, Playwright stealth)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
             --playwright-workers 1 \
-            --playwright-limit 0 \
+            --playwright-limit 20 \
             --ua desktop
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 10
 
       - name: Extract WatchFooty streams
         if: false  # DISABILITATO — dominio api.watchfooty.st morto
@@ -91,8 +92,9 @@ jobs:
 
       # ============================================================
       # PirloTV / Rojadirecta / Liveru — famiglia "tR"
+      # v1.2: redirect JS + offuscamento generico + embedt1.js
       # ============================================================
-      - name: Extract PirloTV streams (v1.1)
+      - name: Extract PirloTV streams (v1.2)
         run: |
           python pirlotv_extractor.py \
             --output pirlotv_COMPLETE.m3u \
@@ -165,7 +167,7 @@ jobs:
           if-no-files-found: ignore
 
       # ============================================================
-      # ARTIFACT PirloTV (include HTML dei player per debug)
+      # ARTIFACT PirloTV (include HTML + JS dei player/embed)
       # ============================================================
       - name: Upload PirloTV debug artifacts
         if: always()
@@ -183,6 +185,10 @@ jobs:
 
       # ============================================================
       # COMMIT
+      # - KODI rimosso (ignorato da .gitignore)
+      # - StreamCorner: sc_capture + sc_network + sc_homepage
+      # - PirloTV: COMPLETE + VLC + EVENTS_LIVE + capture.json
+      # - NIENTE backslash nel file_pattern (YAML folded scalar)
       # ============================================================
       - name: Commit and push
         if: always()
