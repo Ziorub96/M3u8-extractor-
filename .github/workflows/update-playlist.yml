@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -34,9 +34,6 @@ jobs:
           playwright install --with-deps chromium
           patchright install chromium
 
-      # ============================================================
-      # Cache StreamCorner
-      # ============================================================
       - name: Cache StreamCorner m3u8 results
         uses: actions/cache@v4
         with:
@@ -53,9 +50,6 @@ jobs:
           restore-keys: |
             sc-static-cache-
 
-      # ============================================================
-      # ESTRATTORI ATTIVI
-      # ============================================================
       - name: Extract DAMITV streams
         run: python damitv_extractor.py
         continue-on-error: true
@@ -68,14 +62,7 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
-      # ============================================================
-      # StreamCorner v13.3 — Playwright stealth (canary check)
-      # Cloudflare Turnstile blocca /stream/* da GH Actions (brunhild
-      # non risolve il DNS). Manteniamo un controllo minimale su 3
-      # match: se un giorno Cloudflare smettesse di bloccare, il log
-      # mostrerebbe 🎯 M3U8 e si può riattivare con --playwright-limit 20.
-      # ============================================================
-      - name: Extract StreamCorner streams (v13.3, canary check)
+      - name: Extract StreamCorner streams (v13.4, canary check)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
@@ -86,16 +73,12 @@ jobs:
         timeout-minutes: 3
 
       - name: Extract WatchFooty streams
-        if: false  # DISABILITATO — dominio api.watchfooty.st morto
+        if: false
         run: python watchfooty_direct.py --max 20
         continue-on-error: true
         timeout-minutes: 25
 
-      # ============================================================
-      # PirloTV / Rojadirecta / Liveru — famiglia "tR"
-      # v1.3: redirect JS + offuscamento generico + embedt1.js + NEED_FID
-      # ============================================================
-      - name: Extract PirloTV streams (v1.3)
+      - name: Extract PirloTV streams (v1.5)
         run: |
           python pirlotv_extractor.py \
             --output pirlotv_COMPLETE.m3u \
@@ -104,9 +87,6 @@ jobs:
         continue-on-error: true
         timeout-minutes: 25
 
-      # ============================================================
-      # COMBINE + CHECK
-      # ============================================================
       - name: Run combiner
         run: python combine_playlist.py
 
@@ -114,9 +94,6 @@ jobs:
         run: python check_playlist.py
         continue-on-error: true
 
-      # ============================================================
-      # SAFETY: crea file mancanti prima del commit
-      # ============================================================
       - name: Ensure all output files exist
         if: always()
         run: |
@@ -151,11 +128,7 @@ jobs:
           echo "--- Stato file ---"
           ls -la *.m3u *.txt *.json 2>/dev/null || true
 
-      # ============================================================
-      # ARTIFACT StreamCorner — ATTIVO
-      # Include: capture JSON, network log, HTML homepage (per analisi
-      # di eventuali cambi futuri di Cloudflare o del layout del sito)
-      # ============================================================
+      # v1.5: sc_assets/ incluso nell'artifact
       - name: Upload StreamCorner debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -169,14 +142,10 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
+            sc_assets/
           retention-days: 14
           if-no-files-found: ignore
 
-      # ============================================================
-      # ARTIFACT PirloTV — ATTIVO
-      # Include: capture JSON, M3U prodotti, HTML/JS di debug dei
-      # player e degli script embed (per diagnosi future)
-      # ============================================================
       - name: Upload PirloTV debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -191,9 +160,6 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
-      # ============================================================
-      # COMMIT
-      # ============================================================
       - name: Commit and push
         if: always()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -220,3 +186,4 @@ jobs:
             .sc_static_cache.json
             watchfooty_events.m3u
           skip_dirty_check: false
+          pull: --rebase
