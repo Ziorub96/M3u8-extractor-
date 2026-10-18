@@ -1,39 +1,38 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PirloTV / Rojadirecta / Liveru Extractor v1.5.2
+PirloTV / Rojadirecta / Liveru Extractor v1.5.3
 
-Changelog v1.5.1 → v1.5.2:
-- FIX #A (BLOCCANTE Rojadirecta): il decoder atob ora segue la URL decodificata
-  se questa NON è un m3u8/mpd diretto. Caso tipico `player_zonalivetv_biz__94`:
-    atob('aHR0cHM6...') → 'https://zonalivetv.biz/stream/embed/sTLn/94'
-  che v1.5.1 scartava perché "non era un m3u8". Ora la passiamo a
-  process_player() ricorsivamente (depth+1), sbloccando la catena.
-  Riconosce anche atob su URL relative e su array di 2+ stringhe base64.
-- FIX #B (Rojadirecta bonus): retry 403 su streamxhd.com con Origin +
-  Referer del parent (rojadirectaoficial.de). Tentativo 3 dopo UA mobile.
-- MINOR: http_get() accetta parametro `origin` (default None) e lo passa
-  come header `Origin:` quando presente.
-- MINOR: contatore `atob_redirect_followed` in pirlotv_capture.json.
+Changelog v1.5.2 → v1.5.3:
+- FIX #C (BLOCCANTE Rojadirecta — recupero canali zonalivetv):
+  La regex atob non matchava il pattern reale. In player_zonalivetv_biz__*.html
+  il codice è:
+      iframe.src = atob(
+          'aHR0cHM6Ly96b25hbGl2ZXR2LmJpei9zdHJlYW0vZW1iZWQvc1RMbi8xMDk='
+      );
+  con NEWLINE + spazi tra `atob(` e la stringa. La vecchia regex
+      r'atob\(["\']([A-Za-z0-9+/=]{20,})["\']\)'
+  richiedeva zero spazi → 0 match → catena atob mai seguita.
+  Nuova regex (tollerante a spazi/newline):
+      r'atob\s*\(\s*["\']([A-Za-z0-9+/=]{20,})["\']\s*\)'
+  Sblocca 5 canali Rojadirecta: canal-5, 81, 94, 109, 161
+  → https://zonalivetv.biz/stream/embed/sTLn/{N} (seguiti con depth+1).
 
-Invariato da v1.5.1:
-- _clean_embed_url() — pulizia URL embed (reproductor/*.php)
-- _detect_ip_lock() / _log_ip_lock() — logging IP-lock
-- _extract_iframe_with_fid() con \s* tollerante
-- extract_playback_url() fallback \/\ escape
-- is_library_script / LIBRARY_HOSTS / MAX_EMBED_BYTES
+- Aggiunto log diagnostico esplicito quando atob decode va a buon fine
+  ma la catena successiva fallisce (`atob → redirect: ... ma player
+  successivo HTTP XXX`), per capire se zonalivetv risponde 200 o 403.
 
-Invariato da v1.5:
-- extract_playback_url() — var playbackURL, source, file, hlsUrl
-- _extract_iframe_with_fid() — gestione stringhe JS spezzate
-- is_library_script() — skip clappr/hls.js/ecc.
+Invariato da v1.5.2:
+- FIX #A: atob → segue URL redirect (m3u8 assente ma http presente)
+- FIX #B: retry progressivo 403 (mobile UA, poi Origin+Referer)
+- http_get(origin=...) header Origin
+- _clean_embed_url / _detect_ip_lock / _log_ip_lock
+- _extract_iframe_with_fid con \\s* tollerante
 
-Invariato da v1.4:
-- resolve_js_redirect con fix pathname in var_def
-- _collapse_strings per stringhe spezzate
-- decode_obfuscated_url generico (qG, eQ, tR, dS, Lg, …)
-- Catalogo streamtp99a.sbs come fallback
-- Retry UA iPhone su 403
+Invariato da v1.5.1 / v1.5 / v1.4:
+- extract_playbackURL, is_library_script, decode_obfuscated_url
+- resolve_js_redirect con pathname, _collapse_strings
+- Catalogo streamtp99a.sbs, retry UA iPhone
 """
 from __future__ import annotations
 import argparse, base64, json, os, re, sys, time
@@ -118,6 +117,9 @@ PLAYBACK_URL_PATTERNS = [
     r'"url"\s*:\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
 ]
 
+# v1.5.3: tollerante a spazi/newline tra atob( e la stringa
+ATOB_PATTERN = r'atob\s*\(\s*["\']([A-Za-z0-9+/=]{20,})["\']\s*\)'
+
 
 def log(*a): print(*a, flush=True)
 
@@ -191,10 +193,6 @@ def decode_r_param(match_url):
     return None
 
 
-# -------------------------------------------------------------------
-# v1.5 FIX #1: estrazione playbackURL / source / file / hlsUrl
-# v1.5.1: fallback gestisce URL con escape `\/` (JS)
-# -------------------------------------------------------------------
 def extract_playback_url(html: str):
     for pat in PLAYBACK_URL_PATTERNS:
         m = re.search(pat, html)
@@ -212,9 +210,6 @@ def extract_playback_url(html: str):
     return None
 
 
-# -------------------------------------------------------------------
-# v1.5 FIX #3: skip librerie JS
-# -------------------------------------------------------------------
 def is_library_script(url: str, content_len: int = 0) -> bool:
     ul = url.lower()
     if any(h in ul for h in LIBRARY_HOSTS):
@@ -224,9 +219,6 @@ def is_library_script(url: str, content_len: int = 0) -> bool:
     return False
 
 
-# -------------------------------------------------------------------
-# v1.5.1: pulizia URL embed (defense in depth su reproductor/*.php)
-# -------------------------------------------------------------------
 def _clean_embed_url(url: str) -> str:
     if not url:
         return url
@@ -245,9 +237,6 @@ def _clean_embed_url(url: str) -> str:
     return url
 
 
-# -------------------------------------------------------------------
-# v1.5.1: rilevamento IP-lock (solo logging, M3U invariato)
-# -------------------------------------------------------------------
 def _detect_ip_lock(url: str):
     if not url:
         return None
@@ -262,9 +251,6 @@ def _log_ip_lock(url: str, prefix: str = "      "):
     return url
 
 
-# -------------------------------------------------------------------
-# Decodifica offuscamento generico (Lg=, tR=, qG=, eQ=, dS=, …)
-# -------------------------------------------------------------------
 def _find_k_from_functions(html):
     m = re.search(r'var\s+k\s*=\s*(\w+)\s*\(\s*\)\s*([+\-*])\s*(\w+)\s*\(\s*\)', html)
     if m:
@@ -328,9 +314,6 @@ def decode_obfuscated_url(html):
     return None
 
 
-# -------------------------------------------------------------------
-# v1.4: resolve_js_redirect con fix pathname in var_def
-# -------------------------------------------------------------------
 def resolve_js_redirect(html, base_url):
     m = re.search(
         r'(?:const|let|var)\s+(\w+)\s*=\s*["\'](https?://[^"\']+)["\']\s*;'
@@ -392,9 +375,6 @@ def resolve_js_redirect(html, base_url):
     return None
 
 
-# -------------------------------------------------------------------
-# v1.4: _collapse_strings per stringhe spezzate
-# -------------------------------------------------------------------
 def _collapse_strings(js):
     prev = None
     s = js
@@ -580,16 +560,13 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
     if not st or st != 200:
         log(f"      ⚠️ player HTTP {st} ({player_url[:80]})")
 
-        # FIX #B (v1.5.2): retry progressivo con UA mobile, poi con Origin+Referer
         if st == 403:
-            # Tentativo 2: UA mobile
             st2, html2 = http_get(player_url, referer=referer, ua=UA_IPHONE)
             if st2 == 200:
                 log(f"      ✓ retry mobile OK ({len(html2)} byte)")
                 st, html = st2, html2
             else:
                 log(f"      ✗ retry mobile HTTP {st2}")
-                # Tentativo 3: Origin + Referer parent (per streamxhd.com ecc.)
                 parent_origin = None
                 if referer:
                     p = urlparse(referer)
@@ -613,11 +590,9 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
     _debug_save(html, host, player_url)
     _diagnose(html)
 
-    # 1) Già un manifest
     if player_url.endswith(".m3u8") or "#EXTM3U" in html[:200]:
         return {"url": player_url, "mtype": "hls", "referer": referer}
 
-    # 1.5) v1.5 FIX #1: playbackURL (streamtp99a.sbs e simili)
     pb_url = extract_playback_url(html)
     if pb_url:
         log(f"      🎯 playbackURL → {pb_url[:100]}")
@@ -626,7 +601,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         _log_ip_lock(best)
         return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 2) Offuscamento generico (Lg, tR, qG, eQ, dS, …)
     m3u8 = decode_obfuscated_url(html)
     if m3u8:
         log(f"      🎯 offuscato → {m3u8[:100]}")
@@ -635,7 +609,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         _log_ip_lock(best)
         return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 3) Regex m3u8/mpd diretta (fallback)
     for pat in (
         r'https?://[^"\'\\\s]+\.m3u8[^"\'\\\s]*',
         r'https?://[^"\'\\\s]+\.mpd[^"\'\\\s]*',
@@ -660,10 +633,17 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 _log_ip_lock(best)
                 return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 4) atob automatico — v1.5.2 FIX #A: segui URL decodificata
-    for m in re.finditer(r'atob\(["\']([A-Za-z0-9+/=]{20,})["\']\)', html):
+    # ------------------------------------------------------------------
+    # v1.5.3 FIX #C: regex atob tollerante a spazi/newline
+    # ------------------------------------------------------------------
+    atob_matches = list(re.finditer(ATOB_PATTERN, html))
+    if atob_matches:
+        log(f"      🔎 atob: {len(atob_matches)} match (regex v1.5.3)")
+
+    for m in atob_matches:
+        b64 = m.group(1)
         try:
-            decoded = base64.b64decode(m.group(1) + "=" * (-len(m.group(1)) % 4)).decode(
+            decoded = base64.b64decode(b64 + "=" * (-len(b64) % 4)).decode(
                 "utf-8", "replace")
         except Exception:
             continue
@@ -676,6 +656,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                                  depth=depth + 1, max_catalog_channels=0)
             if sub:
                 return sub
+            log(f"      ⚠️ atob redirect {decoded[:80]} non ha prodotto stream")
             continue
 
         # 4b) decoded è m3u8/mpd diretto
@@ -687,7 +668,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 _log_ip_lock(best)
                 return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 5) Redirect JavaScript
     redirect_url = resolve_js_redirect(html, player_url)
     if redirect_url:
         log(f"      🔀 seguo redirect JS → {redirect_url[:100]}")
@@ -696,7 +676,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         if sub:
             return sub
 
-    # 6) Iframe annidati
     ifs = find_iframes(html, player_url)
     for if_u in ifs:
         if (urlparse(if_u).hostname or "") in SKIP_HOSTS:
@@ -707,7 +686,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         if sub:
             return sub
 
-    # 7) Script embed esterni (embedt1.js)
     scripts = find_embed_scripts(html, player_url)
     for s_url in scripts:
         log(f"      📜 script embed: {s_url[:100]}")
@@ -734,7 +712,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
             _log_ip_lock(best)
             return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 8) JSON con campo url
     try:
         j = json.loads(html)
         if isinstance(j, dict):
@@ -746,7 +723,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
     except Exception:
         pass
 
-    # 9) Catalogo STREAMTP (fallback)
     if host in CATALOG_HOSTS:
         catalog = _extract_catalog_channels(html)
         if catalog:
@@ -857,7 +833,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 PIRLOTV EXTRACTOR v1.5.2 (atob-follow + origin-retry)")
+    log("📡 PIRLOTV EXTRACTOR v1.5.3 (atob-regex multi-line)")
     log("=" * 66)
 
     all_streams = []
@@ -889,7 +865,7 @@ def main():
     log(f"  💾 {args.output}: {n3}")
 
     summary = {
-        "version": "1.5.2",
+        "version": "1.5.3",
         "sites": [s["name"] for s in SITES],
         "total_found": len(all_streams),
         "total_unique": len(uniq),
