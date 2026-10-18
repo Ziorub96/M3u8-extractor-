@@ -1,1085 +1,481 @@
 #EXTM3U
-#EXTINF:-1 tvg-chno="1" tvg-id="mcq.eurosport.1" tvg-name="Eurosport 1" group-title="McQuack Sport",Eurosport 1
+#EXTINF:-1 tvg-id="mcq-Eurosport 1" group-title="McQuack Sport",Eurosport 1
 http://stream.mcquack.net/176/index.m3u8
-#EXTINF:-1 tvg-chno="2" tvg-id="mcq.eurosport.2" tvg-name="Eurosport 2" group-title="McQuack Sport",Eurosport 2
+#EXTINF:-1 tvg-id="mcq-Eurosport 2" group-title="McQuack Sport",Eurosport 2
 http://stream.mcquack.net/192/index.m3u8
-#EXTINF:-1 tvg-chno="3" tvg-id="mcq.match..football.1" tvg-name="Match! Football 1" group-title="McQuack Sport",Match! Football 1
+#EXTINF:-1 tvg-id="mcq-Match! Football 1" group-title="McQuack Sport",Match! Football 1
 http://stream.mcquack.net/130/index.m3u8
-#EXTINF:-1 tvg-chno="4" tvg-id="mcq.match..football.2" tvg-name="Match! Football 2" group-title="McQuack Sport",Match! Football 2
+#EXTINF:-1 tvg-id="mcq-Match! Football 2" group-title="McQuack Sport",Match! Football 2
 http://stream.mcquack.net/142/index.m3u8
-#EXTINF:-1 tvg-chno="5" tvg-id="mcq.match..football.3" tvg-name="Match! Football 3" group-title="McQuack Sport",Match! Football 3
+#EXTINF:-1 tvg-id="mcq-Match! Football 3" group-title="McQuack Sport",Match! Football 3
 http://stream.mcquack.net/185/index.m3u8
-#EXTINF:-1 tvg-chno="6" tvg-id="mcq.match..igra" tvg-name="Match! Igra" group-title="McQuack Sport",Match! Igra
+#EXTINF:-1 tvg-id="mcq-Match! Igra" group-title="McQuack Sport",Match! Igra
 http://stream.mcquack.net/188/index.m3u8
-#EXTINF:-1 tvg-chno="7" tvg-id="mcq.match..strana" tvg-name="Match! Strana" group-title="McQuack Sport",Match! Strana
+#EXTINF:-1 tvg-id="mcq-Match! Strana" group-title="McQuack Sport",Match! Strana
 http://stream.mcquack.net/143/index.m3u8
-#EXTINF:-1 tvg-chno="8" tvg-id="mcq.match..arena" tvg-name="Match! Arena" group-title="McQuack Sport",Match! Arena
+#EXTINF:-1 tvg-id="mcq-Match! Arena" group-title="McQuack Sport",Match! Arena
 http://stream.mcquack.net/163/index.m3u8
-#EXTINF:-1 tvg-chno="9" tvg-id="mcq.match.tv" tvg-name="Match TV" group-title="McQuack Sport",Match TV
+#EXTINF:-1 tvg-id="mcq-Match TV" group-title="McQuack Sport",Match TV
 http://stream.mcquack.net/169/index.m3u8
-#EXTINF:-1 tvg-chno="10" tvg-id="mcq.match..boets" tvg-name="Match! Boets" group-title="McQuack Sport",Match! Boets
+#EXTINF:-1 tvg-id="mcq-Match! Boets" group-title="McQuack Sport",Match! Boets
 http://stream.mcquack.net/112/index.m3u8
-#EXTINF:-1 tvg-chno="11" tvg-id="mcq.match.premier" tvg-name="Match Premier" group-title="McQuack Sport",Match Premier
+#EXTINF:-1 tvg-id="mcq-Match Premier" group-title="McQuack Sport",Match Premier
 http://stream.mcquack.net/193/index.m3u8
-#EXTINF:-1 tvg-chno="12" tvg-id="mcq.setanta.sports.1" tvg-name="Setanta Sports 1" group-title="McQuack Sport",Setanta Sports 1
+#EXTINF:-1 tvg-id="mcq-Setanta Sports 1" group-title="McQuack Sport",Setanta Sports 1
 http://stream.mcquack.net/234/index.m3u8
-#EXTINF:-1 tvg-chno="13" tvg-id="mcq.setanta.sports.2" tvg-name="Setanta Sports 2" group-title="McQuack Sport",Setanta Sports 2
+#EXTINF:-1 tvg-id="mcq-Setanta Sports 2" group-title="McQuack Sport",Setanta Sports 2
 http://stream.mcquack.net/235/index.m3u8
-#EXTINF:-1 tvg-chno="14" tvg-id="mcq.setanta.sports.ua" tvg-name="Setanta Sports UA" group-title="McQuack Sport",Setanta Sports UA
+#EXTINF:-1 tvg-id="mcq-Setanta Sports UA" group-title="McQuack Sport",Setanta Sports UA
 http://stream.mcquack.net/313/index.m3u8
-#EXTINF:-1 tvg-chno="15" tvg-id="mcq.setanta.sports" tvg-name="Setanta Sports+" group-title="McQuack Sport",Setanta Sports+
+#EXTINF:-1 tvg-id="mcq-Setanta Sports+" group-title="McQuack Sport",Setanta Sports+
 http://stream.mcquack.net/390/index.m3u8
-#EXTINF:-1 tvg-chno="16" tvg-id="mcq.sport.1.baltic" tvg-name="Sport 1 Baltic" group-title="McQuack Sport",Sport 1 Baltic
+#EXTINF:-1 tvg-id="mcq-Sport 1 Baltic" group-title="McQuack Sport",Sport 1 Baltic
 http://stream.mcquack.net/461/index.m3u8
-#EXTINF:-1 tvg-chno="17" tvg-id="mcq.sport.1" tvg-name="Sport 1" group-title="McQuack Sport",Sport 1
+#EXTINF:-1 tvg-id="mcq-Sport 1" group-title="McQuack Sport",Sport 1
 http://stream.mcquack.net/391/index.m3u8
-#EXTINF:-1 tvg-chno="18" tvg-id="mcq.sport.2" tvg-name="Sport 2" group-title="McQuack Sport",Sport 2
+#EXTINF:-1 tvg-id="mcq-Sport 2" group-title="McQuack Sport",Sport 2
 http://stream.mcquack.net/392/index.m3u8
-#EXTINF:-1 tvg-chno="19" tvg-id="mcq.sport.3" tvg-name="Sport 3" group-title="McQuack Sport",Sport 3
+#EXTINF:-1 tvg-id="mcq-Sport 3" group-title="McQuack Sport",Sport 3
 http://stream.mcquack.net/393/index.m3u8
-#EXTINF:-1 tvg-chno="20" tvg-id="mcq.sport.4" tvg-name="Sport 4" group-title="McQuack Sport",Sport 4
+#EXTINF:-1 tvg-id="mcq-Sport 4" group-title="McQuack Sport",Sport 4
 http://stream.mcquack.net/394/index.m3u8
-#EXTINF:-1 tvg-chno="21" tvg-id="mcq.sport.5" tvg-name="Sport 5" group-title="McQuack Sport",Sport 5
+#EXTINF:-1 tvg-id="mcq-Sport 5" group-title="McQuack Sport",Sport 5
 http://stream.mcquack.net/212/index.m3u8
-#EXTINF:-1 tvg-chno="22" tvg-id="mcq.dynamo.kyiv.tv" tvg-name="Dynamo Kyiv TV" group-title="McQuack Sport",Dynamo Kyiv TV
+#EXTINF:-1 tvg-id="mcq-Dynamo Kyiv TV" group-title="McQuack Sport",Dynamo Kyiv TV
 http://stream.mcquack.net/396/index.m3u8
-#EXTINF:-1 tvg-chno="23" tvg-id="mcq.trace.sports" tvg-name="Trace Sports" group-title="McQuack Sport",Trace Sports
+#EXTINF:-1 tvg-id="mcq-Trace Sports" group-title="McQuack Sport",Trace Sports
 http://stream.mcquack.net/256/index.m3u8
-#EXTINF:-1 tvg-chno="24" tvg-id="mcq.suspilne.sport" tvg-name="Suspilne Sport" group-title="McQuack Sport",Suspilne Sport
+#EXTINF:-1 tvg-id="mcq-Suspilne Sport" group-title="McQuack Sport",Suspilne Sport
 http://stream.mcquack.net/444/index.m3u8
-#EXTINF:-1 tvg-chno="25" tvg-id="mcq.divi.sport" tvg-name="DiVi Sport" group-title="McQuack Sport",DiVi Sport
+#EXTINF:-1 tvg-id="mcq-DiVi Sport" group-title="McQuack Sport",DiVi Sport
 http://stream.mcquack.net/457/index.m3u8
-#EXTINF:-1 tvg-chno="26" tvg-id="mcq.maincast.cybersport" tvg-name="Maincast Cybersport" group-title="McQuack Sport",Maincast Cybersport
+#EXTINF:-1 tvg-id="mcq-Maincast Cybersport" group-title="McQuack Sport",Maincast Cybersport
 http://stream.mcquack.net/487/index.m3u8
-#EXTINF:-1 tvg-chno="27" tvg-id="mcq.maincast.sport" tvg-name="Maincast Sport" group-title="McQuack Sport",Maincast Sport
+#EXTINF:-1 tvg-id="mcq-Maincast Sport" group-title="McQuack Sport",Maincast Sport
 http://stream.mcquack.net/490/index.m3u8
-#EXTINF:-1 tvg-chno="28" tvg-id="mcq.khl.tv" tvg-name="KHL TV" group-title="McQuack Sport",KHL TV
+#EXTINF:-1 tvg-id="mcq-KHL TV" group-title="McQuack Sport",KHL TV
 http://stream.mcquack.net/166/index.m3u8
-#EXTINF:-1 tvg-chno="29" tvg-id="mcq.khl.prime" tvg-name="KHL Prime" group-title="McQuack Sport",KHL Prime
+#EXTINF:-1 tvg-id="mcq-KHL Prime" group-title="McQuack Sport",KHL Prime
 http://stream.mcquack.net/178/index.m3u8
-#EXTINF:-1 tvg-chno="30" tvg-id="mcq.viju..sport" tvg-name="Viju+ Sport" group-title="McQuack Sport",Viju+ Sport
+#EXTINF:-1 tvg-id="mcq-Viju+ Sport" group-title="McQuack Sport",Viju+ Sport
 http://stream.mcquack.net/333/index.m3u8
-#EXTINF:-1 tvg-chno="31" tvg-id="mcq.tv3.sport.lt" tvg-name="TV3 Sport LT" group-title="McQuack Sport",TV3 Sport LT
+#EXTINF:-1 tvg-id="mcq-TV3 Sport LT" group-title="McQuack Sport",TV3 Sport LT
 http://stream.mcquack.net/416/index.m3u8
-#EXTINF:-1 tvg-chno="32" tvg-id="mcq.box.tv" tvg-name="Box TV" group-title="McQuack Sport",Box TV
+#EXTINF:-1 tvg-id="mcq-Box TV" group-title="McQuack Sport",Box TV
 http://stream.mcquack.net/154/index.m3u8
-#EXTINF:-1 tvg-chno="33" tvg-id="mcq.belarus.5" tvg-name="Belarus 5" group-title="McQuack Sport",Belarus 5
+#EXTINF:-1 tvg-id="mcq-Belarus 5" group-title="McQuack Sport",Belarus 5
 http://stream.mcquack.net/33/index.m3u8
-#EXTINF:-1 tvg-chno="34" tvg-id="mcq.extreme.sports" tvg-name="Extreme Sports" group-title="McQuack Sport",Extreme Sports
+#EXTINF:-1 tvg-id="mcq-Extreme Sports" group-title="McQuack Sport",Extreme Sports
 http://stream.mcquack.net/148/index.m3u8
-#EXTINF:-1 tvg-chno="35" tvg-id="mcq.udar" tvg-name="UDAR" group-title="McQuack Sport",UDAR
+#EXTINF:-1 tvg-id="mcq-UDAR" group-title="McQuack Sport",UDAR
 http://stream.mcquack.net/279/index.m3u8
-#EXTINF:-1 tvg-chno="36" tvg-id="mcq.qazsport" tvg-name="Qazsport" group-title="McQuack Sport",Qazsport
+#EXTINF:-1 tvg-id="mcq-Qazsport" group-title="McQuack Sport",Qazsport
 http://stream.mcquack.net/72/index.m3u8
-#EXTINF:-1 tvg-chno="37" tvg-id="mcq.equalympic" tvg-name="Equalympic" group-title="McQuack Sport",Equalympic
+#EXTINF:-1 tvg-id="mcq-Equalympic" group-title="McQuack Sport",Equalympic
 http://stream.mcquack.net/485/index.m3u8
-#EXTINF:-1 tvg-chno="38" tvg-id="mcq.okko.football" tvg-name="OKKO Football" group-title="McQuack Sport",OKKO Football
+#EXTINF:-1 tvg-id="mcq-OKKO Football" group-title="McQuack Sport",OKKO Football
 http://stream.mcquack.net/491/index.m3u8
-#EXTINF:-1 tvg-chno="39" tvg-id="mcq.okko.sport" tvg-name="OKKO Sport" group-title="McQuack Sport",OKKO Sport
+#EXTINF:-1 tvg-id="mcq-OKKO Sport" group-title="McQuack Sport",OKKO Sport
 http://stream.mcquack.net/492/index.m3u8
-#EXTINF:-1 tvg-chno="40" tvg-id="mcq.okko.prime.sport" tvg-name="OKKO Prime Sport" group-title="McQuack Sport",OKKO Prime Sport
+#EXTINF:-1 tvg-id="mcq-OKKO Prime Sport" group-title="McQuack Sport",OKKO Prime Sport
 http://stream.mcquack.net/493/index.m3u8
-#EXTINF:-1 tvg-chno="41" tvg-id="dok.digisport1" tvg-name="digisport1" group-title="DokAgents Sport",digisport1
-#EXTVLCOPT:http-referrer=https://dokagents.site/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#EXTINF:-1 tvg-id="dok-digisport1" group-title="DokAgents Sport",digisport1
 http://dokagents.site/live/digisport1/mono.m3u8
-#EXTINF:-1 tvg-chno="42" tvg-id="dok.digisport2" tvg-name="digisport2" group-title="DokAgents Sport",digisport2
-#EXTVLCOPT:http-referrer=https://dokagents.site/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#EXTINF:-1 tvg-id="dok-digisport2" group-title="DokAgents Sport",digisport2
 http://dokagents.site/live/digisport2/mono.m3u8
-#EXTINF:-1 tvg-chno="43" tvg-id="dok.digisport3" tvg-name="digisport3" group-title="DokAgents Sport",digisport3
-#EXTVLCOPT:http-referrer=https://dokagents.site/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#EXTINF:-1 tvg-id="dok-digisport3" group-title="DokAgents Sport",digisport3
 http://dokagents.site/live/digisport3/mono.m3u8
-#EXTINF:-1 tvg-chno="44" tvg-id="dok.digisport4" tvg-name="digisport4" group-title="DokAgents Sport",digisport4
-#EXTVLCOPT:http-referrer=https://dokagents.site/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#EXTINF:-1 tvg-id="dok-digisport4" group-title="DokAgents Sport",digisport4
 http://dokagents.site/live/digisport4/mono.m3u8
-#EXTINF:-1 tvg-chno="45" tvg-id="dok.eurosport" tvg-name="eurosport" group-title="DokAgents Sport",eurosport
-#EXTVLCOPT:http-referrer=https://dokagents.site/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#EXTINF:-1 tvg-id="dok-eurosport" group-title="DokAgents Sport",eurosport
 http://dokagents.site/live/eurosport/mono.m3u8
-#EXTINF:-1 tvg-chno="46" tvg-id="dok.eurosport2" tvg-name="eurosport2" group-title="DokAgents Sport",eurosport2
-#EXTVLCOPT:http-referrer=https://dokagents.site/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
+#EXTINF:-1 tvg-id="dok-eurosport2" group-title="DokAgents Sport",eurosport2
 http://dokagents.site/live/eurosport2/mono.m3u8
-#EXTINF:-1 tvg-chno="47" tvg-id="24-7.fox.footy" tvg-name="Fox Footy" tvg-logo="https://static.ppvservices.st/assets/thumb/514cf8272ec290889a5ce6fd299fb9c8-thumbnail.jpg" group-title="DAMITV 24/7",Fox Footy
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-fox-footy
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-fox-footy/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="48" tvg-id="24-7.willow" tvg-name="Willow" tvg-logo="https://static.ppvservices.st/assets/thumb/2e3cba2a94ae6af4b958675e73fe91e9-thumbnail.jpg" group-title="DAMITV 24/7",Willow
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-willow
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-willow/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="49" tvg-id="24-7.fox.cricket" tvg-name="Fox Cricket" tvg-logo="https://static.ppvservices.st/assets/thumb/5dfe2fc8e56d59add47afb0f6e996e55-thumbnail.jpg" group-title="DAMITV 24/7",Fox Cricket
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-fox-cricket
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-fox-cricket/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="50" tvg-id="24-7.fox.league" tvg-name="Fox League" tvg-logo="https://static.ppvservices.st/assets/thumb/5ec4933f4ae6363e151dfe5c75ad24e3-thumbnail.jpg" group-title="DAMITV 24/7",Fox League
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-fox-league
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-fox-league/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="51" tvg-id="24-7.24.7.south.park" tvg-name="24/7 South Park" tvg-logo="https://thumbs.poocloud.in/southpark/preview.jpg" group-title="DAMITV 24/7",24/7 South Park
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-south-park
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-south-park/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="52" tvg-id="24-7.24.7.cows" tvg-name="24/7 COWS" tvg-logo="https://static.ppvservices.st/assets/thumb/213d77252211e1926309f43b38263a4f-thumbnail.jpg" group-title="DAMITV 24/7",24/7 COWS
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-cows
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-cows/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="53" tvg-id="24-7.24.7.family.guy" tvg-name="24/7 Family Guy" tvg-logo="https://thumbs.poocloud.in/familyguy/preview.jpg" group-title="DAMITV 24/7",24/7 Family Guy
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-family-guy
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-family-guy/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="54" tvg-id="24-7.24.7.the.simpsons" tvg-name="24/7 The Simpsons" tvg-logo="https://thumbs.poocloud.in/thesimpsons/preview.jpg" group-title="DAMITV 24/7",24/7 The Simpsons
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-the-simpsons
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-the-simpsons/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="55" tvg-id="24-7.24.7.spongebob.squarepants" tvg-name="24/7 SpongeBob Squarepants" tvg-logo="https://static.ppvservices.st/assets/thumb/f8e24d78314ed44b137c90cbf50b1c1d-thumbnail.jpg" group-title="DAMITV 24/7",24/7 SpongeBob Squarepants
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=247-spongebob-squarepants
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/247-spongebob-squarepants/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="56" tvg-id="24-7.rally.tv" tvg-name="Rally TV" tvg-logo="https://static.ppvservices.st/assets/thumb/0b5137de6f5809a3c652fad1b9c1bd57-thumbnail.jpg" group-title="DAMITV 24/7",Rally TV
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=rally-tv
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/rally-tv/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="57" tvg-id="24-7.sky.sports.racing" tvg-name="Sky Sports Racing" tvg-logo="https://static.ppvservices.st/assets/thumb/43030017ee0ab21769b49bffe20f76d1-thumbnail.jpg" group-title="DAMITV 24/7",Sky Sports Racing
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sky-sports-racing
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/sky-sports-racing/playlist.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="58" tvg-id="damitv.acc.network" tvg-name="ACC Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/acc-network-us.png" group-title="DAMITV Live TV",ACC Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-accn-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/accn-usa.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="59" tvg-id="damitv.bein.sports" tvg-name="beIN Sports" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bein-sports-us.png" group-title="DAMITV Live TV",beIN Sports
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-beinsports-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/beinsports-usa.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="60" tvg-id="damitv.bein.sports.francais.1" tvg-name="beIN Sports Francais 1" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png" group-title="DAMITV Live TV",beIN Sports Francais 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-beinsports1-fr
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/beinsports1-fr.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="61" tvg-id="damitv.bein.sports.francais.2" tvg-name="beIN Sports Francais 2" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png" group-title="DAMITV Live TV",beIN Sports Francais 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-beinsports2-fr
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/beinsports2-fr.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="62" tvg-id="damitv.bein.sports.francais.3" tvg-name="beIN Sports Francais 3" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png" group-title="DAMITV Live TV",beIN Sports Francais 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-beinsports3-fr
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/beinsports3-fr.m3u8?tk=MLVEPkD3aGLwcqAE3noJxw&e=1792380562
-#EXTINF:-1 tvg-chno="63" tvg-id="damitv.canal..extra.1" tvg-name="CANAL+ Extra 1" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/canalextra.png" group-title="DAMITV Live TV",CANAL+ Extra 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalextra1-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalextra1-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="64" tvg-id="damitv.canal..extra.2" tvg-name="CANAL+ Extra 2" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/canalextra.png" group-title="DAMITV Live TV",CANAL+ Extra 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalextra2-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalextra2-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="65" tvg-id="damitv.canal..sport.2.pl" tvg-name="CANAL+ Sport 2 PL" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-2-pl.png" group-title="DAMITV Live TV",CANAL+ Sport 2 PL
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalsport2-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalsport2-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="66" tvg-id="damitv.canal..sport.3.pl" tvg-name="CANAL+ Sport 3 PL" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-3-pl.png" group-title="DAMITV Live TV",CANAL+ Sport 3 PL
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalsport3-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalsport3-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="67" tvg-id="damitv.canal..sport.4.pl" tvg-name="CANAL+ Sport 4 PL" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-4-pl.png" group-title="DAMITV Live TV",CANAL+ Sport 4 PL
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalsport4-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalsport4-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="68" tvg-id="damitv.canal..sport.5.pl" tvg-name="CANAL+ Sport 5 PL" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-5-pl.png" group-title="DAMITV Live TV",CANAL+ Sport 5 PL
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalsport5-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalsport5-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="69" tvg-id="damitv.canal..sport.pl" tvg-name="CANAL+ Sport PL" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-pl.png" group-title="DAMITV Live TV",CANAL+ Sport PL
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-canalsport-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/canalsport-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="70" tvg-id="damitv.cbs.sports.network" tvg-name="CBS Sports Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-sports-network-us.png" group-title="DAMITV Live TV",CBS Sports Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-cbssn-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/cbssn-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="71" tvg-id="damitv.dazn.1.germany" tvg-name="DAZN 1 Germany" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/dazn1-de.png" group-title="DAMITV Live TV",DAZN 1 Germany
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn1-de
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn1-de.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="72" tvg-id="damitv.dazn.1.italia" tvg-name="DAZN 1 Italia" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/international/dazn1-int.png" group-title="DAMITV Live TV",DAZN 1 Italia
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn1-it
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn1-it.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="73" tvg-id="damitv.dazn.1.portugal" tvg-name="DAZN 1 Portugal" tvg-logo="https://image.discovery.indazn.com/ca/v2/ca/image?id=1o4eamzb4env61ddc8wv4ra06l_image-header_pRow_1720521601000&amp;amp;amp;amp;amp;quality=70" group-title="DAMITV Live TV",DAZN 1 Portugal
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn1-pt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn1-pt.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="74" tvg-id="damitv.dazn.1.spain" tvg-name="DAZN 1 Spain" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-1-es.png" group-title="DAMITV Live TV",DAZN 1 Spain
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn1-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn1-es.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="75" tvg-id="damitv.dazn.1.usa" tvg-name="DAZN 1 USA" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/dazn-us.png" group-title="DAMITV Live TV",DAZN 1 USA
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn1-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn1-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="76" tvg-id="damitv.dazn.2.germany" tvg-name="DAZN 2 Germany" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/dazn2-de.png" group-title="DAMITV Live TV",DAZN 2 Germany
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn2-de
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn2-de.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="77" tvg-id="damitv.dazn.2.spain" tvg-name="DAZN 2 Spain" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-2-es.png" group-title="DAMITV Live TV",DAZN 2 Spain
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-dazn2-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/dazn2-es.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="78" tvg-id="damitv.dazn.f1" tvg-name="DAZN F1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-f1-es.png" group-title="DAMITV Live TV",DAZN F1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-daznf1-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/daznf1-es.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="79" tvg-id="damitv.dazn.laliga" tvg-name="DAZN LaLiga" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-laliga-es.png" group-title="DAMITV Live TV",DAZN LaLiga
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-daznlaliga-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/daznlaliga-es.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="80" tvg-id="damitv.eleven.sports.1" tvg-name="Eleven Sports 1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-1-nl-be.png" group-title="DAMITV Live TV",Eleven Sports 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-elevensports1-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/elevensports1-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="81" tvg-id="damitv.eleven.sports.2" tvg-name="Eleven Sports 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-2-nl-be.png" group-title="DAMITV Live TV",Eleven Sports 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-elevensports2-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/elevensports2-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="82" tvg-id="damitv.eleven.sports.3" tvg-name="Eleven Sports 3" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-3-nl-be.png" group-title="DAMITV Live TV",Eleven Sports 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-elevensports3-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/elevensports3-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="83" tvg-id="damitv.eleven.sports.4" tvg-name="Eleven Sports 4" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/100659.png" group-title="DAMITV Live TV",Eleven Sports 4
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-elevensports4-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/elevensports4-pl.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="84" tvg-id="damitv.espn" tvg-name="ESPN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png" group-title="DAMITV Live TV",ESPN
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-espn-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/espn-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="85" tvg-id="damitv.espn.deportes" tvg-name="ESPN Deportes" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-deportes-us.png" group-title="DAMITV Live TV",ESPN Deportes
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-espndeportes-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/espndeportes-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="86" tvg-id="damitv.espn2" tvg-name="ESPN2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-2-us.png" group-title="DAMITV Live TV",ESPN2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-espn2-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/espn2-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="87" tvg-id="damitv.espnews" tvg-name="ESPNEWS" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espnews-us.png" group-title="DAMITV Live TV",ESPNEWS
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-espnews-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/espnews-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="88" tvg-id="damitv.espnu" tvg-name="ESPNU" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-u-us.png" group-title="DAMITV Live TV",ESPNU
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-espnu-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/espnu-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="89" tvg-id="damitv.fox.soccer.plus" tvg-name="Fox Soccer Plus" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-soccer-plus-us.png" group-title="DAMITV Live TV",Fox Soccer Plus
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-foxsoccerplus-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/foxsoccerplus-usa.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="90" tvg-id="damitv.fox.sports.1" tvg-name="Fox Sports 1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-1-us.png" group-title="DAMITV Live TV",Fox Sports 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-1
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-1.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="91" tvg-id="damitv.fox.sports.2" tvg-name="Fox Sports 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-2-us.png" group-title="DAMITV Live TV",Fox Sports 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-2
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-2.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="92" tvg-id="damitv.fox.sports.501..cricket" tvg-name="Fox Sports 501 (Cricket)" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png" group-title="DAMITV Live TV",Fox Sports 501 (Cricket)
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-501
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-501.m3u8?tk=i8kCJwOCO0qvHpWJxyczYQ&e=1792380563
-#EXTINF:-1 tvg-chno="93" tvg-id="damitv.fox.sports.502..league" tvg-name="Fox Sports 502 (League)" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png" group-title="DAMITV Live TV",Fox Sports 502 (League)
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-502
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-502.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="94" tvg-id="damitv.fox.sports.503" tvg-name="Fox Sports 503" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-503-au.png" group-title="DAMITV Live TV",Fox Sports 503
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-503
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-503.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="95" tvg-id="damitv.fox.sports.504..footy" tvg-name="Fox Sports 504 (Footy)" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png" group-title="DAMITV Live TV",Fox Sports 504 (Footy)
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-504
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-504.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="96" tvg-id="damitv.fox.sports.505" tvg-name="Fox Sports 505" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-505-au.png" group-title="DAMITV Live TV",Fox Sports 505
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-505
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-505.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="97" tvg-id="damitv.fox.sports.506" tvg-name="Fox Sports 506" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-506-au.png" group-title="DAMITV Live TV",Fox Sports 506
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-506
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-506.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="98" tvg-id="damitv.fox.sports.507" tvg-name="Fox Sports 507" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-507-au.png" group-title="DAMITV Live TV",Fox Sports 507
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-sports-507
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-sports-507.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="99" tvg-id="damitv.go3.sport.1" tvg-name="Go3 Sport 1" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png" group-title="DAMITV Live TV",Go3 Sport 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-go3sport1-lt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/go3sport1-lt.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="100" tvg-id="damitv.go3.sport.2" tvg-name="Go3 Sport 2" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png" group-title="DAMITV Live TV",Go3 Sport 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-go3sport2-lt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/go3sport2-lt.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="101" tvg-id="damitv.go3.sport.3" tvg-name="Go3 Sport 3" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png" group-title="DAMITV Live TV",Go3 Sport 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-go3sport2-lt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/go3sport2-lt.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="102" tvg-id="damitv.golf.channel" tvg-name="GOLF Channel" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nbc-golf-channel-us.png" group-title="DAMITV Live TV",GOLF Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-golfchannel-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/golfchannel-usa.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="103" tvg-id="damitv.mlb.network" tvg-name="MLB Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/mlb-network-us.png" group-title="DAMITV Live TV",MLB Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-mlbnetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/mlbnetwork-usa.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="104" tvg-id="damitv.motogp.channel" tvg-name="MotoGP Channel" tvg-logo="https://sportbikesincmag.com/wp-content/uploads/2024/11/New-MotoGP-Logo-sportbikesincmag.com-4.jpg" group-title="DAMITV Live TV",MotoGP Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-motpgp-tv
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/motpgp-tv.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="105" tvg-id="damitv.movistar.deportes" tvg-name="Movistar Deportes" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png" group-title="DAMITV Live TV",Movistar Deportes
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-movistardeportes-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/movistardeportes-es.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="106" tvg-id="damitv.movistar.deportes.2" tvg-name="Movistar Deportes 2" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png" group-title="DAMITV Live TV",Movistar Deportes 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-movistardeportes2-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/movistardeportes2-es.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="107" tvg-id="damitv.movistar.deportes.3" tvg-name="Movistar Deportes 3" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png" group-title="DAMITV Live TV",Movistar Deportes 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-movistardeportes3-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/movistardeportes3-es.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="108" tvg-id="damitv.nba.tv" tvg-name="NBA TV" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-tv-us.png" group-title="DAMITV Live TV",NBA TV
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nbatv-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nbatv-usa.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="109" tvg-id="damitv.nbc.sports.bay.area" tvg-name="NBC Sports Bay Area" tvg-logo="https://cdn.mos.cms.futurecdn.net/d7jWexxhtezRZ6ryLHyKmd.jpeg" group-title="DAMITV Live TV",NBC Sports Bay Area
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nbc-sports-bayarea
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nbc-sports-bayarea.m3u8?tk=_pE8m3QcDUkW7xRGbA9Axw&e=1792380564
-#EXTINF:-1 tvg-chno="110" tvg-id="damitv.nbc.sports.philadelphia" tvg-name="NBC Sports Philadelphia" tvg-logo="https://media.nbcsportsphiladelphia.com/2023/04/Philly-Landmark.png?resize=1200%2C675&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quality=85&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;strip=all" group-title="DAMITV Live TV",NBC Sports Philadelphia
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nbc-sports-philly
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nbc-sports-philly.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="111" tvg-id="damitv.nfl.network" tvg-name="NFL Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nfl-network-us.png" group-title="DAMITV Live TV",NFL Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nflnetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nflnetwork-usa.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="112" tvg-id="damitv.nhl.network" tvg-name="NHL Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nhl-network-us.png" group-title="DAMITV Live TV",NHL Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nhlnetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nhlnetwork-usa.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="113" tvg-id="damitv.polsat.sport.1" tvg-name="Polsat Sport 1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-1-pl.png" group-title="DAMITV Live TV",Polsat Sport 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-polsatsport1-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/polsatsport1-pl.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="114" tvg-id="damitv.polsat.sport.2" tvg-name="Polsat Sport 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-2-pl.png" group-title="DAMITV Live TV",Polsat Sport 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-polsatsport2-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/polsatsport2-pl.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="115" tvg-id="damitv.polsat.sport.3" tvg-name="Polsat Sport 3" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-3-pl.png" group-title="DAMITV Live TV",Polsat Sport 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-polsatsport3-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/polsatsport3-pl.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="116" tvg-id="damitv.polsat.sport.fight" tvg-name="Polsat Sport Fight" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-fight-pl.png" group-title="DAMITV Live TV",Polsat Sport Fight
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-polsatsportfight-pl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/polsatsportfight-pl.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="117" tvg-id="damitv.premiere" tvg-name="Premiere" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/brazil/premiere-br.png" group-title="DAMITV Live TV",Premiere
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-premiere-br
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/premiere-br.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="118" tvg-id="damitv.racer.network" tvg-name="RACER Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/racer-network-us.png" group-title="DAMITV Live TV",RACER Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-racernetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/racernetwork-usa.m3u8?tk=JL53Aa_AGyU2_ODaUOrFiw&e=1792380565
-#EXTINF:-1 tvg-chno="119" tvg-id="damitv.sky.sport.1.nz" tvg-name="Sky Sport 1 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-1-nz.png" group-title="DAMITV Live TV",Sky Sport 1 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport1-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport1-nz.m3u8?tk=Bf5TQIVBywXt4DE3AzmolQ&e=1792380566
-#EXTINF:-1 tvg-chno="120" tvg-id="damitv.sky.sport.2.nz" tvg-name="Sky Sport 2 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-2-nz.png" group-title="DAMITV Live TV",Sky Sport 2 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport2-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport2-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="121" tvg-id="damitv.sky.sport.3.nz" tvg-name="Sky Sport 3 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-3-nz.png" group-title="DAMITV Live TV",Sky Sport 3 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport3-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport3-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="122" tvg-id="damitv.sky.sport.4.nz" tvg-name="Sky Sport 4 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-4-nz.png" group-title="DAMITV Live TV",Sky Sport 4 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport4-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport4-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="123" tvg-id="damitv.sky.sport.5.nz" tvg-name="Sky Sport 5 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-5-nz.png" group-title="DAMITV Live TV",Sky Sport 5 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport5-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport5-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="124" tvg-id="damitv.sky.sport.6.nz" tvg-name="Sky Sport 6 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-6-nz.png" group-title="DAMITV Live TV",Sky Sport 6 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport6-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport6-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="125" tvg-id="damitv.sky.sport.7.nz" tvg-name="Sky Sport 7 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-7-nz.png" group-title="DAMITV Live TV",Sky Sport 7 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport7-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport7-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="126" tvg-id="damitv.sky.sport.8.nz" tvg-name="Sky Sport 8 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-8-nz.png" group-title="DAMITV Live TV",Sky Sport 8 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport8-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport8-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="127" tvg-id="damitv.sky.sport.9.nz" tvg-name="Sky Sport 9 NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-9-nz.png" group-title="DAMITV Live TV",Sky Sport 9 NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysport9-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysport9-nz.m3u8?tk=8nGlMQfXPv31kV8L07-yeQ&e=1792380567
-#EXTINF:-1 tvg-chno="128" tvg-id="damitv.sky.sport.select.nz" tvg-name="Sky Sport Select NZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-select-nz.png" group-title="DAMITV Live TV",Sky Sport Select NZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportselect-nz
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportselect-nz.m3u8?tk=uf-37CKB_DaWoL4YqL9LYA&e=1792380569
-#EXTINF:-1 tvg-chno="129" tvg-id="damitv.sky.sports.action" tvg-name="Sky Sports Action" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-action-uk.png" group-title="DAMITV Live TV",Sky Sports Action
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsaction-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsaction-uk.m3u8?tk=uf-37CKB_DaWoL4YqL9LYA&e=1792380569
-#EXTINF:-1 tvg-chno="130" tvg-id="damitv.sky.sports.cricket" tvg-name="Sky Sports Cricket" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-cricket-uk.png" group-title="DAMITV Live TV",Sky Sports Cricket
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportscricket-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportscricket-uk.m3u8?tk=uf-37CKB_DaWoL4YqL9LYA&e=1792380569
-#EXTINF:-1 tvg-chno="131" tvg-id="damitv.sky.sports.f1" tvg-name="Sky Sports F1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-f1-uk.png" group-title="DAMITV Live TV",Sky Sports F1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsf1-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsf1-uk.m3u8?tk=uf-37CKB_DaWoL4YqL9LYA&e=1792380569
-#EXTINF:-1 tvg-chno="132" tvg-id="damitv.sky.sports.football" tvg-name="Sky Sports Football" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-football-uk.png" group-title="DAMITV Live TV",Sky Sports Football
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsfootball-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsfootball-uk.m3u8?tk=OF2fY7VaWkukQAxw0mtouw&e=1792380570
-#EXTINF:-1 tvg-chno="133" tvg-id="damitv.sky.sports.golf" tvg-name="Sky Sports Golf" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-golf-uk.png" group-title="DAMITV Live TV",Sky Sports Golf
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsgolf-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsgolf-uk.m3u8?tk=OF2fY7VaWkukQAxw0mtouw&e=1792380570
-#EXTINF:-1 tvg-chno="134" tvg-id="damitv.sky.sports.main.event" tvg-name="Sky Sports Main Event" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-main-event-uk.png" group-title="DAMITV Live TV",Sky Sports Main Event
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsmainevent-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsmainevent-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="135" tvg-id="damitv.sky.sports.mix" tvg-name="Sky Sports Mix" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-mix-uk.png" group-title="DAMITV Live TV",Sky Sports Mix
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsmix-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsmix-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="136" tvg-id="damitv.sky.sports.news" tvg-name="Sky Sports News" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-news-uk.png" group-title="DAMITV Live TV",Sky Sports News
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsnews-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsnews-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="137" tvg-id="damitv.sky.sports.premier.league" tvg-name="Sky Sports Premier League" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-premier-league-uk.png" group-title="DAMITV Live TV",Sky Sports Premier League
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportspremierleague-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportspremierleague-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="138" tvg-id="damitv.sky.sports.racing" tvg-name="Sky Sports Racing" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-racing-uk.png" group-title="DAMITV Live TV",Sky Sports Racing
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsracing-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsracing-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="139" tvg-id="damitv.sky.sports.tennis" tvg-name="Sky Sports Tennis" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-tennis-uk.png" group-title="DAMITV Live TV",Sky Sports Tennis
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportstennis-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportstennis-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="140" tvg-id="damitv.sky.sports" tvg-name="Sky Sports+" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/screen-bug/sky-sports-plus-bug-uk.png" group-title="DAMITV Live TV",Sky Sports+
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-skysportsplus-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/skysportsplus-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="141" tvg-id="damitv.sony.sports.network" tvg-name="Sony Sports Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-1-in.png" group-title="DAMITV Live TV",Sony Sports Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sonysportsnetwork-in
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sonysportsnetwork-in.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="142" tvg-id="damitv.sony.sports.network.2" tvg-name="Sony Sports Network 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-2-in.png" group-title="DAMITV Live TV",Sony Sports Network 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sonysportsnetwork2-in
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sonysportsnetwork2-in.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="143" tvg-id="damitv.sony.sports.network.3" tvg-name="Sony Sports Network 3" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-3-in.png" group-title="DAMITV Live TV",Sony Sports Network 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sonysportsnetwork3-in
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sonysportsnetwork3-in.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="144" tvg-id="damitv.sony.sports.network.4" tvg-name="Sony Sports Network 4" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-4-in.png" group-title="DAMITV Live TV",Sony Sports Network 4
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sonysportsnetwork4-in
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sonysportsnetwork4-in.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="145" tvg-id="damitv.sony.sports.network.5" tvg-name="Sony Sports Network 5" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-5-in.png" group-title="DAMITV Live TV",Sony Sports Network 5
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sonysportsnetwork5-in
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sonysportsnetwork5-in.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="146" tvg-id="damitv.sport.tv2" tvg-name="Sport TV2" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png" group-title="DAMITV Live TV",Sport TV2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sporttv2-pt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sporttv2-pt.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="147" tvg-id="damitv.sport.tv3" tvg-name="Sport TV3" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png" group-title="DAMITV Live TV",Sport TV3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sporttv3-pt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sporttv3-pt.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="148" tvg-id="damitv.sport.tv4" tvg-name="Sport TV4" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png" group-title="DAMITV Live TV",Sport TV4
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sporttv4-pt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sporttv4-pt.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="149" tvg-id="damitv.sport.tv5" tvg-name="Sport TV5" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png" group-title="DAMITV Live TV",Sport TV5
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sporttv5-pt
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sporttv5-pt.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="150" tvg-id="damitv.sportdigital.fussball" tvg-name="SPORTDIGITAL FUSSBALL" tvg-logo="https://image.discovery.indazn.com/ca/v2/ca/image?id=712wbfqz8apl1k09rf681eqxd_image-header_pDach_1661948855000&amp;amp;quality=70" group-title="DAMITV Live TV",SPORTDIGITAL FUSSBALL
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-sportdigitalfussball-de
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/sportdigitalfussball-de.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="151" tvg-id="damitv.tennis.channel" tvg-name="Tennis Channel" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tennis-channel-us.png" group-title="DAMITV Live TV",Tennis Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tennischannel-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tennischannel-usa.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="152" tvg-id="damitv.tnt.sports.1" tvg-name="TNT Sports 1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-1-uk.png" group-title="DAMITV Live TV",TNT Sports 1
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-btsports1-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/btsports1-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="153" tvg-id="damitv.tnt.sports.2" tvg-name="TNT Sports 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-2-uk.png" group-title="DAMITV Live TV",TNT Sports 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tntsports2-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tntsports2-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="154" tvg-id="damitv.tnt.sports.3" tvg-name="TNT Sports 3" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-3-uk.png" group-title="DAMITV Live TV",TNT Sports 3
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tntsports3-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tntsports3-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="155" tvg-id="damitv.tnt.sports.4" tvg-name="TNT Sports 4" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-4-uk.png" group-title="DAMITV Live TV",TNT Sports 4
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tntsports4-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tntsports4-uk.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="156" tvg-id="damitv.tudn" tvg-name="TUDN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tudn-us.png" group-title="DAMITV Live TV",TUDN
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tudn-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tudn-usa.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="157" tvg-id="damitv.tyc.sports.internacional" tvg-name="TYC Sports Internacional" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/argentina/tyc-sports-ar.png" group-title="DAMITV Live TV",TYC Sports Internacional
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tycsports-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tycsports-usa.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="158" tvg-id="damitv.ufc.fight.pass.24.7" tvg-name="UFC Fight Pass 24/7" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-fight-pass-us.png" group-title="DAMITV Live TV",UFC Fight Pass 24/7
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-ufc-fight-pass
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/ufc-fight-pass.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="159" tvg-id="damitv.willow.cricket" tvg-name="Willow Cricket" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/willow-us.png" group-title="DAMITV Live TV",Willow Cricket
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-willow-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/willow-usa.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="160" tvg-id="damitv.willow.cricket.2" tvg-name="Willow Cricket 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/willow-xtra-us.png" group-title="DAMITV Live TV",Willow Cricket 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-willow2-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/willow2-usa.m3u8?tk=DQ-QsBsl8h_oltSOK6tM0Q&e=1792380571
-#EXTINF:-1 tvg-chno="161" tvg-id="damitv.abc" tvg-name="ABC" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/abc-us.png" group-title="DAMITV Live TV",ABC
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-abc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/abc-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="162" tvg-id="damitv.ae" tvg-name="AE" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/awe-us.png" group-title="DAMITV Live TV",AE
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-ae-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/ae-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="163" tvg-id="damitv.amc" tvg-name="AMC" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/amc-us.png" group-title="DAMITV Live TV",AMC
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-amc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/amc-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="164" tvg-id="damitv.american.heroes.channel" tvg-name="American Heroes Channel" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/american-heroes-channel-us.png" group-title="DAMITV Live TV",American Heroes Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-ahc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/ahc-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="165" tvg-id="damitv.animal.planet" tvg-name="Animal Planet" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/animal-planet-us.png" group-title="DAMITV Live TV",Animal Planet
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-animalplanet-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/animalplanet-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="166" tvg-id="damitv.axs.tv" tvg-name="AXS TV" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/axs-tv-us.png" group-title="DAMITV Live TV",AXS TV
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-axs-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/axs-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="167" tvg-id="damitv.bbc.america" tvg-name="BBC America" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bbc-america-us.png" group-title="DAMITV Live TV",BBC America
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-bbc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/bbc-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="168" tvg-id="damitv.bbc.one.london" tvg-name="BBC One London" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-one-uk.png" group-title="DAMITV Live TV",BBC One London
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-bbcone-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/bbcone-uk.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="169" tvg-id="damitv.bbc.two" tvg-name="BBC Two" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-two-uk.png" group-title="DAMITV Live TV",BBC Two
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-bbctwo-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/bbctwo-uk.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="170" tvg-id="damitv.boomerang" tvg-name="Boomerang" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/boomerang-us.png" group-title="DAMITV Live TV",Boomerang
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-boomerang-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/boomerang-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="171" tvg-id="damitv.bravo" tvg-name="Bravo" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bravo-us.png" group-title="DAMITV Live TV",Bravo
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-bravo-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/bravo-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="172" tvg-id="damitv.cartoon.network" tvg-name="Cartoon Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cartoon-network-us.png" group-title="DAMITV Live TV",Cartoon Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-cartoonnetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/cartoonnetwork-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="173" tvg-id="damitv.cbeebies" tvg-name="CBeebies" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-cbeebies-uk.png" group-title="DAMITV Live TV",CBeebies
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-cbeebies-uk
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/cbeebies-uk.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="174" tvg-id="damitv.cbs" tvg-name="CBS" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-logo-white-us.png" group-title="DAMITV Live TV",CBS
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-cbs-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/cbs-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="175" tvg-id="damitv.cnbc" tvg-name="CNBC" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cnbc-us.png" group-title="DAMITV Live TV",CNBC
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-cnbc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/cnbc-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="176" tvg-id="damitv.comedy.central" tvg-name="Comedy Central" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/comedy-central-us.png" group-title="DAMITV Live TV",Comedy Central
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-comedycentral-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/comedycentral-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="177" tvg-id="damitv.cw" tvg-name="CW" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cw-us.png" group-title="DAMITV Live TV",CW
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-cw-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/cw-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="178" tvg-id="damitv.discovery.channel" tvg-name="Discovery Channel" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-channel-us.png" group-title="DAMITV Live TV",Discovery Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-discovery-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/discovery-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="179" tvg-id="damitv.discovery.family" tvg-name="Discovery Family" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-family-us.png" group-title="DAMITV Live TV",Discovery Family
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-discoveryfamily-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/discoveryfamily-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="180" tvg-id="damitv.discovery.turbo" tvg-name="Discovery Turbo" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-turbo-us.png" group-title="DAMITV Live TV",Discovery Turbo
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-discoveryturbo-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/discoveryturbo-usa.m3u8?tk=GYlAnVeNVeUkfs0SagDpRw&e=1792380572
-#EXTINF:-1 tvg-chno="181" tvg-id="damitv.disney.channel" tvg-name="Disney Channel" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/disney-channel-us.png" group-title="DAMITV Live TV",Disney Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-disneychannel-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/disneychannel-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="182" tvg-id="damitv.disney.junior" tvg-name="Disney Junior" tvg-logo="https://thewaltdisneycompany.com/app/uploads/2021/02/021221_Disney-Junior-10th-Anniversary-00.jpg" group-title="DAMITV Live TV",Disney Junior
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-disneyjunior-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/disneyjunior-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="183" tvg-id="damitv.disney.xd" tvg-name="Disney XD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/disney-xd-us.png" group-title="DAMITV Live TV",Disney XD
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-disneyxd-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/disneyxd-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="184" tvg-id="damitv.food.network" tvg-name="Food Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/food-network-us.png" group-title="DAMITV Live TV",Food Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-foodnetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/foodnetwork-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="185" tvg-id="damitv.fox" tvg-name="Fox" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-us.png" group-title="DAMITV Live TV",Fox
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fox-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fox-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="186" tvg-id="damitv.fox.deportes" tvg-name="Fox Deportes" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-deportes-us.png" group-title="DAMITV Live TV",Fox Deportes
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-foxdeportes-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/foxdeportes-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="187" tvg-id="damitv.freeform" tvg-name="Freeform" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/freeform-us.png" group-title="DAMITV Live TV",Freeform
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-freeform-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/freeform-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="188" tvg-id="damitv.fx" tvg-name="FX" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fx-us.png" group-title="DAMITV Live TV",FX
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fx-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fx-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="189" tvg-id="damitv.fxm" tvg-name="FXM" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fx-us.png" group-title="DAMITV Live TV",FXM
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fxm-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fxm-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="190" tvg-id="damitv.fxx" tvg-name="FXX" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fxx-us.png" group-title="DAMITV Live TV",FXX
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-fxx-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/fxx-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="191" tvg-id="damitv.hbo" tvg-name="HBO" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-us.png" group-title="DAMITV Live TV",HBO
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-hbo-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/hbo-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="192" tvg-id="damitv.hbo.comedy" tvg-name="HBO Comedy" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-comedy-us.png" group-title="DAMITV Live TV",HBO Comedy
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-hbocomedy-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/hbocomedy-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="193" tvg-id="damitv.hbo.drama" tvg-name="HBO Drama" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-drama-us.png" group-title="DAMITV Live TV",HBO Drama
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-hbodrama-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/hbodrama-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="194" tvg-id="damitv.hbo.latino" tvg-name="HBO Latino" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-latino-us.png" group-title="DAMITV Live TV",HBO Latino
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-hbolatino-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/hbolatino-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="195" tvg-id="damitv.hbo.movies" tvg-name="HBO Movies" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-movies-us.png" group-title="DAMITV Live TV",HBO Movies
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-hbomovies-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/hbomovies-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="196" tvg-id="damitv.hgtv" tvg-name="HGTV" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hgtv-us.png" group-title="DAMITV Live TV",HGTV
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-hgtv-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/hgtv-usa.m3u8?tk=GUzGFrD_C0oQi-JhgKVhgA&e=1792380573
-#EXTINF:-1 tvg-chno="197" tvg-id="damitv.movistar.plus" tvg-name="Movistar Plus" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/movistar-plus-es.png" group-title="DAMITV Live TV",Movistar Plus
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-movistarplus-es
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/movistarplus-es.m3u8?tk=HAdm3saXgjcVBNO11rXDOg&e=1792380574
-#EXTINF:-1 tvg-chno="198" tvg-id="damitv.mtv" tvg-name="MTV" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/mtv-us.png" group-title="DAMITV Live TV",MTV
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-mtv-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/mtv-usa.m3u8?tk=HAdm3saXgjcVBNO11rXDOg&e=1792380574
-#EXTINF:-1 tvg-chno="199" tvg-id="damitv.nbc" tvg-name="NBC" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nbc-us.png" group-title="DAMITV Live TV",NBC
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nbc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nbc-usa.m3u8?tk=HAdm3saXgjcVBNO11rXDOg&e=1792380574
-#EXTINF:-1 tvg-chno="200" tvg-id="damitv.nick.jr" tvg-name="Nick Jr." tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nick-jr-us.png" group-title="DAMITV Live TV",Nick Jr.
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nickjr-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nickjr-usa.m3u8?tk=HAdm3saXgjcVBNO11rXDOg&e=1792380574
-#EXTINF:-1 tvg-chno="201" tvg-id="damitv.nickelodeon" tvg-name="Nickelodeon" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nickelodeon-us.png" group-title="DAMITV Live TV",Nickelodeon
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nickelodeon-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nickelodeon-usa.m3u8?tk=HAdm3saXgjcVBNO11rXDOg&e=1792380574
-#EXTINF:-1 tvg-chno="202" tvg-id="damitv.nicktoons" tvg-name="Nicktoons" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nick-toons-us.png" group-title="DAMITV Live TV",Nicktoons
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-nicktoons-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/nicktoons-usa.m3u8?tk=HAdm3saXgjcVBNO11rXDOg&e=1792380574
-#EXTINF:-1 tvg-chno="203" tvg-id="damitv.showtime" tvg-name="Showtime" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-us.png" group-title="DAMITV Live TV",Showtime
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-showtime-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/showtime-usa.m3u8?tk=tP26YU3hd474ZMc_i23v4A&e=1792380577
-#EXTINF:-1 tvg-chno="204" tvg-id="damitv.showtime.2" tvg-name="Showtime 2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-2-us.png" group-title="DAMITV Live TV",Showtime 2
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-showtime2-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/showtime2-usa.m3u8?tk=tP26YU3hd474ZMc_i23v4A&e=1792380577
-#EXTINF:-1 tvg-chno="205" tvg-id="damitv.showtime.extreme" tvg-name="Showtime Extreme" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-extreme-us.png" group-title="DAMITV Live TV",Showtime Extreme
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-showtimeextreme-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/showtimeextreme-usa.m3u8?tk=tP26YU3hd474ZMc_i23v4A&e=1792380577
-#EXTINF:-1 tvg-chno="206" tvg-id="damitv.showtime.family.zone" tvg-name="Showtime Family Zone" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-family-zone-us.png" group-title="DAMITV Live TV",Showtime Family Zone
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-showtimefamilyzone-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/showtimefamilyzone-usa.m3u8?tk=tP26YU3hd474ZMc_i23v4A&e=1792380577
-#EXTINF:-1 tvg-chno="207" tvg-id="damitv.showtime.next" tvg-name="Showtime Next" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-next-us.png" group-title="DAMITV Live TV",Showtime Next
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-showtimenext-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/showtimenext-usa.m3u8?tk=tP26YU3hd474ZMc_i23v4A&e=1792380577
-#EXTINF:-1 tvg-chno="208" tvg-id="damitv.showtime.women" tvg-name="Showtime Women" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-women-us.png" group-title="DAMITV Live TV",Showtime Women
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-showtimewomen-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/showtimewomen-usa.m3u8?tk=tP26YU3hd474ZMc_i23v4A&e=1792380577
-#EXTINF:-1 tvg-chno="209" tvg-id="damitv.starz" tvg-name="STARZ" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-us.png" group-title="DAMITV Live TV",STARZ
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-starz-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/starz-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="210" tvg-id="damitv.starz.cinema" tvg-name="STARZ Cinema" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-cinema-us.png" group-title="DAMITV Live TV",STARZ Cinema
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-starzcinema-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/starzcinema-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="211" tvg-id="damitv.starz.comedy" tvg-name="STARZ Comedy" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-comedy-us.png" group-title="DAMITV Live TV",STARZ Comedy
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-starzcomedy-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/starzcomedy-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="212" tvg-id="damitv.starz.kids.and.family" tvg-name="STARZ Kids and Family" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-kids-and-family-us.png" group-title="DAMITV Live TV",STARZ Kids and Family
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-starzkidsfamily-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/starzkidsfamily-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="213" tvg-id="damitv.syfy" tvg-name="SYFY" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/syfy-us.png" group-title="DAMITV Live TV",SYFY
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-syfy-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/syfy-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="214" tvg-id="damitv.tbs" tvg-name="TBS" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tbs-us.png" group-title="DAMITV Live TV",TBS
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tbs-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tbs-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="215" tvg-id="damitv.teenick" tvg-name="Teenick" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/teen-nick-us.png" group-title="DAMITV Live TV",Teenick
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-teenick-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/teenick-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="216" tvg-id="damitv.telemundo" tvg-name="Telemundo" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/telemundo-us.png" group-title="DAMITV Live TV",Telemundo
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-telemundo-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/telemundo-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="217" tvg-id="damitv.the.weather.channel" tvg-name="The Weather Channel" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/weather-channel-us.png" group-title="DAMITV Live TV",The Weather Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-twc-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/twc-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="218" tvg-id="damitv.tnt" tvg-name="TNT" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tnt-us.png" group-title="DAMITV Live TV",TNT
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-tnt-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/tnt-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="219" tvg-id="damitv.trutv" tvg-name="TruTV" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tru-tv-us.png" group-title="DAMITV Live TV",TruTV
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-trutv-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/trutv-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="220" tvg-id="damitv.usa.network" tvg-name="USA Network" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/canada/usa-network-ca.png" group-title="DAMITV Live TV",USA Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-usanetwork-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/usanetwork-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="221" tvg-id="damitv.wapa.america" tvg-name="WAPA America" tvg-logo="https://m.media-amazon.com/images/I/81AEkpHaIPL._SL1920_.png" group-title="DAMITV Live TV",WAPA America
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-wapaamerica-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/wapaamerica-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="222" tvg-id="damitv.wapa.deportes" tvg-name="WAPA Deportes" tvg-logo="https://i.ibb.co/pBzhsJ17/WAPA-Deportes.jpg" group-title="DAMITV Live TV",WAPA Deportes
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ts-wapadeportes-usa
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/papi/ts2/wapadeportes-usa.m3u8?tk=OMlRYs6WxuYC2x9oJycJXw&e=1792380582
-#EXTINF:-1 tvg-chno="223" tvg-id="nfl.nfl.network.Dummy.us" tvg-name="NFL Network" tvg-logo="https://static.ppvservices.st/assets/thumb/5ed7ea60fe8e3842203b0741187f0fd7-thumbnail.jpg" group-title="NFL",[NFL] NFL Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl-network
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl-network/playlist.m3u8?tk=EI6_-6xCIY-d6BoqlWOX-g&e=1792380583
-#EXTINF:-1 tvg-chno="224" tvg-id="nfl.chicago.bears.at.atlanta.falcons.Dummy.us" tvg-name="Chicago Bears at Atlanta Falcons" tvg-logo="/img/cards/nfl/401872999-r.jpg?v=1" group-title="NFL",[NFL] Chicago Bears at Atlanta Falcons
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/chi-atl
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/chi-atl/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="225" tvg-id="nfl.baltimore.ravens.at.cleveland.browns.Dummy.us" tvg-name="Baltimore Ravens at Cleveland Browns" tvg-logo="/img/cards/nfl/401872997-r.jpg?v=1" group-title="NFL",[NFL] Baltimore Ravens at Cleveland Browns
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/bal-cle
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/bal-cle/playlist.m3u8?tk=EI6_-6xCIY-d6BoqlWOX-g&e=1792380583
-#EXTINF:-1 tvg-chno="226" tvg-id="nfl.tennessee.titans.at.indianapolis.colts.Dummy.us" tvg-name="Tennessee Titans at Indianapolis Colts" tvg-logo="/img/cards/nfl/401873003-r.jpg?v=1" group-title="NFL",[NFL] Tennessee Titans at Indianapolis Colts
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/ten-ind
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/ten-ind/playlist.m3u8?tk=EI6_-6xCIY-d6BoqlWOX-g&e=1792380583
-#EXTINF:-1 tvg-chno="227" tvg-id="nfl.new.york.jets.at.new.england.patriots.Dummy.us" tvg-name="New York Jets at New England Patriots" tvg-logo="/img/cards/nfl/401873001-r.jpg?v=1" group-title="NFL",[NFL] New York Jets at New England Patriots
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/nyj-ne
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/nyj-ne/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="228" tvg-id="nfl.new.orleans.saints.at.new.york.giants.Dummy.us" tvg-name="New Orleans Saints at New York Giants" tvg-logo="/img/cards/nfl/401873000-r.jpg?v=1" group-title="NFL",[NFL] New Orleans Saints at New York Giants
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/no-nyg
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/no-nyg/playlist.m3u8?tk=EI6_-6xCIY-d6BoqlWOX-g&e=1792380583
-#EXTINF:-1 tvg-chno="229" tvg-id="nfl.carolina.panthers.at.philadelphia.eagles.Dummy.us" tvg-name="Carolina Panthers at Philadelphia Eagles" tvg-logo="/img/cards/nfl/401872998-r.jpg?v=1" group-title="NFL",[NFL] Carolina Panthers at Philadelphia Eagles
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/car-phi
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/car-phi/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="230" tvg-id="nfl.pittsburgh.steelers.at.tampa.bay.buccaneers.Dummy.us" tvg-name="Pittsburgh Steelers at Tampa Bay Buccaneers" tvg-logo="/img/cards/nfl/401873002-r.jpg?v=1" group-title="NFL",[NFL] Pittsburgh Steelers at Tampa Bay Buccaneers
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nfl/2026-10-18/pit-tb
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/pit-tb/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="231" tvg-id="ligue.1.le.havre.ac.vs..aj.auxerre.Dummy.us" tvg-name="Le Havre AC vs. AJ Auxerre" tvg-logo="/img/cards/fra.1/401876438.jpg?v=1" group-title="Ligue 1",[Ligue 1] Le Havre AC vs. AJ Auxerre
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ligue1/2026-10-18/hac-aux
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/ligue1/2026-10-18/hac-aux/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="232" tvg-id="ligue.1.lorient.vs..as.monaco.Dummy.us" tvg-name="Lorient vs. AS Monaco" tvg-logo="/img/cards/fra.1/401876435.jpg?v=1" group-title="Ligue 1",[Ligue 1] Lorient vs. AS Monaco
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ligue1/2026-10-18/lor-mon
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/ligue1/2026-10-18/lor-mon/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="233" tvg-id="ligue.1.paris.fc.vs..stade.rennais.Dummy.us" tvg-name="Paris FC vs. Stade Rennais" tvg-logo="/img/cards/fra.1/401876433.jpg?v=1" group-title="Ligue 1",[Ligue 1] Paris FC vs. Stade Rennais
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=ligue1/2026-10-18/par-ren
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/ligue1/2026-10-18/par-ren/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="234" tvg-id="bundesliga.borussia.mönchengladbach.vs..tsg.hoffenheim.Dummy.us" tvg-name="Borussia Mönchengladbach vs. TSG Hoffenheim" tvg-logo="/img/cards/ger.1/401884768.jpg?v=1" group-title="Bundesliga",[Bundesliga] Borussia Mönchengladbach vs. TSG Hoffenheim
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=bundesliga/2026-10-18/bmg-tsg
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/bundesliga/2026-10-18/bmg-tsg/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="235" tvg-id="premier.league.nottingham.forest.vs..arsenal.Dummy.us" tvg-name="Nottingham Forest vs. Arsenal" tvg-logo="/img/cards/eng.1/401878769.jpg?v=4" group-title="Premier League",[Premier League] Nottingham Forest vs. Arsenal
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=pl/2026-10-18/nfo-ars
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/pl/2026-10-18/nfo-ars/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="236" tvg-id="serie.a.ac.milan.vs..atalanta.Dummy.us" tvg-name="AC Milan vs. Atalanta" tvg-logo="/img/cards/ita.1/401874978.jpg?v=1" group-title="Serie A",[Serie A] AC Milan vs. Atalanta
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=seriea/2026-10-18/mil-ata
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/seriea/2026-10-18/mil-ata/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="237" tvg-id="la.liga.málaga.vs..real.sociedad.Dummy.us" tvg-name="Málaga vs. Real Sociedad" tvg-logo="/img/cards/esp.1/401882841-r.jpg?v=1" group-title="La Liga",[La Liga] Málaga vs. Real Sociedad
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=laliga/2026-10-18/mcf-rso
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/laliga/2026-10-18/mcf-rso/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="238" tvg-id="eredivisie.fc.twente.vs..fc.utrecht.Dummy.us" tvg-name="FC Twente vs. FC Utrecht" tvg-logo="/img/cards/ned.1/401875577.jpg?v=1" group-title="Eredivisie",[Eredivisie] FC Twente vs. FC Utrecht
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=eredivisie/2026-10-18/twe-utr
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/eredivisie/2026-10-18/twe-utr/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="239" tvg-id="eredivisie.nec.nijmegen.vs..fortuna.sittard.Dummy.us" tvg-name="NEC Nijmegen vs. Fortuna Sittard" tvg-logo="/img/cards/ned.1/401875581.jpg?v=1" group-title="Eredivisie",[Eredivisie] NEC Nijmegen vs. Fortuna Sittard
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=eredivisie/2026-10-18/nec-for
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/eredivisie/2026-10-18/nec-for/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="240" tvg-id="golf.sky.sports.golf.Dummy.us" tvg-name="Sky Sports Golf" tvg-logo="https://static.ppvservices.st/assets/thumb/9950e3e6c1a19cad6a216ec1c6b50d71-thumbnail.jpg" group-title="Golf",[Golf] Sky Sports Golf
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sky-sports-golf-29059
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/sky-sports-golf-29059/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="241" tvg-id="nhl.nhl.network.Dummy.us" tvg-name="NHL Network" tvg-logo="https://static.ppvservices.st/assets/thumb/4a70bb8cf331b8ab0299fd836b56e2ed-thumbnail.jpg" group-title="NHL",[NHL] NHL Network
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=nhl-network-29780
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-hls/channel/nhl-network-29780/playlist.m3u8?tk=fqVSzF1z4M9cjxDP92GYsA&e=1792380584
-#EXTINF:-1 tvg-chno="242" tvg-id="tennis.tennis.channel.Dummy.us" tvg-name="Tennis Channel" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzuBEBDXsQZgdgwwRgBOYAU0hDpqxQFZh5Tg0wmJgATMNTTAWkVqNri0LIinbQ61OvHS5CISiCggGIRPzWq0hNTTV5s2AMb6NNFif4h+VFxux5bFLXnk3aASx2PV0+LRRNR0hAtjYUBHZQYkk2JjBHEFsaOxytGFZYSWt5YFIVGOVgeTYOMl5AiCA.webp" group-title="tennis",[tennis] Tennis Channel
-#EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id=sd-admin~admin-tennis-channel
-#EXTVLCOPT:http-origin=https://ondemand.st
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1
-https://messi.damitv.st/live-sd/streamed/admin/admin-tennis-channel/playlist.m3u8?tk=WX2izx248z8_uxd4xvCb1g&e=1792380585
+#EXTINF:-1 tvg-id="247-fox-footy" tvg-logo="https://static.ppvservices.st/assets/thumb/514cf8272ec290889a5ce6fd299fb9c8-thumbnail.jpg",Fox Footy
+https://messi.damitv.st/live-hls/channel/247-fox-footy/playlist.m3u8?tk=Ez35wF3FK1IIiZ1KtvhyMw&e=1792386232
+#EXTINF:-1 tvg-id="247-willow" tvg-logo="https://static.ppvservices.st/assets/thumb/2e3cba2a94ae6af4b958675e73fe91e9-thumbnail.jpg",Willow
+https://messi.damitv.st/live-hls/channel/247-willow/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="247-fox-cricket" tvg-logo="https://static.ppvservices.st/assets/thumb/5dfe2fc8e56d59add47afb0f6e996e55-thumbnail.jpg",Fox Cricket
+https://messi.damitv.st/live-hls/channel/247-fox-cricket/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="247-fox-league" tvg-logo="https://static.ppvservices.st/assets/thumb/5ec4933f4ae6363e151dfe5c75ad24e3-thumbnail.jpg",Fox League
+https://messi.damitv.st/live-hls/channel/247-fox-league/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="247-south-park" tvg-logo="https://thumbs.poocloud.in/southpark/preview.jpg",24/7 South Park
+https://messi.damitv.st/live-hls/channel/247-south-park/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="247-cows" tvg-logo="https://static.ppvservices.st/assets/thumb/213d77252211e1926309f43b38263a4f-thumbnail.jpg",24/7 COWS
+https://messi.damitv.st/live-hls/channel/247-cows/playlist.m3u8?tk=Ez35wF3FK1IIiZ1KtvhyMw&e=1792386232
+#EXTINF:-1 tvg-id="247-family-guy" tvg-logo="https://thumbs.poocloud.in/familyguy/preview.jpg",24/7 Family Guy
+https://messi.damitv.st/live-hls/channel/247-family-guy/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="247-the-simpsons" tvg-logo="https://thumbs.poocloud.in/thesimpsons/preview.jpg",24/7 The Simpsons
+https://messi.damitv.st/live-hls/channel/247-the-simpsons/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="247-spongebob-squarepants" tvg-logo="https://static.ppvservices.st/assets/thumb/f8e24d78314ed44b137c90cbf50b1c1d-thumbnail.jpg",24/7 SpongeBob Squarepants
+https://messi.damitv.st/live-hls/channel/247-spongebob-squarepants/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="rally-tv" tvg-logo="https://static.ppvservices.st/assets/thumb/0b5137de6f5809a3c652fad1b9c1bd57-thumbnail.jpg",Rally TV
+https://messi.damitv.st/live-hls/channel/rally-tv/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="sky-sports-racing" tvg-logo="https://static.ppvservices.st/assets/thumb/43030017ee0ab21769b49bffe20f76d1-thumbnail.jpg",Sky Sports Racing
+https://messi.damitv.st/live-hls/channel/sky-sports-racing/playlist.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-accn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/acc-network-us.png",ACC Network
+https://messi.damitv.st/papi/ts2/accn-usa.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-beinsports-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bein-sports-us.png",beIN Sports
+https://messi.damitv.st/papi/ts2/beinsports-usa.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-beinsports1-fr" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png",beIN Sports Francais 1
+https://messi.damitv.st/papi/ts2/beinsports1-fr.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-beinsports2-fr" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png",beIN Sports Francais 2
+https://messi.damitv.st/papi/ts2/beinsports2-fr.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-beinsports3-fr" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/beinsports.png",beIN Sports Francais 3
+https://messi.damitv.st/papi/ts2/beinsports3-fr.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-canalextra1-pl" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/canalextra.png",CANAL+ Extra 1
+https://messi.damitv.st/papi/ts2/canalextra1-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-canalextra2-pl" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/canalextra.png",CANAL+ Extra 2
+https://messi.damitv.st/papi/ts2/canalextra2-pl.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-canalsport2-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-2-pl.png",CANAL+ Sport 2 PL
+https://messi.damitv.st/papi/ts2/canalsport2-pl.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-canalsport3-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-3-pl.png",CANAL+ Sport 3 PL
+https://messi.damitv.st/papi/ts2/canalsport3-pl.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-canalsport4-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-4-pl.png",CANAL+ Sport 4 PL
+https://messi.damitv.st/papi/ts2/canalsport4-pl.m3u8?tk=MERmqD8DbPtC5h2Q7KgMNQ&e=1792386233
+#EXTINF:-1 tvg-id="ts-canalsport5-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-5-pl.png",CANAL+ Sport 5 PL
+https://messi.damitv.st/papi/ts2/canalsport5-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-canalsport-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/canal-plus-sport-pl.png",CANAL+ Sport PL
+https://messi.damitv.st/papi/ts2/canalsport-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-cbssn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-sports-network-us.png",CBS Sports Network
+https://messi.damitv.st/papi/ts2/cbssn-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn1-de" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/dazn1-de.png",DAZN 1 Germany
+https://messi.damitv.st/papi/ts2/dazn1-de.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn1-it" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/international/dazn1-int.png",DAZN 1 Italia
+https://messi.damitv.st/papi/ts2/dazn1-it.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn1-pt" tvg-logo="https://image.discovery.indazn.com/ca/v2/ca/image?id=1o4eamzb4env61ddc8wv4ra06l_image-header_pRow_1720521601000&amp;amp;amp;amp;amp;quality=70",DAZN 1 Portugal
+https://messi.damitv.st/papi/ts2/dazn1-pt.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn1-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-1-es.png",DAZN 1 Spain
+https://messi.damitv.st/papi/ts2/dazn1-es.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn1-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/dazn-us.png",DAZN 1 USA
+https://messi.damitv.st/papi/ts2/dazn1-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn2-de" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/dazn2-de.png",DAZN 2 Germany
+https://messi.damitv.st/papi/ts2/dazn2-de.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-dazn2-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-2-es.png",DAZN 2 Spain
+https://messi.damitv.st/papi/ts2/dazn2-es.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-daznf1-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-f1-es.png",DAZN F1
+https://messi.damitv.st/papi/ts2/daznf1-es.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-daznlaliga-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/dazn-laliga-es.png",DAZN LaLiga
+https://messi.damitv.st/papi/ts2/daznlaliga-es.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-elevensports1-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-1-nl-be.png",Eleven Sports 1
+https://messi.damitv.st/papi/ts2/elevensports1-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-elevensports2-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-2-nl-be.png",Eleven Sports 2
+https://messi.damitv.st/papi/ts2/elevensports2-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-elevensports3-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/belgium/eleven-sports-3-nl-be.png",Eleven Sports 3
+https://messi.damitv.st/papi/ts2/elevensports3-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-elevensports4-pl" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/100659.png",Eleven Sports 4
+https://messi.damitv.st/papi/ts2/elevensports4-pl.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-espn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png",ESPN
+https://messi.damitv.st/papi/ts2/espn-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-espndeportes-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-deportes-us.png",ESPN Deportes
+https://messi.damitv.st/papi/ts2/espndeportes-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-espn2-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-2-us.png",ESPN2
+https://messi.damitv.st/papi/ts2/espn2-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-espnews-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espnews-us.png",ESPNEWS
+https://messi.damitv.st/papi/ts2/espnews-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-espnu-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-u-us.png",ESPNU
+https://messi.damitv.st/papi/ts2/espnu-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-foxsoccerplus-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-soccer-plus-us.png",Fox Soccer Plus
+https://messi.damitv.st/papi/ts2/foxsoccerplus-usa.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-fox-sports-1" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-1-us.png",Fox Sports 1
+https://messi.damitv.st/papi/ts2/fox-sports-1.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-fox-sports-2" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-2-us.png",Fox Sports 2
+https://messi.damitv.st/papi/ts2/fox-sports-2.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-fox-sports-501" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png",Fox Sports 501 (Cricket)
+https://messi.damitv.st/papi/ts2/fox-sports-501.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-fox-sports-502" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png",Fox Sports 502 (League)
+https://messi.damitv.st/papi/ts2/fox-sports-502.m3u8?tk=ztMYB9N1Hco1VZW6L7v1lg&e=1792386234
+#EXTINF:-1 tvg-id="ts-fox-sports-503" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-503-au.png",Fox Sports 503
+https://messi.damitv.st/papi/ts2/fox-sports-503.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-fox-sports-504" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-508-au.png",Fox Sports 504 (Footy)
+https://messi.damitv.st/papi/ts2/fox-sports-504.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-fox-sports-505" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-505-au.png",Fox Sports 505
+https://messi.damitv.st/papi/ts2/fox-sports-505.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-fox-sports-506" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-506-au.png",Fox Sports 506
+https://messi.damitv.st/papi/ts2/fox-sports-506.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-fox-sports-507" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/australia/fox-sports-507-au.png",Fox Sports 507
+https://messi.damitv.st/papi/ts2/fox-sports-507.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-go3sport1-lt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png",Go3 Sport 1
+https://messi.damitv.st/papi/ts2/go3sport1-lt.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-go3sport2-lt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png",Go3 Sport 2
+https://messi.damitv.st/papi/ts2/go3sport2-lt.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-go3sport2-lt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/go3sport.png",Go3 Sport 3
+https://messi.damitv.st/papi/ts2/go3sport2-lt.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-golfchannel-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nbc-golf-channel-us.png",GOLF Channel
+https://messi.damitv.st/papi/ts2/golfchannel-usa.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-mlbnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/mlb-network-us.png",MLB Network
+https://messi.damitv.st/papi/ts2/mlbnetwork-usa.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-motpgp-tv" tvg-logo="https://sportbikesincmag.com/wp-content/uploads/2024/11/New-MotoGP-Logo-sportbikesincmag.com-4.jpg",MotoGP Channel
+https://messi.damitv.st/papi/ts2/motpgp-tv.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-movistardeportes-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png",Movistar Deportes
+https://messi.damitv.st/papi/ts2/movistardeportes-es.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-movistardeportes2-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png",Movistar Deportes 2
+https://messi.damitv.st/papi/ts2/movistardeportes2-es.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-movistardeportes3-es" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/movistardeportes.png",Movistar Deportes 3
+https://messi.damitv.st/papi/ts2/movistardeportes3-es.m3u8?tk=MGO1dV-3axrzoUU4Fe6qjQ&e=1792386235
+#EXTINF:-1 tvg-id="ts-nbatv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-tv-us.png",NBA TV
+https://messi.damitv.st/papi/ts2/nbatv-usa.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-nbc-sports-bayarea" tvg-logo="https://cdn.mos.cms.futurecdn.net/d7jWexxhtezRZ6ryLHyKmd.jpeg",NBC Sports Bay Area
+https://messi.damitv.st/papi/ts2/nbc-sports-bayarea.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-nbc-sports-philly" tvg-logo="https://media.nbcsportsphiladelphia.com/2023/04/Philly-Landmark.png?resize=1200%2C675&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quality=85&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;strip=all",NBC Sports Philadelphia
+https://messi.damitv.st/papi/ts2/nbc-sports-philly.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-nflnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nfl-network-us.png",NFL Network
+https://messi.damitv.st/papi/ts2/nflnetwork-usa.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-nhlnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nhl-network-us.png",NHL Network
+https://messi.damitv.st/papi/ts2/nhlnetwork-usa.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-polsatsport1-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-1-pl.png",Polsat Sport 1
+https://messi.damitv.st/papi/ts2/polsatsport1-pl.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-polsatsport2-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-2-pl.png",Polsat Sport 2
+https://messi.damitv.st/papi/ts2/polsatsport2-pl.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-polsatsport3-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-3-pl.png",Polsat Sport 3
+https://messi.damitv.st/papi/ts2/polsatsport3-pl.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-polsatsportfight-pl" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/poland/polsat-sport-fight-pl.png",Polsat Sport Fight
+https://messi.damitv.st/papi/ts2/polsatsportfight-pl.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-premiere-br" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/brazil/premiere-br.png",Premiere
+https://messi.damitv.st/papi/ts2/premiere-br.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-racernetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/racer-network-us.png",RACER Network
+https://messi.damitv.st/papi/ts2/racernetwork-usa.m3u8?tk=9OU6C3doohLUd_2nmZBQqQ&e=1792386236
+#EXTINF:-1 tvg-id="ts-skysport1-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-1-nz.png",Sky Sport 1 NZ
+https://messi.damitv.st/papi/ts2/skysport1-nz.m3u8?tk=mgzT1qiC2alYohEVWvHFpw&e=1792386237
+#EXTINF:-1 tvg-id="ts-skysport2-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-2-nz.png",Sky Sport 2 NZ
+https://messi.damitv.st/papi/ts2/skysport2-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport3-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-3-nz.png",Sky Sport 3 NZ
+https://messi.damitv.st/papi/ts2/skysport3-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport4-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-4-nz.png",Sky Sport 4 NZ
+https://messi.damitv.st/papi/ts2/skysport4-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport5-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-5-nz.png",Sky Sport 5 NZ
+https://messi.damitv.st/papi/ts2/skysport5-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport6-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-6-nz.png",Sky Sport 6 NZ
+https://messi.damitv.st/papi/ts2/skysport6-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport7-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-7-nz.png",Sky Sport 7 NZ
+https://messi.damitv.st/papi/ts2/skysport7-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport8-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-8-nz.png",Sky Sport 8 NZ
+https://messi.damitv.st/papi/ts2/skysport8-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysport9-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-9-nz.png",Sky Sport 9 NZ
+https://messi.damitv.st/papi/ts2/skysport9-nz.m3u8?tk=k9dKv2yYXQCF8JXbZpTFlQ&e=1792386238
+#EXTINF:-1 tvg-id="ts-skysportselect-nz" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/new-zealand/sky-sport-select-nz.png",Sky Sport Select NZ
+https://messi.damitv.st/papi/ts2/skysportselect-nz.m3u8?tk=u7UbrF50BSe0qSr0LdWetA&e=1792386241
+#EXTINF:-1 tvg-id="ts-skysportsaction-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-action-uk.png",Sky Sports Action
+https://messi.damitv.st/papi/ts2/skysportsaction-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportscricket-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-cricket-uk.png",Sky Sports Cricket
+https://messi.damitv.st/papi/ts2/skysportscricket-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsf1-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-f1-uk.png",Sky Sports F1
+https://messi.damitv.st/papi/ts2/skysportsf1-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsfootball-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-football-uk.png",Sky Sports Football
+https://messi.damitv.st/papi/ts2/skysportsfootball-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsgolf-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-golf-uk.png",Sky Sports Golf
+https://messi.damitv.st/papi/ts2/skysportsgolf-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsmainevent-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-main-event-uk.png",Sky Sports Main Event
+https://messi.damitv.st/papi/ts2/skysportsmainevent-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsmix-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-mix-uk.png",Sky Sports Mix
+https://messi.damitv.st/papi/ts2/skysportsmix-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsnews-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-news-uk.png",Sky Sports News
+https://messi.damitv.st/papi/ts2/skysportsnews-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportspremierleague-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-premier-league-uk.png",Sky Sports Premier League
+https://messi.damitv.st/papi/ts2/skysportspremierleague-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsracing-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-racing-uk.png",Sky Sports Racing
+https://messi.damitv.st/papi/ts2/skysportsracing-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportstennis-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/sky-sports-tennis-uk.png",Sky Sports Tennis
+https://messi.damitv.st/papi/ts2/skysportstennis-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-skysportsplus-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/screen-bug/sky-sports-plus-bug-uk.png",Sky Sports+
+https://messi.damitv.st/papi/ts2/skysportsplus-uk.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-sonysportsnetwork-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-1-in.png",Sony Sports Network
+https://messi.damitv.st/papi/ts2/sonysportsnetwork-in.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-sonysportsnetwork2-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-2-in.png",Sony Sports Network 2
+https://messi.damitv.st/papi/ts2/sonysportsnetwork2-in.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-sonysportsnetwork3-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-3-in.png",Sony Sports Network 3
+https://messi.damitv.st/papi/ts2/sonysportsnetwork3-in.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-sonysportsnetwork4-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-4-in.png",Sony Sports Network 4
+https://messi.damitv.st/papi/ts2/sonysportsnetwork4-in.m3u8?tk=hX59bQz2m2z66IzRry0vZw&e=1792386243
+#EXTINF:-1 tvg-id="ts-sonysportsnetwork5-in" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/india/sony-ten-5-in.png",Sony Sports Network 5
+https://messi.damitv.st/papi/ts2/sonysportsnetwork5-in.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-sporttv2-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV2
+https://messi.damitv.st/papi/ts2/sporttv2-pt.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-sporttv3-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV3
+https://messi.damitv.st/papi/ts2/sporttv3-pt.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-sporttv4-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV4
+https://messi.damitv.st/papi/ts2/sporttv4-pt.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-sporttv5-pt" tvg-logo="https://cdn.jsdelivr.net/gh/willthequeencome/img-cdn/sportv-pt.png",Sport TV5
+https://messi.damitv.st/papi/ts2/sporttv5-pt.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-sportdigitalfussball-de" tvg-logo="https://image.discovery.indazn.com/ca/v2/ca/image?id=712wbfqz8apl1k09rf681eqxd_image-header_pDach_1661948855000&amp;amp;quality=70",SPORTDIGITAL FUSSBALL
+https://messi.damitv.st/papi/ts2/sportdigitalfussball-de.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-tennischannel-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tennis-channel-us.png",Tennis Channel
+https://messi.damitv.st/papi/ts2/tennischannel-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-btsports1-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-1-uk.png",TNT Sports 1
+https://messi.damitv.st/papi/ts2/btsports1-uk.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-tntsports2-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-2-uk.png",TNT Sports 2
+https://messi.damitv.st/papi/ts2/tntsports2-uk.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-tntsports3-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-3-uk.png",TNT Sports 3
+https://messi.damitv.st/papi/ts2/tntsports3-uk.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-tntsports4-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/tnt-sports-4-uk.png",TNT Sports 4
+https://messi.damitv.st/papi/ts2/tntsports4-uk.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-tudn-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tudn-us.png",TUDN
+https://messi.damitv.st/papi/ts2/tudn-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-tycsports-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/argentina/tyc-sports-ar.png",TYC Sports Internacional
+https://messi.damitv.st/papi/ts2/tycsports-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-ufc-fight-pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-fight-pass-us.png",UFC Fight Pass 24/7
+https://messi.damitv.st/papi/ts2/ufc-fight-pass.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-willow-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/willow-us.png",Willow Cricket
+https://messi.damitv.st/papi/ts2/willow-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-willow2-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/willow-xtra-us.png",Willow Cricket 2
+https://messi.damitv.st/papi/ts2/willow2-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-abc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/abc-us.png",ABC
+https://messi.damitv.st/papi/ts2/abc-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-ae-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/awe-us.png",AE
+https://messi.damitv.st/papi/ts2/ae-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-amc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/amc-us.png",AMC
+https://messi.damitv.st/papi/ts2/amc-usa.m3u8?tk=E1J2pGCuoE7NNVBjKueRVg&e=1792386244
+#EXTINF:-1 tvg-id="ts-ahc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/american-heroes-channel-us.png",American Heroes Channel
+https://messi.damitv.st/papi/ts2/ahc-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-animalplanet-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/animal-planet-us.png",Animal Planet
+https://messi.damitv.st/papi/ts2/animalplanet-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-axs-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/axs-tv-us.png",AXS TV
+https://messi.damitv.st/papi/ts2/axs-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-bbc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bbc-america-us.png",BBC America
+https://messi.damitv.st/papi/ts2/bbc-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-bbcone-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-one-uk.png",BBC One London
+https://messi.damitv.st/papi/ts2/bbcone-uk.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-bbctwo-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-two-uk.png",BBC Two
+https://messi.damitv.st/papi/ts2/bbctwo-uk.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-boomerang-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/boomerang-us.png",Boomerang
+https://messi.damitv.st/papi/ts2/boomerang-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-bravo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/bravo-us.png",Bravo
+https://messi.damitv.st/papi/ts2/bravo-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-cartoonnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cartoon-network-us.png",Cartoon Network
+https://messi.damitv.st/papi/ts2/cartoonnetwork-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-cbeebies-uk" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-kingdom/bbc-cbeebies-uk.png",CBeebies
+https://messi.damitv.st/papi/ts2/cbeebies-uk.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-cbs-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cbs-logo-white-us.png",CBS
+https://messi.damitv.st/papi/ts2/cbs-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-cnbc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cnbc-us.png",CNBC
+https://messi.damitv.st/papi/ts2/cnbc-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-comedycentral-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/comedy-central-us.png",Comedy Central
+https://messi.damitv.st/papi/ts2/comedycentral-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-cw-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/cw-us.png",CW
+https://messi.damitv.st/papi/ts2/cw-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-discovery-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-channel-us.png",Discovery Channel
+https://messi.damitv.st/papi/ts2/discovery-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-discoveryfamily-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-family-us.png",Discovery Family
+https://messi.damitv.st/papi/ts2/discoveryfamily-usa.m3u8?tk=WKyxwKHYuFWkygDnvlqDcg&e=1792386245
+#EXTINF:-1 tvg-id="ts-discoveryturbo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/discovery-turbo-us.png",Discovery Turbo
+https://messi.damitv.st/papi/ts2/discoveryturbo-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-disneychannel-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/disney-channel-us.png",Disney Channel
+https://messi.damitv.st/papi/ts2/disneychannel-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-disneyjunior-usa" tvg-logo="https://thewaltdisneycompany.com/app/uploads/2021/02/021221_Disney-Junior-10th-Anniversary-00.jpg",Disney Junior
+https://messi.damitv.st/papi/ts2/disneyjunior-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-disneyxd-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/disney-xd-us.png",Disney XD
+https://messi.damitv.st/papi/ts2/disneyxd-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-foodnetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/food-network-us.png",Food Network
+https://messi.damitv.st/papi/ts2/foodnetwork-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-fox-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-us.png",Fox
+https://messi.damitv.st/papi/ts2/fox-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-foxdeportes-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fox-sports-deportes-us.png",Fox Deportes
+https://messi.damitv.st/papi/ts2/foxdeportes-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-freeform-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/freeform-us.png",Freeform
+https://messi.damitv.st/papi/ts2/freeform-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-fx-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fx-us.png",FX
+https://messi.damitv.st/papi/ts2/fx-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-fxm-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fx-us.png",FXM
+https://messi.damitv.st/papi/ts2/fxm-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-fxx-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/fxx-us.png",FXX
+https://messi.damitv.st/papi/ts2/fxx-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-hbo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-us.png",HBO
+https://messi.damitv.st/papi/ts2/hbo-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-hbocomedy-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-comedy-us.png",HBO Comedy
+https://messi.damitv.st/papi/ts2/hbocomedy-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-hbodrama-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-drama-us.png",HBO Drama
+https://messi.damitv.st/papi/ts2/hbodrama-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-hbolatino-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-latino-us.png",HBO Latino
+https://messi.damitv.st/papi/ts2/hbolatino-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-hbomovies-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hbo-movies-us.png",HBO Movies
+https://messi.damitv.st/papi/ts2/hbomovies-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-hgtv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/hgtv-us.png",HGTV
+https://messi.damitv.st/papi/ts2/hgtv-usa.m3u8?tk=qC1T_TOe_34uDr14eMMl2w&e=1792386246
+#EXTINF:-1 tvg-id="ts-movistarplus-es" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/movistar-plus-es.png",Movistar Plus
+https://messi.damitv.st/papi/ts2/movistarplus-es.m3u8?tk=SXTNbO4Hqdu1edXk9yJfhQ&e=1792386248
+#EXTINF:-1 tvg-id="ts-mtv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/mtv-us.png",MTV
+https://messi.damitv.st/papi/ts2/mtv-usa.m3u8?tk=SXTNbO4Hqdu1edXk9yJfhQ&e=1792386248
+#EXTINF:-1 tvg-id="ts-nbc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nbc-us.png",NBC
+https://messi.damitv.st/papi/ts2/nbc-usa.m3u8?tk=qfCaoRG0M97qb__y2C4pIg&e=1792386249
+#EXTINF:-1 tvg-id="ts-nickjr-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nick-jr-us.png",Nick Jr.
+https://messi.damitv.st/papi/ts2/nickjr-usa.m3u8?tk=qfCaoRG0M97qb__y2C4pIg&e=1792386249
+#EXTINF:-1 tvg-id="ts-nickelodeon-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nickelodeon-us.png",Nickelodeon
+https://messi.damitv.st/papi/ts2/nickelodeon-usa.m3u8?tk=qfCaoRG0M97qb__y2C4pIg&e=1792386249
+#EXTINF:-1 tvg-id="ts-nicktoons-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nick-toons-us.png",Nicktoons
+https://messi.damitv.st/papi/ts2/nicktoons-usa.m3u8?tk=qfCaoRG0M97qb__y2C4pIg&e=1792386249
+#EXTINF:-1 tvg-id="ts-showtime-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-us.png",Showtime
+https://messi.damitv.st/papi/ts2/showtime-usa.m3u8?tk=2jnZNwbv4dEDP-1ZRwaNyA&e=1792386253
+#EXTINF:-1 tvg-id="ts-showtime2-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-2-us.png",Showtime 2
+https://messi.damitv.st/papi/ts2/showtime2-usa.m3u8?tk=2jnZNwbv4dEDP-1ZRwaNyA&e=1792386253
+#EXTINF:-1 tvg-id="ts-showtimeextreme-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-extreme-us.png",Showtime Extreme
+https://messi.damitv.st/papi/ts2/showtimeextreme-usa.m3u8?tk=2jnZNwbv4dEDP-1ZRwaNyA&e=1792386253
+#EXTINF:-1 tvg-id="ts-showtimefamilyzone-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-family-zone-us.png",Showtime Family Zone
+https://messi.damitv.st/papi/ts2/showtimefamilyzone-usa.m3u8?tk=2jnZNwbv4dEDP-1ZRwaNyA&e=1792386253
+#EXTINF:-1 tvg-id="ts-showtimenext-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-next-us.png",Showtime Next
+https://messi.damitv.st/papi/ts2/showtimenext-usa.m3u8?tk=2jnZNwbv4dEDP-1ZRwaNyA&e=1792386253
+#EXTINF:-1 tvg-id="ts-showtimewomen-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/showtime-women-us.png",Showtime Women
+https://messi.damitv.st/papi/ts2/showtimewomen-usa.m3u8?tk=ATNfPLUhigul78yFNgHeJw&e=1792386254
+#EXTINF:-1 tvg-id="ts-starz-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-us.png",STARZ
+https://messi.damitv.st/papi/ts2/starz-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-starzcinema-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-cinema-us.png",STARZ Cinema
+https://messi.damitv.st/papi/ts2/starzcinema-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-starzcomedy-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-comedy-us.png",STARZ Comedy
+https://messi.damitv.st/papi/ts2/starzcomedy-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-starzkidsfamily-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/starz-kids-and-family-us.png",STARZ Kids and Family
+https://messi.damitv.st/papi/ts2/starzkidsfamily-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-syfy-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/syfy-us.png",SYFY
+https://messi.damitv.st/papi/ts2/syfy-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-tbs-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tbs-us.png",TBS
+https://messi.damitv.st/papi/ts2/tbs-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-teenick-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/teen-nick-us.png",Teenick
+https://messi.damitv.st/papi/ts2/teenick-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-telemundo-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/telemundo-us.png",Telemundo
+https://messi.damitv.st/papi/ts2/telemundo-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-twc-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/weather-channel-us.png",The Weather Channel
+https://messi.damitv.st/papi/ts2/twc-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-tnt-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tnt-us.png",TNT
+https://messi.damitv.st/papi/ts2/tnt-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-trutv-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/tru-tv-us.png",TruTV
+https://messi.damitv.st/papi/ts2/trutv-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-usanetwork-usa" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/canada/usa-network-ca.png",USA Network
+https://messi.damitv.st/papi/ts2/usanetwork-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-wapaamerica-usa" tvg-logo="https://m.media-amazon.com/images/I/81AEkpHaIPL._SL1920_.png",WAPA America
+https://messi.damitv.st/papi/ts2/wapaamerica-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="ts-wapadeportes-usa" tvg-logo="https://i.ibb.co/pBzhsJ17/WAPA-Deportes.jpg",WAPA Deportes
+https://messi.damitv.st/papi/ts2/wapadeportes-usa.m3u8?tk=mYEamv3k--iudy1OGluLQQ&e=1792386257
+#EXTINF:-1 tvg-id="nfl-network" tvg-logo="https://static.ppvservices.st/assets/thumb/5ed7ea60fe8e3842203b0741187f0fd7-thumbnail.jpg",[NFL] NFL Network
+https://messi.damitv.st/live-hls/channel/nfl-network/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl-redzone-30554" tvg-logo="https://static.ppvservices.st/assets/thumb/a66bbcaa04317bdc032f473fdc8c9add-thumbnail.jpg",[NFL] NFL RedZone
+https://messi.damitv.st/live-hls/channel/nfl-redzone-30554/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/chi-atl" tvg-logo="/img/cards/nfl/401872999-r.jpg?v=1",[NFL] Chicago Bears at Atlanta Falcons
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/chi-atl/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/bal-cle" tvg-logo="/img/cards/nfl/401872997-r.jpg?v=1",[NFL] Baltimore Ravens at Cleveland Browns
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/bal-cle/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/ten-ind" tvg-logo="/img/cards/nfl/401873003-r.jpg?v=1",[NFL] Tennessee Titans at Indianapolis Colts
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/ten-ind/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/nyj-ne" tvg-logo="/img/cards/nfl/401873001-r.jpg?v=1",[NFL] New York Jets at New England Patriots
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/nyj-ne/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/no-nyg" tvg-logo="/img/cards/nfl/401873000-r.jpg?v=1",[NFL] New Orleans Saints at New York Giants
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/no-nyg/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/car-phi" tvg-logo="/img/cards/nfl/401872998-r.jpg?v=1",[NFL] Carolina Panthers at Philadelphia Eagles
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/car-phi/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="nfl/2026-10-18/pit-tb" tvg-logo="/img/cards/nfl/401873002-r.jpg?v=1",[NFL] Pittsburgh Steelers at Tampa Bay Buccaneers
+https://messi.damitv.st/live-hls/channel/nfl/2026-10-18/pit-tb/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="dutch-darts-championship--day-3---evening-session-30524" tvg-logo="https://static.ppvservices.st/assets/thumb/fc95a728710d04a9889239cfbc7ec835-thumbnail.jpg",[Darts] Dutch Darts Championship | Day 3 - Evening Session
+https://messi.damitv.st/live-hls/channel/dutch-darts-championship--day-3---evening-session-30524/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="eredivisie/2026-10-18/twe-utr" tvg-logo="/img/cards/ned.1/401875577.jpg?v=1",[Eredivisie] FC Twente vs. FC Utrecht
+https://messi.damitv.st/live-hls/channel/eredivisie/2026-10-18/twe-utr/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="eredivisie/2026-10-18/nec-for" tvg-logo="/img/cards/ned.1/401875581.jpg?v=1",[Eredivisie] NEC Nijmegen vs. Fortuna Sittard
+https://messi.damitv.st/live-hls/channel/eredivisie/2026-10-18/nec-for/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="seriea/2026-10-18/juv-laz" tvg-logo="/img/cards/ita.1/401874765.jpg?v=1",[Serie A] Juventus vs. Lazio
+https://messi.damitv.st/live-hls/channel/seriea/2026-10-18/juv-laz/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="ligue1/2026-10-18/lyon-nice" tvg-logo="/img/cards/fra.1/401876434.jpg?v=1",[Ligue 1] Lyon vs. Nice
+https://messi.damitv.st/live-hls/channel/ligue1/2026-10-18/lyon-nice/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="laliga/2026-10-18/rma-sev" tvg-logo="/img/cards/esp.1/401882839.jpg?v=1",[La Liga] Real Madrid vs. Sevilla
+https://messi.damitv.st/live-hls/channel/laliga/2026-10-18/rma-sev/playlist.m3u8?tk=fjtykyCDlzKCkNSDIWkyzQ&e=1792386260
+#EXTINF:-1 tvg-id="sky-sports-golf-29059" tvg-logo="https://static.ppvservices.st/assets/thumb/9950e3e6c1a19cad6a216ec1c6b50d71-thumbnail.jpg",[Golf] Sky Sports Golf
+https://messi.damitv.st/live-hls/channel/sky-sports-golf-29059/playlist.m3u8?tk=VFvxNW5gOgflto70RKUl9A&e=1792386261
+#EXTINF:-1 tvg-id="nhl-network-29780" tvg-logo="https://static.ppvservices.st/assets/thumb/4a70bb8cf331b8ab0299fd836b56e2ed-thumbnail.jpg",[NHL] NHL Network
+https://messi.damitv.st/live-hls/channel/nhl-network-29780/playlist.m3u8?tk=VFvxNW5gOgflto70RKUl9A&e=1792386261
+#EXTINF:-1 tvg-id="sd-admin~admin-tennis-channel" tvg-logo="https://streamed.pk/api/images/proxy/GwZg7AZpYEZgHCAjAJgCzuBEBDXsQZgdgwwRgBOYAU0hDpqxQFZh5Tg0wmJgATMNTTAWkVqNri0LIinbQ61OvHS5CISiCggGIRPzWq0hNTTV5s2AMb6NNFif4h+VFxux5bFLXnk3aASx2PV0+LRRNR0hAtjYUBHZQYkk2JjBHEFsaOxytGFZYSWt5YFIVGOVgeTYOMl5AiCA.webp",[tennis] Tennis Channel
+https://messi.damitv.st/live-sd/streamed/admin/admin-tennis-channel/playlist.m3u8?tk=VFvxNW5gOgflto70RKUl9A&e=1792386261
