@@ -1,26 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PirloTV / Rojadirecta / Liveru Extractor v1.4
+PirloTV / Rojadirecta / Liveru Extractor v1.5
 
-Changelog v1.3 → v1.4:
-- resolve_js_redirect: FIX del bug critico.
-  * Cerca la definizione della variabile suffix (`const rutaActual = ...`)
-  * Se la definizione contiene `pathname`, appende path+query al dominio
-  * Prima: `streamtp99a.sbs` (catalogo)
-  * Dopo:  `streamtp99a.sbs/global1.php?stream=canal-8` (player)
+Changelog v1.4 → v1.5:
+- FIX #1: nuova funzione extract_playback_url() che cattura
+  `var playbackURL = "https://..."` (streamtp99a.sbs e simili).
+  Priorità 1.5 in process_player: prima dell'offuscamento.
+- FIX #2: _extract_iframe_with_fid() ora gestisce stringhe JS con
+  quote interne al valore src. Il bug `[^"']+` è risolto con `[^"]+`.
+  Strip automatico dei pattern `+variabile+` dal suffix/prefix
+  (es. `.php?width=+width+` → `.php?width=`).
+  Rojadirecta: fid → reproductor/{fid}.php → playbackURL → m3u8.
+- FIX #3: nuova funzione is_library_script() con LIBRARY_HOSTS
+  (clappr, hls.js, dash.js, jwplayer, jsdelivr, gstatic, ecc.).
+  MAX_EMBED_BYTES = 80_000 (embed reali ~578 B).
+  applicato in find_embed_scripts() e process_embed_script().
+  Skip clappr.min.js 630 KB (risparmio ~10s/run).
+- Log IP-lock riconosciuto (token con `ip=` nel log, non nel M3U).
 
-- process_embed_script: FIX del bug delle stringhe spezzate.
-  * Nuova `_collapse_strings`: unisce 'a'+'b' in 'ab' anche con quote miste
-  * Estrae `src="URL"` dall'HTML collassato, poi sostituisce `+fid+` con `{fid}`
-  * Ritorna tuple NEED_FID con prefix/suffix corretti
-
-- extract_from_site: nuova gestione per `streamtp99a.sbs` (catalogo).
-  * Se il player risolto è un catalogo, estrae i canali hardcoded
-  * Chiama process_player() su ciascuno (depth+1)
-  * Aggiunge fino a N stream dai canali del catalogo
-
-- Log migliorato: stampa URL costruito dal redirect
+Invariato da v1.4:
+- resolve_js_redirect con fix pathname in var_def
+- _collapse_strings per stringhe spezzate
+- decode_obfuscated_url generico (qG, eQ, tR, Lg, …)
+- Catalogo streamtp99a.sbs come fallback
+- Retry UA iPhone su 403
 """
 from __future__ import annotations
 import argparse, base64, json, os, re, sys, time
@@ -84,8 +88,28 @@ EMBED_SCRIPT_PATTERNS = [
     r'src=["\']([^"\']*stream[^"\']*\.js[^"\']*)["\']',
 ]
 
-# Nuovo in v1.4: host che servono cataloghi invece di player
 CATALOG_HOSTS = {"streamtp99a.sbs", "streamtp99b.sbs", "streamtpday1.xyz"}
+
+# v1.5: skip librerie JS (non sono embed, sono codice)
+LIBRARY_HOSTS = (
+    "clappr", "hls.js", "hls.min", "p2p-engine", "swarmcloud",
+    "dash.js", "shaka", "video.js", "jwplayer", "jquery",
+    "bootstrap", "fontawesome", "googleapis", "gstatic", "jsdelivr",
+    "cloudflareinsights", "cdnjs", "unpkg",
+)
+MAX_EMBED_BYTES = 80_000
+
+# v1.5: pattern per estrarre playbackURL / source / file
+PLAYBACK_URL_PATTERNS = [
+    r'var\s+playbackURL\s*=\s*["\']([^"\']+)["\']',
+    r'playbackURL\s*=\s*["\']([^"\']+)["\']',
+    r'"playbackURL"\s*:\s*["\']([^"\']+)["\']',
+    r'source\s*:\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+    r'source\s*=\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+    r'file\s*:\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+    r'hlsUrl\s*:\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+    r'"url"\s*:\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+]
 
 
 def log(*a): print(*a, flush=True)
@@ -159,7 +183,55 @@ def decode_r_param(match_url):
 
 
 # -------------------------------------------------------------------
-# Decodifica offuscamento generico (Lg=, tR=, qG=, ...)
+# v1.5 FIX #1: estrazione playbackURL / source / file / hlsUrl
+# -------------------------------------------------------------------
+def extract_playback_url(html: str):
+    """
+    Cerca l'URL m3u8 in chiaro nell'HTML.
+    Casi coperti:
+      - var playbackURL = "https://...m3u8?..."  (streamtp99a.sbs, streamtp*)
+      - source: "https://...m3u8"                 (Clappr config diretto)
+      - source = "https://...m3u8"
+      - file: "https://...m3u8"                   (JWPlayer)
+      - hlsUrl: "https://...m3u8"
+      - "url": "https://...m3u8"
+      - fallback: qualsiasi URL .m3u8 inline
+    """
+    for pat in PLAYBACK_URL_PATTERNS:
+        m = re.search(pat, html)
+        if m:
+            url = m.group(1).replace("\\/", "/").replace("\\u002F", "/")
+            if not url:
+                continue
+            if url.startswith("//"):
+                url = "https:" + url
+            if url.startswith(("http://", "https://")):
+                return url
+    # Fallback: qualsiasi m3u8 inline (esclude data:/blob:)
+    for m in re.finditer(r'(https?://[^"\'\s\\]+\.m3u8[^"\'\s\\]*)', html):
+        url = m.group(1).replace("\\/", "/")
+        return url
+    return None
+
+
+# -------------------------------------------------------------------
+# v1.5 FIX #3: skip librerie JS
+# -------------------------------------------------------------------
+def is_library_script(url: str, content_len: int = 0) -> bool:
+    """
+    Ritorna True se l'URL punta a una libreria JS nota o il contenuto
+    è troppo grande per essere un embed script.
+    """
+    ul = url.lower()
+    if any(h in ul for h in LIBRARY_HOSTS):
+        return True
+    if content_len > MAX_EMBED_BYTES:
+        return True
+    return False
+
+
+# -------------------------------------------------------------------
+# Decodifica offuscamento generico (Lg=, tR=, qG=, eQ=, …)
 # -------------------------------------------------------------------
 def _find_k_from_functions(html):
     m = re.search(r'var\s+k\s*=\s*(\w+)\s*\(\s*\)\s*([+\-*])\s*(\w+)\s*\(\s*\)', html)
@@ -225,18 +297,9 @@ def decode_obfuscated_url(html):
 
 
 # -------------------------------------------------------------------
-# v1.4: resolve_js_redirect con FIX della variabile suffix
+# v1.4: resolve_js_redirect con fix pathname in var_def
 # -------------------------------------------------------------------
 def resolve_js_redirect(html, base_url):
-    """
-    Cerca redirect JS o meta refresh nell'HTML e ritorna l'URL assoluto.
-
-    FIX v1.4: cerca la DEFINIZIONE della variabile suffix
-    (es. `const rutaActual = window.location.pathname + ...`),
-    non solo il nome. Se la definizione contiene `pathname` o `search`,
-    appende path+query al dominio.
-    """
-    # Pattern 1: const NUEVO = "URL"; ... window.location.replace(NUEVO + SUFFIX)
     m = re.search(
         r'(?:const|let|var)\s+(\w+)\s*=\s*["\'](https?://[^"\']+)["\']\s*;'
         r'[\s\S]{0,300}?window\.location\.(?:replace|assign|href\s*=)\s*\(\s*'
@@ -247,7 +310,6 @@ def resolve_js_redirect(html, base_url):
         nuevo_dominio = m.group(2)
         suffix_expr = m.group(3).strip()
 
-        # Cerca la definizione della variabile suffix (es. `const rutaActual = ...`)
         var_name_match = re.match(r'^(\w+)$', suffix_expr)
         var_def = ""
         if var_name_match:
@@ -259,7 +321,6 @@ def resolve_js_redirect(html, base_url):
             if var_def_match:
                 var_def = var_def_match.group(1)
 
-        # Se la definizione o l'espressione contengono pathname/search → appendi
         has_path = ("pathname" in var_def or "search" in var_def or
                     "pathname" in suffix_expr or "location" in suffix_expr)
 
@@ -272,7 +333,6 @@ def resolve_js_redirect(html, base_url):
         log(f"      ↪️ redirect JS (solo dominio): {nuevo_dominio[:100]}")
         return nuevo_dominio
 
-    # Pattern 2: window.location.replace/href/assign("URL")
     m = re.search(
         r'window\.location\.(?:replace|assign|href\s*=)\s*\(?\s*["\']([^"\']+)["\']',
         html
@@ -287,7 +347,6 @@ def resolve_js_redirect(html, base_url):
             log(f"      ↪️ redirect JS relativo: {full[:100]}")
             return full
 
-    # Pattern 3: meta refresh
     m = re.search(
         r'<meta[^>]+http-equiv=["\']refresh["\'][^>]+content=["\']\d+\s*;\s*url=([^"\']+)["\']',
         html, re.I
@@ -302,24 +361,15 @@ def resolve_js_redirect(html, base_url):
 
 
 # -------------------------------------------------------------------
-# v1.4: process_embed_script con _collapse_strings robusta
+# v1.4: _collapse_strings per stringhe spezzate
 # -------------------------------------------------------------------
 def _collapse_strings(js):
-    """
-    Unisce concatenazioni di stringhe JS in una stringa sola.
-    Gestisce entrambi i tipi di quote:
-      'a' + 'b'  → 'ab'
-      "a" + "b"  → "ab"
-    NON tocca concatenazioni con variabili (es. 'a' + fid + 'b').
-    """
     prev = None
     s = js
     max_iter = 20
     while s != prev and max_iter > 0:
         prev = s
-        # 'content1' + 'content2' -> 'content1content2'
         s = re.sub(r"'([^']*)'\s*\+\s*'([^']*)'", r"'\1\2'", s)
-        # "content1" + "content2" -> "content1content2"
         s = re.sub(r'"([^"]*)"\s*\+\s*"([^"]*)"', r'"\1\2"', s)
         max_iter -= 1
     return s
@@ -327,35 +377,63 @@ def _collapse_strings(js):
 
 def _extract_iframe_with_fid(js):
     """
-    Estrae pattern tipo:
-      document.write('<iframe src="https://host/path/'+fid+'.php?...">')
+    v1.5 FIX #2: gestisce stringhe spezzate ('<ifr'+'ame') e
+    valori src con quote interne.
+    Es: document.write('<iframe src="host/path/'+ fid +'.php?...">')
     Ritorna (prefix, suffix) o (None, None).
     """
-    # Prima unisci stringhe spezzate
     js_collapsed = _collapse_strings(js)
 
-    # Cerca src="URL" dove URL contiene +fid+
-    for m in re.finditer(r'src\s*=\s*["\']([^"\']+)["\']', js_collapsed):
-        src_val = m.group(1)
-        if "fid" not in src_val:
-            continue
-        # Sostituisci 'fid' + quote con {fid}
-        # Il pattern è: prefix + fid + suffix
-        # Es: "https://host/path/'+fid+'.php?w=1"  (con + e quote)
+    def _clean_and_split(src_val):
+        # Sostituisci '+ fid +' con {fid}
         cleaned = re.sub(r"['\"]?\s*\+\s*fid\s*\+\s*['\"]?", "{fid}", src_val)
         # Rimuovi quote residue
         cleaned = cleaned.replace("'", "").replace('"', "")
         parts = cleaned.split("{fid}")
-        if len(parts) == 2:
-            return (parts[0], parts[1])
+        if len(parts) != 2:
+            return None
+        prefix, suffix = parts
+        # Strip pattern +variabile+ da prefix e suffix
+        prefix = re.sub(r'\+[a-zA-Z_]\w*\+', '', prefix)
+        suffix = re.sub(r'\+[a-zA-Z_]\w*\+', '', suffix)
+        return (prefix, suffix)
+
+    # src="..." (double quotes) — ammette singole quote dentro il valore
+    for m in re.finditer(r'src\s*=\s*"([^"]+)"', js_collapsed):
+        src_val = m.group(1)
+        if "fid" not in src_val:
+            continue
+        result = _clean_and_split(src_val)
+        if result:
+            return result
+
+    # src='...' (single quotes) — ammette doppie quote dentro il valore
+    for m in re.finditer(r"src\s*=\s*'([^']+)'", js_collapsed):
+        src_val = m.group(1)
+        if "fid" not in src_val:
+            continue
+        result = _clean_and_split(src_val)
+        if result:
+            return result
+
     return (None, None)
 
 
 def process_embed_script(script_url, referer):
-    """Scarica e analizza un JS embed (es. embedt1.js). v1.4"""
+    """Scarica e analizza un JS embed (es. embedt1.js). v1.5: skip librerie."""
+    # v1.5 FIX #3: pre-check senza scaricare
+    if is_library_script(script_url):
+        log(f"      ⏭️ skip library: {script_url[:80]}")
+        return None
+
     st, js = http_get(script_url, referer=referer)
     if not st or st != 200 or not js:
         log(f"      ⚠️ embed script HTTP {st}")
+        return None
+
+    # v1.5 FIX #3: post-check sulla dimensione
+    if is_library_script(script_url, len(js)):
+        log(f"      ⏭️ skip library/oversize ({len(js)} byte): {script_url[:80]}")
         return None
 
     try:
@@ -367,16 +445,18 @@ def process_embed_script(script_url, referer):
     except Exception:
         pass
 
-    # === v1.4: pattern iframe + fid (gestisce '<ifr'+'ame src="..."') ===
+    # Pattern iframe + fid
     prefix, suffix = _extract_iframe_with_fid(js)
     if prefix and suffix:
         log(f"      📜 embed script → NEED_FID: {prefix[:60]!r} + fid + {suffix[:40]!r}")
         return ("NEED_FID", prefix, suffix)
 
-    # === Fallback: offuscamento / m3u8 / atob (invariati) ===
+    # Fallback: offuscamento
     decoded = decode_obfuscated_url(js)
     if decoded:
         return decoded
+
+    # Fallback: m3u8/mpd diretto
     for pat in (r'https?://[^"\'\\\s]+\.m3u8[^"\'\\\s]*',
                 r'https?://[^"\'\\\s]+\.mpd[^"\'\\\s]*'):
         for m in re.finditer(pat, js):
@@ -385,15 +465,7 @@ def process_embed_script(script_url, referer):
                 continue
             log(f"      🎯 m3u8 in embed script: {u[:100]}")
             return u
-    for m in re.finditer(r'atob\(["\']([A-Za-z0-9+/=]{30,})["\']\)', js):
-        try:
-            decoded_b64 = base64.b64decode(m.group(1) + "=" * (-len(m.group(1)) % 4)).decode("utf-8", "replace")
-            if ".m3u8" in decoded_b64 or ".mpd" in decoded_b64:
-                for u in re.findall(r'https?://[^"\'\s]+\.(?:m3u8|mpd)[^"\'\s]*', decoded_b64):
-                    log(f"      🎯 atob in embed script: {u[:100]}")
-                    return u
-        except Exception:
-            pass
+
     return None
 
 
@@ -460,20 +532,13 @@ def _diagnose(html):
     has_hls_js = "hls.js" in html.lower() or "hlsjs" in html.lower()
     has_redirect = "window.location" in html
     has_catalog = "const channels" in html or "const channels=" in html
+    has_playback_url = bool(re.search(r'playbackURL\s*=\s*["\']https?://', html))
     log(f"      🔬 arr={has_array} atob={has_atob} src={has_source} file={has_file} "
         f"clappr={has_clappr} jw={has_jw} bitmovin={has_bitmovin} hls={has_hls_js} "
-        f"redir={has_redirect} catalog={has_catalog}")
+        f"redir={has_redirect} catalog={has_catalog} pbURL={has_playback_url}")
 
 
-# -------------------------------------------------------------------
-# v1.4: estrazione catalogo streamtp99a.sbs
-# -------------------------------------------------------------------
 def _extract_catalog_channels(html):
-    """
-    Estrae i canali da cataloghi tipo streamtp99a.sbs.
-    Pattern: const channels = { 'name': 'url', ... };
-    Ritorna dict {name: url}.
-    """
     channels = {}
     m = re.search(r'const\s+channels\s*=\s*\{([^}]+)\}', html, re.DOTALL)
     if not m:
@@ -516,7 +581,15 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
     if player_url.endswith(".m3u8") or "#EXTM3U" in html[:200]:
         return {"url": player_url, "mtype": "hls", "referer": referer}
 
-    # 2) Offuscamento generico (Lg, tR, qG, …)
+    # 1.5) v1.5 FIX #1: playbackURL (streamtp99a.sbs e simili)
+    pb_url = extract_playback_url(html)
+    if pb_url:
+        log(f"      🎯 playbackURL → {pb_url[:100]}")
+        best = pick_best_variant(pb_url, referer=player_url)
+        mtype = "dash" if ".mpd" in best else "hls"
+        return {"url": best, "mtype": mtype, "referer": player_url}
+
+    # 2) Offuscamento generico (Lg, tR, qG, eQ, …)
     m3u8 = decode_obfuscated_url(html)
     if m3u8:
         log(f"      🎯 offuscato → {m3u8[:100]}")
@@ -524,14 +597,11 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         mtype = "dash" if ".mpd" in best else "hls"
         return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 3) Regex m3u8/mpd diretta
+    # 3) Regex m3u8/mpd diretta (fallback)
     for pat in (
         r'https?://[^"\'\\\s]+\.m3u8[^"\'\\\s]*',
         r'https?://[^"\'\\\s]+\.mpd[^"\'\\\s]*',
         r'["\']([^"\']*\.m3u8[^"\']*)["\']',
-        r'source\s*[:=]\s*["\']([^"\']+)["\']',
-        r'file\s*[:=]\s*["\']([^"\']+)["\']',
-        r'hlsUrl\s*[:=]\s*["\']([^"\']+)["\']',
         r'"url"\s*:\s*"([^"]+\.m3u8[^"]*)"',
     ):
         for m in re.finditer(pat, html, re.I):
@@ -565,7 +635,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         except Exception:
             pass
 
-    # 5) Redirect JavaScript (con FIX v1.4)
+    # 5) Redirect JavaScript
     redirect_url = resolve_js_redirect(html, player_url)
     if redirect_url:
         log(f"      🔀 seguo redirect JS → {redirect_url[:100]}")
@@ -585,13 +655,12 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         if sub:
             return sub
 
-    # 7) Script embed esterni (embedt1.js)
+    # 7) Script embed esterni (embedt1.js) — v1.5: skip librerie
     scripts = find_embed_scripts(html, player_url)
     for s_url in scripts:
         log(f"      📜 script embed: {s_url[:100]}")
         decoded = process_embed_script(s_url, referer=player_url)
         if decoded:
-            # caso NEED_FID
             if isinstance(decoded, tuple) and decoded[0] == "NEED_FID":
                 _, prefix, suffix = decoded
                 fid_m = re.search(r'fid\s*=\s*["\']([^"\']+)["\']', html)
@@ -606,7 +675,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 else:
                     log(f"      ⚠️ NEED_FID ma nessun fid nell'HTML")
                 continue
-            # caso normale: stringa URL
             log(f"      🎯 script embed → {decoded[:100]}")
             best = pick_best_variant(decoded, referer=player_url)
             mtype = "dash" if ".mpd" in best else "hls"
@@ -624,18 +692,17 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
     except Exception:
         pass
 
-    # 9) v1.4: CATALOGO STREAMTP — se riconosciamo il pattern, iteriamo i canali
+    # 9) Catalogo STREAMTP (fallback)
     if host in CATALOG_HOSTS:
         catalog = _extract_catalog_channels(html)
         if catalog:
-            log(f"      📚 catalogo {host}: {len(catalog)} canali trovati")
-            # Prova fino a max_catalog_channels canali
+            log(f"      📚 catalogo {host}: {len(catalog)} canali")
             for i, (name, ch_url) in enumerate(catalog.items()):
                 if i >= max_catalog_channels:
                     break
                 log(f"        [{i+1}/{min(len(catalog), max_catalog_channels)}] {name}")
                 sub = process_player(ch_url, referer=player_url, depth=depth + 1,
-                                     max_catalog_channels=0)  # niente ricorsione catalogo
+                                     max_catalog_channels=0)
                 if sub:
                     return sub
 
@@ -643,6 +710,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
 
 
 def find_embed_scripts(html, base):
+    """v1.5 FIX #3: skip librerie JS."""
     scripts = []
     for pat in EMBED_SCRIPT_PATTERNS:
         for m in re.finditer(pat, html, re.I):
@@ -651,6 +719,9 @@ def find_embed_scripts(html, base):
                 full = "https:" + src if src.startswith("//") else src
                 host = urlparse(full).hostname or ""
                 if host in SKIP_HOSTS:
+                    continue
+                if is_library_script(full):
+                    log(f"      ⏭️ skip library: {full[:80]}")
                     continue
                 if full not in scripts:
                     scripts.append(full)
@@ -733,7 +804,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 PIRLOTV EXTRACTOR v1.4 (redirect fix + embed concat + catalogo)")
+    log("📡 PIRLOTV EXTRACTOR v1.5 (playbackURL + iframe fid + skip libraries)")
     log("=" * 66)
 
     all_streams = []
