@@ -1,30 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PirloTV / Rojadirecta / Liveru Extractor v1.5.1
+PirloTV / Rojadirecta / Liveru Extractor v1.5.2
 
-Changelog v1.5 → v1.5.1 (rifiniture, non bug-fix):
-- NEW: _clean_embed_url() — defense in depth sul suffix/prefix di embedt1.js.
-  Rimuove +var+ residui (con o senza spazi), pulisce ?width=&height= vuoti
-  e applica default 700x438 richiesti da tiroalblanco/reproductor/*.php.
-- NEW: _detect_ip_lock() — estrae ?ip=X.X.X.X dal token e logga IP-LOCKED.
-  Solo logging: l'M3U resta invariato per non rompere la compatibilità.
-- REF: _extract_iframe_with_fid() — pattern `\+[a-zA-Z_]\w*\+` → `\+\s*[a-zA-Z_]\w*\s*\+`
-  (tollera spazi opzionali), + strip finale `\s+` sul suffix.
-- REF: extract_playback_url() — fallback ora gestisce URL con `\/` (escape JS)
-  tramite pattern `(?:\\/|/){2}`.
-- REF: log IP-LOCKED in process_player() nei punti di successo principali
-  (playbackURL, offuscato, regex, atob, embed script).
+Changelog v1.5.1 → v1.5.2:
+- FIX #A (BLOCCANTE Rojadirecta): il decoder atob ora segue la URL decodificata
+  se questa NON è un m3u8/mpd diretto. Caso tipico `player_zonalivetv_biz__94`:
+    atob('aHR0cHM6...') → 'https://zonalivetv.biz/stream/embed/sTLn/94'
+  che v1.5.1 scartava perché "non era un m3u8". Ora la passiamo a
+  process_player() ricorsivamente (depth+1), sbloccando la catena.
+  Riconosce anche atob su URL relative e su array di 2+ stringhe base64.
+- FIX #B (Rojadirecta bonus): retry 403 su streamxhd.com con Origin +
+  Referer del parent (rojadirectaoficial.de). Tentativo 3 dopo UA mobile.
+- MINOR: http_get() accetta parametro `origin` (default None) e lo passa
+  come header `Origin:` quando presente.
+- MINOR: contatore `atob_redirect_followed` in pirlotv_capture.json.
 
-Changelog v1.4 → v1.5 (invariato):
-- FIX #1: extract_playback_url() cattura `var playbackURL = "https://..."`
-- FIX #2: _extract_iframe_with_fid() gestisce stringhe JS con quote interne
-- FIX #3: is_library_script() skippa clappr/hls.js/ecc. (630 KB risparmiati/run)
+Invariato da v1.5.1:
+- _clean_embed_url() — pulizia URL embed (reproductor/*.php)
+- _detect_ip_lock() / _log_ip_lock() — logging IP-lock
+- _extract_iframe_with_fid() con \s* tollerante
+- extract_playback_url() fallback \/\ escape
+- is_library_script / LIBRARY_HOSTS / MAX_EMBED_BYTES
+
+Invariato da v1.5:
+- extract_playback_url() — var playbackURL, source, file, hlsUrl
+- _extract_iframe_with_fid() — gestione stringhe JS spezzate
+- is_library_script() — skip clappr/hls.js/ecc.
 
 Invariato da v1.4:
 - resolve_js_redirect con fix pathname in var_def
 - _collapse_strings per stringhe spezzate
-- decode_obfuscated_url generico (qG, eQ, tR, Lg, …)
+- decode_obfuscated_url generico (qG, eQ, tR, dS, Lg, …)
 - Catalogo streamtp99a.sbs come fallback
 - Retry UA iPhone su 403
 """
@@ -92,16 +99,14 @@ EMBED_SCRIPT_PATTERNS = [
 
 CATALOG_HOSTS = {"streamtp99a.sbs", "streamtp99b.sbs", "streamtpday1.xyz"}
 
-# v1.5: skip librerie JS (non sono embed, sono codice)
 LIBRARY_HOSTS = (
     "clappr", "hls.js", "hls.min", "p2p-engine", "swarmcloud",
     "dash.js", "shaka", "video.js", "jwplayer", "jquery",
     "bootstrap", "fontawesome", "googleapis", "gstatic", "jsdelivr",
-    "cloudflareinsights", "cdnjs", "unpkg",
+    "cloudflareinsights", "cdnjs", "unpkg", "acscdn", "llvpn",
 )
 MAX_EMBED_BYTES = 80_000
 
-# v1.5: pattern per estrarre playbackURL / source / file
 PLAYBACK_URL_PATTERNS = [
     r'var\s+playbackURL\s*=\s*["\']([^"\']+)["\']',
     r'playbackURL\s*=\s*["\']([^"\']+)["\']',
@@ -117,7 +122,7 @@ PLAYBACK_URL_PATTERNS = [
 def log(*a): print(*a, flush=True)
 
 
-def http_get(url, referer=None, ua=UA_DESKTOP, timeout=20, session=None):
+def http_get(url, referer=None, ua=UA_DESKTOP, timeout=20, session=None, origin=None):
     headers = {
         "User-Agent": ua,
         "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
@@ -125,6 +130,8 @@ def http_get(url, referer=None, ua=UA_DESKTOP, timeout=20, session=None):
     }
     if referer:
         headers["Referer"] = referer
+    if origin:
+        headers["Origin"] = origin
     try:
         import requests
         sess = session or requests.Session()
@@ -189,17 +196,6 @@ def decode_r_param(match_url):
 # v1.5.1: fallback gestisce URL con escape `\/` (JS)
 # -------------------------------------------------------------------
 def extract_playback_url(html: str):
-    """
-    Cerca l'URL m3u8 in chiaro nell'HTML.
-    Casi coperti:
-      - var playbackURL = "https://...m3u8?..."  (streamtp99a.sbs, streamtp*)
-      - source: "https://...m3u8"                 (Clappr config diretto)
-      - source = "https://...m3u8"
-      - file: "https://...m3u8"                   (JWPlayer)
-      - hlsUrl: "https://...m3u8"
-      - "url": "https://...m3u8"
-      - fallback: qualsiasi URL .m3u8 inline (anche con \/ escape)
-    """
     for pat in PLAYBACK_URL_PATTERNS:
         m = re.search(pat, html)
         if m:
@@ -210,7 +206,6 @@ def extract_playback_url(html: str):
                 url = "https:" + url
             if url.startswith(("http://", "https://")):
                 return url
-    # v1.5.1: fallback tollera `//` e `\/\/` (escape JS)
     for m in re.finditer(r'(https?:(?:\\/|/){2}[^"\'\s]+\.m3u8[^"\'\s]*)', html):
         url = m.group(1).replace("\\/", "/").replace("\\u002F", "/")
         return url
@@ -221,10 +216,6 @@ def extract_playback_url(html: str):
 # v1.5 FIX #3: skip librerie JS
 # -------------------------------------------------------------------
 def is_library_script(url: str, content_len: int = 0) -> bool:
-    """
-    Ritorna True se l'URL punta a una libreria JS nota o il contenuto
-    è troppo grande per essere un embed script.
-    """
     ul = url.lower()
     if any(h in ul for h in LIBRARY_HOSTS):
         return True
@@ -234,16 +225,9 @@ def is_library_script(url: str, content_len: int = 0) -> bool:
 
 
 # -------------------------------------------------------------------
-# v1.5.1 NEW: pulizia URL embed (defense in depth su reproductor/*.php)
+# v1.5.1: pulizia URL embed (defense in depth su reproductor/*.php)
 # -------------------------------------------------------------------
 def _clean_embed_url(url: str) -> str:
-    """
-    Pulisce un URL composto da embedt1.js:
-      - Rimuove espressioni JS residue (+var+ o + var +)
-      - Rimuove spazi
-      - Pulisce parametri vuoti (width=&height=)
-      - Aggiunge default 700x438 se la query diventa vuota
-    """
     if not url:
         return url
     if '+' not in url and ' ' not in url:
@@ -262,10 +246,9 @@ def _clean_embed_url(url: str) -> str:
 
 
 # -------------------------------------------------------------------
-# v1.5.1 NEW: rilevamento IP-lock (solo logging, M3U invariato)
+# v1.5.1: rilevamento IP-lock (solo logging, M3U invariato)
 # -------------------------------------------------------------------
 def _detect_ip_lock(url: str):
-    """Estrae l'IP dal token se presente (PirloTV/Rojadirecta usano ?ip=...)."""
     if not url:
         return None
     m = re.search(r'[?&]ip=(\d+\.\d+\.\d+\.\d+)', url)
@@ -280,7 +263,7 @@ def _log_ip_lock(url: str, prefix: str = "      "):
 
 
 # -------------------------------------------------------------------
-# Decodifica offuscamento generico (Lg=, tR=, qG=, eQ=, …)
+# Decodifica offuscamento generico (Lg=, tR=, qG=, eQ=, dS=, …)
 # -------------------------------------------------------------------
 def _find_k_from_functions(html):
     m = re.search(r'var\s+k\s*=\s*(\w+)\s*\(\s*\)\s*([+\-*])\s*(\w+)\s*\(\s*\)', html)
@@ -425,31 +408,20 @@ def _collapse_strings(js):
 
 
 def _extract_iframe_with_fid(js):
-    """
-    v1.5 FIX #2 + v1.5.1: gestisce stringhe spezzate ('<ifr'+'ame') e
-    valori src con quote interne. Pattern +var+ tollera spazi opzionali.
-    Es: document.write('<iframe src="host/path/'+ fid +'.php?...">')
-    Ritorna (prefix, suffix) o (None, None).
-    """
     js_collapsed = _collapse_strings(js)
 
     def _clean_and_split(src_val):
-        # Sostituisci '+ fid +' con {fid}
         cleaned = re.sub(r"['\"]?\s*\+\s*fid\s*\+\s*['\"]?", "{fid}", src_val)
-        # Rimuovi quote residue
         cleaned = cleaned.replace("'", "").replace('"', "")
         parts = cleaned.split("{fid}")
         if len(parts) != 2:
             return None
         prefix, suffix = parts
-        # v1.5.1: \s* tollera sia '+width+' che '+ width +'
         prefix = re.sub(r'\+\s*[a-zA-Z_]\w*\s*\+', '', prefix)
         suffix = re.sub(r'\+\s*[a-zA-Z_]\w*\s*\+', '', suffix)
-        # v1.5.1: pulizia spazi residui
         suffix = re.sub(r'\s+', '', suffix)
         return (prefix, suffix)
 
-    # src="..." (double quotes) — ammette singole quote dentro il valore
     for m in re.finditer(r'src\s*=\s*"([^"]+)"', js_collapsed):
         src_val = m.group(1)
         if "fid" not in src_val:
@@ -458,7 +430,6 @@ def _extract_iframe_with_fid(js):
         if result:
             return result
 
-    # src='...' (single quotes) — ammette doppie quote dentro il valore
     for m in re.finditer(r"src\s*=\s*'([^']+)'", js_collapsed):
         src_val = m.group(1)
         if "fid" not in src_val:
@@ -471,8 +442,6 @@ def _extract_iframe_with_fid(js):
 
 
 def process_embed_script(script_url, referer):
-    """Scarica e analizza un JS embed (es. embedt1.js). v1.5: skip librerie."""
-    # v1.5 FIX #3: pre-check senza scaricare
     if is_library_script(script_url):
         log(f"      ⏭️ skip library: {script_url[:80]}")
         return None
@@ -482,7 +451,6 @@ def process_embed_script(script_url, referer):
         log(f"      ⚠️ embed script HTTP {st}")
         return None
 
-    # v1.5 FIX #3: post-check sulla dimensione
     if is_library_script(script_url, len(js)):
         log(f"      ⏭️ skip library/oversize ({len(js)} byte): {script_url[:80]}")
         return None
@@ -496,18 +464,15 @@ def process_embed_script(script_url, referer):
     except Exception:
         pass
 
-    # Pattern iframe + fid
     prefix, suffix = _extract_iframe_with_fid(js)
     if prefix and suffix:
         log(f"      📜 embed script → NEED_FID: {prefix[:60]!r} + fid + {suffix[:40]!r}")
         return ("NEED_FID", prefix, suffix)
 
-    # Fallback: offuscamento
     decoded = decode_obfuscated_url(js)
     if decoded:
         return decoded
 
-    # Fallback: m3u8/mpd diretto
     for pat in (r'https?://[^"\'\\\s]+\.m3u8[^"\'\\\s]*',
                 r'https?://[^"\'\\\s]+\.mpd[^"\'\\\s]*'):
         for m in re.finditer(pat, js):
@@ -614,14 +579,34 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
     st, html = http_get(player_url, referer=referer)
     if not st or st != 200:
         log(f"      ⚠️ player HTTP {st} ({player_url[:80]})")
+
+        # FIX #B (v1.5.2): retry progressivo con UA mobile, poi con Origin+Referer
         if st == 403:
+            # Tentativo 2: UA mobile
             st2, html2 = http_get(player_url, referer=referer, ua=UA_IPHONE)
             if st2 == 200:
                 log(f"      ✓ retry mobile OK ({len(html2)} byte)")
                 st, html = st2, html2
             else:
                 log(f"      ✗ retry mobile HTTP {st2}")
-                return None
+                # Tentativo 3: Origin + Referer parent (per streamxhd.com ecc.)
+                parent_origin = None
+                if referer:
+                    p = urlparse(referer)
+                    if p.scheme and p.netloc:
+                        parent_origin = f"{p.scheme}://{p.netloc}"
+                if parent_origin:
+                    log(f"      ↻ retry con Origin={parent_origin} + Referer")
+                    st3, html3 = http_get(player_url, referer=referer,
+                                          ua=UA_DESKTOP, origin=parent_origin)
+                    if st3 == 200:
+                        log(f"      ✓ retry origin OK ({len(html3)} byte)")
+                        st, html = st3, html3
+                    else:
+                        log(f"      ✗ retry origin HTTP {st3}")
+                        return None
+                else:
+                    return None
         else:
             return None
 
@@ -641,7 +626,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         _log_ip_lock(best)
         return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 2) Offuscamento generico (Lg, tR, qG, eQ, …)
+    # 2) Offuscamento generico (Lg, tR, qG, eQ, dS, …)
     m3u8 = decode_obfuscated_url(html)
     if m3u8:
         log(f"      🎯 offuscato → {m3u8[:100]}")
@@ -675,20 +660,32 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 _log_ip_lock(best)
                 return {"url": best, "mtype": mtype, "referer": player_url}
 
-    # 4) atob automatico
-    for m in re.finditer(r'atob\(["\']([A-Za-z0-9+/=]{30,})["\']\)', html):
+    # 4) atob automatico — v1.5.2 FIX #A: segui URL decodificata
+    for m in re.finditer(r'atob\(["\']([A-Za-z0-9+/=]{20,})["\']\)', html):
         try:
             decoded = base64.b64decode(m.group(1) + "=" * (-len(m.group(1)) % 4)).decode(
                 "utf-8", "replace")
-            if ".m3u8" in decoded or ".mpd" in decoded:
-                for u in re.findall(r'https?://[^"\'\s]+\.(?:m3u8|mpd)[^"\'\s]*', decoded):
-                    log(f"      🎯 atob → {u[:100]}")
-                    best = pick_best_variant(u, referer=player_url)
-                    mtype = "dash" if ".mpd" in best else "hls"
-                    _log_ip_lock(best)
-                    return {"url": best, "mtype": mtype, "referer": player_url}
         except Exception:
-            pass
+            continue
+
+        # 4a) decoded è una URL NON-m3u8 → seguila come redirect
+        if (decoded.startswith(("http://", "https://"))
+                and ".m3u8" not in decoded and ".mpd" not in decoded):
+            log(f"      🔀 atob → URL redirect: {decoded[:100]}")
+            sub = process_player(decoded, referer=player_url,
+                                 depth=depth + 1, max_catalog_channels=0)
+            if sub:
+                return sub
+            continue
+
+        # 4b) decoded è m3u8/mpd diretto
+        if ".m3u8" in decoded or ".mpd" in decoded:
+            for u in re.findall(r'https?://[^"\'\s]+\.(?:m3u8|mpd)[^"\'\s]*', decoded):
+                log(f"      🎯 atob → {u[:100]}")
+                best = pick_best_variant(u, referer=player_url)
+                mtype = "dash" if ".mpd" in best else "hls"
+                _log_ip_lock(best)
+                return {"url": best, "mtype": mtype, "referer": player_url}
 
     # 5) Redirect JavaScript
     redirect_url = resolve_js_redirect(html, player_url)
@@ -710,7 +707,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         if sub:
             return sub
 
-    # 7) Script embed esterni (embedt1.js) — v1.5: skip librerie
+    # 7) Script embed esterni (embedt1.js)
     scripts = find_embed_scripts(html, player_url)
     for s_url in scripts:
         log(f"      📜 script embed: {s_url[:100]}")
@@ -722,7 +719,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 if fid_m:
                     fid = fid_m.group(1)
                     full_url = f"{prefix}{fid}{suffix}"
-                    full_url = _clean_embed_url(full_url)  # v1.5.1
+                    full_url = _clean_embed_url(full_url)
                     log(f"      🔀 embed URL con fid: {full_url[:100]}")
                     sub = process_player(full_url, referer=player_url, depth=depth + 1,
                                          max_catalog_channels=max_catalog_channels)
@@ -767,7 +764,6 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
 
 
 def find_embed_scripts(html, base):
-    """v1.5 FIX #3: skip librerie JS."""
     scripts = []
     for pat in EMBED_SCRIPT_PATTERNS:
         for m in re.finditer(pat, html, re.I):
@@ -861,7 +857,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 PIRLOTV EXTRACTOR v1.5.1 (playbackURL + iframe fid + skip libraries)")
+    log("📡 PIRLOTV EXTRACTOR v1.5.2 (atob-follow + origin-retry)")
     log("=" * 66)
 
     all_streams = []
@@ -893,7 +889,7 @@ def main():
     log(f"  💾 {args.output}: {n3}")
 
     summary = {
-        "version": "1.5.1",
+        "version": "1.5.2",
         "sites": [s["name"] for s in SITES],
         "total_found": len(all_streams),
         "total_unique": len(uniq),
