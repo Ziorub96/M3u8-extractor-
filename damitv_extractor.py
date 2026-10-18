@@ -1,15 +1,19 @@
-# ================================================================
-# DAMITV Extractor v2 (parallelizzato)
-# - DokAgents: timeout ridotto + ThreadPoolExecutor(8)
-# - 24/7 / Live TV / Eventi: ThreadPoolExecutor(5)
-# - Timeout DAMITV: 15s (era 30s)
-# - DokAgents candidati ridotti ai funzionanti noti
-# ================================================================
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+DAMITV Extractor v3 — FIX formato M3U (referrer con ID + origin + UA iPhone)
 
-import json
-import time
-import requests
-import urllib3
+Ripristina il formato che funzionava, aggiornando solo lo UA:
+- #EXTVLCOPT:http-referrer=https://ondemand.st/embed/?id={stream_id}
+- #EXTVLCOPT:http-origin=https://ondemand.st
+- #EXTVLCOPT:http-user-agent={UA_IPHONE}   ← iPhone, NON desktop
+
+Motivo: DAMITV risponde 403 a UA desktop, 200 a UA iPhone (test Carnets).
+
+Replica anche la struttura tvg-chno/tvg-name del vecchio formato,
+e mantiene il filtro dl- (replay) e 247 (lineari).
+"""
+import json, time, requests, urllib3
 from concurrent.futures import ThreadPoolExecutor
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -20,21 +24,23 @@ API_MATCHES_TODAY = f"{BASE_URL}/papi/matches/all-today"
 API_EXTRACT = f"{BASE_URL}/papi/extract-url/"
 API_TV_RESOLVE = f"{BASE_URL}/papi/tv/resolve/"
 
-USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
               "AppleWebKit/537.36 (KHTML, like Gecko) "
               "Chrome/120.0.0.0 Safari/537.36")
-OUTPUT_FILE = "damitv_events.m3u"
 
+# UA usato dal PLAYER (via #EXTVLCOPT). DAMITV accetta solo mobile.
+UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+             "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+             "Version/17.0 Mobile Safari/604.1")
+
+OUTPUT_FILE = "damitv_events.m3u"
 PAST_MINUTES = 30
 UPCOMING_MINUTES = 180
+WORKERS_DAMITV = 5
+WORKERS_DOKAGENTS = 8
+TIMEOUT_DAMITV = 15
+TIMEOUT_DOKAGENTS = 4
 
-# --- PARALLELISMO ---
-WORKERS_DAMITV = 5          # API DAMITV (extract-url, tv/resolve)
-WORKERS_DOKAGENTS = 8       # test DokAgents
-TIMEOUT_DAMITV = 15         # era 30s
-TIMEOUT_DOKAGENTS = 4       # era 8s
-
-# ==================== CANALI McQUACK (statici) ====================
 MCQUACK_SPORT_CHANNELS = [
     ("Eurosport 1", "http://stream.mcquack.net/176/index.m3u8"),
     ("Eurosport 2", "http://stream.mcquack.net/192/index.m3u8"),
@@ -78,38 +84,78 @@ MCQUACK_SPORT_CHANNELS = [
     ("OKKO Prime Sport", "http://stream.mcquack.net/493/index.m3u8"),
 ]
 
-# ==================== DOKAGENTS (ridotti ai funzionanti) ====================
 DOKAGENTS_BASE = "http://dokagents.site/live"
 DOKAGENTS_CANDIDATES = [
-    # Funzionanti confermati dai log precedenti
     "digisport1", "digisport2", "digisport3", "digisport4",
     "eurosport", "eurosport2",
-    # Pochi altri probabili
-    "digisport5", "digisportplus",
-    "eurosport1",
+    "digisport5", "digisportplus", "eurosport1",
     "sportklub1", "sportklub2", "sportklub3",
     "arenasport1", "arenasport2",
     "maxsport1", "maxsport2",
 ]
 
 session = requests.Session()
-session.headers.update({"User-Agent": USER_AGENT})
-
+session.headers.update({"User-Agent": UA_DESKTOP})
 _event_cache = {}
+_chno = {"n": 0}
 
 
-# ================================================================
-# HTTP HELPER
-# ================================================================
+def _next_chno():
+    _chno["n"] += 1
+    return _chno["n"]
+
+
+def _slug(s: str, maxlen: int = 60) -> str:
+    """Slug per tvg-id."""
+    s = s.lower()
+    s = "".join(c if c.isalnum() else "." for c in s)
+    return s[:maxlen].strip(".")
+
+
+def entry_block(url, title, *, tvg_id="", tvg_name="", logo="",
+                group="DAMITV", referer_id=""):
+    """
+    Costruisce blocco M3U nel formato che funzionava:
+    - tvg-chno / tvg-name / tvg-id / tvg-logo / group-title
+    - #EXTVLCOPT:http-referrer (con id se presente)
+    - #EXTVLCOPT:http-origin
+    - #EXTVLCOPT:http-user-agent=iPhone
+    """
+    chno = _next_chno()
+
+    if not tvg_name:
+        tvg_name = title
+    if not tvg_id:
+        tvg_id = _slug(title)
+    if not logo:
+        logo = ""
+
+    # Referer specifico con ID se disponibile, altrimenti generico
+    if referer_id:
+        referer = f"https://ondemand.st/embed/?id={referer_id}"
+    else:
+        referer = "https://ondemand.st/"
+
+    lines = [
+        f'#EXTINF:-1 tvg-chno="{chno}" tvg-id="{tvg_id}" '
+        f'tvg-name="{tvg_name}" tvg-logo="{logo}" '
+        f'group-title="{group}",{title}',
+        f"#EXTVLCOPT:http-referrer={referer}",
+        "#EXTVLCOPT:http-origin=https://ondemand.st",
+        f"#EXTVLCOPT:http-user-agent={UA_IPHONE}",
+        url,
+    ]
+    return "\n".join(lines)
+
+
 def http_get_json(url, referer=None):
     headers = {}
     if referer:
         headers["Referer"] = referer
-
     for attempt in range(3):
         try:
-            r = session.get(url, headers=headers,
-                            timeout=TIMEOUT_DAMITV, verify=False)
+            r = session.get(url, headers=headers, timeout=TIMEOUT_DAMITV,
+                            verify=False)
             if r.status_code in (502, 503):
                 time.sleep(5 * (attempt + 1))
                 continue
@@ -122,18 +168,13 @@ def http_get_json(url, referer=None):
     return None
 
 
-# ================================================================
-# RESOLVER (con cache)
-# ================================================================
 def get_event_m3u8(event_id, sd=False):
     key = (event_id, sd)
     if key in _event_cache:
         return _event_cache[key]
-
     url = API_EXTRACT + event_id
     if sd:
         url += "?sd=1"
-
     data = http_get_json(url, referer=f"{BASE_URL}/embed/?id={event_id}")
     result = None
     if data and data.get("success"):
@@ -146,7 +187,6 @@ def get_channel_m3u8(ch_id):
     key = (ch_id, "channel")
     if key in _event_cache:
         return _event_cache[key]
-
     data = http_get_json(API_TV_RESOLVE + ch_id,
                          referer=f"{BASE_URL}/embed/?id={ch_id}")
     result = None
@@ -156,16 +196,12 @@ def get_channel_m3u8(ch_id):
     return result
 
 
-# ================================================================
-# FASE 3: 24/7 (parallelizzata)
-# ================================================================
 def get_24_7_channels(seen_ids):
     print("📡 Recupero canali 24/7...")
     data = http_get_json(API_STREAMS, referer=BASE_URL)
     if not data or not data.get("success"):
         print("❌ API non raggiungibile")
         return []
-
     todo = []
     for category in data.get("streams", []):
         if not isinstance(category, dict):
@@ -184,9 +220,8 @@ def get_24_7_channels(seen_ids):
             if ev_id in seen_ids:
                 continue
             todo.append((ev_id, title, logo))
-
-    print(f"   {len(todo)} canali 24/7 da risolvere (parallel {WORKERS_DAMITV})...")
-    lines = []
+    print(f"   {len(todo)} canali 24/7 da risolvere...")
+    blocks = []
 
     def resolve(item):
         ev_id, title, logo = item
@@ -196,16 +231,14 @@ def get_24_7_channels(seen_ids):
         for ev_id, title, logo, m3u8 in ex.map(resolve, todo):
             if m3u8:
                 seen_ids.add(ev_id)
-                lines.append(f'#EXTINF:-1 tvg-id="{ev_id}" tvg-logo="{logo}",{title}')
-                lines.append(m3u8)
+                blocks.append(entry_block(
+                    m3u8, title, tvg_id=f"24-7.{_slug(title)}",
+                    tvg_name=title, logo=logo,
+                    group="DAMITV 24/7", referer_id=ev_id))
+    print(f"✅ Canali 24/7 aggiunti: {len(blocks)}")
+    return blocks
 
-    print(f"✅ Canali 24/7 aggiunti: {len(lines)//2}")
-    return lines
 
-
-# ================================================================
-# FASE 4: Live TV (parallelizzata)
-# ================================================================
 def get_live_tv_channels(seen_ids):
     ts_url = f"{BASE_URL}/data/ts-channels.json"
     print("📡 Scarico ts-channels.json...")
@@ -213,7 +246,6 @@ def get_live_tv_channels(seen_ids):
     if not data or not isinstance(data, dict) or "channels" not in data:
         print("❌ Errore nel recupero")
         return []
-
     todo = []
     for ch in data["channels"]:
         if not isinstance(ch, dict):
@@ -224,9 +256,8 @@ def get_live_tv_channels(seen_ids):
         if not daddy_id or daddy_id in seen_ids:
             continue
         todo.append((daddy_id, name, logo))
-
-    print(f"   {len(todo)} canali Live TV da risolvere (parallel {WORKERS_DAMITV})...")
-    lines = []
+    print(f"   {len(todo)} canali Live TV da risolvere...")
+    blocks = []
 
     def resolve(item):
         daddy_id, name, logo = item
@@ -236,16 +267,14 @@ def get_live_tv_channels(seen_ids):
         for daddy_id, name, logo, m3u8 in ex.map(resolve, todo):
             if m3u8:
                 seen_ids.add(daddy_id)
-                lines.append(f'#EXTINF:-1 tvg-id="{daddy_id}" tvg-logo="{logo}",{name}')
-                lines.append(m3u8)
+                blocks.append(entry_block(
+                    m3u8, name, tvg_id=f"damitv.{_slug(name)}",
+                    tvg_name=name, logo=logo,
+                    group="DAMITV Live TV", referer_id=daddy_id))
+    print(f"✅ Canali Live TV aggiunti: {len(blocks)}")
+    return blocks
 
-    print(f"✅ Canali Live TV aggiunti: {len(lines)//2}")
-    return lines
 
-
-# ================================================================
-# FASE 5: Eventi sportivi (parallelizzata)
-# ================================================================
 def is_relevant_event(event, now_ts):
     start_raw = event.get("date")
     if not start_raw:
@@ -257,13 +286,12 @@ def is_relevant_event(event, now_ts):
     return (now_ts - PAST_MINUTES * 60) <= start_ts <= (now_ts + UPCOMING_MINUTES * 60)
 
 
-def build_sports_lines(seen_ids):
+def build_sports_blocks(seen_ids):
     print("📡 Recupero eventi sportivi...")
     data = http_get_json(API_MATCHES_TODAY, referer=f"{BASE_URL}/matches")
     if not data or not isinstance(data, list):
         print("❌ API non raggiungibile")
         return []
-
     now_ts = int(time.time())
     todo = []
     for ev in data:
@@ -282,42 +310,37 @@ def build_sports_lines(seen_ids):
             continue
         todo.append((stream_id, title, sport, ev.get("poster", "")))
 
-    print(f"   {len(todo)} eventi da risolvere (parallel {WORKERS_DAMITV})...")
-    lines = []
+    print(f"   {len(todo)} eventi da risolvere...")
+    blocks = []
 
     def resolve(item):
         stream_id, title, sport, logo = item
-        m3u8 = get_event_m3u8(stream_id)
-        if not m3u8:
-            m3u8 = get_event_m3u8(stream_id, sd=True)
+        m3u8 = get_event_m3u8(stream_id) or get_event_m3u8(stream_id, sd=True)
         return (stream_id, title, sport, logo, m3u8)
 
     with ThreadPoolExecutor(max_workers=WORKERS_DAMITV) as ex:
         for stream_id, title, sport, logo, m3u8 in ex.map(resolve, todo):
             if m3u8:
                 seen_ids.add(stream_id)
-                display = f"[{sport}] {title}"
-                if logo:
-                    lines.append(f'#EXTINF:-1 tvg-id="{stream_id}" tvg-logo="{logo}",{display}')
-                else:
-                    lines.append(f'#EXTINF:-1 tvg-id="{stream_id}",{display}')
-                lines.append(m3u8)
+                display = f"[{sport}] {title}" if sport else title
+                group = sport if sport else "DAMITV Sport"
+                blocks.append(entry_block(
+                    m3u8, display,
+                    tvg_id=f"{_slug(sport)}.{_slug(title)}.Dummy.us",
+                    tvg_name=title, logo=logo,
+                    group=group, referer_id=stream_id))
+    print(f"✅ Eventi aggiunti: {len(blocks)}")
+    return blocks
 
-    print(f"✅ Eventi aggiunti: {len(lines)//2}")
-    return lines
 
-
-# ================================================================
-# FASE 2: DokAgents (parallelizzata)
-# ================================================================
 def get_dokagents_channels():
-    print(f"📡 Test DokAgents (parallel {WORKERS_DOKAGENTS}, timeout {TIMEOUT_DOKAGENTS}s)...")
+    print(f"📡 Test DokAgents...")
     channels = []
 
     def check(nome):
         url = f"{DOKAGENTS_BASE}/{nome}/mono.m3u8"
         try:
-            r = requests.get(url, headers={"User-Agent": USER_AGENT},
+            r = requests.get(url, headers={"User-Agent": UA_DESKTOP},
                              timeout=TIMEOUT_DOKAGENTS, verify=False)
             if r.status_code == 200 and r.text.strip().startswith("#EXTM3U"):
                 return (nome, url)
@@ -325,57 +348,58 @@ def get_dokagents_channels():
             pass
         return None
 
-    t0 = time.time()
     with ThreadPoolExecutor(max_workers=WORKERS_DOKAGENTS) as ex:
         for res in ex.map(check, DOKAGENTS_CANDIDATES):
             if res:
                 channels.append(res)
-
-    print(f"   Trovati {len(channels)} canali in {time.time()-t0:.1f}s.")
-    for nome, url in channels:
-        print(f"   ✅ {nome}")
+    print(f"   Trovati {len(channels)} canali DokAgents")
     return channels
 
 
-# ================================================================
-# MAIN
-# ================================================================
 def main():
     t_start = time.time()
     seen_ids = set()
-    lines = ["#EXTM3U"]
+    blocks = []
 
-    # 1) McQuack Sport (statici)
+    # 1) McQuack (statici, no EXTVLCOPT speciale — server mcquack non lo richiede)
     for name, url in MCQUACK_SPORT_CHANNELS:
-        lines.append(f'#EXTINF:-1 tvg-id="mcq-{name}" group-title="McQuack Sport",{name}')
-        lines.append(url)
-    print(f"[1/5] McQuack Sport: {len(MCQUACK_SPORT_CHANNELS)} canali (statici)")
+        blocks.append(
+            f'#EXTINF:-1 tvg-chno="{_next_chno()}" tvg-id="mcq.{_slug(name)}" '
+            f'tvg-name="{name}" group-title="McQuack Sport",{name}\n{url}'
+        )
+    print(f"[1/5] McQuack Sport: {len(MCQUACK_SPORT_CHANNELS)} canali")
 
     # 2) DokAgents
     print(f"\n[2/5] DokAgents...")
     for name, url in get_dokagents_channels():
-        lines.append(f'#EXTINF:-1 tvg-id="dok-{name}" group-title="DokAgents Sport",{name}')
-        lines.append(url)
+        blocks.append(
+            f'#EXTINF:-1 tvg-chno="{_next_chno()}" tvg-id="dok.{_slug(name)}" '
+            f'tvg-name="{name}" group-title="DokAgents Sport",{name}\n'
+            f"#EXTVLCOPT:http-referrer=https://dokagents.site/\n"
+            f"#EXTVLCOPT:http-user-agent={UA_IPHONE}\n{url}"
+        )
 
     # 3) DAMITV 24/7
     print(f"\n[3/5] DAMITV 24/7...")
-    lines.extend(get_24_7_channels(seen_ids))
+    blocks.extend(get_24_7_channels(seen_ids))
 
     # 4) DAMITV Live TV
     print(f"\n[4/5] DAMITV Live TV...")
-    lines.extend(get_live_tv_channels(seen_ids))
+    blocks.extend(get_live_tv_channels(seen_ids))
 
     # 5) Eventi sportivi
     print(f"\n[5/5] Eventi sportivi...")
-    lines.extend(build_sports_lines(seen_ids))
+    blocks.extend(build_sports_blocks(seen_ids))
 
-    if len(lines) > 1:
+    if blocks:
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
-        print(f"\n✅ Salvato {OUTPUT_FILE} con {len(lines)//2} voci totali")
+            f.write("#EXTM3U\n")
+            for b in blocks:
+                f.write(b + "\n")
+        print(f"\n✅ Salvato {OUTPUT_FILE} con {len(blocks)} stream")
         print(f"⏱️  Tempo totale: {time.time()-t_start:.1f}s")
     else:
-        print("\n⚠️ Nessun canale trovato. Il file non è stato sovrascritto.")
+        print("\n⚠️ Nessun canale trovato")
 
 
 if __name__ == "__main__":
