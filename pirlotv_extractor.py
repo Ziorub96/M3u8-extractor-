@@ -1,23 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PirloTV / Rojadirecta / Liveru Extractor v1.5
+PirloTV / Rojadirecta / Liveru Extractor v1.5.1
 
-Changelog v1.4 → v1.5:
-- FIX #1: nuova funzione extract_playback_url() che cattura
-  `var playbackURL = "https://..."` (streamtp99a.sbs e simili).
-  Priorità 1.5 in process_player: prima dell'offuscamento.
-- FIX #2: _extract_iframe_with_fid() ora gestisce stringhe JS con
-  quote interne al valore src. Il bug `[^"']+` è risolto con `[^"]+`.
-  Strip automatico dei pattern `+variabile+` dal suffix/prefix
-  (es. `.php?width=+width+` → `.php?width=`).
-  Rojadirecta: fid → reproductor/{fid}.php → playbackURL → m3u8.
-- FIX #3: nuova funzione is_library_script() con LIBRARY_HOSTS
-  (clappr, hls.js, dash.js, jwplayer, jsdelivr, gstatic, ecc.).
-  MAX_EMBED_BYTES = 80_000 (embed reali ~578 B).
-  applicato in find_embed_scripts() e process_embed_script().
-  Skip clappr.min.js 630 KB (risparmio ~10s/run).
-- Log IP-lock riconosciuto (token con `ip=` nel log, non nel M3U).
+Changelog v1.5 → v1.5.1 (rifiniture, non bug-fix):
+- NEW: _clean_embed_url() — defense in depth sul suffix/prefix di embedt1.js.
+  Rimuove +var+ residui (con o senza spazi), pulisce ?width=&height= vuoti
+  e applica default 700x438 richiesti da tiroalblanco/reproductor/*.php.
+- NEW: _detect_ip_lock() — estrae ?ip=X.X.X.X dal token e logga IP-LOCKED.
+  Solo logging: l'M3U resta invariato per non rompere la compatibilità.
+- REF: _extract_iframe_with_fid() — pattern `\+[a-zA-Z_]\w*\+` → `\+\s*[a-zA-Z_]\w*\s*\+`
+  (tollera spazi opzionali), + strip finale `\s+` sul suffix.
+- REF: extract_playback_url() — fallback ora gestisce URL con `\/` (escape JS)
+  tramite pattern `(?:\\/|/){2}`.
+- REF: log IP-LOCKED in process_player() nei punti di successo principali
+  (playbackURL, offuscato, regex, atob, embed script).
+
+Changelog v1.4 → v1.5 (invariato):
+- FIX #1: extract_playback_url() cattura `var playbackURL = "https://..."`
+- FIX #2: _extract_iframe_with_fid() gestisce stringhe JS con quote interne
+- FIX #3: is_library_script() skippa clappr/hls.js/ecc. (630 KB risparmiati/run)
 
 Invariato da v1.4:
 - resolve_js_redirect con fix pathname in var_def
@@ -184,6 +186,7 @@ def decode_r_param(match_url):
 
 # -------------------------------------------------------------------
 # v1.5 FIX #1: estrazione playbackURL / source / file / hlsUrl
+# v1.5.1: fallback gestisce URL con escape `\/` (JS)
 # -------------------------------------------------------------------
 def extract_playback_url(html: str):
     """
@@ -195,7 +198,7 @@ def extract_playback_url(html: str):
       - file: "https://...m3u8"                   (JWPlayer)
       - hlsUrl: "https://...m3u8"
       - "url": "https://...m3u8"
-      - fallback: qualsiasi URL .m3u8 inline
+      - fallback: qualsiasi URL .m3u8 inline (anche con \/ escape)
     """
     for pat in PLAYBACK_URL_PATTERNS:
         m = re.search(pat, html)
@@ -207,9 +210,9 @@ def extract_playback_url(html: str):
                 url = "https:" + url
             if url.startswith(("http://", "https://")):
                 return url
-    # Fallback: qualsiasi m3u8 inline (esclude data:/blob:)
-    for m in re.finditer(r'(https?://[^"\'\s\\]+\.m3u8[^"\'\s\\]*)', html):
-        url = m.group(1).replace("\\/", "/")
+    # v1.5.1: fallback tollera `//` e `\/\/` (escape JS)
+    for m in re.finditer(r'(https?:(?:\\/|/){2}[^"\'\s]+\.m3u8[^"\'\s]*)', html):
+        url = m.group(1).replace("\\/", "/").replace("\\u002F", "/")
         return url
     return None
 
@@ -228,6 +231,52 @@ def is_library_script(url: str, content_len: int = 0) -> bool:
     if content_len > MAX_EMBED_BYTES:
         return True
     return False
+
+
+# -------------------------------------------------------------------
+# v1.5.1 NEW: pulizia URL embed (defense in depth su reproductor/*.php)
+# -------------------------------------------------------------------
+def _clean_embed_url(url: str) -> str:
+    """
+    Pulisce un URL composto da embedt1.js:
+      - Rimuove espressioni JS residue (+var+ o + var +)
+      - Rimuove spazi
+      - Pulisce parametri vuoti (width=&height=)
+      - Aggiunge default 700x438 se la query diventa vuota
+    """
+    if not url:
+        return url
+    if '+' not in url and ' ' not in url:
+        return url
+    url = re.sub(r'\+\s*[a-zA-Z_]\w*\s*\+', '', url)
+    url = re.sub(r'\s+', '', url)
+    if '?' in url:
+        base, _, query = url.partition('?')
+        parts = query.split('&')
+        params = [p for p in parts if '=' in p and p.split('=', 1)[1]]
+        if not params:
+            url = f"{base}?width=700&height=438"
+        elif len(params) != len(parts):
+            url = f"{base}?{'&'.join(params)}"
+    return url
+
+
+# -------------------------------------------------------------------
+# v1.5.1 NEW: rilevamento IP-lock (solo logging, M3U invariato)
+# -------------------------------------------------------------------
+def _detect_ip_lock(url: str):
+    """Estrae l'IP dal token se presente (PirloTV/Rojadirecta usano ?ip=...)."""
+    if not url:
+        return None
+    m = re.search(r'[?&]ip=(\d+\.\d+\.\d+\.\d+)', url)
+    return m.group(1) if m else None
+
+
+def _log_ip_lock(url: str, prefix: str = "      "):
+    ip = _detect_ip_lock(url)
+    if ip:
+        log(f"{prefix}⚠️ IP-LOCKED su {ip} (funziona solo dal runner)")
+    return url
 
 
 # -------------------------------------------------------------------
@@ -377,8 +426,8 @@ def _collapse_strings(js):
 
 def _extract_iframe_with_fid(js):
     """
-    v1.5 FIX #2: gestisce stringhe spezzate ('<ifr'+'ame') e
-    valori src con quote interne.
+    v1.5 FIX #2 + v1.5.1: gestisce stringhe spezzate ('<ifr'+'ame') e
+    valori src con quote interne. Pattern +var+ tollera spazi opzionali.
     Es: document.write('<iframe src="host/path/'+ fid +'.php?...">')
     Ritorna (prefix, suffix) o (None, None).
     """
@@ -393,9 +442,11 @@ def _extract_iframe_with_fid(js):
         if len(parts) != 2:
             return None
         prefix, suffix = parts
-        # Strip pattern +variabile+ da prefix e suffix
-        prefix = re.sub(r'\+[a-zA-Z_]\w*\+', '', prefix)
-        suffix = re.sub(r'\+[a-zA-Z_]\w*\+', '', suffix)
+        # v1.5.1: \s* tollera sia '+width+' che '+ width +'
+        prefix = re.sub(r'\+\s*[a-zA-Z_]\w*\s*\+', '', prefix)
+        suffix = re.sub(r'\+\s*[a-zA-Z_]\w*\s*\+', '', suffix)
+        # v1.5.1: pulizia spazi residui
+        suffix = re.sub(r'\s+', '', suffix)
         return (prefix, suffix)
 
     # src="..." (double quotes) — ammette singole quote dentro il valore
@@ -587,6 +638,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         log(f"      🎯 playbackURL → {pb_url[:100]}")
         best = pick_best_variant(pb_url, referer=player_url)
         mtype = "dash" if ".mpd" in best else "hls"
+        _log_ip_lock(best)
         return {"url": best, "mtype": mtype, "referer": player_url}
 
     # 2) Offuscamento generico (Lg, tR, qG, eQ, …)
@@ -595,6 +647,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
         log(f"      🎯 offuscato → {m3u8[:100]}")
         best = pick_best_variant(m3u8, referer=player_url)
         mtype = "dash" if ".mpd" in best else "hls"
+        _log_ip_lock(best)
         return {"url": best, "mtype": mtype, "referer": player_url}
 
     # 3) Regex m3u8/mpd diretta (fallback)
@@ -619,6 +672,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 log(f"      🎯 regex → {u[:100]}")
                 best = pick_best_variant(u, referer=player_url)
                 mtype = "dash" if ".mpd" in best else "hls"
+                _log_ip_lock(best)
                 return {"url": best, "mtype": mtype, "referer": player_url}
 
     # 4) atob automatico
@@ -631,6 +685,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                     log(f"      🎯 atob → {u[:100]}")
                     best = pick_best_variant(u, referer=player_url)
                     mtype = "dash" if ".mpd" in best else "hls"
+                    _log_ip_lock(best)
                     return {"url": best, "mtype": mtype, "referer": player_url}
         except Exception:
             pass
@@ -667,6 +722,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
                 if fid_m:
                     fid = fid_m.group(1)
                     full_url = f"{prefix}{fid}{suffix}"
+                    full_url = _clean_embed_url(full_url)  # v1.5.1
                     log(f"      🔀 embed URL con fid: {full_url[:100]}")
                     sub = process_player(full_url, referer=player_url, depth=depth + 1,
                                          max_catalog_channels=max_catalog_channels)
@@ -678,6 +734,7 @@ def process_player(player_url, referer=None, depth=0, max_catalog_channels=10):
             log(f"      🎯 script embed → {decoded[:100]}")
             best = pick_best_variant(decoded, referer=player_url)
             mtype = "dash" if ".mpd" in best else "hls"
+            _log_ip_lock(best)
             return {"url": best, "mtype": mtype, "referer": player_url}
 
     # 8) JSON con campo url
@@ -804,7 +861,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 PIRLOTV EXTRACTOR v1.5 (playbackURL + iframe fid + skip libraries)")
+    log("📡 PIRLOTV EXTRACTOR v1.5.1 (playbackURL + iframe fid + skip libraries)")
     log("=" * 66)
 
     all_streams = []
@@ -836,11 +893,13 @@ def main():
     log(f"  💾 {args.output}: {n3}")
 
     summary = {
+        "version": "1.5.1",
         "sites": [s["name"] for s in SITES],
         "total_found": len(all_streams),
         "total_unique": len(uniq),
         "streams": [{"title": s.get("title"), "url": s["url"][:200],
-                     "site": s.get("site"), "mtype": s.get("mtype")}
+                     "site": s.get("site"), "mtype": s.get("mtype"),
+                     "ip_lock": _detect_ip_lock(s["url"])}
                     for s in uniq],
         "extracted_at": int(time.time()),
     }
