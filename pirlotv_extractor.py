@@ -1,32 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PirloTV / Rojadirecta / Liveru Extractor v1.0
+PirloTV / Rojadirecta / Liveru Extractor v1.1
 
-Scansiona i domini attivi della famiglia "tR" (PirloTV + Rojadirecta + Liveru):
-  1. pirlotv1.live          (343KB, il più ricco)
-  2. pirlo-tv.su            (163KB)
-  3. pirlotvv.org           (91KB)
-  4. liveru.me              (39KB, motore misto)
-  5. rojadirectaoficial.de  (25KB)
-
-Strategie implementate:
-  A) Link /live-match/?r=<BASE64>  → decodifica base64 → player URL
-  B) Player HTML con array tR      → decodifica carattere-per-carattere
-  C) Iframe diretto                → segue l'iframe (liveru e simili)
-  D) master.m3u8                   → sceglie variante a 1080p
-
-Produce:
-  pirlotv_EVENTS_LIVE.m3u   (raggruppati per campionato)
-  pirlotv_VLC.m3u           (gruppo unico "PirloTV")
-  pirlotv_COMPLETE.m3u      (tutto)
-  pirlotv_capture.json      (metadata per debug)
-
-Note:
-- IP-locked: il token m3u8 è legato all'IP che ha generato il player.
-  Funziona da GitHub Actions perché il job ha IP fisso per tutta la durata.
-- Scadenza: il token dura ~5-10 minuti. Va consumato subito.
-- Exit 0 sempre (graceful).
+Changelog v1.0 → v1.1:
+- MATCH_LINK_PATTERNS molto più larghi (canal-, partita, ver, stream=, ecc.)
+- find_match_links con fallback generico (qualsiasi /slug/ che non sia asset)
+- process_player:
+  * salva SEMPRE l'HTML del player in pirlotv_debug/ (debug)
+  * diagnostica: tR / atob / source / file / clappr / jw / bitmovin / hls.js
+  * retry con UA iPhone se il player risponde 403
+  * regex più tolleranti (source:, file:, hlsUrl:, JSON url)
+  * decodifica automatica atob("lungo") se contiene .m3u8
+  * riconosce risposte JSON con campo url/stream/hls/src/file/source
+  * segue iframe anche dentro player annidati
+- Le funzioni find_iframes, decode_tR, decode_r_param, pick_best_variant
+  sono identiche a v1.0 (già funzionanti)
 """
 from __future__ import annotations
 import argparse, base64, json, os, re, sys, time
@@ -40,8 +29,6 @@ UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
              "AppleWebKit/605.1.15 (KHTML, like Gecko) "
              "Version/17.0 Mobile Safari/604.1")
 
-# Domini della famiglia PirloTV/Rojadirecta/Liveru
-# (ordinati per "ricchezza" del catalogo)
 SITES = [
     {"name": "pirlotv1", "base": "https://pirlotv1.live", "engine": "tR"},
     {"name": "pirlo-tv", "base": "https://pirlo-tv.su", "engine": "tR"},
@@ -50,25 +37,36 @@ SITES = [
     {"name": "rojadirectaoficial", "base": "https://rojadirectaoficial.de", "engine": "tR"},
 ]
 
-# Link che assomigliano a partite (candidati)
+# Pattern per i link "partita" (v1.1: molto più larghi)
 MATCH_LINK_PATTERNS = [
     r'/live-match/',
     r'/match/',
     r'/evento?/',
+    r'/partita/',
+    r'/ver/',
     r'/live/[^"\']+',
     r'/calcio/',
     r'/stream/',
-    r'\?r=[A-Za-z0-9+/=]{20,}',       # PirloTV: r= base64
-    r'\?id=\d+',                       # id numerico
+    r'/canal-',
+    r'\?r=[A-Za-z0-9+/=]{20,}',
+    r'\?id=\d+',
     r'\?ch(?:annel)?=\w+',
+    r'\?stream=',
 ]
 
-# Domini di embed da seguire (iframe interni ai player)
+# Asset da NON considerare link partita (fallback generico)
+ASSET_SKIP = (
+    "/css/", "/js/", "/img/", "/images/", "/fonts/", "/assets/",
+    ".css", ".js", ".png", ".jpg", ".jpeg", ".svg", ".ico", ".woff",
+    ".woff2", ".ttf", ".gif", ".webp",
+    "/tag/", "/category/", "/feed", "/about", "/contact",
+    "/privacy", "/terms", "/dmca", "/faq", "/login", "/register", "/search",
+)
+
 IFRAME_PATTERNS = [
     r'/embed/', r'/global\d*\.php', r'/player/', r'/watch/',
 ]
 
-# Host da scartare (ad-farming, morti noti)
 SKIP_HOSTS = {
     "taifood-blog.asia", "pandecocogaming.sbs",
     "doubleclick.net", "googlesyndication.com", "googletagmanager.com",
@@ -84,7 +82,6 @@ def log(*a): print(*a, flush=True)
 
 
 def http_get(url, referer=None, ua=UA_DESKTOP, timeout=20, session=None):
-    """GET con fallback su requests, urllib. Ritorna (status, testo) o (None, '')."""
     headers = {
         "User-Agent": ua,
         "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
@@ -101,7 +98,6 @@ def http_get(url, referer=None, ua=UA_DESKTOP, timeout=20, session=None):
         pass
     except Exception:
         return None, ""
-    # fallback urllib
     try:
         import urllib.request, ssl
         ctx = ssl.create_default_context()
@@ -115,27 +111,36 @@ def http_get(url, referer=None, ua=UA_DESKTOP, timeout=20, session=None):
 
 
 def find_match_links(html, base):
-    """Estrae href che assomigliano a partite."""
+    """v1.1: pattern più larghi + fallback generico su /slug/."""
     links = []
     for m in re.finditer(r'href=["\']([^"\']+)["\']', html):
         href = m.group(1).strip()
-        if not href or href.startswith(("javascript:", "#", "mailto:")):
+        if not href or href.startswith(("javascript:", "#", "mailto:", "tel:")):
+            continue
+        if any(x in href.lower() for x in ASSET_SKIP):
             continue
         if any(re.search(p, href) for p in MATCH_LINK_PATTERNS):
             full = href if href.startswith("http") else urljoin(base, href)
+            if full not in links:
+                links.append(full)
+    # Fallback: se 0 trovati, prendi qualsiasi link /slug/ non-asset
+    if not links:
+        for m in re.finditer(r'href=["\'](/([a-z0-9][a-z0-9-]{3,})/?)["\']', html, re.I):
+            href = m.group(1)
+            if any(x in href.lower() for x in ASSET_SKIP):
+                continue
+            full = urljoin(base, href)
             if full not in links:
                 links.append(full)
     return links
 
 
 def decode_r_param(match_url):
-    """Se l'URL contiene ?r=<base64>, decodifica e ritorna l'URL del player."""
     try:
         qs = parse_qs(_urlparse(match_url).query)
         if "r" not in qs:
             return None
         b64 = qs["r"][0]
-        # padding se mancante
         pad = "=" * (-len(b64) % 4)
         decoded = base64.b64decode(b64 + pad).decode("utf-8", "replace")
         if decoded.startswith("http"):
@@ -146,27 +151,15 @@ def decode_r_param(match_url):
 
 
 def decode_tR(html):
-    """
-    Decodifica l'array tR:
-      tR = [[idx, "base64"], ...];
-      k = const1() + const2();  (o somma di tutte le cost. rilevate)
-      per ogni [idx, b64] ordinato per idx:
-        chars.append(chr(int(digits_only(atob(b64))) - k))
-      ritorna m3u8_url
-    """
-    # Array tR
     m = re.search(r'tR\s*=\s*\[(.*?)\]\s*;', html, re.S)
     if not m:
         return None
     pairs = re.findall(r'\[\s*(\d+)\s*,\s*"([^"]+)"\s*\]', m.group(1))
     if not pairs:
         return None
-    # Costanti: funzioni anonime senza argomenti che ritornano un numero
-    # (zzbCl, AErSQ, ecc.). Somma tutte quelle trovate (di solito 2).
     consts = re.findall(
         r'function\s+\w*\s*\(\s*\)\s*\{\s*return\s+(\d+)\s*;?\s*\}', html)
     if not consts:
-        # fallback: cerca "var k=<num>+<num>" o "return <num>;}" ripetuti
         consts = re.findall(r'return\s+(\d+)\s*;}', html)
     if len(consts) < 2:
         return None
@@ -193,7 +186,6 @@ def decode_tR(html):
 
 
 def find_iframes(html, base):
-    """Estrae src da <iframe>."""
     iframes = []
     for m in re.finditer(r'<iframe[^>]+src=["\']([^"\']+)["\']', html, re.I):
         src = m.group(1).strip()
@@ -206,16 +198,11 @@ def find_iframes(html, base):
 
 
 def pick_best_variant(master_url, referer=None):
-    """
-    Scarica master.m3u8 e ritorna l'URL della variante con RESOLUTION+BANDWIDTH
-    più alti. Se il master non è un master playlist (solo segmenti), ritorna
-    master_url così com'è.
-    """
     st, txt = http_get(master_url, referer=referer)
     if not st or st != 200 or not txt:
         return master_url
     if "#EXT-X-STREAM-INF" not in txt:
-        return master_url  # è già la variante diretta
+        return master_url
     variants = []
     lines = txt.splitlines()
     for i, l in enumerate(lines):
@@ -237,57 +224,137 @@ def pick_best_variant(master_url, referer=None):
     return best
 
 
+def _debug_save(html, host, player_url):
+    """Salva HTML del player in pirlotv_debug/ con nome stabile."""
+    try:
+        safe_host = re.sub(r'[^a-z0-9]', '_', host)[:30]
+        safe_path = re.sub(r'[^a-z0-9]', '_',
+                           player_url.split("?")[0].split("/")[-1])[:30] or "root"
+        fname = f"player_{safe_host}__{safe_path}.html"
+        Path("pirlotv_debug").mkdir(exist_ok=True)
+        Path(f"pirlotv_debug/{fname}").write_text(html, encoding="utf-8")
+        log(f"      💾 salvato pirlotv_debug/{fname} ({len(html)} byte)")
+    except Exception:
+        pass
+
+
+def _diagnose(html):
+    has_tR = "tR=" in html or "tR =" in html
+    has_atob = "atob(" in html
+    has_source = bool(re.search(r'source["\']?\s*[:=]', html, re.I))
+    has_file = bool(re.search(r'file["\']?\s*[:=]', html, re.I))
+    has_clappr = "clappr" in html.lower()
+    has_jw = "jwplayer" in html.lower()
+    has_bitmovin = "bitmovin" in html.lower()
+    has_hls_js = "hls.js" in html.lower() or "hlsjs" in html.lower()
+    log(f"      🔬 tR={has_tR} atob={has_atob} src={has_source} file={has_file} "
+        f"clappr={has_clappr} jw={has_jw} bitmovin={has_bitmovin} hls={has_hls_js}")
+
+
 def process_player(player_url, referer=None, depth=0):
-    """
-    Scarica il player HTML e cerca di estrarre l'm3u8.
-    Ritorna dict {url, mtype, title, referer} o None.
-    """
     if depth > 2:
         return None
-    if any(h in (urlparse(player_url).hostname or "") for h in SKIP_HOSTS):
+    host = urlparse(player_url).hostname or ""
+    if host in SKIP_HOSTS:
         log(f"      ⏭️ skip host {player_url[:80]}")
         return None
+
     st, html = http_get(player_url, referer=referer)
     if not st or st != 200:
         log(f"      ⚠️ player HTTP {st} ({player_url[:80]})")
-        return None
-    # 1) Se è già un .m3u8
+        if st == 403:
+            st2, html2 = http_get(player_url, referer=referer, ua=UA_IPHONE)
+            if st2 == 200:
+                log(f"      ✓ retry mobile OK ({len(html2)} byte)")
+                st, html = st2, html2
+            else:
+                log(f"      ✗ retry mobile HTTP {st2}")
+                return None
+        else:
+            return None
+
+    _debug_save(html, host, player_url)
+    _diagnose(html)
+
+    # 1) Già un manifest
     if player_url.endswith(".m3u8") or "#EXTM3U" in html[:200]:
         return {"url": player_url, "mtype": "hls", "referer": referer}
-    # 2) tR decoder
+
+    # 2) tR decoder (motore classico)
     m3u8 = decode_tR(html)
     if m3u8:
         log(f"      🎯 tR → {m3u8[:100]}")
         best = pick_best_variant(m3u8, referer=player_url)
         mtype = "dash" if ".mpd" in best else "hls"
         return {"url": best, "mtype": mtype, "referer": player_url}
-    # 3) regex diretta su m3u8/mpd
-    for pat in (r'https?://[^"\'\s]+\.m3u8[^"\'\s]*',
-                r'https?://[^"\'\s]+\.mpd[^"\'\s]*'):
-        for m in re.finditer(pat, html):
-            u = m.group(0).replace("\\/", "/")
-            if "//" in u[7:]:
-                continue  # doppio slash interno
+
+    # 3) Regex dirette (più tolleranti)
+    for pat in (
+        r'https?://[^"\'\\\s]+\.m3u8[^"\'\\\s]*',
+        r'https?://[^"\'\\\s]+\.mpd[^"\'\\\s]*',
+        r'["\']([^"\']*\.m3u8[^"\']*)["\']',
+        r'source\s*[:=]\s*["\']([^"\']+)["\']',
+        r'file\s*[:=]\s*["\']([^"\']+)["\']',
+        r'hlsUrl\s*[:=]\s*["\']([^"\']+)["\']',
+        r'"url"\s*:\s*"([^"]+\.m3u8[^"]*)"',
+    ):
+        for m in re.finditer(pat, html, re.I):
+            u = m.group(1) if m.lastindex else m.group(0)
+            u = u.replace("\\/", "/").replace("\\u002F", "/")
+            if not u.startswith("http"):
+                if u.startswith("//"):
+                    u = "https:" + u
+                else:
+                    continue
             if any(h in u for h in DRM_HINTS):
                 continue
-            log(f"      🎯 regex → {u[:100]}")
-            best = pick_best_variant(u, referer=player_url)
-            mtype = "dash" if ".mpd" in best else "hls"
-            return {"url": best, "mtype": mtype, "referer": player_url}
-    # 4) iframe interni
+            st_v, txt_v = http_get(u, referer=player_url)
+            if st_v == 200 and ("#EXTM3U" in txt_v or "<MPD" in txt_v):
+                log(f"      🎯 regex → {u[:100]}")
+                best = pick_best_variant(u, referer=player_url)
+                mtype = "dash" if ".mpd" in best else "hls"
+                return {"url": best, "mtype": mtype, "referer": player_url}
+
+    # 4) atob automatico
+    for m in re.finditer(r'atob\(["\']([A-Za-z0-9+/=]{30,})["\']\)', html):
+        try:
+            decoded = base64.b64decode(m.group(1) + "=" * (-len(m.group(1)) % 4)).decode(
+                "utf-8", "replace")
+            if ".m3u8" in decoded or ".mpd" in decoded:
+                for u in re.findall(r'https?://[^"\'\s]+\.(?:m3u8|mpd)[^"\'\s]*', decoded):
+                    log(f"      🎯 atob → {u[:100]}")
+                    best = pick_best_variant(u, referer=player_url)
+                    mtype = "dash" if ".mpd" in best else "hls"
+                    return {"url": best, "mtype": mtype, "referer": player_url}
+        except Exception:
+            pass
+
+    # 5) Iframe annidati
     ifs = find_iframes(html, player_url)
     for if_u in ifs:
-        if any(h in (urlparse(if_u).hostname or "") for h in SKIP_HOSTS):
+        if (urlparse(if_u).hostname or "") in SKIP_HOSTS:
             continue
         log(f"      🖼️ segue iframe: {if_u[:100]}")
         sub = process_player(if_u, referer=player_url, depth=depth + 1)
         if sub:
             return sub
+
+    # 6) JSON con campo url
+    try:
+        j = json.loads(html)
+        if isinstance(j, dict):
+            for k in ("url", "stream", "hls", "src", "file", "source"):
+                if k in j and isinstance(j[k], str) and ".m3u8" in j[k]:
+                    log(f"      🎯 JSON[{k}] → {j[k][:100]}")
+                    best = pick_best_variant(j[k], referer=player_url)
+                    return {"url": best, "mtype": "hls", "referer": player_url}
+    except Exception:
+        pass
+
     return None
 
 
 def extract_from_site(site, max_matches=25, timeout_total=600):
-    """Estrae streams da un singolo dominio."""
     base = site["base"]
     log(f"\n🌐 [{site['name']}] {base}")
     t0 = time.time()
@@ -296,34 +363,26 @@ def extract_from_site(site, max_matches=25, timeout_total=600):
         log(f"  ❌ homepage HTTP {st}")
         return []
     log(f"  ✓ homepage {len(html)} byte")
-    # Trova link partita
     links = find_match_links(html, base)
     log(f"  📋 {len(links)} link partita trovati")
     if not links:
         return []
-    # Esplora fino a max_matches
     streams = []
     for i, link in enumerate(links[:max_matches], 1):
         if time.time() - t0 > timeout_total:
             log(f"  ⏰ budget esaurito ({timeout_total}s)")
             break
         log(f"  [{i}/{min(len(links), max_matches)}] {link[:100]}")
-        # Estrai titolo dal link: se contiene ?r=base64, il titolo è nel <a>
-        # Per semplicità, titolo generico
         title = f"PirloTV {i}"
-        # Salta se il link è già un m3u8
         if ".m3u8" in link:
             streams.append({"url": link, "mtype": "hls", "title": title,
                             "referer": base, "site": site["name"]})
             continue
-        # PirloTV family: prova decodifica r=
         player_url = decode_r_param(link)
         if player_url:
             log(f"      🔓 r= → {player_url[:100]}")
         else:
-            # liveru: potrebbe essere iframe diretto o pagina da seguire
             player_url = link
-        # Segui e decodifica
         result = process_player(player_url, referer=link)
         if result:
             result["title"] = title
@@ -362,10 +421,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--output", "-o", default="pirlotv_COMPLETE.m3u")
     ap.add_argument("--output-dir", default=None)
-    ap.add_argument("--max-per-site", type=int, default=20,
-                    help="Max partite da esplorare per dominio")
-    ap.add_argument("--timeout-per-site", type=int, default=300,
-                    help="Timeout in secondi per dominio")
+    ap.add_argument("--max-per-site", type=int, default=20)
+    ap.add_argument("--timeout-per-site", type=int, default=300)
     args = ap.parse_args()
 
     if args.output_dir is None:
@@ -373,7 +430,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 PIRLOTV EXTRACTOR v1.0 (multi-dominio)")
+    log("📡 PIRLOTV EXTRACTOR v1.1 (multi-dominio, debug HTML)")
     log("=" * 66)
 
     all_streams = []
@@ -387,7 +444,6 @@ def main():
         except Exception as e:
             log(f"  ⚠️ [{site['name']}] errore: {type(e).__name__}: {e}")
 
-    # Dedup per URL
     seen = set()
     uniq = []
     for s in all_streams:
@@ -397,7 +453,6 @@ def main():
 
     log(f"\n📊 TOTALE: {len(uniq)} stream unici su {len(all_streams)} trovati")
 
-    # Scrittura file
     n1 = write_m3u(os.path.join(args.output_dir, "pirlotv_EVENTS_LIVE.m3u"), uniq)
     n2 = write_m3u(os.path.join(args.output_dir, "pirlotv_VLC.m3u"),
                    uniq, group_override="PirloTV")
@@ -406,7 +461,6 @@ def main():
     log(f"  💾 pirlotv_VLC.m3u: {n2}")
     log(f"  💾 {args.output}: {n3}")
 
-    # Capture JSON
     summary = {
         "sites": [s["name"] for s in SITES],
         "total_found": len(all_streams),
