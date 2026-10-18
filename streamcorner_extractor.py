@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.3 — Playwright stealth + CLIENT-SIDE NAV.
+StreamCorner Extractor v13.4 — Playwright stealth + salvataggio bundle JS.
 
-Changelog v13.2 → v13.3:
-- FIX CRITICO: le pagine /stream/admin/* restituiscono 403 se caricate con
-  page.goto() (navigazione server-side = Turnstile challenge di Cloudflare).
-  Soluzione: la homepage è accessibile e contiene link <a href="/stream/admin/...">.
-  Clicchiamo quei link (React Router = client-side), NON navighiamo con goto().
-- Fallback: pushState() + PopStateEvent se il click fallisce.
-- Fallback finale: page.goto() (nel caso il click non sia possibile).
-- Rimozione --disable-blink-features=AutomationControlled (interferisce con Turnstile)
-- Aggiunto --disable-web-security (aiuta Turnstile con CORS)
-- Attesa post-click aumentata a 12s (React Router + API)
-- Salvataggio HTML delle pagine di dettaglio per debug (sc_stream_<hash>.html)
-- Le categorie sono esplorate per click anch'esse (non con goto)
+Changelog v13.3 → v13.4:
+- Nel listener on_response, salva TUTTI i bundle `/assets/*.js` in `sc_assets/`
+  * Necessario per analizzare `provider-data.worker-*.js` offline
+  * Il worker contiene il protocollo crypto (Salsa20/12) e il vault con le chiavi
+  * Da Carnets il worker è irraggiungibile (Cloudflare 403), ma da GH Actions sì
+- Log di ogni file salvato con dimensione
+- Nessun'altra modifica: la pipeline (homepage → click → match) resta identica
+
+Invariato da v13.3:
+- Playwright stealth (patchright con fallback playwright)
+- Click client-side per evitare Cloudflare su /stream/admin/*
+- Diagnostica on_requestfailed + on_frame_navigated
+- Salvataggio sc_homepage.html, sc_network.json, sc_capture.json
+- Produzione dei 4 file M3U
+- Exit 0 sempre (graceful)
 """
 from __future__ import annotations
 import argparse, json, os, re, sys, time
@@ -45,6 +48,7 @@ CF_HINTS = ("challenges.cloudflare.com", "cf-chl",
 CAPTURE_FILE = "sc_capture.json"
 NETWORK_FILE = "sc_network.json"
 HOMEPAGE_FILE = "sc_homepage.html"
+ASSETS_DIR = "sc_assets"
 
 CATEGORY_PATTERNS = [
     r'/fifa', r'/world-cup', r'/serie-a', r'/champions',
@@ -132,10 +136,13 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
     cf_hit = {"cloudflare": False}
     start_time = time.time()
     cat_links, match_links = [], []
+    assets_dir = os.path.join(debug_dir, ASSETS_DIR)
+    try:
+        os.makedirs(assets_dir, exist_ok=True)
+    except Exception:
+        pass
 
     with sync_playwright() as p:
-        # v13.3: rimossi --disable-blink-features=AutomationControlled (interferisce con Turnstile)
-        # aggiunto --disable-web-security per CORS Turnstile
         browser = p.chromium.launch(headless=headless, args=[
             "--no-sandbox", "--disable-dev-shm-usage",
             "--use-gl=swiftshader", "--enable-unsafe-swiftshader",
@@ -184,6 +191,20 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = resp.url
                 lu = u.lower()
+
+                # v13.4: salva TUTTI i bundle JS in /assets/ per analisi offline
+                if "/assets/" in lu and lu.endswith(".js"):
+                    try:
+                        body = resp.text()
+                        if body and len(body) > 500:
+                            safe = re.sub(r'[^a-zA-Z0-9_.-]', '_',
+                                          u.split("/")[-1])[:80]
+                            fpath = os.path.join(assets_dir, safe)
+                            with open(fpath, "w", encoding="utf-8") as fh:
+                                fh.write(body)
+                            log(f"    💾 {ASSETS_DIR}/{safe} ({len(body)} byte)")
+                    except Exception as e:
+                        log(f"    ⚠️ save asset: {type(e).__name__}")
 
                 if u in network_map:
                     network_map[u]["status"] = resp.status
@@ -271,17 +292,13 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         page.on("framenavigated", on_frame_navigated)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
 
-        # ===== Helper: naviga client-side (NON server-side) =====
         def navigate_client_side(relative_path):
-            """Click sul link <a href="relative_path">, oppure pushState fallback."""
-            # 1. Assicurati di essere sulla homepage
             if page.url.rstrip("/") != BASE:
                 try:
                     page.goto(BASE, wait_until="domcontentloaded", timeout=timeout_s * 1000)
                     page.wait_for_timeout(3000)
                 except Exception:
                     return False
-            # 2. Cerca il link e clicca
             try:
                 sel = f'a[href="{relative_path}"]'
                 loc = page.locator(sel).first
@@ -295,7 +312,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     return True
             except Exception as e:
                 log(f"    ⚠️ click failed: {type(e).__name__}")
-            # 3. Fallback: pushState + PopStateEvent (React Router ascolta popstate)
             try:
                 page.evaluate(f"""() => {{
                     history.pushState({{}}, '', '{relative_path}');
@@ -331,6 +347,29 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         except Exception as e:
             log(f"   ⚠️ salvataggio homepage: {e}")
 
+        if "avviso" in title.lower() or html_len < 2000:
+            log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
+            try:
+                page.reload(wait_until="domcontentloaded", timeout=timeout_s * 1000)
+                page.wait_for_timeout(15000)
+            except Exception:
+                pass
+            title = page.title()
+            html = page.content()
+            html_len = len(html)
+            log(f"[*] Dopo reload — titolo: '{title[:80]}'  HTML: {html_len} byte")
+            if "avviso" in title.lower() or html_len < 2000:
+                try:
+                    Path(os.path.join(debug_dir, "sc_homepage_blocked.html")).write_text(
+                        html, encoding="utf-8")
+                except Exception:
+                    pass
+                browser.close()
+                return found, network_map, {"engine": engine, "title": title,
+                                            "html_len": html_len,
+                                            "cloudflare": cf_hit["cloudflare"],
+                                            "blocked": True}
+
         # ===== Livello 2: estrai link =====
         cat_links = find_links(html, BASE, CATEGORY_PATTERNS)[:max_categories]
         match_links = find_links(html, BASE, MATCH_PATTERNS)[:max_matches]
@@ -338,7 +377,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         for c in cat_links:  log(f"    📂 {c[:100]}")
         for m in match_links: log(f"    🎬 {m[:100]}")
 
-        # ===== Livello 3a: esplora categorie (CLIENT-SIDE) =====
+        # ===== Livello 3a: esplora categorie =====
         for cat_url in cat_links:
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito")
@@ -362,7 +401,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         match_links = list(dict.fromkeys(match_links))[:max_matches]
         log(f"[*] Totale partite da visitare: {len(match_links)}")
 
-        # ===== Livello 3b: visita partite (CLIENT-SIDE!) =====
+        # ===== Livello 3b: visita partite =====
         for i, link in enumerate(match_links, 1):
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito, interrompo")
@@ -374,10 +413,8 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     log(f"      ⚠️ skip")
                     continue
 
-                # Attesa estesa (React Router + API + eventuale player)
                 page.wait_for_timeout(12000)
 
-                # Salva HTML per debug
                 try:
                     slug = re.sub(r'[^a-z0-9]', '_', path.split("/")[-1])[:40]
                     dbg = os.path.join(debug_dir, f"sc_stream_{slug}.html")
@@ -385,12 +422,10 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 except Exception:
                     pass
 
-                # Log frame
                 for f in page.frames:
                     if f.url and f.url != "about:blank":
                         log(f"      🖼️ frame: {f.url[:100]}")
 
-                # Click play
                 for sel in ("button[aria-label*='play' i]",
                             ".vjs-big-play-button", ".jw-icon-playback",
                             ".bitmovinplayer-ui",
@@ -407,7 +442,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
 
                 page.wait_for_timeout(5000)
 
-                # Manifest dagli iframe
                 for frame in page.frames:
                     try:
                         furl = frame.url
@@ -482,7 +516,7 @@ def main():
     ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
 
     log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.3 (client-side nav, UA={args.ua})")
+    log(f"📡 STREAMCORNER EXTRACTOR v13.4 (Playwright stealth + save assets)")
     log("=" * 66)
 
     found, network_map, meta = run_playwright(
@@ -549,6 +583,17 @@ def main():
         log(f"   💾 {CAPTURE_FILE} salvato")
     except Exception as e:
         log(f"   ⚠️ capture: {e}")
+
+    # Conta bundle JS salvati
+    try:
+        assets_path = os.path.join(args.output_dir, ASSETS_DIR)
+        if os.path.isdir(assets_path):
+            files = [f for f in os.listdir(assets_path) if f.endswith(".js")]
+            total_size = sum(os.path.getsize(os.path.join(assets_path, f))
+                             for f in files)
+            log(f"   📦 Bundle JS salvati: {len(files)} file ({total_size} byte)")
+    except Exception:
+        pass
 
     log("=" * 66)
     log(f"✅ blocked={meta.get('blocked')}  entries={len(entries)}")
