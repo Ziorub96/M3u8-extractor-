@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.4 — Playwright stealth + salvataggio bundle JS.
+StreamCorner Extractor v13.5 — Playwright stealth + SPA navigation fix
 
-Changelog v13.3 → v13.4:
-- Nel listener on_response, salva TUTTI i bundle `/assets/*.js` in `sc_assets/`
-  * Necessario per analizzare `provider-data.worker-*.js` offline
-  * Il worker contiene il protocollo crypto (Salsa20/12) e il vault con le chiavi
-  * Da Carnets il worker è irraggiungibile (Cloudflare 403), ma da GH Actions sì
-- Log di ogni file salvato con dimensione
-- Nessun'altra modifica: la pipeline (homepage → click → match) resta identica
+Changelog v13.4 → v13.5:
+- FIX #1 (BLOCCANTE): navigate_client_side() non ricarica più BASE ad ogni
+  chiamata. Il reload forzato innescava il Cloudflare challenge su ogni
+  match dopo il primo. Ora:
+    • Se siamo già su streamcorner.*, NON ricarica
+    • Click con no_wait_after + wait 800ms (React Router prende il controllo)
+    • Fallback pushState + popstate
+    • Sentinella: se "__cf_chl" appare nell'URL, la navigazione è fallita
+- FIX #2: contatore di fallimenti consecutivi su navigate_client_side.
+  Dopo 3 fallimenti di fila si interrompe il loop (evita 25 × 12s di timeout).
+- FIX #3: probe iniziale dei mirror streamcorner.{st,foo,cloud,fun}
+  (log diagnostico + parametro CLI --base per override manuale).
+- MIGLIORAMENTO: skip match se già presenti nella lista e se l'hostname
+  punta a un dominio noto per essere morto (streamxhd.com, ecc.).
 
-Invariato da v13.3:
+Invariato da v13.4:
+- Salvataggio TUTTI i bundle /assets/*.js in sc_assets/
 - Playwright stealth (patchright con fallback playwright)
-- Click client-side per evitare Cloudflare su /stream/admin/*
-- Diagnostica on_requestfailed + on_frame_navigated
 - Salvataggio sc_homepage.html, sc_network.json, sc_capture.json
 - Produzione dei 4 file M3U
 - Exit 0 sempre (graceful)
@@ -24,7 +30,13 @@ import argparse, json, os, re, sys, time
 from pathlib import Path
 from urllib.parse import urlparse, urljoin
 
-BASE = "https://streamcorner.st"
+BASE_DEFAULT = "https://streamcorner.st"
+MIRRORS = [
+    "https://streamcorner.st",
+    "https://streamcorner.foo",
+    "https://streamcorner.cloud",
+    "https://streamcorner.fun",
+]
 UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
               "AppleWebKit/537.36 (KHTML, like Gecko) "
               "Chrome/124.0.0.0 Safari/537.36")
@@ -36,6 +48,7 @@ SKIP_HOSTS = {
     "pandecocogaming.sbs", "taifood-blog.asia", "streamcorner.xyz",
     "embed.st", "getsugatensho", "sportsembed",
     "embedhd.click", "embedhd.pk", "embedme.st", "streamsgate.co",
+    "streamxhd.com", "streamtp3.com",
 }
 
 DRM_SCHEMES = ("edef8ba9", "9a04f079", "1077efecc0b24d02",
@@ -73,13 +86,19 @@ JSON_STREAM_KEYS = ("stream_url", "play_url", "embed_url", "m3u8",
                     "manifest_url", "hls_url", "dash_url", "src",
                     "url", "link", "source", "video_url")
 
+MAX_CONSECUTIVE_NAV_FAILS = 3
+
+
 def log(*a): print(*a, flush=True)
 
+
 def host_of(u): return (urlparse(u).hostname or "").lower()
+
 
 def has_drm_hint(u):
     v = (u or "").lower()
     return any(s in v for s in DRM_SCHEMES)
+
 
 def manifest_type(u):
     if not u: return None
@@ -88,11 +107,13 @@ def manifest_type(u):
     if p.endswith(".mpd"):  return "dash"
     return None
 
+
 def is_skipped(u):
     h = host_of(u)
     if h in SKIP_HOSTS or any(s in h for s in SKIP_HOSTS): return True
     if has_drm_hint(u): return True
     return False
+
 
 def find_links(html, base, patterns):
     found = []
@@ -102,6 +123,7 @@ def find_links(html, base, patterns):
             full = href if href.startswith("http") else urljoin(base, href)
             found.append(full)
     return list(dict.fromkeys(found))
+
 
 def scan_json_for_streams(obj, base_url, results, depth=0):
     if depth > 8: return
@@ -120,10 +142,58 @@ def scan_json_for_streams(obj, base_url, results, depth=0):
         for item in obj:
             scan_json_for_streams(item, base_url, results, depth + 1)
 
+
+# ------------------------------------------------------------ Mirror probe
+def _http_probe(url, timeout=8):
+    """GET veloce con requests (fallback urllib) per diagnosticare i mirror."""
+    try:
+        import requests
+        r = requests.get(url, timeout=timeout, verify=False,
+                         headers={"User-Agent": UA_DESKTOP})
+        return r.status_code, r.text
+    except ImportError:
+        pass
+    except Exception:
+        return None, ""
+    try:
+        import urllib.request, ssl
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        req = urllib.request.Request(url, headers={"User-Agent": UA_DESKTOP})
+        with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:
+            return r.status, r.read().decode("utf-8", "replace")
+    except Exception:
+        return None, ""
+
+
+def _probe_mirrors():
+    """Testa i mirror e ritorna la lista di quelli 'vivi' (html > 20KB)."""
+    log("[*] Probe mirror StreamCorner:")
+    alive = []
+    for m in MIRRORS:
+        try:
+            st, body = _http_probe(m, timeout=10)
+            size = len(body) if body else 0
+            if body and "Sito Illegale" in body[:3000]:
+                tag = "AGCOM"
+            elif body and "challenges.cloudflare.com" in body:
+                tag = "CF-challenge"
+            elif st and st < 400 and size > 20000:
+                tag = "OK"
+                alive.append(m)
+            else:
+                tag = f"HTTP {st}"
+            log(f"    {m:35s} → {tag:12s} ({size} byte)")
+        except Exception as e:
+            log(f"    {m:35s} → err {type(e).__name__}")
+    return alive
+
+
 # ------------------------------------------------------------ Playwright
 def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                    max_categories=10, max_matches=25, debug_dir=".",
-                   max_total_time_s=900):
+                   max_total_time_s=900, base_url=BASE_DEFAULT):
     try:
         from patchright.sync_api import sync_playwright
         engine = "patchright"
@@ -131,6 +201,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         from playwright.sync_api import sync_playwright
         engine = "playwright"
 
+    BASE = base_url
     found = []
     network_map = {}
     cf_hit = {"cloudflare": False}
@@ -192,7 +263,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 u = resp.url
                 lu = u.lower()
 
-                # v13.4: salva TUTTI i bundle JS in /assets/ per analisi offline
                 if "/assets/" in lu and lu.endswith(".js"):
                     try:
                         body = resp.text()
@@ -266,6 +336,14 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = req.url
                 err = req.failure or "unknown"
+                # rumore noto: brunhild non risolve mai da GH Actions
+                if "brunhild.challenges.cloudflare.com" in u:
+                    network_map[u] = {
+                        "method": req.method, "url": u[:300],
+                        "type": req.resource_type, "status": "FAILED",
+                        "mime": "", "error": "brunhild (known)",
+                    }
+                    return
                 log(f"    ❌ FAILED: {req.method} {u[:110]} ({err})")
                 network_map[u] = {
                     "method": req.method,
@@ -292,35 +370,53 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         page.on("framenavigated", on_frame_navigated)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
 
+        # ---------------- v13.5 FIX: navigate_client_side senza reload ----------------
         def navigate_client_side(relative_path):
-            if page.url.rstrip("/") != BASE:
+            """Navigazione SPA via React Router — nessun reload di BASE."""
+            # Prima visita: siamo fuori? Carica BASE una sola volta.
+            if "streamcorner" not in (page.url or ""):
                 try:
-                    page.goto(BASE, wait_until="domcontentloaded", timeout=timeout_s * 1000)
-                    page.wait_for_timeout(3000)
+                    page.goto(BASE, wait_until="domcontentloaded",
+                              timeout=timeout_s * 1000)
+                    page.wait_for_timeout(4000)
                 except Exception:
                     return False
+
+            # 1) Prima scelta: click (React Router lo intercetta, no reload)
             try:
                 sel = f'a[href="{relative_path}"]'
                 loc = page.locator(sel).first
                 if loc.count() > 0:
                     try:
-                        loc.scroll_into_view_if_needed(timeout=5000)
+                        loc.scroll_into_view_if_needed(timeout=3000)
                     except Exception:
                         pass
-                    loc.click(timeout=5000)
-                    log(f"    ✅ click client-side su {relative_path}")
-                    return True
+                    try:
+                        loc.click(timeout=5000, no_wait_after=True)
+                    except TypeError:
+                        loc.click(timeout=5000)
+                    page.wait_for_timeout(800)
+                    if "__cf_chl" not in (page.url or ""):
+                        log(f"    ✅ click SPA su {relative_path}")
+                        return True
+                    log(f"    ⚠️ click ha portato a CF challenge, provo pushState")
             except Exception as e:
                 log(f"    ⚠️ click failed: {type(e).__name__}")
+
+            # 2) Fallback: pushState + popstate (React Router ascolta)
             try:
                 page.evaluate(f"""() => {{
                     history.pushState({{}}, '', '{relative_path}');
                     window.dispatchEvent(new PopStateEvent('popstate'));
                 }}""")
-                log(f"    ⚠️ pushState fallback su {relative_path}")
-                return True
+                page.wait_for_timeout(800)
+                if "__cf_chl" not in (page.url or ""):
+                    log(f"    ✅ pushState SPA su {relative_path}")
+                    return True
+                log(f"    ❌ pushState ha portato a CF challenge")
             except Exception as e:
                 log(f"    ❌ pushState failed: {type(e).__name__}")
+
             return False
 
         # ===== Livello 1: homepage =====
@@ -347,6 +443,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         except Exception as e:
             log(f"   ⚠️ salvataggio homepage: {e}")
 
+        # pagina 'Avviso' (AGCOM / Cloudflare 1KB) → graceful exit
         if "avviso" in title.lower() or html_len < 2000:
             log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
             try:
@@ -368,7 +465,8 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 return found, network_map, {"engine": engine, "title": title,
                                             "html_len": html_len,
                                             "cloudflare": cf_hit["cloudflare"],
-                                            "blocked": True}
+                                            "blocked": True,
+                                            "base_url": BASE}
 
         # ===== Livello 2: estrai link =====
         cat_links = find_links(html, BASE, CATEGORY_PATTERNS)[:max_categories]
@@ -401,17 +499,24 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         match_links = list(dict.fromkeys(match_links))[:max_matches]
         log(f"[*] Totale partite da visitare: {len(match_links)}")
 
-        # ===== Livello 3b: visita partite =====
+        # ===== Livello 3b: visita partite (con controllo fallimenti consecutivi) =====
+        consecutive_fails = 0
         for i, link in enumerate(match_links, 1):
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito, interrompo")
+                break
+            if consecutive_fails >= MAX_CONSECUTIVE_NAV_FAILS:
+                log(f"[!] {consecutive_fails} navigazioni fallite di fila, interrompo")
+                log(f"    (probabile Cloudflare challenge persistente)")
                 break
             log(f"  [{i}/{len(match_links)}] (client-side) {link[:100]}")
             try:
                 path = urlparse(link).path
                 if not navigate_client_side(path):
-                    log(f"      ⚠️ skip")
+                    log(f"      ⚠️ skip (navigazione fallita)")
+                    consecutive_fails += 1
                     continue
+                consecutive_fails = 0  # reset su successo
 
                 page.wait_for_timeout(12000)
 
@@ -454,6 +559,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                         pass
             except Exception as e:
                 log(f"      ⚠️ {type(e).__name__}")
+                consecutive_fails += 1
 
         browser.close()
 
@@ -462,7 +568,9 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                                 "cloudflare": cf_hit["cloudflare"],
                                 "blocked": False,
                                 "categories": len(cat_links),
-                                "matches": len(match_links)}
+                                "matches": len(match_links),
+                                "base_url": BASE}
+
 
 # ------------------------------------------------------------ M3U
 def entry_lines(url, title, group, referer, mtype):
@@ -476,6 +584,7 @@ def entry_lines(url, title, group, referer, mtype):
     out.append(url)
     return out
 
+
 def write_m3u(path, entries, group_override=None):
     seen = set(); n = 0
     with open(path, "w", encoding="utf-8") as f:
@@ -485,10 +594,11 @@ def write_m3u(path, entries, group_override=None):
             seen.add(e["url"])
             grp = group_override or e.get("group") or "StreamCorner"
             f.write("\n".join(entry_lines(e["url"], e.get("title") or "Evento",
-                                          grp, e.get("referer") or (BASE + "/"),
+                                          grp, e.get("referer") or (BASE_DEFAULT + "/"),
                                           e.get("mtype") or manifest_type(e["url"]))) + "\n")
             n += 1
     return n
+
 
 # ------------------------------------------------------------ Main
 def main():
@@ -506,6 +616,11 @@ def main():
                     dest="embed_limit")
     ap.add_argument("--ua", choices=["desktop", "mobile"], default="desktop")
     ap.add_argument("--headful", action="store_true")
+    ap.add_argument("--base", default=BASE_DEFAULT,
+                    help="Base URL (default streamcorner.st). "
+                         "Usare un mirror .foo/.cloud/.fun se .st è bloccato.")
+    ap.add_argument("--no-probe", action="store_true",
+                    help="Salta il probe iniziale dei mirror.")
     args, unknown = ap.parse_known_args()
     if unknown:
         log(f"[*] Argomenti ignorati: {unknown}")
@@ -516,12 +631,19 @@ def main():
     ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
 
     log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.4 (Playwright stealth + save assets)")
+    log(f"📡 STREAMCORNER EXTRACTOR v13.5 (SPA nav fix + mirror probe)")
     log("=" * 66)
+
+    if not args.no_probe:
+        _probe_mirrors()
+        log("")
+
+    log(f"[*] Base URL: {args.base}")
 
     found, network_map, meta = run_playwright(
         timeout_s=45, ua=ua, headless=not args.headful,
-        debug_dir=args.output_dir, max_total_time_s=900)
+        debug_dir=args.output_dir, max_total_time_s=900,
+        base_url=args.base)
 
     log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
     log(f"[*] Meta: {meta}")
@@ -550,7 +672,7 @@ def main():
             "url": u,
             "title": (f.get("title") or "StreamCorner")[:60],
             "group": (f.get("title") or "StreamCorner")[:60],
-            "referer": f.get("referer") or (BASE + "/"),
+            "referer": f.get("referer") or (args.base + "/"),
             "mtype": manifest_type(u),
         })
 
@@ -565,7 +687,8 @@ def main():
     log(f"   💾 {args.output}: {n4}")
 
     summary = {
-        "site": BASE,
+        "version": "13.5",
+        "site": args.base,
         "engine": meta.get("engine"),
         "title": meta.get("title"),
         "html_len": meta.get("html_len"),
@@ -584,7 +707,6 @@ def main():
     except Exception as e:
         log(f"   ⚠️ capture: {e}")
 
-    # Conta bundle JS salvati
     try:
         assets_path = os.path.join(args.output_dir, ASSETS_DIR)
         if os.path.isdir(assets_path):
@@ -600,6 +722,7 @@ def main():
     log("=" * 66)
 
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())
