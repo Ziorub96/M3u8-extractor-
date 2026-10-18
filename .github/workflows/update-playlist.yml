@@ -8,14 +8,10 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
@@ -30,26 +26,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-          pip install requests yt-dlp playwright patchright curl_cffi
+          pip install requests yt-dlp playwright curl_cffi
           playwright install --with-deps chromium
-          patchright install chromium
 
-      - name: Cache StreamCorner m3u8 results
-        uses: actions/cache@v4
-        with:
-          path: .streamcorner_events_m3u8_cache.json
-          key: streamcorner-m3u8-cache-${{ github.run_id }}
-          restore-keys: |
-            streamcorner-m3u8-cache-
-
-      - name: Cache StreamCorner static config
-        uses: actions/cache@v4
-        with:
-          path: .sc_static_cache.json
-          key: sc-static-cache-${{ github.run_id }}
-          restore-keys: |
-            sc-static-cache-
-
+      # ============================================================
+      # ESTRATTORI ATTIVI
+      # ============================================================
       - name: Extract DAMITV streams
         run: python damitv_extractor.py
         continue-on-error: true
@@ -62,38 +44,14 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
-      # ═══════════════════════════════════════════════════════════════
-      # v13.6: source-click fix. Serve timeout ≥ 10 min perché ogni
-      # match richiede wait_for_selector(.stream-source-btn) + click +
-      # attesa iframe → ~6-8 min per 25 match totali.
-      # ═══════════════════════════════════════════════════════════════
-      - name: Extract StreamCorner streams (v13.6, source-click fix)
-        run: |
-          python streamcorner_extractor.py \
-            --output streamcorner_COMPLETE.m3u \
-            --playwright-workers 1 \
-            --playwright-limit 3 \
-            --ua desktop
-        continue-on-error: true
-        timeout-minutes: 10
-
-      - name: Extract WatchFooty streams
-        if: false
-        run: python watchfooty_direct.py --max 20
-        continue-on-error: true
-        timeout-minutes: 25
-
-      # ═══════════════════════════════════════════════════════════════
-      # v1.5.3: regex atob multi-line. Catena zonalivetv sbloccata.
-      # ═══════════════════════════════════════════════════════════════
-      - name: Extract PirloTV streams (v1.5.3, atob-regex multi-line)
-        run: |
-          python pirlotv_extractor.py \
-            --output pirlotv_COMPLETE.m3u \
-            --max-per-site 20 \
-            --timeout-per-site 300
-        continue-on-error: true
-        timeout-minutes: 25
+      # ============================================================
+      # STEP DISMESSI (commentati per storico)
+      # ------------------------------------------------------------
+      # WatchFooty  â sempre vuoto
+      # xyzstreams  â proxy Node fragile, dipendenza esterna
+      # SMTK        â canali geobloccati (richiedono VPN russa)
+      # Extra Srces â 0 flussi funzionanti
+      # ============================================================
 
       - name: Run combiner
         run: python combine_playlist.py
@@ -102,88 +60,7 @@ jobs:
         run: python check_playlist.py
         continue-on-error: true
 
-      - name: Ensure all output files exist
-        if: always()
-        run: |
-          for f in \
-            combined_events.m3u \
-            combined_events_checked.m3u \
-            flussi_non_funzionanti.txt \
-            damitv_events.m3u \
-            daddylive_streams.m3u \
-            cdnlivetv_channels.m3u \
-            cdnlivetv_events.m3u \
-            streamcorner_COMPLETE.m3u \
-            streamcorner_VLC.m3u \
-            streamcorner_EVENTS_LIVE.m3u \
-            streamcorner_KODI.m3u \
-            pirlotv_COMPLETE.m3u \
-            pirlotv_VLC.m3u \
-            pirlotv_EVENTS_LIVE.m3u \
-            pirlotv_capture.json \
-            sc_capture.json \
-            watchfooty_events.m3u; do
-            if [ ! -f "$f" ]; then
-              echo "Crea $f (mancante)"
-              if [[ "$f" == *.m3u ]]; then
-                echo "#EXTM3U" > "$f"
-              elif [[ "$f" == *.json ]]; then
-                echo "{}" > "$f"
-              else
-                touch "$f"
-              fi
-            fi
-          done
-          echo "--- Stato file ---"
-          ls -la *.m3u *.txt *.json 2>/dev/null || true
-          echo "--- Debug dirs ---"
-          ls -la sc_assets/ 2>/dev/null | head -30 || true
-          ls -la pirlotv_debug/ 2>/dev/null | head -30 || true
-          echo "--- sc_stream_* post-click (v13.6) ---"
-          ls -la sc_stream_*.html 2>/dev/null | head -30 || true
-
-      - name: Upload StreamCorner debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: streamcorner-debug
-          path: |
-            sc_capture.json
-            sc_network.json
-            sc_homepage.html
-            sc_homepage_blocked.html
-            sc_stream_*.html
-            streamcorner_COMPLETE.m3u
-            streamcorner_VLC.m3u
-            streamcorner_EVENTS_LIVE.m3u
-            streamcorner_KODI.m3u
-            sc_assets/
-          retention-days: 14
-          if-no-files-found: ignore
-
-      - name: Upload PirloTV debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pirlotv-debug
-          path: |
-            pirlotv_capture.json
-            pirlotv_COMPLETE.m3u
-            pirlotv_EVENTS_LIVE.m3u
-            pirlotv_VLC.m3u
-            pirlotv_debug/
-          retention-days: 14
-          if-no-files-found: ignore
-
-      # ═══════════════════════════════════════════════════════════════
-      # FIX COMMIT FALLITO:
-      #   • streamcorner_KODI.m3u RIMOSSO dal file_pattern (bloccato
-      #     da .gitignore → faceva fallire l'intera action con
-      #     "Invalid status code: 1")
-      #   • pull: --rebase RIMOSSO (deprecato in v5, warning)
-      # ═══════════════════════════════════════════════════════════════
       - name: Commit and push
-        if: always()
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update combined and checked playlists"
@@ -195,16 +72,3 @@ jobs:
             daddylive_streams.m3u
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
-            streamcorner_COMPLETE.m3u
-            streamcorner_VLC.m3u
-            streamcorner_EVENTS_LIVE.m3u
-            pirlotv_COMPLETE.m3u
-            pirlotv_VLC.m3u
-            pirlotv_EVENTS_LIVE.m3u
-            pirlotv_capture.json
-            sc_capture.json
-            sc_network.json
-            sc_homepage.html
-            .sc_static_cache.json
-            watchfooty_events.m3u
-          skip_dirty_check: false
