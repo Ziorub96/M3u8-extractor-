@@ -11,10 +11,10 @@
   "streams": [
     {
       "title": "PirloTV 1",
-      "url": "https://99.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=48.217.148.80&token=b3bc4d291d0049e4f8fa5de85786d442fa15adf3-fa-1792362002-1792308002",
+      "url": "https://98.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=52.157.2.243&token=621dbc1b39431a6f88eb6862c41565fac72c53a4-45-1792369130-1792315130",
       "site": "pirlo-tv",
       "mtype": "hls"
     }
   ],
-  "extracted_at": 1792317031
+  "extracted_at": 1792324163
 }
