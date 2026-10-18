@@ -62,7 +62,14 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
-      - name: Extract StreamCorner streams (v13.4, canary check)
+      # ═══════════════════════════════════════════════════════════════
+      # MODIFICATO v13.5 → v13.6:
+      #   • timeout 3 min → 10 min (obbligatorio: la nuova logica clicca
+      #     i .stream-source-btn e attende il load dell'iframe → ~6-8 min
+      #     per 25 match. Con 3 min il job veniva ucciso a metà)
+      #   • step name aggiornato (v13.4 → v13.6)
+      # ═══════════════════════════════════════════════════════════════
+      - name: Extract StreamCorner streams (v13.6, source-click fix)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
@@ -70,7 +77,7 @@ jobs:
             --playwright-limit 3 \
             --ua desktop
         continue-on-error: true
-        timeout-minutes: 3
+        timeout-minutes: 10
 
       - name: Extract WatchFooty streams
         if: false
@@ -78,7 +85,12 @@ jobs:
         continue-on-error: true
         timeout-minutes: 25
 
-      - name: Extract PirloTV streams (v1.5)
+      # ═══════════════════════════════════════════════════════════════
+      # MODIFICATO v1.5 → v1.5.3:
+      #   • step name aggiornato (v1.5 → v1.5.3)
+      #   • codice invariato (fix atob regex è interna al file .py)
+      # ═══════════════════════════════════════════════════════════════
+      - name: Extract PirloTV streams (v1.5.3, atob-regex multi-line)
         run: |
           python pirlotv_extractor.py \
             --output pirlotv_COMPLETE.m3u \
@@ -108,6 +120,7 @@ jobs:
             streamcorner_COMPLETE.m3u \
             streamcorner_VLC.m3u \
             streamcorner_EVENTS_LIVE.m3u \
+            streamcorner_KODI.m3u \
             pirlotv_COMPLETE.m3u \
             pirlotv_VLC.m3u \
             pirlotv_EVENTS_LIVE.m3u \
@@ -127,8 +140,19 @@ jobs:
           done
           echo "--- Stato file ---"
           ls -la *.m3u *.txt *.json 2>/dev/null || true
+          echo "--- Debug dirs ---"
+          ls -la sc_assets/ 2>/dev/null | head -30 || true
+          ls -la pirlotv_debug/ 2>/dev/null | head -30 || true
+          echo "--- sc_stream_* post-click (v13.6) ---"
+          ls -la sc_stream_*.html 2>/dev/null | head -30 || true
 
-      # v1.5: sc_assets/ incluso nell'artifact
+      # ═══════════════════════════════════════════════════════════════
+      # MODIFICATO:
+      #   • aggiunto sc_stream_*.html (post-click v13.6, diagnostica
+      #     per capire quale iframe/m3u8 viene montato dentro ogni
+      #     match page dopo il click sul source button)
+      #   • aggiunto streamcorner_KODI.m3u
+      # ═══════════════════════════════════════════════════════════════
       - name: Upload StreamCorner debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -139,13 +163,20 @@ jobs:
             sc_network.json
             sc_homepage.html
             sc_homepage_blocked.html
+            sc_stream_*.html
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
+            streamcorner_KODI.m3u
             sc_assets/
           retention-days: 14
           if-no-files-found: ignore
 
+      # ═══════════════════════════════════════════════════════════════
+      # INVARIATO (già include pirlotv_debug/ con i player HTML
+      # salvati durante le catene atob — utili per verificare che
+      # canal-5/81/94/109/161 abbiano effettivamente zonalivetv)
+      # ═══════════════════════════════════════════════════════════════
       - name: Upload PirloTV debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -160,6 +191,12 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
+      # ═══════════════════════════════════════════════════════════════
+      # MODIFICATO:
+      #   • aggiunto streamcorner_KODI.m3u al commit pattern
+      #     (prima veniva prodotto ma non committato)
+      #   • tutto il resto invariato (pull: --rebase già corretto)
+      # ═══════════════════════════════════════════════════════════════
       - name: Commit and push
         if: always()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -176,6 +213,7 @@ jobs:
             streamcorner_COMPLETE.m3u
             streamcorner_VLC.m3u
             streamcorner_EVENTS_LIVE.m3u
+            streamcorner_KODI.m3u
             pirlotv_COMPLETE.m3u
             pirlotv_VLC.m3u
             pirlotv_EVENTS_LIVE.m3u
