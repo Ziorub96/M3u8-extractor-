@@ -69,20 +69,21 @@ jobs:
         continue-on-error: true
 
       # ============================================================
-      # StreamCorner v13.3 — Playwright stealth (ATTIVO ma ottimizzato)
-      # Nota: brunhild.challenges.cloudflare.com non risolve da GH Actions,
-      #       quindi /stream/admin/* dà 403. Tenuto attivo ma con
-      #       --playwright-limit 20 e timeout 10 min per non sprecare tempo.
+      # StreamCorner v13.3 — Playwright stealth (canary check)
+      # Cloudflare Turnstile blocca /stream/* da GH Actions (brunhild
+      # non risolve il DNS). Manteniamo un controllo minimale su 3
+      # match: se un giorno Cloudflare smettesse di bloccare, il log
+      # mostrerebbe 🎯 M3U8 e si può riattivare con --playwright-limit 20.
       # ============================================================
-      - name: Extract StreamCorner streams (v13.3, Playwright stealth)
+      - name: Extract StreamCorner streams (v13.3, canary check)
         run: |
           python streamcorner_extractor.py \
             --output streamcorner_COMPLETE.m3u \
             --playwright-workers 1 \
-            --playwright-limit 20 \
+            --playwright-limit 3 \
             --ua desktop
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 3
 
       - name: Extract WatchFooty streams
         if: false  # DISABILITATO — dominio api.watchfooty.st morto
@@ -151,7 +152,9 @@ jobs:
           ls -la *.m3u *.txt *.json 2>/dev/null || true
 
       # ============================================================
-      # ARTIFACT StreamCorner
+      # ARTIFACT StreamCorner — ATTIVO
+      # Include: capture JSON, network log, HTML homepage (per analisi
+      # di eventuali cambi futuri di Cloudflare o del layout del sito)
       # ============================================================
       - name: Upload StreamCorner debug artifacts
         if: always()
@@ -163,11 +166,16 @@ jobs:
             sc_network.json
             sc_homepage.html
             sc_homepage_blocked.html
+            streamcorner_COMPLETE.m3u
+            streamcorner_VLC.m3u
+            streamcorner_EVENTS_LIVE.m3u
           retention-days: 14
           if-no-files-found: ignore
 
       # ============================================================
-      # ARTIFACT PirloTV (include HTML + JS dei player/embed)
+      # ARTIFACT PirloTV — ATTIVO
+      # Include: capture JSON, M3U prodotti, HTML/JS di debug dei
+      # player e degli script embed (per diagnosi future)
       # ============================================================
       - name: Upload PirloTV debug artifacts
         if: always()
