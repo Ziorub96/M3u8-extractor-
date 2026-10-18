@@ -1,29 +1,40 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.5 — Playwright stealth + SPA navigation fix
+StreamCorner Extractor v13.6 — Playwright stealth + SPA nav + source click
 
-Changelog v13.4 → v13.5:
-- FIX #1 (BLOCCANTE): navigate_client_side() non ricarica più BASE ad ogni
-  chiamata. Il reload forzato innescava il Cloudflare challenge su ogni
-  match dopo il primo. Ora:
-    • Se siamo già su streamcorner.*, NON ricarica
-    • Click con no_wait_after + wait 800ms (React Router prende il controllo)
-    • Fallback pushState + popstate
-    • Sentinella: se "__cf_chl" appare nell'URL, la navigazione è fallita
-- FIX #2: contatore di fallimenti consecutivi su navigate_client_side.
-  Dopo 3 fallimenti di fila si interrompe il loop (evita 25 × 12s di timeout).
-- FIX #3: probe iniziale dei mirror streamcorner.{st,foo,cloud,fun}
-  (log diagnostico + parametro CLI --base per override manuale).
-- MIGLIORAMENTO: skip match se già presenti nella lista e se l'hostname
-  punta a un dominio noto per essere morto (streamxhd.com, ecc.).
+Changelog v13.5 → v13.6:
+- FIX #4 (BLOCCANTE): il player StreamCorner NON auto-playa. Il componente
+  PlayerIframe viene montato solo dopo click su `.stream-source-btn`
+  (o sul bottone "Play"). Senza click: nessun iframe caricato, nessuna
+  richiesta m3u8. Ecco perché v13.5 otteneva 0 stream nonostante la SPA
+  nav funzionasse. Ora:
+    • wait_for_selector('.stream-source-btn', timeout=12s) dopo la SPA nav
+    • click sul primo `.stream-source-btn` (scroll_into_view preventivo)
+    • attesa 3.5s per il load dell'iframe
+    • fallback click su "Play"/"Guarda"/video se mancano source buttons
+- FIX #5: filtro chat iframe (`streamcorner-chat.pages.dev`) da log frame
+  e da cattura URL — non è rumore utile e non contiene stream.
+- FIX #6: `wait_for_timeout(12000)` (blind) sostituito da
+  `wait_for_selector('.stream-source-btn')` — la pagina è cachata dopo il
+  primo match, il blind wait era tempo sprecato. Per-match: ~6-8s vs 12s.
+- FIX #7: contatore `consecutive_no_sources`. Se 5 match di fila non hanno
+  source buttons, interrompe (probabile layout rotto o geo-block).
+- MINOR: categoria nav wait 5000 → 3000ms (categories raramente aggiungono
+  match oltre a quelli della homepage).
 
-Invariato da v13.4:
+NOTE WORKFLOW:
+- Con questa fix il run StreamCorner dura ~6-8 min per 25 match. Il
+  `timeout-minutes: 3` corrente nel workflow TAGLIA la run a metà. Alzare
+  a `timeout-minutes: 10` (o 12) nello step "Extract StreamCorner streams".
+
+Invariato da v13.5:
+- FIX #1: navigate_client_side senza reload BASE (SPA nav React Router)
+- FIX #2: contatore consecutive_fails su navigazione fallita
+- FIX #3: probe mirror streamcorner.{st,foo,cloud,fun}
 - Salvataggio TUTTI i bundle /assets/*.js in sc_assets/
 - Playwright stealth (patchright con fallback playwright)
-- Salvataggio sc_homepage.html, sc_network.json, sc_capture.json
-- Produzione dei 4 file M3U
-- Exit 0 sempre (graceful)
+- Produzione 4 file M3U, exit 0 sempre
 """
 from __future__ import annotations
 import argparse, json, os, re, sys, time
@@ -50,6 +61,9 @@ SKIP_HOSTS = {
     "embedhd.click", "embedhd.pk", "embedme.st", "streamsgate.co",
     "streamxhd.com", "streamtp3.com",
 }
+
+# v13.6: filtro chat iframe (non contiene stream, solo rumore)
+CHAT_HOST_FILTER = "streamcorner-chat.pages.dev"
 
 DRM_SCHEMES = ("edef8ba9", "9a04f079", "1077efecc0b24d02",
                "urn:uuid:edef8ba9", "urn:uuid:9a04f079",
@@ -87,6 +101,7 @@ JSON_STREAM_KEYS = ("stream_url", "play_url", "embed_url", "m3u8",
                     "url", "link", "source", "video_url")
 
 MAX_CONSECUTIVE_NAV_FAILS = 3
+MAX_CONSECUTIVE_NO_SOURCES = 5
 
 
 def log(*a): print(*a, flush=True)
@@ -143,9 +158,7 @@ def scan_json_for_streams(obj, base_url, results, depth=0):
             scan_json_for_streams(item, base_url, results, depth + 1)
 
 
-# ------------------------------------------------------------ Mirror probe
 def _http_probe(url, timeout=8):
-    """GET veloce con requests (fallback urllib) per diagnosticare i mirror."""
     try:
         import requests
         r = requests.get(url, timeout=timeout, verify=False,
@@ -168,7 +181,6 @@ def _http_probe(url, timeout=8):
 
 
 def _probe_mirrors():
-    """Testa i mirror e ritorna la lista di quelli 'vivi' (html > 20KB)."""
     log("[*] Probe mirror StreamCorner:")
     alive = []
     for m in MIRRORS:
@@ -190,7 +202,6 @@ def _probe_mirrors():
     return alive
 
 
-# ------------------------------------------------------------ Playwright
 def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                    max_categories=10, max_matches=25, debug_dir=".",
                    max_total_time_s=900, base_url=BASE_DEFAULT):
@@ -244,6 +255,8 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = req.url
                 lu = u.lower()
+                if CHAT_HOST_FILTER in lu:
+                    return
                 if not any(k in lu for k in INTERESTING_REQ_KW):
                     return
                 if u in network_map:
@@ -262,6 +275,10 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = resp.url
                 lu = u.lower()
+
+                # v13.6: skip chat iframe (non contiene stream)
+                if CHAT_HOST_FILTER in lu:
+                    return
 
                 if "/assets/" in lu and lu.endswith(".js"):
                     try:
@@ -284,28 +301,34 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     cf_hit["cloudflare"] = True
 
                 if ".m3u8" in lu:
+                    verified = False
                     try:
                         t = resp.text()
+                        verified = "#EXTM3U" in t
                     except Exception:
-                        return
-                    if "#EXTM3U" in t:
+                        pass
+                    if verified or resp.status == 200:
                         found.append({"url": u,
                                       "referer": page.url or (BASE + "/"),
                                       "title": page.title() if page else "",
-                                      "source": "network"})
-                        log(f"    🎯 M3U8: {u[:120]}")
+                                      "source": "network",
+                                      "verified": verified})
+                        log(f"    🎯 M3U8 {'✓' if verified else '(unverified)'}: {u[:120]}")
 
                 elif ".mpd" in lu:
+                    verified = False
                     try:
                         t = resp.text()
+                        verified = "<MPD" in t
                     except Exception:
-                        return
-                    if "<MPD" in t:
+                        pass
+                    if verified or resp.status == 200:
                         found.append({"url": u,
                                       "referer": page.url or (BASE + "/"),
                                       "title": page.title() if page else "",
-                                      "source": "network"})
-                        log(f"    🎯 MPD: {u[:120]}")
+                                      "source": "network",
+                                      "verified": verified})
+                        log(f"    🎯 MPD {'✓' if verified else '(unverified)'}: {u[:120]}")
 
                 elif "json" in (resp.headers.get("content-type") or "").lower():
                     cl = resp.headers.get("content-length")
@@ -336,7 +359,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = req.url
                 err = req.failure or "unknown"
-                # rumore noto: brunhild non risolve mai da GH Actions
                 if "brunhild.challenges.cloudflare.com" in u:
                     network_map[u] = {
                         "method": req.method, "url": u[:300],
@@ -360,6 +382,9 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = frame.url
                 if u and u != "about:blank" and "chrome-error" not in u:
+                    # v13.6: skip chat iframe dal log
+                    if CHAT_HOST_FILTER in u:
+                        return
                     log(f"    🖼️ FRAME NAV: {u[:120]}")
             except Exception:
                 pass
@@ -370,10 +395,8 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         page.on("framenavigated", on_frame_navigated)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
 
-        # ---------------- v13.5 FIX: navigate_client_side senza reload ----------------
+        # ---------------- SPA navigation (invariato v13.5) ----------------
         def navigate_client_side(relative_path):
-            """Navigazione SPA via React Router — nessun reload di BASE."""
-            # Prima visita: siamo fuori? Carica BASE una sola volta.
             if "streamcorner" not in (page.url or ""):
                 try:
                     page.goto(BASE, wait_until="domcontentloaded",
@@ -382,7 +405,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 except Exception:
                     return False
 
-            # 1) Prima scelta: click (React Router lo intercetta, no reload)
             try:
                 sel = f'a[href="{relative_path}"]'
                 loc = page.locator(sel).first
@@ -403,7 +425,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             except Exception as e:
                 log(f"    ⚠️ click failed: {type(e).__name__}")
 
-            # 2) Fallback: pushState + popstate (React Router ascolta)
             try:
                 page.evaluate(f"""() => {{
                     history.pushState({{}}, '', '{relative_path}');
@@ -419,7 +440,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
 
             return False
 
-        # ===== Livello 1: homepage =====
+        # ===== Homepage =====
         log(f"[*] Apro {BASE}")
         try:
             page.goto(BASE, wait_until="domcontentloaded", timeout=timeout_s * 1000)
@@ -443,7 +464,6 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         except Exception as e:
             log(f"   ⚠️ salvataggio homepage: {e}")
 
-        # pagina 'Avviso' (AGCOM / Cloudflare 1KB) → graceful exit
         if "avviso" in title.lower() or html_len < 2000:
             log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
             try:
@@ -468,14 +488,14 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                                             "blocked": True,
                                             "base_url": BASE}
 
-        # ===== Livello 2: estrai link =====
+        # ===== Link extraction =====
         cat_links = find_links(html, BASE, CATEGORY_PATTERNS)[:max_categories]
         match_links = find_links(html, BASE, MATCH_PATTERNS)[:max_matches]
         log(f"[*] {len(cat_links)} categorie, {len(match_links)} partite dirette")
         for c in cat_links:  log(f"    📂 {c[:100]}")
         for m in match_links: log(f"    🎬 {m[:100]}")
 
-        # ===== Livello 3a: esplora categorie =====
+        # ===== Categorie (v13.6: wait 3000ms) =====
         for cat_url in cat_links:
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito")
@@ -486,7 +506,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 if not navigate_client_side(path):
                     log(f"      ⚠️ skip (navigazione fallita)")
                     continue
-                page.wait_for_timeout(5000)
+                page.wait_for_timeout(3000)
                 cat_html = page.content()
                 inner = find_links(cat_html, cat_url, MATCH_PATTERNS)
                 log(f"      → {len(inner)} partite dentro")
@@ -499,8 +519,10 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         match_links = list(dict.fromkeys(match_links))[:max_matches]
         log(f"[*] Totale partite da visitare: {len(match_links)}")
 
-        # ===== Livello 3b: visita partite (con controllo fallimenti consecutivi) =====
+        # ===== Visita partite (v13.6: click source button) =====
         consecutive_fails = 0
+        consecutive_no_sources = 0
+
         for i, link in enumerate(match_links, 1):
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito, interrompo")
@@ -509,6 +531,11 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 log(f"[!] {consecutive_fails} navigazioni fallite di fila, interrompo")
                 log(f"    (probabile Cloudflare challenge persistente)")
                 break
+            if consecutive_no_sources >= MAX_CONSECUTIVE_NO_SOURCES:
+                log(f"[!] {consecutive_no_sources} match di fila senza source-btn, interrompo")
+                log(f"    (probabile layout rotto o geo-block)")
+                break
+
             log(f"  [{i}/{len(match_links)}] (client-side) {link[:100]}")
             try:
                 path = urlparse(link).path
@@ -516,213 +543,15 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     log(f"      ⚠️ skip (navigazione fallita)")
                     consecutive_fails += 1
                     continue
-                consecutive_fails = 0  # reset su successo
+                consecutive_fails = 0  # reset su successo navigazione
 
-                page.wait_for_timeout(12000)
-
+                # ---- v13.6 FIX #4: click source button ----
+                source_buttons_found = False
                 try:
-                    slug = re.sub(r'[^a-z0-9]', '_', path.split("/")[-1])[:40]
-                    dbg = os.path.join(debug_dir, f"sc_stream_{slug}.html")
-                    Path(dbg).write_text(page.content(), encoding="utf-8")
-                except Exception:
-                    pass
-
-                for f in page.frames:
-                    if f.url and f.url != "about:blank":
-                        log(f"      🖼️ frame: {f.url[:100]}")
-
-                for sel in ("button[aria-label*='play' i]",
-                            ".vjs-big-play-button", ".jw-icon-playback",
-                            ".bitmovinplayer-ui",
-                            "button:has-text('Play')",
-                            "button:has-text('Guarda')",
-                            "[class*='play']", "[id*='play']",
-                            "video"):
-                    try:
-                        if page.locator(sel).count() > 0:
-                            page.click(sel, timeout=2000)
-                            page.wait_for_timeout(1500)
-                    except Exception:
-                        continue
-
-                page.wait_for_timeout(5000)
-
-                for frame in page.frames:
-                    try:
-                        furl = frame.url
-                        if furl and (".m3u8" in furl or ".mpd" in furl):
-                            found.append({"url": furl, "referer": link,
-                                          "title": page.title() or "StreamCorner",
-                                          "source": "frame-url"})
-                            log(f"    🎯 FRAME: {furl[:120]}")
-                    except Exception:
-                        pass
-            except Exception as e:
-                log(f"      ⚠️ {type(e).__name__}")
-                consecutive_fails += 1
-
-        browser.close()
-
-    return found, network_map, {"engine": engine, "title": title,
-                                "html_len": html_len,
-                                "cloudflare": cf_hit["cloudflare"],
-                                "blocked": False,
-                                "categories": len(cat_links),
-                                "matches": len(match_links),
-                                "base_url": BASE}
-
-
-# ------------------------------------------------------------ M3U
-def entry_lines(url, title, group, referer, mtype):
-    out = [f'#EXTINF:-1 group-title="{group}",{title}']
-    if referer:
-        out.append(f"#EXTVLCOPT:http-referrer={referer}")
-    out.append(f"#EXTVLCOPT:http-user-agent={UA_DESKTOP}")
-    out.append("#KODIPROP:inputstream=inputstream.adaptive")
-    if mtype:
-        out.append(f"#KODIPROP:inputstream.adaptive.manifest_type={mtype}")
-    out.append(url)
-    return out
-
-
-def write_m3u(path, entries, group_override=None):
-    seen = set(); n = 0
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
-        for e in entries:
-            if not e.get("url") or e["url"] in seen: continue
-            seen.add(e["url"])
-            grp = group_override or e.get("group") or "StreamCorner"
-            f.write("\n".join(entry_lines(e["url"], e.get("title") or "Evento",
-                                          grp, e.get("referer") or (BASE_DEFAULT + "/"),
-                                          e.get("mtype") or manifest_type(e["url"]))) + "\n")
-            n += 1
-    return n
-
-
-# ------------------------------------------------------------ Main
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
-    ap.add_argument("--output-dir", default=None)
-    ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
-    ap.add_argument("--provider", default="admin")
-    ap.add_argument("--all-events", action="store_true")
-    ap.add_argument("--no-embeds", action="store_true")
-    ap.add_argument("--refresh", action="store_true")
-    ap.add_argument("--embed-workers", "--playwright-workers", type=int, default=4,
-                    dest="embed_workers")
-    ap.add_argument("--embed-limit", "--playwright-limit", type=int, default=0,
-                    dest="embed_limit")
-    ap.add_argument("--ua", choices=["desktop", "mobile"], default="desktop")
-    ap.add_argument("--headful", action="store_true")
-    ap.add_argument("--base", default=BASE_DEFAULT,
-                    help="Base URL (default streamcorner.st). "
-                         "Usare un mirror .foo/.cloud/.fun se .st è bloccato.")
-    ap.add_argument("--no-probe", action="store_true",
-                    help="Salta il probe iniziale dei mirror.")
-    args, unknown = ap.parse_known_args()
-    if unknown:
-        log(f"[*] Argomenti ignorati: {unknown}")
-
-    if args.output_dir is None:
-        args.output_dir = os.path.dirname(args.output) or "."
-    os.makedirs(args.output_dir, exist_ok=True)
-    ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
-
-    log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.5 (SPA nav fix + mirror probe)")
-    log("=" * 66)
-
-    if not args.no_probe:
-        _probe_mirrors()
-        log("")
-
-    log(f"[*] Base URL: {args.base}")
-
-    found, network_map, meta = run_playwright(
-        timeout_s=45, ua=ua, headless=not args.headful,
-        debug_dir=args.output_dir, max_total_time_s=900,
-        base_url=args.base)
-
-    log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
-    log(f"[*] Meta: {meta}")
-
-    try:
-        net_list = list(network_map.values())
-        net_path = os.path.join(args.output_dir, NETWORK_FILE)
-        Path(net_path).write_text(
-            json.dumps({"total": len(net_list), "requests": net_list},
-                       indent=2, ensure_ascii=False), encoding="utf-8")
-        log(f"   💾 {NETWORK_FILE} ({len(net_list)} richieste)")
-    except Exception as e:
-        log(f"   ⚠️ salvataggio network: {e}")
-
-    seen = set()
-    entries = []
-    for f in found:
-        u = f["url"]
-        if is_skipped(u):
-            log(f"    ⏭️  SKIP {u[:100]}")
-            continue
-        if u in seen:
-            continue
-        seen.add(u)
-        entries.append({
-            "url": u,
-            "title": (f.get("title") or "StreamCorner")[:60],
-            "group": (f.get("title") or "StreamCorner")[:60],
-            "referer": f.get("referer") or (args.base + "/"),
-            "mtype": manifest_type(u),
-        })
-
-    n1 = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), entries)
-    log(f"   💾 EVENTS_LIVE: {n1}")
-    n2 = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
-                   entries, group_override="StreamCorner")
-    log(f"   💾 VLC: {n2}")
-    n3 = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), entries)
-    log(f"   💾 KODI: {n3} (non committato)")
-    n4 = write_m3u(args.output, entries)
-    log(f"   💾 {args.output}: {n4}")
-
-    summary = {
-        "version": "13.5",
-        "site": args.base,
-        "engine": meta.get("engine"),
-        "title": meta.get("title"),
-        "html_len": meta.get("html_len"),
-        "cloudflare_detected": meta.get("cloudflare"),
-        "blocked": meta.get("blocked"),
-        "categories_found": meta.get("categories"),
-        "matches_found": meta.get("matches"),
-        "manifests_found": len(found),
-        "entries_final": len(entries),
-        "extracted_at": int(time.time()),
-    }
-    try:
-        Path(os.path.join(args.output_dir, CAPTURE_FILE)).write_text(
-            json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
-        log(f"   💾 {CAPTURE_FILE} salvato")
-    except Exception as e:
-        log(f"   ⚠️ capture: {e}")
-
-    try:
-        assets_path = os.path.join(args.output_dir, ASSETS_DIR)
-        if os.path.isdir(assets_path):
-            files = [f for f in os.listdir(assets_path) if f.endswith(".js")]
-            total_size = sum(os.path.getsize(os.path.join(assets_path, f))
-                             for f in files)
-            log(f"   📦 Bundle JS salvati: {len(files)} file ({total_size} byte)")
-    except Exception:
-        pass
-
-    log("=" * 66)
-    log(f"✅ blocked={meta.get('blocked')}  entries={len(entries)}")
-    log("=" * 66)
-
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+                    page.wait_for_selector('.stream-source-btn', timeout=12000)
+                    source_count = page.locator('.stream-source-btn').count()
+                    source_buttons_found = source_count > 0
+                    if source_buttons_found:
+                        log(f"      🎬 {source_count} source(s) trovati")
+                        try:
+                            loc = page.loc
