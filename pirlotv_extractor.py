@@ -1,30 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PirloTV / Rojadirecta / Liveru Extractor v1.2
+PirloTV / Rojadirecta / Liveru Extractor v1.3
 
-Changelog v1.1 → v1.2:
-- decode_obfuscated_url (sostituisce decode_tR):
-  * accetta qualsiasi nome variabile per l'array (Lg, tR, XY, ecc.)
-  * trova k tramite FuncA()+FuncB() (cerca i return value delle due funzioni)
-  * fallback k = NUM+NUM o somma dei primi due `return N` trovati
-- resolve_js_redirect:
-  * segue window.location.replace("URL") / window.location.href = "URL"
-  * segue il pattern `const NUEVO = "..."; window.location.replace(NUEVO + RUTA)`
-  * segue meta http-equiv="refresh"
-- fetch_embed_scripts:
-  * scarica i <script src="...embed*.js"> esterni (es. embedt1.js)
-  * cerca m3u8/mpd o pattern offuscati dentro il JS
-- process_player riordinato:
-  1. manifest diretto
-  2. offuscamento generico (Lg/tR/…)
-  3. regex m3u8/mpd (più tolleranti)
-  4. atob automatico
-  5. **redirect JS** (nuovo) → ricorsione su URL risolto
-  6. iframe
-  7. **script embedt1.js** (nuovo) → cerca dentro il JS
-  8. JSON con campo url
-- Diagnostica estesa: stampa primi 40 caratteri del playbackURL decodificato
+Changelog v1.2 → v1.3:
+- process_embed_script riscritta:
+  * gestisce document.write('<ifr'+'ame src="https://.../'+ fid +'.php?...">')
+  * ritorna ("NEED_FID", prefix, suffix) quando l'URL contiene {fid}
+  * il chiamante (process_player) sostituisce fid e prosegue
+- process_player sezione 7):
+  * riconosce il tuple NEED_FID
+  * estrae fid dall'HTML del chiamante (es. <script>fid="canal90";</script>)
+  * costruisce l'URL finale e ricorre con depth+1
+- Log più chiaro su script embed
+
+Invariato da v1.2:
+- decode_obfuscated_url generico (Lg/tR/qualsiasi nome array)
+- resolve_js_redirect (window.location.replace(NUEVO + RUTA))
+- diagnostica 🔬 completa
+- retry UA iPhone su 403
+- salvataggio HTML/JS in pirlotv_debug/
 """
 from __future__ import annotations
 import argparse, base64, json, os, re, sys, time
@@ -82,7 +77,6 @@ SKIP_HOSTS = {
 
 DRM_HINTS = ("edef8ba9", "9a04f079", "1077efecc0b24d02")
 
-# Script embed da fetchare se tutto il resto fallisce
 EMBED_SCRIPT_PATTERNS = [
     r'src=["\']([^"\']*embed[^"\']*\.js[^"\']*)["\']',
     r'src=["\']([^"\']*player[^"\']*\.js[^"\']*)["\']',
@@ -164,8 +158,6 @@ def decode_r_param(match_url):
 # Decodifica offuscamento generico (Lg=, tR=, XY=, ...)
 # -------------------------------------------------------------------
 def _find_k_from_functions(html):
-    """k = FuncA() + FuncB() o k = FuncA()*FuncB() o k = NUM+NUM."""
-    # Pattern 1: var k = FuncA() + FuncB()
     m = re.search(r'var\s+k\s*=\s*(\w+)\s*\(\s*\)\s*([+\-*])\s*(\w+)\s*\(\s*\)', html)
     if m:
         f1, op, f2 = m.groups()
@@ -176,14 +168,12 @@ def _find_k_from_functions(html):
             if op == "+": return n1 + n2
             if op == "-": return n1 - n2
             if op == "*": return n1 * n2
-    # Pattern 2: var k = NUM1 + NUM2
     m = re.search(r'var\s+k\s*=\s*(\d+)\s*([+\-*])\s*(\d+)', html)
     if m:
         n1, op, n2 = int(m.group(1)), m.group(2), int(m.group(3))
         if op == "+": return n1 + n2
         if op == "-": return n1 - n2
         if op == "*": return n1 * n2
-    # Pattern 3: k = sum delle prime due funzioni che ritornano numeri
     consts = re.findall(r'function\s+\w+\s*\(\s*\)\s*\{\s*return\s+(\d+)\s*;?\s*\}', html)
     if len(consts) >= 2:
         return sum(int(c) for c in consts[:2])
@@ -191,11 +181,6 @@ def _find_k_from_functions(html):
 
 
 def decode_obfuscated_url(html):
-    """
-    Cerca array tipo `Lg=[[idx,"b64"],...]; Lg.sort(...); k=...; Lg.forEach(...)`
-    Supporta qualsiasi nome di variabile (Lg, tR, XY, ecc.).
-    Ritorna l'URL decodificato o None.
-    """
     array_matches = re.findall(
         r'(\w+)\s*=\s*\[((?:\[\s*\d+\s*,\s*"[^"]+"\s*\](?:\s*,\s*)?)+)\]\s*;',
         html
@@ -225,8 +210,7 @@ def decode_obfuscated_url(html):
                 if 0 < c < 0x110000:
                     chars.append(chr(c))
             url = "".join(chars)
-            # Log diagnostica: primi 40 caratteri
-            log(f"         → decodificato: {url[:40]!r}")
+            log(f"         → decodificato: {url[:60]!r}")
             if url.startswith("http"):
                 return url
         except Exception as e:
@@ -240,16 +224,6 @@ def decode_obfuscated_url(html):
 # Risoluzione redirect JavaScript
 # -------------------------------------------------------------------
 def resolve_js_redirect(html, base_url):
-    """
-    Cerca redirect JS o meta refresh nell'HTML e ritorna l'URL assoluto.
-    Supporta:
-      - const NUEVO = "URL"; window.location.replace(NUEVO + RUTA)
-      - window.location.replace("URL")
-      - window.location.href = "URL"
-      - window.location.assign("URL")
-      - <meta http-equiv="refresh" content="0;url=URL">
-    """
-    # Pattern 1: const NUEVO = "URL"; ... window.location.replace(NUEVO + RUTA)
     m = re.search(
         r'(?:const|let|var)\s+(\w+)\s*=\s*["\'](https?://[^"\']+)["\']\s*;[\s\S]{0,200}?window\.location\.(?:replace|assign|href\s*=)\s*\(\s*'
         + r'\1' + r'\s*\+\s*([^)]+)\)',
@@ -264,11 +238,9 @@ def resolve_js_redirect(html, base_url):
             full = nuevo_dominio + path
             log(f"      ↪️ redirect JS (dominio+path): {full[:100]}")
             return full
-        # se non riconosce pathname, prova a usare solo nuevo_dominio
         log(f"      ↪️ redirect JS (solo dominio): {nuevo_dominio[:100]}")
         return nuevo_dominio
 
-    # Pattern 2: window.location.replace/href/assign("URL")
     m = re.search(
         r'window\.location\.(?:replace|assign|href\s*=)\s*\(?\s*["\']([^"\']+)["\']',
         html
@@ -283,7 +255,6 @@ def resolve_js_redirect(html, base_url):
             log(f"      ↪️ redirect JS relativo: {full[:100]}")
             return full
 
-    # Pattern 3: meta refresh
     m = re.search(
         r'<meta[^>]+http-equiv=["\']refresh["\'][^>]+content=["\']\d+\s*;\s*url=([^"\']+)["\']',
         html, re.I
@@ -316,13 +287,18 @@ def find_embed_scripts(html, base):
 
 
 def process_embed_script(script_url, referer):
-    """Scarica e analizza un JS embed (es. embedt1.js)."""
+    """
+    Scarica e analizza un JS embed (es. embedt1.js).
+    Ritorna:
+      - stringa URL (m3u8/mpd/player finale)
+      - tuple ("NEED_FID", prefix, suffix) se serve sostituire {fid}
+      - None se non estraibile
+    """
     st, js = http_get(script_url, referer=referer)
     if not st or st != 200 or not js:
         log(f"      ⚠️ embed script HTTP {st}")
         return None
 
-    # Salva per debug
     try:
         safe_host = re.sub(r'[^a-z0-9]', '_', urlparse(script_url).hostname or "")[:30]
         safe_name = re.sub(r'[^a-z0-9]', '_', script_url.split("/")[-1])[:30]
@@ -332,12 +308,51 @@ def process_embed_script(script_url, referer):
     except Exception:
         pass
 
-    # Cerca offuscamento
+    # --- Pattern 1: document.write con iframe HARDCODED ---
+    # es. document.write('<iframe src="https://host/path">')
+    for m in re.finditer(r'document\.write\s*\(\s*["\']([^"\']{20,})["\']', js):
+        chunk = m.group(1)
+        # unisci stringhe concatenate
+        chunk_clean = chunk.replace("'+", "").replace("+'", "").replace("\"+", "").replace("+\"", "")
+        m2 = re.search(r'(https?://[^"\'\s]+)', chunk_clean)
+        if m2:
+            target = m2.group(1)
+            log(f"      📜 embed script → iframe hardcoded: {target[:100]}")
+            return target
+
+    # --- Pattern 2: document.write con iframe + fid ---
+    # es. document.write('<ifr'+'ame src="https://host/path/'+ fid +'.php?...">')
+    # 2a) versione spezzata: '<ifr'+'ame src="HOST/'+ fid +'.php?..."'
+    m = re.search(
+        r'document\.write\s*\(\s*["\'][^"\']*?src\s*=\s*["\']'
+        r'(https?://[^"\']*?/)'                 # prefix (fino a / prima di fid)
+        r'["\']\s*\+\s*fid\s*\+\s*'
+        r'["\']([^"\']*)["\']',                 # suffix (es. ".php?width=..")
+        js, re.I
+    )
+    if m:
+        prefix = m.group(1)
+        suffix = m.group(2)
+        log(f"      📜 embed script → NEED_FID: {prefix!r} + fid + {suffix!r}")
+        return ("NEED_FID", prefix, suffix)
+
+    # 2b) versione intera ma con fid in espressione
+    m = re.search(
+        r'document\.write\s*\(\s*["\'][^"\']*?(https?://[^"\']*?)["\']\s*\+\s*fid\s*\+\s*["\']([^"\']*)["\']',
+        js, re.I
+    )
+    if m:
+        prefix = m.group(1)
+        suffix = m.group(2)
+        log(f"      📜 embed script → NEED_FID (alt): {prefix!r} + fid + {suffix!r}")
+        return ("NEED_FID", prefix, suffix)
+
+    # --- Fallback: offuscamento (Lg/tR/…) ---
     decoded = decode_obfuscated_url(js)
     if decoded:
         return decoded
 
-    # Cerca m3u8/mpd diretto
+    # --- Fallback: m3u8/mpd diretto ---
     for pat in (
         r'https?://[^"\'\\\s]+\.m3u8[^"\'\\\s]*',
         r'https?://[^"\'\\\s]+\.mpd[^"\'\\\s]*',
@@ -349,7 +364,7 @@ def process_embed_script(script_url, referer):
             log(f"      🎯 m3u8 in embed script: {u[:100]}")
             return u
 
-    # Cerca atob() con contenuto interessante
+    # --- Fallback: atob() con contenuto interessante ---
     for m in re.finditer(r'atob\(["\']([A-Za-z0-9+/=]{30,})["\']\)', js):
         try:
             decoded_b64 = base64.b64decode(m.group(1) + "=" * (-len(m.group(1)) % 4)).decode("utf-8", "replace")
@@ -508,7 +523,7 @@ def process_player(player_url, referer=None, depth=0):
         except Exception:
             pass
 
-    # 5) Redirect JavaScript (nuovo!)
+    # 5) Redirect JavaScript
     redirect_url = resolve_js_redirect(html, player_url)
     if redirect_url:
         log(f"      🔀 seguo redirect JS → {redirect_url[:100]}")
@@ -526,12 +541,27 @@ def process_player(player_url, referer=None, depth=0):
         if sub:
             return sub
 
-    # 7) Script embed esterni (embedt1.js)
+    # 7) Script embed esterni (embedt1.js) — v1.3 con NEED_FID
     scripts = find_embed_scripts(html, player_url)
     for s_url in scripts:
         log(f"      📜 script embed: {s_url[:100]}")
         decoded = process_embed_script(s_url, referer=player_url)
         if decoded:
+            # caso NEED_FID
+            if isinstance(decoded, tuple) and decoded[0] == "NEED_FID":
+                _, prefix, suffix = decoded
+                fid_m = re.search(r'fid\s*=\s*["\']([^"\']+)["\']', html)
+                if fid_m:
+                    fid = fid_m.group(1)
+                    full_url = f"{prefix}{fid}{suffix}"
+                    log(f"      🔀 embed URL con fid: {full_url[:100]}")
+                    sub = process_player(full_url, referer=player_url, depth=depth + 1)
+                    if sub:
+                        return sub
+                else:
+                    log(f"      ⚠️ NEED_FID ma nessun fid nell'HTML")
+                continue
+            # caso normale: stringa URL
             log(f"      🎯 script embed → {decoded[:100]}")
             best = pick_best_variant(decoded, referer=player_url)
             mtype = "dash" if ".mpd" in best else "hls"
@@ -628,7 +658,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     log("=" * 66)
-    log("📡 PIRLOTV EXTRACTOR v1.2 (redirect JS + offuscamento generico + embedt1.js)")
+    log("📡 PIRLOTV EXTRACTOR v1.3 (redirect JS + Lg generico + embedt1.js)")
     log("=" * 66)
 
     all_streams = []
