@@ -1,13 +1,13 @@
 {
   "site": "https://streamcorner.st",
   "engine": "patchright",
-  "title": "Ci siamo quasi…",
-  "html_len": 28447,
+  "title": "StreamCorner - Free Live Sports, 24/7 Channels, MLB, NFL, SOCCER, UFC, PPV Events, NBA League Pass Live and VOD Full HQ, Sling TV, Paramount+",
+  "html_len": 101730,
   "cloudflare_detected": true,
   "blocked": false,
-  "categories_found": 0,
-  "matches_found": 0,
+  "categories_found": 3,
+  "matches_found": 25,
   "manifests_found": 0,
   "entries_final": 0,
-  "extracted_at": 1792324071
+  "extracted_at": 1792326726
 }
