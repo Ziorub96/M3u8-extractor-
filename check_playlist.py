@@ -1,33 +1,38 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-check_playlist.py — v3.2
-Checker IPTV con classificazione intelligente dei fallimenti.
-- 502/503/504 + token scaduti → mantenuti (temporaneo)
-- 405, 401/403 senza token, host morti → scartati
-- Header per host esigenti (DAMITV, Daddylive, CDN)
+check_playlist.py — v3.4
+
+Cambiamenti chiave:
+- SMART UA: legge #EXTVLCOPT:http-user-agent dal blocco. Se presente, usa
+  quello. Se assente, prova iPhone prima (DAMITV), poi desktop.
+- PRESERVA blocchi interi: #EXTVLCOPT e altri commenti restano nel file
+  finale (necessari per il player TV).
+- DROP severo: se il check fallisce con entrambi gli UA, lo stream viene
+  scartato (niente più "keep" di comodo).
+- NESSUN # CHECK: scritto nel file finale.
+- Passa referer/origin dal blocco al check.
 """
-import re, sys, time, random, subprocess
+import re, sys, time, random
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 try:
     from curl_cffi import requests as http
-    IMP = {"impersonate": "chrome124"}
 except ImportError:
     import requests as http
-    IMP = {}
 
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
 workers = 16
-timeout = 5
 HTTP_TIMEOUT = 8
 
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-      "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+             "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+             "Version/17.0 Mobile Safari/604.1")
 
-# Host morti: scartati SENZA test
 DEAD_HOSTS = {
     "23.237.104.106", "cache0.wonvt.st",
     "edgestream1.pro", "edgestream2.pro", "edgestream3.pro",
@@ -51,26 +56,9 @@ DEAD_HOSTS = {
     "tvsen5.aynaott.com", "tvsen5.aynascope.net",
     "d2xeo83q8fcni6.cloudfront.net", "d12a2vxqkkh1bo.cloudfront.net",
     "live-stream.iblups.com", "soultv.com.br",
-    # Domini StreamCorner morti/bloccati
     "streamcorner.st", "streamcorner.cloud", "streamcorner.fyi",
     "streamcorner.vu", "streamcorner.foo", "streamcorner.info",
     "streamcorner.xyz", "streamcorner.to", "streamcorner.site",
-}
-
-# Header specifici per host esigenti (NON morti)
-HOST_HEADERS = {
-    "messi.damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    "damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    "ondemand.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    "embedindia.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    "cdnlivetv.tv": {"Referer": "https://cdnlivetv.tv/", "Origin": "https://cdnlivetv.tv"},
-    "daddylive.app": {"Referer": "https://daddylive.app/", "Origin": "https://daddylive.app"},
-    "dlhd.so": {"Referer": "https://dlhd.so/", "Origin": "https://dlhd.so"},
-    "dokagents.site": {"Referer": "https://dokagents.site/", "Origin": "https://dokagents.site"},
-    "xameleon.phantemlis.top": {"Referer": "https://xameleon.phantemlis.top/", "Origin": "https://xameleon.phantemlis.top"},
-    "bolaloca.my": {"Referer": "https://bolaloca.my/", "Origin": "https://bolaloca.my"},
-    "cuttingfame.net": {"Referer": "https://cuttingfame.net/", "Origin": "https://cuttingfame.net"},
-    "p13.usnlive.com": {"Referer": "https://p13.usnlive.com/", "Origin": "https://p13.usnlive.com"},
 }
 
 
@@ -79,12 +67,9 @@ def host_of(u):
 
 
 def is_embed(u):
-    u = u.lower()
-    return any(p in u for p in (
+    return any(p in u.lower() for p in (
         "getsugatensho", "sportsembed", "embed.st/embed/", "pandecocogaming.sbs",
-        "embedhd.", "embedme.st", "taifood-blog.asia", "streamsgate.co",
-        "streamcorner.xyz",
-    ))
+        "embedhd.", "embedme.st", "taifood-blog.asia", "streamsgate.co"))
 
 
 def is_api_endpoint(u):
@@ -92,137 +77,107 @@ def is_api_endpoint(u):
     return "workers.dev/?p=" in u or "workers.dev?p=" in u
 
 
-def is_token_url(u):
-    u = u.lower()
-    return any(k in u for k in ("token=", "st=", "tk=", "?e=", "&e="))
-
-
-def get_headers(url):
-    h = {"User-Agent": UA, "Accept": "*/*", "Accept-Language": "en-US,en;q=0.9"}
-    host = host_of(url)
-    for dom, extra in HOST_HEADERS.items():
-        if dom in host or dom in url:
-            h.update(extra)
-            return h
+def extract_block_headers(block):
+    """
+    Legge #EXTVLCOPT:* dal blocco (tra #EXTINF e URL finale).
+    Ritorna dict con keys User-Agent, Referer, Origin.
+    """
+    h = {}
+    for line in block[1:-1]:
+        s = line.strip()
+        if s.startswith("#EXTVLCOPT:http-user-agent="):
+            h["User-Agent"] = s.split("=", 1)[1]
+        elif s.startswith("#EXTVLCOPT:http-referrer="):
+            h["Referer"] = s.split("=", 1)[1]
+        elif s.startswith("#EXTVLCOPT:http-origin="):
+            h["Origin"] = s.split("=", 1)[1]
     return h
 
 
-def classify_failure(status, url):
-    if status in (502, 503, 504):
-        return "keep"
-    if status == 429:
-        return "keep"
-    if status in (401, 403, 404) and is_token_url(url):
-        return "keep"
-    if status == 405:
-        return "drop"
-    return "drop"
+def check_once(url, ua, extra_headers=None):
+    headers = {
+        "User-Agent": ua,
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+    if extra_headers:
+        for k, v in extra_headers.items():
+            if k.lower() not in ("user-agent",):  # UA gestito sopra
+                headers[k] = v
 
-
-def http_check(url):
-    headers = get_headers(url)
-    if any(h in url for h in ("cdnlivetv.tv", "bolaloca.my", "cuttingfame.net")):
-        time.sleep(random.uniform(0.3, 0.8))
     try:
-        s = http.Session(impersonate="chrome124")
-        r = s.get(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True)
-        cookies = "; ".join(f"{k}={v}" for k, v in s.cookies.get_dict().items())
+        kw = {"impersonate": "chrome124"} if "curl_cffi" in str(http) else {}
+        r = http.get(url, headers=headers, timeout=HTTP_TIMEOUT,
+                     allow_redirects=True, verify=False, **kw)
         if r.status_code in (429, 502, 503):
             time.sleep(2)
-            r = s.get(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True)
+            r = http.get(url, headers=headers, timeout=HTTP_TIMEOUT,
+                         allow_redirects=True, verify=False, **kw)
         if r.status_code >= 400:
-            return False, f"HTTP {r.status_code}", cookies, r.status_code
-        text = r.content[:8192].decode("utf-8", errors="ignore").lower()
-        if any(w in text for w in ("offline", "error", "denied", "invalid",
-                                    "expired", "not found")):
-            return False, "contenuto_errore", cookies, r.status_code
-        if len(text.strip()) < 50:
-            return False, "manifest_troppo_corto", cookies, r.status_code
-        if "#extm3u" not in text:
-            return False, "body_non_m3u8", cookies, r.status_code
-        seg_ok, seg_msg = check_first_segment(text, url)
-        if seg_ok:
-            return True, f"ok ({seg_msg})", cookies, r.status_code
-        if "#ext-x-stream-inf" in text or "#ext-x-targetduration" in text:
-            return True, "ok (manifest-only)", cookies, r.status_code
-        return False, f"segment_fail: {seg_msg}", cookies, r.status_code
+            return False, f"HTTP {r.status_code}"
+        body = r.content[:8192]
+        if not body.startswith(b"#EXTM3U") and not body.startswith(b"<MPD"):
+            return False, "not_manifest"
+
+        text = body.decode("utf-8", errors="ignore")
+        segs = [l.strip() for l in text.splitlines()
+                if l.strip() and not l.startswith("#")]
+        if segs:
+            seg = segs[0]
+            if not seg.startswith("http"):
+                seg = urljoin(url, seg)
+            try:
+                rs = http.get(seg, headers=headers, timeout=HTTP_TIMEOUT,
+                              stream=True, verify=False, **kw)
+                if rs.status_code >= 400:
+                    return False, f"seg_{rs.status_code}"
+                chunk = next(rs.iter_content(64), b"")
+                if chunk[:1] == b"\x47" or b"ftyp" in chunk[:32]:
+                    return True, "ok"
+            except Exception:
+                pass
+        if "#EXT-X-STREAM-INF" in text or "#EXT-X-TARGETDURATION" in text:
+            return True, "ok_manifest_only"
+        return False, "seg_fail"
     except Exception as e:
-        return False, f"err_{type(e).__name__}", "", None
+        return False, f"err_{type(e).__name__}"
 
 
-def check_first_segment(manifest, base_url):
-    try:
-        lines = [l.strip() for l in manifest.splitlines()
-                 if l.strip() and not l.startswith("#")]
-        if not lines:
-            return False, "no_segments"
-        seg = lines[0]
-        if not seg.startswith("http"):
-            seg = urljoin(base_url, seg)
-        r = http.get(seg, headers=get_headers(seg), timeout=HTTP_TIMEOUT, stream=True)
-        if r.status_code >= 400:
-            return False, f"seg_http_{r.status_code}"
-        chunk = next(r.iter_content(512), b"")
-        if chunk[:1] == b"\x47":
-            return True, "ts"
-        if b"ftyp" in chunk[:64]:
-            return True, "mp4"
-        if chunk[:4] == b"RIFF" and b"WEBP" in chunk[:16]:
-            return True, "webp"
-        return False, f"unknown_{chunk[:4].hex()}"
-    except Exception as e:
-        return False, f"seg_err_{type(e).__name__}"
+def check_block(block):
+    """Smart: usa UA del blocco. Se assente, prova iPhone poi desktop."""
+    url = block[-1]
+    block_hdrs = extract_block_headers(block)
 
+    if "User-Agent" in block_hdrs:
+        # Il blocco ha già UA specifico → usa quello (DAMITV, DokAgents)
+        ok, msg = check_once(url, block_hdrs["User-Agent"], block_hdrs)
+        return ok, msg
 
-def ffprobe_check(url, cookies=""):
-    h = get_headers(url)
-    if cookies:
-        h["Cookie"] = cookies
-    hs = "\r\n".join(f"{k}: {v}" for k, v in h.items()) + "\r\n"
-    cmd = ["ffprobe", "-v", "error", "-show_entries", "stream=codec_type",
-           "-of", "default=noprint_wrappers=1:nokey=1",
-           "-timeout", str(timeout * 1_000_000),
-           "-analyzeduration", "1000000", "-probesize", "1000000",
-           "-headers", hs, "-i", url]
-    try:
-        r = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                           text=True, timeout=timeout + 2, check=False)
-        out = (r.stdout or "").strip().lower()
-        if r.returncode == 0 and out and ("audio" in out or "video" in out):
-            return True, "ffprobe_ok"
-        return False, ((r.stderr or "").strip().splitlines()[-1][:120]
-                       if r.stderr else "ffprobe_fail")
-    except Exception as e:
-        return False, str(e)[:120]
+    # Nessun UA specifico: prova iPhone prima (colpisce DAMITV)
+    ok, msg = check_once(url, UA_IPHONE, block_hdrs)
+    if ok:
+        return True, "iphone"
+
+    # Poi desktop
+    time.sleep(0.3)
+    ok, msg = check_once(url, UA_DESKTOP, block_hdrs)
+    return ok, msg
 
 
 def process_block(block):
     url = block[-1]
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
-        return block, False, "youtube_escluso"
+        return block, False, "youtube"
     if is_embed(url):
-        return block, False, "embed_html"
+        return block, False, "embed"
     if is_api_endpoint(url):
-        return block, False, "api_endpoint"
+        return block, False, "api"
     host = host_of(url)
     if host in DEAD_HOSTS or any(host.startswith(d) for d in DEAD_HOSTS):
         return block, False, "host_morto"
-    time.sleep(random.uniform(0.1, 0.3))
-    ok, msg, cookies, status = http_check(url)
-    if ok:
-        if msg.startswith("ok (ts") or msg.startswith("ok (mp4") or msg.startswith("ok (webp"):
-            return block, True, msg
-        hard_ok, _hard_msg = ffprobe_check(url, cookies)
-        if hard_ok:
-            return block, True, msg
-        return block, True, msg
-    action = classify_failure(status, url)
-    if action == "keep":
-        return block, None, f"{msg} (mantenuto)"
-    hard_ok, _hard_msg = ffprobe_check(url, cookies)
-    if hard_ok:
-        return block, True, "ffprobe_ok"
-    return block, False, msg[:200]
+    time.sleep(random.uniform(0.1, 0.25))
+    ok, msg = check_block(block)
+    return block, ok, msg
 
 
 def main():
@@ -231,22 +186,31 @@ def main():
     except FileNotFoundError:
         print(f"❌ {playlist} non trovato")
         sys.exit(1)
+
+    # Parsing pulito: mantiene EXTVLCOPT, scarta # CHECK:
     blocks, cur = [], []
     for line in lines:
         s = line.strip()
         if s.startswith("#EXTINF"):
-            if cur:
+            if cur and cur[-1] and not cur[-1].startswith("#"):
                 blocks.append(cur)
             cur = [s]
+        elif s.startswith("#EXTVLCOPT") and cur:
+            cur.append(s)
+        elif s.startswith("#KODIPROP") and cur:
+            cur.append(s)
         elif s and not s.startswith("#"):
-            cur.append(s)
-            blocks.append(cur)
-            cur = []
-        elif s.startswith("#") and cur:
-            cur.append(s)
-    if cur:
+            if cur:
+                cur.append(s)
+                blocks.append(cur)
+                cur = []
+        elif s.startswith("# CHECK:"):
+            continue  # scarta commenti residui
+    if cur and cur[-1] and not cur[-1].startswith("#"):
         blocks.append(cur)
-    print(f"🔍 {len(blocks)} flussi")
+
+    print(f"🔍 {len(blocks)} blocchi")
+
     seen, unique = set(), []
     for b in blocks:
         if b[-1] not in seen:
@@ -256,37 +220,32 @@ def main():
     print(f"🔍 {len(blocks)} unici")
 
     funz, non_funz = [], []
-    token_keep = dead = embed = 0
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = [ex.submit(process_block, b) for b in blocks]
         for i, fut in enumerate(as_completed(futs), 1):
             block, ok, msg = fut.result()
-            nome = block[0].split(",")[-1].strip() if "," in block[0] else "?"
-            if ok is True:
-                funz.append(block)
-            elif ok is None:
-                token_keep += 1
-                funz.append(block)
-                funz.append([f"# CHECK: {msg}"])
+            if ok:
+                funz.append(block)  # ← blocco INTERO con EXTVLCOPT preservato
             else:
                 non_funz.append((block, msg))
-                if msg == "host_morto":
-                    dead += 1
-                if msg == "embed_html":
-                    embed += 1
             if i % 25 == 0:
                 print(f"[{i}/{len(blocks)}] OK={len(funz)} KO={len(non_funz)}")
 
+    # Scrivi M3U: blocchi interi, ZERO # CHECK:
+    out_lines = ["#EXTM3U"]
+    for b in funz:
+        out_lines.extend(b)
     Path("combined_events_checked.m3u").write_text(
-        "#EXTM3U\n" + "\n".join("\n".join(b) for b in funz) + "\n",
-        encoding="utf-8")
+        "\n".join(out_lines) + "\n", encoding="utf-8")
+
     with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
         for b, m in non_funz:
-            nome = b[0].split(",")[-1].strip()
+            nome = b[0].split(",")[-1].strip() if "," in b[0] else "?"
             f.write(f"{nome} | {b[-1]} | {m}\n")
-    print(f"\n✅ OK: {len(funz)} (token/temporanei mantenuti: {token_keep})")
-    print(f"❌ KO: {len(non_funz)} (host morti: {dead}, embed: {embed})")
-    print("📄 combined_events_checked.m3u | flussi_non_funzionanti.txt")
+
+    print(f"\n✅ OK: {len(funz)}")
+    print(f"❌ KO: {len(non_funz)}")
+    print(f"📄 combined_events_checked.m3u (solo verificati, EXTVLCOPT preservati, no # CHECK:)")
 
 
 if __name__ == "__main__":
