@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive (player2+5+6+14)
-# Versione unificata con retry su 502/503, blacklist URL obsoleti e multithreading
+# daddylive_extractor.py – estrae URL diretti m3u8 da Daddylive
+# Versione v4: usa il dominio funzionante daddylive.mov come priorità.
 
 import re
 import json
@@ -10,14 +10,14 @@ import time
 import random
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
 import requests
 
+# Priorità al dominio .mov che hai confermato essere attivo.
 BASE_CANDIDATES = [
+    "https://daddylive.mov",
+    "https://daddylive.app",
     "https://daddylive.pk",
     "https://dlhd.so",
-    "https://daddylive.sx",
-    "https://daddylive.li",
 ]
 
 PLAYER_FILES = [
@@ -32,9 +32,7 @@ MAX_WORKERS = 5
 REQUEST_DELAY = (0.4, 1.0)
 OUTPUT_FILE = "daddylive_streams.m3u"
 
-BLOCKED_URLS = [
-    "http://41.205.93.154",
-]
+BLOCKED_URLS = ["http://41.205.93.154"]
 
 USER_AGENTS = [
     "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
@@ -97,7 +95,6 @@ def fetch_url(url, headers=None, timeout=15, retries=3, backoff=12.0):
         if headers is None:
             headers = get_headers()
         session.headers.update(headers)
-
         try:
             r = session.get(url, timeout=timeout)
             if r.status_code in (429, 502, 503):
@@ -138,17 +135,44 @@ def extract_player5(html: str) -> str | None:
             return None
     return ''.join(parts) if parts else None
 
+def extract_m3u8_url_channel(html: str) -> str | None:
+    """Metodo vecchio per cdnlivetv.tv"""
+    src_match = re.search(r"source:\{src:([A-Za-z_$][A-Za-z0-9_$]*),format:'hls'\}", html)
+    if not src_match:
+        return None
+    var_name = src_match.group(1)
+    pattern = rf"var\s+{re.escape(var_name)}\s*=\s*(.+?);"
+    match = re.search(pattern, html, re.DOTALL)
+    if not match:
+        return None
+    expr = match.group(1)
+    func_match = re.match(r'\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\(', expr)
+    if not func_match:
+        return None
+    func_name = func_match.group(1)
+    args = re.findall(rf"{re.escape(func_name)}\(([A-Za-z_$][A-Za-z0-9_$]*)\)", expr)
+    if not args:
+        return None
+    decoded_parts = []
+    for arg in args:
+        var_def = re.search(rf"var\s+{re.escape(arg)}\s*=\s*'([^']*)';", html)
+        if not var_def:
+            return None
+        try:
+            decoded_parts.append(b64d(var_def.group(1)).decode('utf-8', errors='replace'))
+        except Exception:
+            return None
+    return ''.join(decoded_parts)
+
 def extract_player6(html: str, page_url: str, session: requests.Session) -> str | None:
     iframe_m = re.search(r'<iframe[^>]+src=["\']([^"\']+)["\']', html, re.I)
     if not iframe_m:
         return None
-
     iframe_url = iframe_m.group(1)
     if iframe_url.startswith('//'):
         iframe_url = 'https:' + iframe_url
     elif iframe_url.startswith('/'):
         iframe_url = urljoin(page_url, iframe_url)
-
     time.sleep(random.uniform(*REQUEST_DELAY))
     try:
         r = session.get(iframe_url, headers=get_headers(page_url), timeout=15)
@@ -156,11 +180,9 @@ def extract_player6(html: str, page_url: str, session: requests.Session) -> str 
             return None
     except Exception:
         return None
-
     econfig_m = re.search(r"window\._econfig='([^']+)'", r.text)
     if not econfig_m:
         return None
-
     try:
         decoded = b64d(econfig_m.group(1)).decode('utf-8', errors='replace')
         length = len(decoded)
@@ -175,7 +197,6 @@ def extract_player6(html: str, page_url: str, session: requests.Session) -> str 
         joined = ''.join(ordered)
         d2 = b64d(joined).decode('utf-8', errors='replace')
         d3 = b64d(d2).decode('utf-8', errors='replace')
-
         m = re.search(r'"stream_url(?:_nop2p)?"\s*:\s*"([^"]+)"', d3)
         if m:
             return m.group(1).replace('\\/', '/')
@@ -187,30 +208,25 @@ def extract_player14(html: str) -> str | None:
     arr_m = re.search(r'var\s+_qb8\s*=\s*\[([^\]]+)\]', html)
     if not arr_m:
         return None
-
     nums = []
     for x in arr_m.group(1).split(','):
         x = x.strip()
         if x.lstrip('-').isdigit():
             nums.append(int(x))
-
     sx_m = re.search(r'_sx8\s*=\s*(\d+)', html)
     vq_m = re.search(r'_vq9\s*=\s*(\d+)', html)
     sx8 = int(sx_m.group(1)) if sx_m else 61
     vq9 = int(vq_m.group(1)) if vq_m else 9
-
     try:
         decoded = ''.join(chr(((n ^ sx8) - vq9 + 256) & 255) for n in nums)
     except Exception:
         return None
-
     m = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', decoded)
     return m.group(0) if m else None
 
 def resolve_stream(name: str, url: str) -> tuple | None:
     session = requests.Session()
     time.sleep(random.uniform(*REQUEST_DELAY))
-
     try:
         r = session.get(url, headers=get_headers(BASE_URL), timeout=15)
         if r.status_code != 200:
@@ -220,18 +236,13 @@ def resolve_stream(name: str, url: str) -> tuple | None:
         return None
 
     stream = None
-
+    # Prova tutti i decoder in sequenza
     if "cdnlivetv.tv" in url:
-        stream = extract_player5(html)
-    elif "streamtp-golden" in url or "global1.php" in url:
-        stream = extract_player2(html)
-    elif "bolaloca.my" in url:
-        stream = extract_player6(html, url, session)
-    elif "epiembeds.online" in url:
-        stream = extract_player14(html)
-    else:
-        stream = (extract_player5(html) or
-                  extract_player2(html) or
+        stream = extract_m3u8_url_channel(html)
+    if not stream:
+        stream = (extract_player2(html) or
+                  extract_player5(html) or
+                  extract_m3u8_url_channel(html) or
                   extract_player14(html) or
                   extract_player6(html, url, session))
 
@@ -241,22 +252,16 @@ def resolve_stream(name: str, url: str) -> tuple | None:
 
 def main():
     global BASE_URL
-
     print("🔍 Cerco dominio attivo...")
     BASE_URL = find_working_base()
     if not BASE_URL:
         return
 
     all_candidates = []
-
     print("\n📡 Scarico le liste player...")
     for pfile in PLAYER_FILES:
         try:
-            r = fetch_url(
-                f"{BASE_URL}/player/{pfile}",
-                headers=get_headers(),
-                timeout=20
-            )
+            r = fetch_url(f"{BASE_URL}/player/{pfile}", headers=get_headers(), timeout=20)
             if r is None:
                 print(f"   ❌ {pfile}: fetch fallito")
                 continue
@@ -280,20 +285,15 @@ def main():
         except Exception as ex:
             print(f"   ❌ {pfile}: {ex}")
 
-    all_candidates = [
-        (name, url) for name, url in all_candidates
-        if not any(blocked in url for blocked in BLOCKED_URLS)
-    ]
+    all_candidates = [(name, url) for name, url in all_candidates
+                      if not any(blocked in url for blocked in BLOCKED_URLS)]
 
     print(f"\n🎯 Canali da risolvere: {len(all_candidates)}")
     print(f"🚀 Avvio con {MAX_WORKERS} worker...\n")
 
     results = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(resolve_stream, name, url): name
-            for name, url in all_candidates
-        }
+        futures = {executor.submit(resolve_stream, name, url): name for name, url in all_candidates}
         done = 0
         total = len(futures)
         for fut in as_completed(futures):
@@ -318,6 +318,7 @@ def main():
 
     print(f"\n🔗 Flussi unici trovati: {len(unique)}")
 
+    # Formato pulito: #EXTINF + URL (niente #EXTVLCOPT per Daddy)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         for name, url in unique:
