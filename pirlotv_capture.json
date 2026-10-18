@@ -1,5 +1,5 @@
 {
-  "version": "1.5.1",
+  "version": "1.5.2",
   "sites": [
     "pirlotv1",
     "pirlo-tv",
@@ -12,151 +12,151 @@
   "streams": [
     {
       "title": "PirloTV 1",
-      "url": "https://99.domhsd.com:443/global/canal-88/index.m3u8?token=0c9e23e8a6c615be7872ac7c4bc59cd94f8ed8ff-d5-1792371380-1792317380&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-88/index.m3u8?token=f4ad929fbae572a55a28c94e6cace57baf8a1a46-d4-1792372944-1792318944&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 2",
-      "url": "https://99.domhsd.com:443/global/espn-2/index.m3u8?token=ab41381e36b44f74922e8be2c7cd6deed4d62491-9d-1792371382-1792317382&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/espn-2/index.m3u8?token=c9525bf9fe99c641f545f9c4ddf2197e20e75156-ca-1792372946-1792318946&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 3",
-      "url": "https://99.domhsd.com:443/global/canal-8/index.m3u8?token=86bf1784ffcacee9a49e89eda6d70e463639124e-94-1792371385-1792317385&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-8/index.m3u8?token=d44b221076addb2985eee8e8f9f0eb6ef08779e2-97-1792372948-1792318948&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 4",
-      "url": "https://99.domhsd.com:443/global/fox-sports/index.m3u8?token=a71a94a5596cae81fe8e26d2dd127fc047c661d8-92-1792371387-1792317387&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/fox-sports/index.m3u8?token=48adf115f2fbd1892fc50e3c0d5979eb38f532fc-d4-1792372950-1792318950&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 5",
-      "url": "https://99.domhsd.com:443/global/la-liga-hypermotion/index.m3u8?token=b0c3ecb95fb52aca45bfbb18ef8c13b7b03a660d-e7-1792371389-1792317389&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/la-liga-hypermotion/index.m3u8?token=00f8103c5b3e6011feab6e789afbcb4c9253ec7b-32-1792372953-1792318953&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 6",
-      "url": "https://99.domhsd.com:443/global/canal-53/index.m3u8?token=31197d5d0df7324b3846ce039cc459891aa96330-a5-1792371391-1792317391&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-53/index.m3u8?token=89cb5b4bc1d23a9f8b45f7d45de40a2e9df5cff4-f7-1792372955-1792318955&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 7",
-      "url": "https://99.domhsd.com:443/global/bein-liga/index.m3u8?token=1bb16dc13ce7ec106923bd681130498a094e3ff9-06-1792371394-1792317394&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/bein-liga/index.m3u8?token=a678795c9eb06c4e726e2727bcb7991219721722-25-1792372957-1792318957&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 8",
-      "url": "https://99.domhsd.com:443/global/playhttpswww-tarjetaroja-blog/index.m3u8?token=8748ea12ee1dae6eaa95857e78ad36277922e2e8-95-1792371396-1792317396&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/playhttpswww-tarjetaroja-blog/index.m3u8?token=52d3de455d61ef0c40a1513aea4837b4d5999dfb-e4-1792372959-1792318959&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 9",
-      "url": "https://99.domhsd.com:443/global/canal-89/index.m3u8?token=aa3d240c7bd26ea9e619a6b29bb3bd525028a4e9-40-1792371398-1792317398&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-89/index.m3u8?token=2aaa06fcf42d77b19f76a97fbe0b583ff53cc985-66-1792372961-1792318961&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 10",
-      "url": "https://99.domhsd.com:443/global/espn-deportes/index.m3u8?token=fd81f30e06a22d423d5d125cfca355b053f79039-b8-1792371400-1792317400&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/espn-deportes/index.m3u8?token=08d6256ff67bbc9a80342a0e8106d741a2b909b4-52-1792372963-1792318963&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 11",
-      "url": "https://99.domhsd.com:443/global/espn-3/index.m3u8?token=516c86b955a24ea355ee476e8f35a1cfd9d36b61-b2-1792371402-1792317402&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/espn-3/index.m3u8?token=6777e486a7885aa4eaba2e520facfb385e49a00f-9a-1792372965-1792318965&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 12",
-      "url": "https://99.domhsd.com:443/global/dazn-liga/index.m3u8?token=266e170752b677da4b72226bf9c1a421c47a9ae8-c8-1792371404-1792317404&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/dazn-liga/index.m3u8?token=b687e057ab2fc52ad7a58009794470e42ae776c0-a7-1792372967-1792318967&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 13",
-      "url": "https://99.domhsd.com:443/global/la-liga/index.m3u8?token=90a03b89ba8aa47770948722edc1a0aa409bdc26-b0-1792371407-1792317407&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/la-liga/index.m3u8?token=afdb66b438d8145545521b43bf4bbf5721d73132-b1-1792372969-1792318969&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 14",
-      "url": "https://99.domhsd.com:443/global/directv/index.m3u8?token=404ef71e5919834b7a0b028f235e0d7aa4788dee-12-1792371409-1792317409&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/directv/index.m3u8?token=d34d9fe6bc99c0f822cd5701a9d0fbd820804ebb-03-1792372971-1792318971&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 15",
-      "url": "https://99.domhsd.com:443/global/bein/index.m3u8?token=729af68e93663f01a3b0e05e065546f7abf18dcd-09-1792371411-1792317411&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/bein/index.m3u8?token=0a14fcdf0837369d6c184b08c5a6d19307b5406c-01-1792372973-1792318973&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 16",
-      "url": "https://99.domhsd.com:443/global/canal-1/index.m3u8?token=5fde60f6a0d9fb98cf9cc68462d3983f3ef42d57-ea-1792371413-1792317413&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-1/index.m3u8?token=4a5def7b1c01d0e1adc5fb890ee58086da011ab8-4d-1792372975-1792318975&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 17",
-      "url": "https://99.domhsd.com:443/global/directv-2/index.m3u8?token=93bfa3dd7f73e5d178a285ea6bba416b74a8a4ac-25-1792371415-1792317415&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/directv-2/index.m3u8?token=4295db1bc802f58d836c412c9ecf66c5a2163993-42-1792372977-1792318977&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 18",
-      "url": "https://99.domhsd.com:443/global/canal-2/index.m3u8?token=17ecf1a3894dbaa11d316bcf57190491c9428de6-83-1792371417-1792317417&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-2/index.m3u8?token=2cd8af09d3220e6f16e03f6b6a064f10533affce-59-1792372979-1792318979&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 19",
-      "url": "https://99.domhsd.com:443/global/disney-3/index.m3u8?token=99a7dc82bc890ad819d2cea635d386979d09787b-fa-1792371419-1792317419&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/disney-3/index.m3u8?token=6deca9b7a5e4aecf4242ddd98b39ba2295f12e73-82-1792372981-1792318981&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 20",
-      "url": "https://99.domhsd.com:443/global/canal-109/index.m3u8?token=c1ac23be4734735531d57a69594caf6f622becad-66-1792371421-1792317421&ip=52.161.59.96",
+      "url": "https://99.domhsd.com:443/global/canal-109/index.m3u8?token=785e69492a459206dcaec2026ef7154f8bd597a5-aa-1792372984-1792318984&ip=172.202.55.23",
       "site": "pirlotv1",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     },
     {
       "title": "PirloTV 1",
-      "url": "https://99.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=52.161.59.96&token=2b4cb04feba572148401aee6e9d36a438408a4b1-7a-1792371423-1792317423",
+      "url": "https://99.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=172.202.55.23&token=cc6483617ff726c91f81d1e4837790c583944fc4-5e-1792372985-1792318985",
       "site": "pirlo-tv",
       "mtype": "hls",
-      "ip_lock": "52.161.59.96"
+      "ip_lock": "172.202.55.23"
     }
   ],
-  "extracted_at": 1792326467
+  "extracted_at": 1792328027
 }
