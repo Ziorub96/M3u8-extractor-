@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-combine_playlist.py — v2.6
+combine_playlist.py — v2.7
 
-Cambiamenti:
-- PRESERVA #EXTVLCOPT dal blocco sorgente (necessari per DAMITV/DokAgents)
-- Ignora # CHECK: residui
-- Mantiene priority DAMITV=10 (vince su doms9=1)
+Cambiamenti rispetto a v2.4:
+- parse_m3u() IGNORA esplicitamente # CHECK: e altri commenti residui
+- Preserva solo #EXTVLCOPT e #KODIPROP tra i commenti (utili per player)
+- Nessun'altra modifica
 """
 import re
 from pathlib import Path
@@ -90,7 +90,11 @@ def set_group_title(line, grp):
 
 
 def parse_m3u(lines):
-    """Parsing che PRESERVA #EXTVLCOPT e #KODIPROP. Scarta # CHECK: e altri."""
+    """
+    Parsing PULITO:
+    - Riconosce #EXTINF, #EXTVLCOPT, #KODIPROP, URL
+    - IGNORA # CHECK: e qualsiasi altro # sconosciuto
+    """
     blocks, cur = [], []
     for l in lines:
         s = l.strip()
@@ -107,7 +111,7 @@ def parse_m3u(lines):
                 cur.append(s)
                 blocks.append(cur)
                 cur = []
-        # altri # qualunque: scartati (# CHECK:, commenti vari)
+        # Qualsiasi altro # (incluso # CHECK:) viene ignorato
     if cur and cur[-1] and not cur[-1].startswith("#"):
         blocks.append(cur)
     return blocks
