@@ -69,10 +69,10 @@ jobs:
         continue-on-error: true
 
       # ============================================================
-      # StreamCorner v13.3 — Playwright stealth (ATTIVO)
+      # StreamCorner v13.3 — Playwright stealth (ATTIVO ma ottimizzato)
       # Nota: brunhild.challenges.cloudflare.com non risolve da GH Actions,
-      #       quindi /stream/admin/* dà 403. Tenuto attivo come richiesto,
-      #       ma con --playwright-limit 20 e timeout 10 min per non sprecare tempo.
+      #       quindi /stream/admin/* dà 403. Tenuto attivo ma con
+      #       --playwright-limit 20 e timeout 10 min per non sprecare tempo.
       # ============================================================
       - name: Extract StreamCorner streams (v13.3, Playwright stealth)
         run: |
@@ -92,9 +92,9 @@ jobs:
 
       # ============================================================
       # PirloTV / Rojadirecta / Liveru — famiglia "tR"
-      # v1.2: redirect JS + offuscamento generico + embedt1.js
+      # v1.3: redirect JS + offuscamento generico + embedt1.js + NEED_FID
       # ============================================================
-      - name: Extract PirloTV streams (v1.2)
+      - name: Extract PirloTV streams (v1.3)
         run: |
           python pirlotv_extractor.py \
             --output pirlotv_COMPLETE.m3u \
@@ -185,10 +185,6 @@ jobs:
 
       # ============================================================
       # COMMIT
-      # - KODI rimosso (ignorato da .gitignore)
-      # - StreamCorner: sc_capture + sc_network + sc_homepage
-      # - PirloTV: COMPLETE + VLC + EVENTS_LIVE + capture.json
-      # - NIENTE backslash nel file_pattern (YAML folded scalar)
       # ============================================================
       - name: Commit and push
         if: always()
