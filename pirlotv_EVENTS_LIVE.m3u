@@ -5,144 +5,144 @@
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-88/index.m3u8?token=f4ad929fbae572a55a28c94e6cace57baf8a1a46-d4-1792372944-1792318944&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-88/index.m3u8?token=97ebf617f2b54260754f2a7bfa7fdb22e9173895-f3-1792379531-1792325531&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 2
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=espn-2
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/espn-2/index.m3u8?token=c9525bf9fe99c641f545f9c4ddf2197e20e75156-ca-1792372946-1792318946&ip=172.202.55.23
+https://99.domhsd.com:443/global/espn-2/index.m3u8?token=2223f98620c556bbed1add900f536b14277f710e-35-1792379533-1792325533&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 3
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=canal-8
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-8/index.m3u8?token=d44b221076addb2985eee8e8f9f0eb6ef08779e2-97-1792372948-1792318948&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-8/index.m3u8?token=379b296de44333693c31e2814b2adeda9835e15e-7d-1792379535-1792325535&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 4
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=fox-sports
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/fox-sports/index.m3u8?token=48adf115f2fbd1892fc50e3c0d5979eb38f532fc-d4-1792372950-1792318950&ip=172.202.55.23
+https://99.domhsd.com:443/global/fox-sports/index.m3u8?token=8953d0532422b14ddccabaa5c5b0334df6300617-14-1792379537-1792325537&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 5
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=la-liga-hypermotion
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/la-liga-hypermotion/index.m3u8?token=00f8103c5b3e6011feab6e789afbcb4c9253ec7b-32-1792372953-1792318953&ip=172.202.55.23
+https://99.domhsd.com:443/global/la-liga-hypermotion/index.m3u8?token=94fd2a564a4c5b94156b4138a2fd7338adf0860d-93-1792379538-1792325538&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 6
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=canal-53
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-53/index.m3u8?token=89cb5b4bc1d23a9f8b45f7d45de40a2e9df5cff4-f7-1792372955-1792318955&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-53/index.m3u8?token=17702517624381b0ddfa476c1bbbe6ce370b3449-bc-1792379540-1792325540&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 7
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=bein-liga
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/bein-liga/index.m3u8?token=a678795c9eb06c4e726e2727bcb7991219721722-25-1792372957-1792318957&ip=172.202.55.23
+https://99.domhsd.com:443/global/bein-liga/index.m3u8?token=44204b6f208672269bb0b0d622a3bb1af9e53ad1-13-1792379542-1792325542&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 8
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=playhttpswww-tarjetaroja-blog
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/playhttpswww-tarjetaroja-blog/index.m3u8?token=52d3de455d61ef0c40a1513aea4837b4d5999dfb-e4-1792372959-1792318959&ip=172.202.55.23
+https://99.domhsd.com:443/global/playhttpswww-tarjetaroja-blog/index.m3u8?token=7f075e39b940bb2ad2020783f71b79d98444f5ab-79-1792379544-1792325544&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 9
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=canal-89
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-89/index.m3u8?token=2aaa06fcf42d77b19f76a97fbe0b583ff53cc985-66-1792372961-1792318961&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-89/index.m3u8?token=57fd52d4b925a1b5d24b6690df841152d496b223-8c-1792379546-1792325546&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 10
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=espn-deportes
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/espn-deportes/index.m3u8?token=08d6256ff67bbc9a80342a0e8106d741a2b909b4-52-1792372963-1792318963&ip=172.202.55.23
+https://99.domhsd.com:443/global/espn-deportes/index.m3u8?token=9f54943c87c2526c05dc08bdd00e2d2c463a8b3a-bc-1792379547-1792325547&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 11
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=espn-3
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/espn-3/index.m3u8?token=6777e486a7885aa4eaba2e520facfb385e49a00f-9a-1792372965-1792318965&ip=172.202.55.23
+https://99.domhsd.com:443/global/espn-3/index.m3u8?token=74f7d5d1ce68cccddd83c36d2566770855788ef7-57-1792379549-1792325549&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 12
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=dazn-liga
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/dazn-liga/index.m3u8?token=b687e057ab2fc52ad7a58009794470e42ae776c0-a7-1792372967-1792318967&ip=172.202.55.23
+https://99.domhsd.com:443/global/dazn-liga/index.m3u8?token=5dbef27e143cb6b102e282d1abe23b05265f4b29-3e-1792379551-1792325551&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 13
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=la-liga
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/la-liga/index.m3u8?token=afdb66b438d8145545521b43bf4bbf5721d73132-b1-1792372969-1792318969&ip=172.202.55.23
+https://99.domhsd.com:443/global/la-liga/index.m3u8?token=04aca0e18e153adfe07da9c5e652af56cda45bc9-81-1792379553-1792325553&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 14
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=directv
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/directv/index.m3u8?token=d34d9fe6bc99c0f822cd5701a9d0fbd820804ebb-03-1792372971-1792318971&ip=172.202.55.23
+https://99.domhsd.com:443/global/directv/index.m3u8?token=9e8b477cfb8002b68b98f52c5126ece2bd5795b7-d2-1792379555-1792325555&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 15
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=bein
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/bein/index.m3u8?token=0a14fcdf0837369d6c184b08c5a6d19307b5406c-01-1792372973-1792318973&ip=172.202.55.23
+https://99.domhsd.com:443/global/bein/index.m3u8?token=1fb808cfddd3db09cfe20abce21a66208df29fce-07-1792379556-1792325556&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 16
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=canal-1
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-1/index.m3u8?token=4a5def7b1c01d0e1adc5fb890ee58086da011ab8-4d-1792372975-1792318975&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-1/index.m3u8?token=7010cb64def8f806bf91ca739b54c848d3469a67-be-1792379558-1792325558&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 17
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=directv-2
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/directv-2/index.m3u8?token=4295db1bc802f58d836c412c9ecf66c5a2163993-42-1792372977-1792318977&ip=172.202.55.23
+https://99.domhsd.com:443/global/directv-2/index.m3u8?token=c766656ce922476897ae5884cef3392b0853a7d3-4a-1792379560-1792325560&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 18
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=canal-2
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-2/index.m3u8?token=2cd8af09d3220e6f16e03f6b6a064f10533affce-59-1792372979-1792318979&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-2/index.m3u8?token=2d77c776636817f1625a6dc0a1529f0fbcfbba6a-ec-1792379561-1792325561&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 19
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=disney-3
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/disney-3/index.m3u8?token=6deca9b7a5e4aecf4242ddd98b39ba2295f12e73-82-1792372981-1792318981&ip=172.202.55.23
+https://99.domhsd.com:443/global/disney-3/index.m3u8?token=de155e98a1f2c49bd3777977bd068e5b158ae64a-88-1792379563-1792325563&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlotv1",PirloTV 20
 #EXTVLCOPT:http-referrer=https://streamtp99a.sbs/global1.php?stream=canal-109
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.domhsd.com:443/global/canal-109/index.m3u8?token=785e69492a459206dcaec2026ef7154f8bd597a5-aa-1792372984-1792318984&ip=172.202.55.23
+https://99.domhsd.com:443/global/canal-109/index.m3u8?token=016a332139e04d683ec9152b92f238396af8077c-50-1792379565-1792325565&ip=48.217.69.100
 
 #EXTINF:-1 group-title="pirlo-tv",PirloTV 1
 #EXTVLCOPT:http-referrer=https://streamx305.sbs/global3.php?channel=espn
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
 #KODIPROP:inputstream=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=hls
-https://99.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=172.202.55.23&token=cc6483617ff726c91f81d1e4837790c583944fc4-5e-1792372985-1792318985
+https://98.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=48.217.69.100&token=93992102a5cd6e583dbe183e2749136cda3847ad-e5-1792379566-1792325566

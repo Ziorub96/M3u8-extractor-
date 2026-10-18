@@ -1,12 +1,12 @@
 {
-  "total": 111,
+  "total": 61,
   "requests": [
     {
       "method": "GET",
       "url": "https://streamcorner.st/",
       "type": "document",
-      "status": 403,
-      "mime": "text/html; charset=UTF-8"
+      "status": 200,
+      "mime": "text/html; charset=utf-8"
     },
     {
       "method": "GET",
@@ -115,14 +115,14 @@
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.6382530399427926:1792324926:GzJsr2jGLqGCDVDRV_xw1iwGXr8k3gvSIAPZHss7Vzw/a4c783257c926994",
+      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/jsd/oneshot/d2d3316b729e/0.8557750096706288:1792332028:5QAOzDy0AdPXngOvrIk7R2PHA-5S99yKLiD_zxACZvQ/a4c8495aefd73529",
       "type": "xhr",
       "status": 200,
       "mime": "text/plain; charset=UTF-8"
     },
     {
       "method": "POST",
-      "url": "https://data.anonfox144.workers.dev/corner?p=admin_message",
+      "url": "https://data.gigav.workers.dev/corner?p=admin_message",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
@@ -143,56 +143,56 @@
     },
     {
       "method": "POST",
-      "url": "https://data.l0o1afmju0.workers.dev/corner?p=admin",
+      "url": "https://data.rim1043.workers.dev/corner?p=admin",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.minjikim444.workers.dev/corner?p=mlb",
+      "url": "https://data.yedmzoa.workers.dev/corner?p=mlb",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.jccldjshj8sw.workers.dev/corner?p=nfl",
+      "url": "https://data.minjikim444.workers.dev/corner?p=nfl",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.rim1043.workers.dev/corner?p=nba",
+      "url": "https://data.kageyoshi001.workers.dev/corner?p=nba",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.senbon003.workers.dev/corner?p=alpha",
+      "url": "https://data.stealthwolf798-69b.workers.dev/corner?p=alpha",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.phamviet444.workers.dev/corner?p=beta",
+      "url": "https://data.leehyein444.workers.dev/corner?p=beta",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.senbon001-2.workers.dev/corner?p=001",
+      "url": "https://data.kuig2.workers.dev/corner?p=001",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://data.kanghaerin444.workers.dev/corner?p=003",
+      "url": "https://data.cripw4lk000.workers.dev/corner?p=003",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
@@ -206,604 +206,227 @@
     },
     {
       "method": "POST",
-      "url": "https://data.minjikim444.workers.dev/corner?p=channels",
+      "url": "https://data.senbon002.workers.dev/corner?p=channels",
       "type": "fetch",
       "status": 200,
       "mime": "application/octet-stream"
     },
     {
       "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c783a95821f08d",
+      "url": "https://streamcorner.st/assets/CCIyHYvm.js",
       "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/javascript"
+    },
+    {
+      "method": "GET",
+      "url": "https://streamcorner.st/assets/DIyT65H4.css",
+      "type": "stylesheet",
+      "status": 200,
+      "mime": "text/css; charset=utf-8"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c783a95821f08d/7YKu7g_l_vvFF5LQB_vA3CHmHJo3jRM_FWrJMmANITM-1792326206-1.2.1.1-bG2_4IkwSrLJBdRKGvkXAebUHnmr6nCqKq6QnLyaTKUnL9ZhidopYooT.ecucA5s",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c783abafad7ff6/eU8vPbIjoP4f1jCRMWnYI50YDkSWuIbeUJa6ccZl4fo-1792326207-1.2.1.1-IhuPQZIpdndKriSRT28q2R6BzKj83P8o6zGoWPNyD9qpLh7ArwZ7QwwazNRZU7G0",
+      "url": "https://data.5j181.workers.dev/corner?p=admin&id=family-guy",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
+      "status": 200,
+      "mime": "application/octet-stream"
     },
     {
       "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c783dbfe65f08d",
-      "type": "script",
+      "url": "https://streamcorner.st/Android_robot.svg",
+      "type": "image",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "image/svg+xml"
+    },
+    {
+      "method": "GET",
+      "url": "https://streamcorner.st/Tux.svg",
+      "type": "image",
+      "status": 200,
+      "mime": "image/svg+xml"
+    },
+    {
+      "method": "GET",
+      "url": "https://streamcorner.st/Windows_logo_-_2021.svg",
+      "type": "image",
+      "status": 200,
+      "mime": "image/svg+xml"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c783dbfe65f08d/ti86_S1X5ybHoGC2161H3yV55yTRWZ3OrfR_T3eEeuQ-1792326215-1.2.1.1-so9PkYjSoSW3sHoSAXiJJaKk01J_NsCw4_mU071QZN5g6t1U4wTlam4Oxg0iFlfG",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c783dded5e7ff6/RC0qHCFDWg75E9lNXFV7ar44blJ7qm9C136w4BVVIOk-1792326215-1.2.1.1-MOfv84Ve55yASFmQt5CTX8fsa4zPVpmPL1VoRbraGTejeAMj344uJ4PZqZGIg1xz",
+      "url": "https://data.stealthwolf798-69b.workers.dev/corner?p=admin&id=83b0aa5c663ba23cd1a6e1c5f184fba0",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c7840e8a69f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c7840e8a69f08d/E9idRWDqkhFY0vJMqR.K35AoaaB1mYRm_aAQ1O2yV9g-1792326223-1.2.1.1-bPZubpMUDOPK.o75u_oBagF5EFYxYXfVpaZcSIh8CSjTqqWauHi33Wa3Dez5fvC5",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c784107dc07ff6/Bv_SWWj8ftG5zBWwgiNok8QOUW8xFAb7D5wewmnOEw8-1792326223-1.2.1.1-Pq1c.l2mzIvzTJIzFqcnw0k6wjq1cxMrQfgl4hhqIpmF48h2_q1Fsh2_EJXPK0Rh",
+      "url": "https://data.ngagzipx.workers.dev/corner?p=admin&id=e81eb6335fbce01f12f14d091edf43bf",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
+      "status": 200,
+      "mime": "application/octet-stream"
     },
     {
       "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c7848c7f72f08d",
-      "type": "script",
+      "url": "https://streamcorner.st/Apple_logo_grey.svg",
+      "type": "image",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "image/svg+xml"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c7848c7f72f08d/Y4pPVpT7jZtwoChDv6c_ezeSWEiKkZjVhAdrDtLSo7Q-1792326243-1.2.1.1-5KbY01BHxNWG1lTq9p5t1j.yZcq5qUPJ743w2q6WusjzqlE9EVMmMI4MSBwc2vhw",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c7848e5c307ff6/pEx2GxQ_xz9GCID8oIomQwund9FyAYXmhqVE3o.Cftk-1792326243-1.2.1.1-tDS2U6HTgqTBa1kq2rFZqIDmIA9pkJYZV5_i41dKWmgQN9U1uYRQLCUN6xQcfd6b",
+      "url": "https://data.l0o1afmju0.workers.dev/corner?p=admin&id=5b4b4b3a3c2e7d81ae60b9eae6f2af86",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c7850a3c7bf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c7850a3c7bf08d/OLyE9z2XQk1kAFF5cbsoWzSPXIMyEGsD42eDduKzNVE-1792326263-1.2.1.1-f1KPGGm7mFH0_DGc8Vvvtq6suNm4S8PG9dwcrrAt3SgVf50ELaVWQ5C6eKAceirv",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c7850c19b67ff6/FhU9XCwL4xhJvRvct8s2eDG.IYNYbOnp1VBy218l5VQ-1792326263-1.2.1.1-oskSgaU_2k0zsK8oPpAY7PE1_ggYz6TudLRGkRhH6sq5dqnoNKvMztZxSKmQeP4a",
+      "url": "https://data.gigav.workers.dev/corner?p=admin&id=cca27d8d314fca802f1935d892efce84",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c785880c93f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c785880c93f08d/wJZNSPXOWecrmifJJ0Vymk7XLRe3uFNIl7CqisMN44s-1792326283-1.2.1.1-YJRvQ9ZhBs.t2rBe38K4xzON4VEHLtcQVHSlkp3yXYMS7Y3qFqZKwiCUIYiBMhGu",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c7858a0f177ff6/UYCq6opCHRP8aR9G32WilRh.6cd8W.KniTOk9meCUDU-1792326283-1.2.1.1-GDJD7eA5MSBGH4GJ7yVwXnfNPAq8CitX2F9xtA58gl5KXngKIl4g3sUvoBnk7piz",
+      "url": "https://data.stealthwolf798-69b.workers.dev/corner?p=admin&id=cc446f8a80a2483b462c22e624fe6fab",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78605db30f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78605db30f08d/paVoWatjjhz9lpapa8pB5isF1nnxi9F5bnh5Gq7aI7Q-1792326303-1.2.1.1-bvG8nSbxHmuNxVJpC5sGOe2V5md6UuAQNznBAnPA073xzTFuMtQ3ljnzGjfzGJex",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78607dd6e7ff6/2keLnZCbGf.8ds65P1J3abKajBsrNBRSWuOBTI3VGf8-1792326303-1.2.1.1-2EIAcUKNFQWXsekEPACee4z4ynbWfH2LgMHlng3j9N7V6L3C9s7Jf1bV3mn6_i1f",
+      "url": "https://data.kanghaerin444.workers.dev/corner?p=admin&id=168811395ec2642d24e0378006dd578b",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78683ab7cf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78683ab7cf08d/_coSvhYpKxhR71vQElcPDwcBVVuiiuvYxyqjA41ulik-1792326323-1.2.1.1-c1YMe1ghoqML.ko4E4rJOGVf.QM8HVngx0yxK4RKtHwC8eWHPDXTMIgYiTDfo6LH",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78685aeb67ff6/nk7o7Ealnf9fT9TEFXcLQRnBNp3dj8.mHNpnUCKbeaM-1792326324-1.2.1.1-awnxWqdZo49uLeElo.B7WqyMQMANOJS5p7TijWIct1zcVAv3Kq.WnPDwplMuYnvJ",
+      "url": "https://data.redjoy256.workers.dev/corner?p=admin&id=ae0a23f0b5d9140cc042d970a5bde48f",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c787017c4af08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c787017c4af08d/70ULg6KNgwsm9Ie9XZGU2ZLqo3e8421lV8RT9V3klXI-1792326343-1.2.1.1-H0sPsfRS8j8xslctnfAOFOQ9JhZI5RsWAXBFuaTcA67qMx3jRrjCBha6hff.8Xl3",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c787039ba97ff6/87SZSAl2gsigVk1VqHABvhYuhrk1P4mxc1oK50_PVjs-1792326344-1.2.1.1-m8ym7MKrt3r0SrcUefD.pk__7K2gQYvmyFhbH8HTXRbu02zhP5szY4A55bwyJfPO",
+      "url": "https://data.leehyein444.workers.dev/corner?p=admin&id=7d9e6e9f7d3ccd5d4946db3bca32da70",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c7877f58ecf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c7877f58ecf08d/YFKbXhlmpdEYEFEtoal5sw4eq8iU6FtLSFSHMN_NLkQ-1792326364-1.2.1.1-JfpjVQBaaWOGxyv_Juq7WitRJLwxHbZv5SFRU0xB7E35cK8lWrJls3VRbrmFmUOM",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78781593e7ff6/XuMesAnUaTmCptGq9nxJnTmoBxh5tjEOQ2EsgghASf8-1792326364-1.2.1.1-zT5yLuLTIpguGXBeVubsC67OkodhC6_mJ2Ohd7HnT6U64He4.luq5w9GqOQr8GyO",
+      "url": "https://data.senbon002.workers.dev/corner?p=admin&id=a876a62fb9694bf7afebe0c8a6cd83a4",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c787fd385bf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c787fd385bf08d/uJ4NTOZmuH9rr.hrsubkrx4VyYrqLvxv270EpQv6I.Y-1792326384-1.2.1.1-vX8ze1SVps2CclS3VNT1kzMOlchDh5eaWmTnrptDapRcgVDmauJQ35.777tcIKBl",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c787ff5c7f7ff6/ROXwvBgKIgnQAHZot0YJTCJhGLYt4tFUlqB4rchG8qE-1792326384-1.2.1.1-E37wlZaMehf8qBrEuLYnhV.2oGdGkl.T0ZYqc2gCGzoaZ1.8jHTukhBS.6oP7.jb",
+      "url": "https://data.l0o1afmju0.workers.dev/corner?p=admin&id=59fb15b08872159d7dfa218a102cfd1b",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c7887b0831f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c7887b0831f08d/cIccvfoWwXO05BATNlTu8FUfVdp__VcaF2i4r1B4AZA-1792326404-1.2.1.1-S4yMfmRNWGIhjkDRKmtX93RW3_mGXroyP4S234szEgTxCLaUTqjZ0fTSnkzxOdzm",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c7887d2a877ff6/q6T1rocz1qkuq9dUcNK84TQ7SAiDrt6XQHKWpUx7tZA-1792326404-1.2.1.1-XozLE0jlyyr6ZRRsBYs9wr8M7QXCCCNE2tlYLwMQnxv.J_jZwqwOUpYl9Mtojw0x",
+      "url": "https://data.phamviet444.workers.dev/corner?p=admin&id=a97c63ac09a03c82dfa4df6a004bd409",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c788f908bbf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c788f908bbf08d/6iUGRod0J2kZj5SG2YsZwRTj0h4y1dJo2rwdFdt2ULI-1792326424-1.2.1.1-b5e8DqWLCiMLXu.ehZSzw.rF2fkcVNu06cWp3qHI.oNz2kk2ydhdjcl_UVhPhBia",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c788fb18a17ff6/E.RI282F9pWJ6RVfBQjJLJSLuPyx934gSK.yrqiWA5M-1792326424-1.2.1.1-Gzl1NFQ4hpwAbuU5MEARzFf5OiYBCcxhvzOWnOccgaazfF9uMjKDg2WDosornFMu",
+      "url": "https://data.yedmzoa.workers.dev/corner?p=admin&id=32da3c5fa793f03f6d7474ed9c37d8bd",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78976f9a7f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78976f9a7f08d/CRwuFNVSwqVDTkOnd5dLrBKgvcyzepzW0CiyP6fTWiM-1792326444-1.2.1.1-IUxuIdX8ZhilZXmYOkpUBdDCOhgM_Yy9ZzmXrutLyRLV7lEEEktEAaoc3UJGyWui",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c789790f7b7ff6/1i6S5WITX0LGAgo.F6bMNYSwBSuUYz1E4EjSogkDaBc-1792326444-1.2.1.1-fqVZpqOCeX5aoS.xeSzDcGPVAF.LZOp4HW7TV8OxHQ8oXeIWK4LNx8HRiyAFExD8",
+      "url": "https://data.kanghaerin444.workers.dev/corner?p=admin&id=0c469ab066bdf23e6b366c921e134e26",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c789f4dfc3f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c789f4dfc3f08d/fn.SVHdSOySIhE55V5wQ76zzxCGc8.hOsiRFbE.OcjA-1792326464-1.2.1.1-PKKUMdrKIR4mt5i5aMMVd4laPPkG_RpO32WciCSrItRrc5uIH9BKZ1h8ePsPz015",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c789f6ed667ff6/GlToWhbE2bIMctz_1diKrbvx4x41p0V6oe2gxoLAG5I-1792326465-1.2.1.1-2Ef.OYxbYXD3pCSzb4PAyEEKWJI2a6ugfXwesCTSLmwBwvbeujXWX5Fbf1_x434v",
+      "url": "https://data.senbon001.workers.dev/corner?p=admin&id=2bcc8a987094c4fc3b90bde3b3f90fed",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78a72edf2f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78a72edf2f08d/nRf9AxWbha9WMIpvzePo655py593L9rCfPpYeOlTQKk-1792326484-1.2.1.1-FeJcQKylKZ4K5RaJhZx32BeAa6pwCSsvkIH4RJg7_RGWXSbjlK8gVxFGTA8REo_3",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78a74e9807ff6/MfMJ9WMjlfBJqcKM4k5pOUHNDAwcriBxwshmbmbgjXY-1792326485-1.2.1.1-T4d1GQmNJKpd5yZFY1NEcK_ZJQAdjmu75c3N9Cjulxgy6kZ5wJSLHUtBdTHm2lrW",
+      "url": "https://data.silentbyte125.workers.dev/corner?p=admin&id=6f704d05b5f202afb7a61cd40f446e50",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78af0da52f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78af0da52f08d/uhB1ZGPVP8uls7NeNP07UAPxOD8ATInFEoL1P4E6Y9Y-1792326505-1.2.1.1-Dg_0tqZfMFg4lrFirzdX21tB0TjpcVaphQSyX19tquW1axVMarrxAE9ah7XpdlvT",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78af2ed757ff6/C48x54aMGotMuoqVUf9vgqG8o5D5hFwLsEBs1k21zIQ-1792326505-1.2.1.1-0CBl7gAtk0zwIY4H5tPaTZ8Bd6SB0rFNmKjeBpMzTCxg7aJWN3qs43CHkCf_Vh4r",
+      "url": "https://data.miopks.workers.dev/corner?p=admin&id=b50789e48aba503dc6eb93eb2f600edd",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78b6ecf02f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78b6ecf02f08d/WnR0V9F0to9NZTgman2L8TR0Qx9r4D7B.vrDDmFh2Lo-1792326525-1.2.1.1-OYUYWdf1eRqKahiPFw1OfuIzUPvYswvgV4uslQZ8caTrD5wRF._e46q_NiDsavlR",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78b70dbf97ff6/gESJGJNBbGB93lWmmDlQnu_XcgCu1fKGuXRXWAqBfHc-1792326525-1.2.1.1-OIaxC3rySAAUwcBpiITNJXCxxZICotx6.yJu.AXoY7IO0Ga8obABRfj2ZaU_MN6T",
+      "url": "https://data.kanghaerin444.workers.dev/corner?p=admin&id=708b5306d4e7309ae45d1c4252dae680",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78becac6cf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78becac6cf08d/DY5W_UV9_WtuDf3FCeqmpxNXKtiBa2wLKiF7sn3fOEc-1792326545-1.2.1.1-CkC0B7G4n2Teud9gfWF.Z7phSf_He0_ZWeAiQ.P_JFBUl0PkOsrkacmmfQYxHt1g",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78beec80a7ff6/mS7GHRz0wTuRN6KjYeKCNkkzW1Bid0BvrBoF7_cPYQ0-1792326545-1.2.1.1-pipuQREG_gMlBvBttyaCgzE5UVcl0LhDT84nainDx5Tvtn_6YjwErEXu_Y9EL81p",
+      "url": "https://data.l0o1afmju0.workers.dev/corner?p=admin&id=18bc78d78327284b21dd746ec747d197",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78c6a99f1f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78c6a99f1f08d/z0Bpajyd8kIR_DgoJTlR3iRTA9z.T39z.GLPDo3Gi0g-1792326565-1.2.1.1-CynW91uq.hrimdXJhRDOgDbQ_ooGNss_rl3oQJ4HPqMhmlcmM.LMd8Mz88LA59Cy",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78c6cacc57ff6/XMr4qgH9yfjsdTC1keOa7lpablecr1heYzLgONBGWXc-1792326565-1.2.1.1-CpukT3ICVurZxpRisqyCqP10gLaQcOis9IxMR8.FXrOf3hJMt_xqHCE9uEqcNKfF",
+      "url": "https://data.phamviet444.workers.dev/corner?p=admin&id=4e52e1ebbbe15bb6c09390a1c2d68e50",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78ce8893ff08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78ce8893ff08d/3lku7MaHltQyHWZBYYcovmCRiGMY35e3OdGt09NhSIU-1792326585-1.2.1.1-wVlvQhgvcCXvn8_TFbQs..PpMjxNue.0fnRUgesPdxyc2kJDpJPQ3cs4yyVrthfR",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78ceaaf957ff6/cFNxG3JgeJRc_1Qtn8Hnk4yKMDMP9zNimz5YwuQj11c-1792326586-1.2.1.1-TQGvKZROGz3PO9umdw0CG1zwdBXOSR6KI9SrfPAfhASOm4DeS4ulMB24QS2fZpSt",
+      "url": "https://data.ngagzipx.workers.dev/corner?p=admin&id=e01163a2c1e50eafdef35d96d24c5ac0",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78d668b94f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78d668b94f08d/AQf_vw5NVsvZU_msrg_b7kWBdpOz6Ii8QRK6W.l8ISY-1792326605-1.2.1.1-oKid.0nluo1KLmiCB0441X3Rr3GK.lL1YjTUJ0LYDf8qa5DOtuc5WzxGR7ZQ8ToB",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78d689d097ff6/JmJf5xl8YY9q5He_8qJ.fS0sWJYLC_g0_WnGVagq3xg-1792326606-1.2.1.1-o8QVmIe8eal0eJvsZIGT9ZyH_koFrOwb6L11f5yZ8Ef02fKSNUX3NfUm.Jqb0Wrr",
+      "url": "https://data.leehyein444.workers.dev/corner?p=channels&id=amc",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78de48c6af08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78de48c6af08d/XQE3VYOvoe0siBPfJGkFYk6iCEUKYTrnWqkAfcJjHmg-1792326626-1.2.1.1-DeEmsp5FqwjiyZ0reWSyJe1FrXGyJnp3AUkOexW8MPQTZnVTbJTUV1oc8ghroqf2",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78de6abe17ff6/aTXF6Xe9.JWthLna0kKKs0vspuABaKUp75uu5Y1Pffc-1792326626-1.2.1.1-ERBB3Lro.WboSRfzzl7F0ZqwR6DFD4zQpVKd.GDiuNx4pnjeTkN4W1ZBLXQd7x55",
+      "url": "https://data.l0o1afmju0.workers.dev/corner?p=channels&id=amc-plus",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78e629d4ef08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78e629d4ef08d/bWK9TxUZt3FLkQsWM5Zs.Zkzgg6WOe.GbdMcNIkYHnc-1792326646-1.2.1.1-UqbfoXFqcncRWxaQvmDItu83R8a6Rvbqd7G1RtbOQ4wHcARMecQvDmVqGhaBTWeo",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78e64d8a27ff6/xUNIX34F.1qpCyTrv9EyEBSCeGvkoeADHR3umSWj_.s-1792326646-1.2.1.1-zcn5C6mUkpiL0aPahrfVfvFE84D3YftjHDUbyG1egAPdw8pJtpWqZYnSXoHTjPY1",
+      "url": "https://data.5j181.workers.dev/corner?p=channels&id=bbc-america",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78ee0ae1cf08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
+      "mime": "application/octet-stream"
     },
     {
       "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78ee0ae1cf08d/uyFmb.PzhxJEDrGwVzghv0yTj6VWEaLcQ6AynkM3gKU-1792326666-1.2.1.1-56ORwjK6y9_k5D2aFkE09sEmD4HVFk.NO8YWpNQu.VROnJYPqCq_HWXnNWgHhd6o",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78ee2ad2a7ff6/G5rIhuMHcL2Vb3kHPG8lknAu5Xtj.YRUWTMUsQ7v1eM-1792326666-1.2.1.1-ZSTU2ykmfIYJCw7oLsPnU9d2FY04XG87D_6R9Kg._RnZqlmcaHETB7GwBJMsWBXG",
+      "url": "https://data.5j181.workers.dev/corner?p=channels&id=bbc-news",
       "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78f5eac70f08d",
-      "type": "script",
       "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
-    },
-    {
-      "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78f5eac70f08d/rVzpv9D2BJJLirn2AVxleSkgZHYb0AvPhCWU.fNWykc-1792326686-1.2.1.1-6So1RX2L1k0eH6cLHCLa4lauCmHsnsKn0uQAw.UxyEu8df2FJHtK3ATfx_STBI3A",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78f60cab97ff6/fPA44B_dFqUHLv6AWmPqiM6RSJNQMGZAAcmTlS_cxdE-1792326686-1.2.1.1-EdNfbk_e_cRIN4JU4Sp14VV0qQS0rAjJKgdseBUHaXxnGhMNznIdxkfWWNSqZjlj",
-      "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
-    },
-    {
-      "method": "GET",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a4c78fdccab5f08d",
-      "type": "script",
-      "status": 200,
-      "mime": "application/javascript; charset=UTF-8"
-    },
-    {
-      "method": "POST",
-      "url": "https://streamcorner.st/cdn-cgi/challenge-platform/h/b/fo/3752393177:1792324922:zlTDgoA-wYzCEeQRM-dHgitJOhsUe3CcWnz2YnmH8iw/a4c78fdccab5f08d/S01lzuCuA6DXLw0n.IGSo5JotgKMruHSzJyV.nND2xA-1792326706-1.2.1.1-xNDetCqnWEpNtTZYNpdL_8Z64stxqfnkY3E0P_IkR_SCAnDKaC8hZpshGMhndMcX",
-      "type": "xhr",
-      "status": 200,
-      "mime": "text/plain; charset=UTF-8"
-    },
-    {
-      "method": "GET",
-      "url": "https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a4c78fdf19c47ff6/5qN8pROF9504zxo12_DugoPXquxt8qkGX21TgAiJDDY-1792326707-1.2.1.1-CGcDX6TwK.vHpQytNBv6Ntms1PDsqbtcvUEq_KsraUqtNQ6teojdkKUpU0lmqeeO",
-      "type": "fetch",
-      "status": "FAILED",
-      "mime": "",
-      "error": "net::ERR_NAME_NOT_RESOLVED"
+      "mime": "application/octet-stream"
     }
   ]
 }
