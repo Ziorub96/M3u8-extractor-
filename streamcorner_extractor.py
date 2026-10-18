@@ -554,4 +554,238 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     if source_buttons_found:
                         log(f"      🎬 {source_count} source(s) trovati")
                         try:
-                            loc = page.loc
+                            loc = page.locator('.stream-source-btn').first
+                            try:
+                                loc.scroll_into_view_if_needed(timeout=3000)
+                            except Exception:
+                                pass
+                            try:
+                                loc.click(timeout=5000, no_wait_after=True)
+                            except TypeError:
+                                loc.click(timeout=5000)
+                            log(f"      ✅ click source")
+                            page.wait_for_timeout(3500)  # iframe load
+                        except Exception as e:
+                            log(f"      ⚠️ click source failed: {type(e).__name__}")
+                            page.wait_for_timeout(2000)
+                except Exception:
+                    log(f"      ⚠️ no source-btn in 12s")
+
+                # Fallback: se non c'erano source button, prova Play/video
+                if not source_buttons_found:
+                    for sel in ("button:has-text('Play')",
+                                "button:has-text('Guarda')",
+                                "button[aria-label*='play' i]",
+                                ".vjs-big-play-button",
+                                ".jw-icon-playback"):
+                        try:
+                            if page.locator(sel).count() > 0:
+                                try:
+                                    page.locator(sel).first.click(timeout=2000, no_wait_after=True)
+                                except TypeError:
+                                    page.locator(sel).first.click(timeout=2000)
+                                log(f"      🎬 fallback click: {sel}")
+                                page.wait_for_timeout(2500)
+                                break
+                        except Exception:
+                            continue
+
+                # Track "no sources" (non è un nav fail, ma se 5 di fila stop)
+                if source_buttons_found:
+                    consecutive_no_sources = 0
+                else:
+                    consecutive_no_sources += 1
+
+                # Debug save post-click
+                try:
+                    slug = re.sub(r'[^a-z0-9]', '_', path.split("/")[-1])[:40]
+                    dbg = os.path.join(debug_dir, f"sc_stream_{slug}.html")
+                    Path(dbg).write_text(page.content(), encoding="utf-8")
+                except Exception:
+                    pass
+
+                # Log frames (skip chat)
+                for f in page.frames:
+                    furl = f.url or ""
+                    if (furl and furl != "about:blank"
+                            and CHAT_HOST_FILTER not in furl):
+                        log(f"      🖼️ frame: {furl[:100]}")
+
+                # Check frame URLs per m3u8
+                for frame in page.frames:
+                    try:
+                        furl = frame.url
+                        if furl and (".m3u8" in furl or ".mpd" in furl):
+                            found.append({"url": furl, "referer": link,
+                                          "title": page.title() or "StreamCorner",
+                                          "source": "frame-url"})
+                            log(f"    🎯 FRAME: {furl[:120]}")
+                    except Exception:
+                        pass
+            except Exception as e:
+                log(f"      ⚠️ {type(e).__name__}")
+                consecutive_fails += 1
+
+        browser.close()
+
+    return found, network_map, {"engine": engine, "title": title,
+                                "html_len": html_len,
+                                "cloudflare": cf_hit["cloudflare"],
+                                "blocked": False,
+                                "categories": len(cat_links),
+                                "matches": len(match_links),
+                                "base_url": BASE}
+
+
+def entry_lines(url, title, group, referer, mtype):
+    out = [f'#EXTINF:-1 group-title="{group}",{title}']
+    if referer:
+        out.append(f"#EXTVLCOPT:http-referrer={referer}")
+    out.append(f"#EXTVLCOPT:http-user-agent={UA_DESKTOP}")
+    out.append("#KODIPROP:inputstream=inputstream.adaptive")
+    if mtype:
+        out.append(f"#KODIPROP:inputstream.adaptive.manifest_type={mtype}")
+    out.append(url)
+    return out
+
+
+def write_m3u(path, entries, group_override=None):
+    seen = set(); n = 0
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n")
+        for e in entries:
+            if not e.get("url") or e["url"] in seen: continue
+            seen.add(e["url"])
+            grp = group_override or e.get("group") or "StreamCorner"
+            f.write("\n".join(entry_lines(e["url"], e.get("title") or "Evento",
+                                          grp, e.get("referer") or (BASE_DEFAULT + "/"),
+                                          e.get("mtype") or manifest_type(e["url"]))) + "\n")
+            n += 1
+    return n
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--output", "-o", default="streamcorner_COMPLETE.m3u")
+    ap.add_argument("--output-dir", default=None)
+    ap.add_argument("--proxy", default=os.environ.get("SC_PROXY"))
+    ap.add_argument("--provider", default="admin")
+    ap.add_argument("--all-events", action="store_true")
+    ap.add_argument("--no-embeds", action="store_true")
+    ap.add_argument("--refresh", action="store_true")
+    ap.add_argument("--embed-workers", "--playwright-workers", type=int, default=4,
+                    dest="embed_workers")
+    ap.add_argument("--embed-limit", "--playwright-limit", type=int, default=0,
+                    dest="embed_limit")
+    ap.add_argument("--ua", choices=["desktop", "mobile"], default="desktop")
+    ap.add_argument("--headful", action="store_true")
+    ap.add_argument("--base", default=BASE_DEFAULT,
+                    help="Base URL (default streamcorner.st). "
+                         "Usare un mirror .foo/.cloud/.fun se .st è bloccato.")
+    ap.add_argument("--no-probe", action="store_true",
+                    help="Salta il probe iniziale dei mirror.")
+    args, unknown = ap.parse_known_args()
+    if unknown:
+        log(f"[*] Argomenti ignorati: {unknown}")
+
+    if args.output_dir is None:
+        args.output_dir = os.path.dirname(args.output) or "."
+    os.makedirs(args.output_dir, exist_ok=True)
+    ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
+
+    log("=" * 66)
+    log(f"📡 STREAMCORNER EXTRACTOR v13.6 (source-click fix)")
+    log("=" * 66)
+
+    if not args.no_probe:
+        _probe_mirrors()
+        log("")
+
+    log(f"[*] Base URL: {args.base}")
+
+    found, network_map, meta = run_playwright(
+        timeout_s=45, ua=ua, headless=not args.headful,
+        debug_dir=args.output_dir, max_total_time_s=900,
+        base_url=args.base)
+
+    log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
+    log(f"[*] Meta: {meta}")
+
+    try:
+        net_list = list(network_map.values())
+        net_path = os.path.join(args.output_dir, NETWORK_FILE)
+        Path(net_path).write_text(
+            json.dumps({"total": len(net_list), "requests": net_list},
+                       indent=2, ensure_ascii=False), encoding="utf-8")
+        log(f"   💾 {NETWORK_FILE} ({len(net_list)} richieste)")
+    except Exception as e:
+        log(f"   ⚠️ salvataggio network: {e}")
+
+    seen = set()
+    entries = []
+    for f in found:
+        u = f["url"]
+        if is_skipped(u):
+            log(f"    ⏭️  SKIP {u[:100]}")
+            continue
+        if u in seen:
+            continue
+        seen.add(u)
+        entries.append({
+            "url": u,
+            "title": (f.get("title") or "StreamCorner")[:60],
+            "group": (f.get("title") or "StreamCorner")[:60],
+            "referer": f.get("referer") or (args.base + "/"),
+            "mtype": manifest_type(u),
+        })
+
+    n1 = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), entries)
+    log(f"   💾 EVENTS_LIVE: {n1}")
+    n2 = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
+                   entries, group_override="StreamCorner")
+    log(f"   💾 VLC: {n2}")
+    n3 = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), entries)
+    log(f"   💾 KODI: {n3} (non committato)")
+    n4 = write_m3u(args.output, entries)
+    log(f"   💾 {args.output}: {n4}")
+
+    summary = {
+        "version": "13.6",
+        "site": args.base,
+        "engine": meta.get("engine"),
+        "title": meta.get("title"),
+        "html_len": meta.get("html_len"),
+        "cloudflare_detected": meta.get("cloudflare"),
+        "blocked": meta.get("blocked"),
+        "categories_found": meta.get("categories"),
+        "matches_found": meta.get("matches"),
+        "manifests_found": len(found),
+        "entries_final": len(entries),
+        "extracted_at": int(time.time()),
+    }
+    try:
+        Path(os.path.join(args.output_dir, CAPTURE_FILE)).write_text(
+            json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
+        log(f"   💾 {CAPTURE_FILE} salvato")
+    except Exception as e:
+        log(f"   ⚠️ capture: {e}")
+
+    try:
+        assets_path = os.path.join(args.output_dir, ASSETS_DIR)
+        if os.path.isdir(assets_path):
+            files = [f for f in os.listdir(assets_path) if f.endswith(".js")]
+            total_size = sum(os.path.getsize(os.path.join(assets_path, f))
+                             for f in files)
+            log(f"   📦 Bundle JS salvati: {len(files)} file ({total_size} byte)")
+    except Exception:
+        pass
+
+    log("=" * 66)
+    log(f"✅ blocked={meta.get('blocked')}  entries={len(entries)}")
+    log("=" * 66)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
