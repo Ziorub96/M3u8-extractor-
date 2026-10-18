@@ -1,1 +1,8 @@
 #EXTM3U
+
+#EXTINF:-1 group-title="pirlo-tv",PirloTV 1
+#EXTVLCOPT:http-referrer=https://streamx305.sbs/global3.php?channel=espn
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+#KODIPROP:inputstream=inputstream.adaptive
+#KODIPROP:inputstream.adaptive.manifest_type=hls
+https://99.envivosenhd.beer:443/global/espn/tracks-v1a1/mono.m3u8?ip=48.217.148.80&token=b3bc4d291d0049e4f8fa5de85786d442fa15adf3-fa-1792362002-1792308002

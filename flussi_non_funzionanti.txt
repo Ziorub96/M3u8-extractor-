@@ -1,112 +1,121 @@
 Fox News | https://p4.usnlive.com/stream/foxnews.m3u8 | HTTP 403
-History Channel | http://212.5.144.156:8080/history/index.m3u8 | HTTP 403
-Nick Jr | http://212.5.144.156:8080/nickjr/index.m3u8 | HTTP 403
 MS NOW | https://p4.usnlive.com/stream/msnbc.m3u8 | HTTP 403
-[Boxing] Dubois vs Wardley II | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/dw/index.m3u8 | HTTP 404
-[Boxing] Fundora vs Hadribeaj | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/ppv/index.m3u8 | HTTP 403
 [Bundesliga] Bayern Munich vs RB Leipzig | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/bay/index.m3u8 | HTTP 404
-[Bundesliga] SV Elversberg vs FC Augsburg | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/augs/index.m3u8 | HTTP 404
+[Boxing] Fundora vs Hadribeaj | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/ppv/index.m3u8 | HTTP 404
+[Boxing] Dubois vs Wardley II | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/dw/index.m3u8 | HTTP 404
 [Bundesliga] Hamburg SV vs VfB Stuttgart | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/vfb/index.m3u8 | HTTP 404
+[Bundesliga] Werder Bremen vs SC Paderborn 07 | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/pad/index.m3u8 | HTTP 404
+[Bundesliga] SV Elversberg vs FC Augsburg | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/augs/index.m3u8 | HTTP 404
 [Bundesliga] Schalke 04 vs Mainz | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/main/index.m3u8 | HTTP 404
 [Bundesliga] Union Berlin vs Borussia Dortmund | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/dor/index.m3u8 | HTTP 404
-[Bundesliga] Werder Bremen vs SC Paderborn 07 | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/pad/index.m3u8 | HTTP 404
 [EFL Championship] Southampton vs Bolton | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/sou/index.m3u8 | HTTP 404
-[Epl] Brentford vs Liverpool | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/liv/index.m3u8 | HTTP 404
-[Epl] Newcastle United vs Aston Villa | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/ast/index.m3u8 | HTTP 404
-[Epl] Manchester City vs Ipswich Town | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/mci/index.m3u8 | HTTP 404
-[Epl] Fulham vs Hull City | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/ful/index.m3u8 | HTTP 404
-[Epl] Everton vs Chelsea | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/che/index.m3u8 | HTTP 404
 [EFL Championship] Swansea vs West Ham | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/whu/index.m3u8 | HTTP 404
 [EFL Championship] Wrexham vs Preston | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/wrex/index.m3u8 | HTTP 404
+[Epl] Brentford vs Liverpool | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/liv/index.m3u8 | HTTP 404
+[Epl] Everton vs Chelsea | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/che/index.m3u8 | HTTP 404
+[Epl] Fulham vs Hull City | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/ful/index.m3u8 | HTTP 404
+[Epl] Newcastle United vs Aston Villa | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/ast/index.m3u8 | HTTP 404
+[Epl] Manchester City vs Ipswich Town | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/mci/index.m3u8 | HTTP 404
 [Laliga] Espanyol vs Atlètico Madrid | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/atl/index.m3u8 | HTTP 404
-[Laliga] Real Betis vs Barcelona | Alt Feed 1 Esp (FUTBOLX) | https://bt.futbolx.ryzn.pro/esp/index.m3u8 | HTTP 404
 [Laliga] Valencia vs A.Bilbao | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/val/index.m3u8 | HTTP 404
+[Laliga] Real Betis vs Barcelona | Alt Feed 1 Esp (FUTBOLX) | https://bt.futbolx.ryzn.pro/esp/index.m3u8 | HTTP 404
 [Laliga] Real Betis vs Barcelona | Main Feed En (FUTBOLX) | https://bt.futbolx.ryzn.pro/bet/index.m3u8 | HTTP 404
 [MLB] Tampa Bay Rays at Cleveland Guardians (SPRTSPASS) | https://frostlineecho.s3.us-east-1.amazonaws.com/rays.m3u8 | HTTP 404
+[MLB Baseball] Cleveland Guardians vs Tampa Bay Rays 2 (FAWA) | https://admin.formaturamaxi.com.br/mlb.m3u8 | HTTP 404
 [Ligue 1] Lille vs Brest | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/lile/index.m3u8 | HTTP 404
+[MLS League] Atlanta Utd vs Inter Miami 2 (FAWA) | https://admin2.formaturamaxi.com.br/mls.m3u8 | HTTP 404
 [Ligue 1] Troyes vs Lens | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/troy/index.m3u8 | HTTP 404
-[MMA] UFC Fight Night: Buckley vs Malott | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/uf/index.m3u8 | HTTP 403
+[NCAA College Football] California vs Wake Forest (REED) | https://admin2.formaturamaxi.com.br/ncaa9.m3u8 | HTTP 404
+[NCAA College Football] Oregon vs Nebraska (REED) | https://admin2.formaturamaxi.com.br/ncaa.m3u8 | HTTP 404
+[NCAA College Football] Colorado vs Utah (REED) | https://tedesco.formaturamaxi.com.br/ncaa3.m3u8 | HTTP 404
+[NCAA College Football] San Diego State vs Fresno State (REED) | https://tedesco.formaturamaxi.com.br/ncaa10.m3u8 | HTTP 404
 [NHL] Boston Bruins at Los Angeles Kings (SPRTSPASS) | https://bronzemirage.s3.us-east-1.amazonaws.com/bruins.m3u8 | HTTP 404
 [NHL] Edmonton Oilers at Utah Mammoth (SPRTSPASS) | https://opalrenegade.s3.us-east-1.amazonaws.com/oilers.m3u8 | HTTP 404
-[NHL] Pittsburgh Penguins at Vegas Golden Knights (SPRTSPASS) | https://opalrenegade.s3.us-east-1.amazonaws.com/penguins.m3u8 | HTTP 404
-[NHL] San Jose Sharks at Detroit Red Wings (SPRTSPASS) | https://opalrenegade.s3.us-east-1.amazonaws.com/redwings.m3u8 | HTTP 404
 [NHL] New York Rangers at Columbus Blue Jackets (SPRTSPASS) | https://opalrenegade.s3.us-east-1.amazonaws.com/bluejackets.m3u8 | HTTP 404
-[NHL Hockey] Detroit Red Wings vs San Jose Sharks (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/39f262f1-29cd-462f-aeb1-5342350a4a77/master.m3u8 | manifest_troppo_corto
-[NHL Hockey] Columbus Blue Jackets vs New York Rangers (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/adbcd40a-d325-4bbe-81ea-336203013064/master.m3u8 | manifest_troppo_corto
+[NHL] Los Angeles Kings vs Boston Bruins (REED) | https://admin2.formaturamaxi.com.br/nhl12.m3u8 | HTTP 404
+[NHL] Pittsburgh Penguins at Vegas Golden Knights (SPRTSPASS) | https://opalrenegade.s3.us-east-1.amazonaws.com/penguins.m3u8 | HTTP 404
 [NHL] St. Louis Blues at Nashville Predators (SPRTSPASS) | https://frostlineecho.s3.us-east-1.amazonaws.com/predators.m3u8 | HTTP 404
 [NHL] Seattle Kraken at Florida Panthers (SPRTSPASS) | https://bronzemirage.s3.us-east-1.amazonaws.com/panthers.m3u8 | HTTP 404
-[NHL Hockey] Montreal Canadiens vs Buffalo Sabres (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/5910902e-28f7-40e0-96c1-49d59154b317/master.m3u8 | manifest_troppo_corto
+[NHL] San Jose Sharks at Detroit Red Wings (SPRTSPASS) | https://opalrenegade.s3.us-east-1.amazonaws.com/redwings.m3u8 | HTTP 404
+[NHL] Utah Mammoth vs Edmonton Oilers (REED) | https://admin2.formaturamaxi.com.br/nhl2.m3u8 | HTTP 404
+[NHL Hockey] Columbus Blue Jackets vs New York Rangers (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/adbcd40a-d325-4bbe-81ea-336203013064/master.m3u8 | manifest_troppo_corto
 [NHL Hockey] Los Angeles Kings vs Boston Bruins (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/772b911d-d10f-4f9a-9c96-df01e20d5b5e/master.m3u8 | manifest_troppo_corto
-[NHL Hockey] Chicago Blackhawks vs Dallas Stars (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/ba5da810-b755-4dfc-9924-d03e0574a710/master.m3u8 | manifest_troppo_corto
 [NHL Hockey] Nashville Predators vs St Louis Blues (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/73c1817e-5297-4b19-9fcd-5443f535960b/master.m3u8 | manifest_troppo_corto
+[NHL Hockey] Detroit Red Wings vs San Jose Sharks (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/39f262f1-29cd-462f-aeb1-5342350a4a77/master.m3u8 | manifest_troppo_corto
+[NHL] Vegas Golden Knights vs Pittsburgh Penguins (REED) | https://admin2.formaturamaxi.com.br/nhl14.m3u8 | HTTP 404
+[NHL Hockey] Chicago Blackhawks vs Dallas Stars (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/ba5da810-b755-4dfc-9924-d03e0574a710/master.m3u8 | manifest_troppo_corto
+[NHL Hockey] Utah Mammoth vs Edmonton Oilers (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/cfbb297d-3702-4c4a-8e99-eacf243bdef5/master.m3u8 | manifest_troppo_corto
 [NHL Hockey] Toronto Maple Leafs vs New York Islanders (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/d724054d-18f0-42da-b1b6-0115f995e171/master.m3u8 | manifest_troppo_corto
+[NHL Hockey] Montreal Canadiens vs Buffalo Sabres (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/5910902e-28f7-40e0-96c1-49d59154b317/master.m3u8 | manifest_troppo_corto
 [NHL Hockey] Philadelphia Flyers vs Ottawa Senators (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/85d9e12b-6544-4494-a667-6bdb1f83a6a7/master.m3u8 | manifest_troppo_corto
+[MMA] UFC Fight Night: Buckley vs Malott | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/uf/index.m3u8 | HTTP 404
+[NHL Hockey] Vegas Golden Knights vs Pittsburgh Penguins (FAWA) | https://live.kinescopecdn.net/on-air/5bf2c07e-3604-42cf-959a-67ed8914ffd5/ec835b32-921a-4051-b482-7081496f38b0/master.m3u8 | manifest_troppo_corto
 [Seria A] AS Roma vs Genoa | Main Feed (FUTBOLX) | https://bt.futbolx.ryzn.pro/rma/index.m3u8 | HTTP 404
-[Seria A] Bologna vs Inter Milan | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/int/index.m3u8 | HTTP 404
-[Seria A] Venezia vs Napoli | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/nap/index.m3u8 | HTTP 404
-[Süper Lig] Gençlerbirliği vs Galatasaray | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/gala/index.m3u8 | HTTP 404
 Awapa Sports TV (1080p) [Not 24/7] | https://mgv-awapa.akamaized.net/hls/live/2104282/MGV_CHANNEL15/master.m3u8 | HTTP 400
 Azteca Deportes Network (1080p) | http://181.119.66.28:8081/AZTECA-DEPORTES-HD/index.m3u8 | err_ConnectionError
-CBC Sport [Geo-blocked] | https://mn-nl.mncdn.com/cbcsports_live/cbcsports/playlist.m3u8 | err_HTTPError
+[Seria A] Bologna vs Inter Milan | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/int/index.m3u8 | HTTP 404
+[Süper Lig] Gençlerbirliği vs Galatasaray | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/gala/index.m3u8 | HTTP 404
+[Seria A] Venezia vs Napoli | Main Feed (FUTBOLX) | https://g.futbolx.ryzn.pro/nap/index.m3u8 | HTTP 404
 Canal+ Sport 360 | https://futbol9865.ultratv13.workers.dev/deportivo111/14.m3u8 | HTTP 404
+CBC Sport [Geo-blocked] | https://mn-nl.mncdn.com/cbcsports_live/cbcsports/playlist.m3u8 | err_HTTPError
 CCTV-5+ | https://myip.pdtvhd.com/Sports/streams/CCTV5pul.m3u8 | HTTP 500
-DAZN Darts x Pluto TV | https://jmp2.uk/plu-64b67f0424ade50008a3be17.m3u8 | HTTP 403
 DAZN Heldinnen x Pluto TV | https://jmp2.uk/plu-64afe50c5dc16600087f3227.m3u8 | HTTP 403
-DSports (1080p) | http://38.187.7.252:8000/play/a03d/index.m3u8 | err_ConnectionError
+DAZN Darts x Pluto TV | https://jmp2.uk/plu-64b67f0424ade50008a3be17.m3u8 | HTTP 403
 DSports 2 (1080p) | http://187.102.208.209:8000/play/a0bq/index.m3u8 | HTTP 403
-Canal do Inter (720p) [Not 24/7] | https://video01.soultv.com.br/internacional/internacional/playlist.m3u8 | err_Timeout
+DSports (1080p) | http://38.187.7.252:8000/play/a03d/index.m3u8 | err_ConnectionError
 ERT Sports 1 (1080p) | http://hbbtvapp.ert.gr/stream.php/v/vid_ertsports_mpeg.2ts | HTTP 403
 ERT Sports 2 (1080p) | http://hbbtvapp.ert.gr/stream.php/v/vid_ertplay2_mpeg.2ts | HTTP 403
+Canal do Inter (720p) [Not 24/7] | https://video01.soultv.com.br/internacional/internacional/playlist.m3u8 | err_Timeout
 Esport3 (1080p) [Geo-blocked] | https://directes-tv-cat.3catdirectes.cat/live-content/esport3-hls/master.m3u8 | HTTP 403
 ESPN Extra Latin America (1080p) | https://barinaslive1.boldmss.com/ESPN/ESPN.isml/ESPN.mpd? | body_non_m3u8
-Golf Channel Latin America (1080p) | http://15.204.246.24:8080/GolfChannelHD/index.m3u8 | HTTP 403
-Hard Knocks (1080p) | https://d3uyzhwvmemdyf.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b743c6411d25f62fc25/Hard-Knocks-DistroTV/109.m3u8?ads.vf=6pOF6kgy418 | HTTP 404
 GEM Sport | https://steep-wildflower-284d.nhhwkiszzzvcuojxdo.workers.dev/?url=https://gg.hls2.xyz/live/IR+-+GEM+Sport/chunks.m3u8 | HTTP 403
+Hard Knocks (1080p) | https://d3uyzhwvmemdyf.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b743c6411d25f62fc25/Hard-Knocks-DistroTV/109.m3u8?ads.vf=6pOF6kgy418 | HTTP 404
 K19 | https://1853185335.rsc.cdn77.org/K192/tv/playlist.m3u8 | HTTP 403
 Lazio Style Channel HD (720p) | https://distribution.sportitalialive.it/origin/laziostyle_abr/playlist.m3u8 | HTTP 403
 M-Net Sport (720p) | http://ares.mnet.mk/hls/mnet-sport.m3u8 | err_ConnectionError
 Meridiano TV (576p) | http://181.78.8.199:8000/play/a0fr/index.m3u8 | HTTP 404
-Futbol (1080p) | https://live.teleradiocom.tj/8/3m.m3u8 | err_Timeout
 Multivision Sports (720p) [Not 24/7] | https://stream.digitalgt.com:3605/live/multivisionsportslive.m3u8 | HTTP 500
 N Sports (1080p) | https://ogc-nsprt-tcl-roku-syndication.otteravision.com/ogc/nsprt/nsprt.m3u8 | err_DNSError
 Olympic Channel (1080p) [Geo-blocked] | https://ocshls-2-olympicchannel.akamaized.net/ocshls/OCTV_1.m3u8 | HTTP 403
-Max Sport 2 (1080p) | http://hls127.freeott.top:8080/BG_MAX_Sport_2_HD/video.m3u8 | err_Timeout
+Futbol (1080p) | https://live.teleradiocom.tj/8/3m.m3u8 | err_Timeout
 Max Sport 1 (1080p) | http://hls127.freeott.top:8080/BG_MAX_Sport_1_HD/video.m3u8 | err_Timeout
-Max Sport 3 (1080p) | http://hls127.freeott.top:8080/BG_MAX_Sport_3_HD/video.m3u8 | err_Timeout
+Max Sport 2 (1080p) | http://hls127.freeott.top:8080/BG_MAX_Sport_2_HD/video.m3u8 | err_Timeout
 Max Sport 4 (1080p) | http://hls127.freeott.top:8080/BG_MAX_Sport_4_HD/video.m3u8 | err_Timeout
-Pluto TV Sport (Sweden) DK | https://jmp2.uk/plu-6357f3de3643ba0007bc0b50.m3u8 | HTTP 403
+Max Sport 3 (1080p) | http://hls127.freeott.top:8080/BG_MAX_Sport_3_HD/video.m3u8 | err_Timeout
 Pluto TV Sport (Sweden) NO | https://jmp2.uk/plu-6357f33cb51d2d00077927c6.m3u8 | HTTP 403
+Pluto TV Sport (Sweden) DK | https://jmp2.uk/plu-6357f3de3643ba0007bc0b50.m3u8 | HTTP 403
 Racing.com (720p) | https://racingvic-i.akamaized.net/hls/live/598695/racingvic/index1500.m3u8 | HTTP 400
+MRTV Sports [Not 24/7] | https://mrtvott.com/cache/MRTV-SPORT/master.m3u8 | err_Timeout
 Sharjah Sports (1080p) [Geo-blocked] | https://svs.itworkscdn.net/smc4sportslive/smc4tv.smil/playlist.m3u8 | HTTP 403
-Shandong TV Sports Channel (1080p) [Geo-blocked] | http://livealone302.iqilu.com/iqilu/typd.m3u8 | HTTP 403
 Sky Racing 2 (720p) [Geo-blocked] | https://skylivetab-new.akamaized.net/hls/live/2038781/sky2/index.m3u8 | HTTP 403
-Sony Sports Ten 1 HD (1080p) | http://103.185.24.134:3001/SonyTenSports1/index.m3u8 | err_ConnectionError
-Sky Sports NFL (720p) | https://cdn.stmify.com/out/v1/SKY_SPORTS_ACTION/index.m3u8 | HTTP 403
 Sky Sports F1 (720p) | https://cdn.stmify.com/out/v1/SKY_SPORTS_F1/index.m3u8 | HTTP 403
-Sportitalia Motori (720p) [Geo-blocked] | https://di-yx2saj20.vo.lswcdn.net/sportitalia/smil:simotori.smil/playlist.m3u8 | HTTP 403
-Sportitalia 24 (720p) [Geo-blocked] | https://di-yx2saj20.vo.lswcdn.net/sportitalia/smil:silive24.smil/playlist.m3u8 | HTTP 403
+Sky Sports NFL (720p) | https://cdn.stmify.com/out/v1/SKY_SPORTS_ACTION/index.m3u8 | HTTP 403
+Sony Sports Ten 1 HD (1080p) | http://103.185.24.134:3001/SonyTenSports1/index.m3u8 | err_ConnectionError
+Shandong TV Sports Channel (1080p) [Geo-blocked] | http://livealone302.iqilu.com/iqilu/typd.m3u8 | HTTP 403
+Sportitalia 24 (720p) [Geo-blocked] | https://di-yx2saj20.vo.lswcdn.net/sportitalia/smil:silive24.smil/playlist.m3u8 | HTTP 404
+Sportitalia Motori (720p) [Geo-blocked] | https://di-yx2saj20.vo.lswcdn.net/sportitalia/smil:simotori.smil/playlist.m3u8 | HTTP 404
 Sport (Kyrgyzstan) (480p) [Not 24/7] | https://st2.mediabay.tv/KG_KTRK-Sport/index.m3u8 | HTTP 403
 Sportitalia Solocalcio (1080p) | https://distribution.sportitalialive.it/sportitalia/sisolocalcio_abr/playlist.m3u8 | HTTP 403
 PX Sports (1080p) | http://38.252.238.18:8000/play/a02f/index.m3u8 | err_Timeout
-Start Triumf (1080p) | https://bl.webcaster.pro/media/playlist/free_fe8dc1b768a84b8b0333db826471f17e_hd/33_85479982/1080p/8666c3e935faf6ef47ffd601e8e48868/4821408969.m3u8 | HTTP 403
 Sukan RTM (1080p) [Geo-blocked] | https://d25tgymtnqzu8s.cloudfront.net/smil:sukan/manifest.mpd | HTTP 404
+Start Triumf (1080p) | https://bl.webcaster.pro/media/playlist/free_fe8dc1b768a84b8b0333db826471f17e_hd/33_85479982/1080p/8666c3e935faf6ef47ffd601e8e48868/4821408969.m3u8 | HTTP 403
 SuperTennis (1080p) | https://live-embed.supertennix.hiway.media/restreamer/supertennix_client/gpu-a-c0-16/restreamer/outgest/aa3673f1-e178-44a9-a947-ef41db73211a/manifest.m3u8 | HTTP 403
 Talent TV (720p) | http://live.talenttv.lk:8080/hls/x8kd5n3tm8e8lsv/index.m3u8 | contenuto_errore
-S Sport 2 (720p) | https://corestream.siteyaptim.live/s-sport2/index.m3u8 | err_Timeout
 S Sport (720p) | https://corestream.siteyaptim.live/s-sport/index.m3u8 | err_Timeout
+S Sport 2 (720p) | https://corestream.siteyaptim.live/s-sport2/index.m3u8 | err_Timeout
 Tigo Sports (Bolivia) (720p) [Geo-blocked] | https://dipdxjic51jcl.cloudfront.net/out/v1/81f769d780694be488d85811331c8a4f/index.m3u8 | body_non_m3u8
 Tigo Sports+ (1280p) | https://stmv7.voxtvhd.com.br/xxvideo/xxvideo/playlist.m3u8 | HTTP 403
+TJK TV 2 (1080p) [Not 24/7] | https://tjktv-live.tjk.org/tjktv2/tjktv2.m3u8 | HTTP 401
 Sport TV1 | http://znty.dyndns.org:5010/hls/stv1.m3u8 | err_Timeout
 Sport TV6 | http://zntx.dyndns.org:8085/hls/stv6.m3u8 | err_Timeout
-Sport TV+ | http://znty.dyndns.org:5010/hls/sportv+.m3u8 | err_Timeout
-TJK TV 2 (1080p) [Not 24/7] | https://tjktv-live.tjk.org/tjktv2/tjktv2.m3u8 | HTTP 401
 Sport TV7 | http://zntx.dyndns.org:8085/hls/stv7.m3u8 | err_Timeout
+Sport TV+ | http://znty.dyndns.org:5010/hls/sportv+.m3u8 | err_Timeout
 TV Cuatro 4.3 (1080p) | https://5ca3e84a76d30.streamlock.net/tv43gto/tv43gto.smil/.m3u8 | HTTP 403
-TDM Sports (720p) | https://live3.tdm.com.mo/ch4/sport_ch4.live/playlist.m3u8 | err_Timeout
-The Cycling Channel | https://cyclingtv.playout.vju.tv/cyclingtv/main.m3u8 | err_Timeout
 UPL.TV | http://dtv.vol.net.ua/UPL-TV/index.m3u8 | HTTP 404
+TDM Sports (720p) | https://live3.tdm.com.mo/ch4/sport_ch4.live/playlist.m3u8 | err_Timeout
+Vital Drive | https://autopilot.catcast.tv/content/37909/index.m3u8 | err_ConnectionError
+The Cycling Channel | https://cyclingtv.playout.vju.tv/cyclingtv/main.m3u8 | err_Timeout
 VTV6 (1080p) | https://vips-livecdn.fptplay.net/live/media/vtv6/live247-hls-avc/index.m3u8 | HTTP 403
 YES | https://customer-ujex1meek7koqd9x.cloudflarestream.com/4f0b316cdb0fbb7f8ca93860ed11d38b/manifest/video.m3u8 | manifest_troppo_corto
-Vital Drive | https://autopilot.catcast.tv/content/37909/index.m3u8 | err_ConnectionError
 TRT Spor (720p) | https://corestream.siteyaptim.live/trt-spor/index.m3u8 | err_Timeout
 TVMatic Fight (720p) | http://cdn.tvmatic.net/fight.m3u8 | err_Timeout
