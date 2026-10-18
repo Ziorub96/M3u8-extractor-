@@ -1,178 +1,180 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-combine_playlist.py — v2.7
-
-Cambiamenti rispetto a v2.4:
-- parse_m3u() IGNORA esplicitamente # CHECK: e altri commenti residui
-- Preserva solo #EXTVLCOPT e #KODIPROP tra i commenti (utili per player)
-- Nessun'altra modifica
-"""
 import re
+import requests
 from pathlib import Path
-from urllib.parse import urlparse
 
+# URL della guida TV combinata (generata da epg_combiner.py)
 EPG_URL = "https://raw.githubusercontent.com/Ziorub96/M3u8-extractor-/main/combined_epg.xml"
 
+# Mapping canale -> tvg-id per nazionalità multiple
 TVG_ID_MAP = {
-    "Digi Sport 1": "DigiSport1.it", "DAZN 1 Italia": "DAZN1.it",
-    "Sky Sport 24": "SkySport24.it", "ESPN": "ESPN.us", "ESPN2": "ESPN2.us",
+    "Digi Sport 1": "DigiSport1.it",
+    "Digi Sport 2 HD": "DigiSport2.it",
+    "Digi Sport 3": "DigiSport3.it",
+    "Digi Sport 4": "DigiSport4.it",
+    "Match!Ultra": "MatchTV.ru",
+    "DAZN 1 Italia": "DAZN1.it",
+    "Sky Sport 24": "SkySport24.it",
+    "Sky Sport Calcio": "SkySportCalcio.it",
+    "Sky Sport UNO": "SkySportUno.it",
+    "Sky Sports Main Event": "SkySportsMainEvent.uk",
+    "Sky Sports Premier League": "SkySportsPremierLeague.uk",
+    "TNT Sports 1": "TNTSports1.uk",
+    "TNT Sports 2": "TNTSports2.uk",
+    "ESPN": "ESPN.us",
+    "ESPN2": "ESPN2.us",
+    "FOX Sports 1": "FoxSports1.us",
+    "beIN Sports 1": "beINSports1.fr",
+    "Bundesliga 1": "Bundesliga1.de",
+    "Movistar Deportes": "MovistarDeportes.es",
+    "Sport TV1": "SportTV1.pt",
+    "Eleven Sports 1": "ElevenSports1.pl",
 }
 
-DEAD_HOSTS = {
-    "23.237.104.106", "cache0.wonvt.st",
-    "edgestream1.pro", "edgestream2.pro", "edgestream3.pro",
-    "edgestream4.pro", "edgestream5.pro", "edgestream6.pro", "edgestream7.pro",
-    "193.47.62.41", "193.47.62.44", "193.47.62.50", "193.47.62.55", "193.47.62.59",
-    "futbolx.ryzn.pro", "judiaslevels.embeds.gay", "chatgpt.hereisman.net",
-    "karimianian.store", "instreams.xyz", "instreams.live", "instreams.pro",
-    "rtmpcdn.com", "streamfree.top", "khala.futlivehd.com", "ftlly.com",
-    "fubo18.com", "webcast-origin.b-cdn.net", "88.212.15.19", "89.33.29.115",
-    "envivosenhd.beer", "cdn-5.nxplay.com.br", "stream.mcquack.net",
-    "bozztv.com", "lbgo.bozztv.com", "live20.bozztv.com", "telekomsrbije.com",
-    "31.148.48.15", "88.212.15.27", "162.19.255.233", "185.49.107.6",
-    "190.83.2.182", "190.197.41.183", "195.178.110.110", "201.190.41.246",
-    "45.4.1.201", "45.134.141.161", "45.167.2.101", "45.5.119.43",
-    "46.32.176.50", "58.8.186.128", "74.91.26.218", "87.229.103.60",
-    "91.228.35.249", "103.250.28.74", "103.151.60.162", "121.91.61.106",
-    "143.14.134.107", "145.239.5.177", "158.101.222.193", "162.250.201.58",
-    "168.228.44.241", "178.33.11.6", "180.188.254.253", "183.207.248.71",
-    "192.162.64.99", "202.150.172.59", "xn.futbolx.ryzn.pro",
-    "lb.iptvnetwork.net", "instream.click", "tvsen7.aynascope.net",
-    "tvsen5.aynaott.com", "tvsen5.aynascope.net",
-    "d2xeo83q8fcni6.cloudfront.net", "d12a2vxqkkh1bo.cloudfront.net",
-    "live-stream.iblups.com", "soultv.com.br",
-    "streamcorner.st", "streamcorner.cloud", "streamcorner.fyi",
-    "streamcorner.vu", "streamcorner.foo", "streamcorner.info",
-    "streamcorner.xyz", "streamcorner.to", "streamcorner.site",
-}
+# === SORGENTI REMOTE ===
+SOURCES = [
+    ("doms9", "https://s.id/d9M3U8"),
+    ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u"),
+]
 
-EMBED_PATTERNS = ("getsugatensho", "sportsembed", "embed.st/embed/",
-                  "pandecocogaming.sbs", "embedhd.", "embedme.st",
-                  "taifood-blog.asia", "streamsgate.co")
-
+# === SORGENTI LOCALI (prodotte dagli estrattori attivi) ===
 LOCAL_SOURCES = [
-    ("DAMITV", "damitv_events.m3u", 10),
-    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u", 8),
-    ("Daddylive", "daddylive_streams.m3u", 5),
-    ("CDN Live TV Channels", "cdnlivetv_channels.m3u", 3),
-    ("CDN Live TV Events", "cdnlivetv_events.m3u", 3),
+    ("DAMITV", "damitv_events.m3u"),
+    ("Daddylive", "daddylive_streams.m3u"),
+    ("CDN Live TV Channels", "cdnlivetv_channels.m3u"),
+    ("CDN Live TV Events", "cdnlivetv_events.m3u"),
 ]
 
-REMOTE_SOURCES = [
-    ("doms9", "https://s.id/d9M3U8", 1),
-    ("iptv-org sports", "https://iptv-org.github.io/iptv/categories/sports.m3u", 1),
-]
+# === SORGENTI DISMESSE (commentate per storico) ===
+# ("WatchFooty", "watchfooty_events.m3u"),      # sempre vuoto
+# ("XYZStreams", "xyzstreams_events.m3u"),      # proxy Node fragile
+# ("SMTK Sport", "smtk_sport.m3u"),             # geobloccati (VPN russa)
+# ("Extra Sources", "extra_sources.m3u"),       # 0 flussi funzionanti
 
 OUTPUT_FILE = "combined_events.m3u"
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/120.0.0.0 Safari/537.36"
+)
 
 
-def host_of(u):
-    return (urlparse(u).hostname or "").lower()
+def fetch_playlist(url):
+    headers = {"User-Agent": USER_AGENT}
+    try:
+        r = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
+        r.raise_for_status()
+        return r.text.splitlines()
+    except Exception as e:
+        print(f"❌ Errore scaricando {url}: {e}")
+        return []
 
 
-def is_embed(u):
-    return any(p in u.lower() for p in EMBED_PATTERNS)
+def fetch_local_playlist(path):
+    try:
+        return Path(path).read_text(encoding="utf-8", errors="ignore").splitlines()
+    except FileNotFoundError:
+        print(f"⚠️  File locale non trovato, skip: {path}")
+        return []
 
 
-def is_api_endpoint(u):
-    u = u.lower()
-    return "workers.dev/?p=" in u or "workers.dev?p=" in u
+def set_group_title(extinf_line, group_title):
+    if 'group-title="' in extinf_line:
+        return re.sub(r'group-title="[^"]*"', f'group-title="{group_title}"', extinf_line)
+    if ',' in extinf_line:
+        head, tail = extinf_line.rsplit(',', 1)
+        return f'{head} group-title="{group_title}",{tail}'
+    return f'{extinf_line} group-title="{group_title}"'
 
 
-def set_group_title(line, grp):
-    if 'group-title="' in line:
-        return re.sub(r'group-title="[^"]*"', f'group-title="{grp}"', line)
-    if ',' in line:
-        h, t = line.rsplit(',', 1)
-        return f'{h} group-title="{grp}",{t}'
-    return f'{line} group-title="{grp}"'
+def set_tvg_id(extinf_line, channel_name, group_title):
+    if 'tvg-id="' in extinf_line:
+        return extinf_line
+    tvg_id = TVG_ID_MAP.get(channel_name)
+    if not tvg_id:
+        return extinf_line
+    if 'group-title="' in extinf_line:
+        return extinf_line.replace('group-title="', f'tvg-id="{tvg_id}" group-title="')
+    if ',' in extinf_line:
+        head, tail = extinf_line.rsplit(',', 1)
+        return f'{head} tvg-id="{tvg_id}",{tail}'
+    return extinf_line
 
 
 def parse_m3u(lines):
-    """
-    Parsing PULITO:
-    - Riconosce #EXTINF, #EXTVLCOPT, #KODIPROP, URL
-    - IGNORA # CHECK: e qualsiasi altro # sconosciuto
-    """
-    blocks, cur = [], []
-    for l in lines:
-        s = l.strip()
-        if s.startswith("#EXTINF"):
-            if cur and cur[-1] and not cur[-1].startswith("#"):
-                blocks.append(cur)
-            cur = [s]
-        elif s.startswith("#EXTVLCOPT") and cur:
-            cur.append(s)
-        elif s.startswith("#KODIPROP") and cur:
-            cur.append(s)
-        elif s and not s.startswith("#"):
-            if cur:
-                cur.append(s)
-                blocks.append(cur)
-                cur = []
-        # Qualsiasi altro # (incluso # CHECK:) viene ignorato
-    if cur and cur[-1] and not cur[-1].startswith("#"):
-        blocks.append(cur)
+    blocks = []
+    current_block = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#EXTINF"):
+            if current_block:
+                blocks.append(current_block)
+            current_block = [stripped]
+        elif stripped and not stripped.startswith("#"):
+            current_block.append(stripped)
+            blocks.append(current_block)
+            current_block = []
+        elif stripped.startswith("#") and current_block:
+            current_block.append(stripped)
+    if current_block:
+        blocks.append(current_block)
     return blocks
 
 
-def process(blocks, name, prio, out, seen_urls, seen_titles):
+def process_blocks(blocks, name, all_lines, seen_urls):
     added = 0
-    for b in blocks:
-        url = b[-1]
-        if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
+    for block in blocks:
+        stream_url = block[-1]
+        # Filtra YouTube
+        if any(domain in stream_url for domain in
+               ["youtube.com", "youtu.be", "googlevideo.com"]):
             continue
-        if is_embed(url) or is_api_endpoint(url):
+        # Deduplica per URL
+        if stream_url in seen_urls:
             continue
-        if host_of(url) in DEAD_HOSTS:
-            continue
-        if url in seen_urls:
-            continue
-        title = b[0].split(",")[-1].strip() if "," in b[0] else ""
-        if title and title in seen_titles:
-            continue
-        seen_urls.add(url)
-        if title:
-            seen_titles.add(title)
-        if b[0].startswith("#EXTINF"):
-            b[0] = set_group_title(b[0], name)
-        out.append((prio, b))
+        seen_urls.add(stream_url)
+        # Applica group-title e tvg-id
+        if block[0].startswith("#EXTINF"):
+            block[0] = set_group_title(block[0], name)
+            channel_name = block[0].split(",")[-1].strip()
+            block[0] = set_tvg_id(block[0], channel_name, name)
+        all_lines.extend(block)
         added += 1
     return added
 
 
 def main():
-    import requests
-    out_blocks = []
-    seen_urls, seen_titles = set(), set()
+    all_lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
+    seen_urls = set()
 
-    for name, path, prio in LOCAL_SOURCES:
-        p = Path(path)
-        if not p.exists():
-            print(f"⚠️ {name}: file assente ({path})")
-            continue
-        lines = p.read_text(encoding="utf-8", errors="ignore").splitlines()
+    # --- Sorgenti remote ---
+    for name, url in SOURCES:
+        print(f"📡 Scarico {name}...")
+        lines = fetch_playlist(url)
         blocks = parse_m3u(lines)
-        n = process(blocks, name, prio, out_blocks, seen_urls, seen_titles)
-        print(f"📂 {name}: {n}/{len(blocks)} aggiunti (prio {prio})")
+        print(f"   -> {len(blocks)} voci trovate")
+        if blocks:
+            all_lines.append(f"# ===== SORGENTE: {name} =====")
+            added = process_blocks(blocks, name, all_lines, seen_urls)
+            print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
-    for name, url, prio in REMOTE_SOURCES:
-        try:
-            r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
-            r.raise_for_status()
-            blocks = parse_m3u(r.text.splitlines())
-            n = process(blocks, name, prio, out_blocks, seen_urls, seen_titles)
-            print(f"📡 {name}: {n}/{len(blocks)} aggiunti (prio {prio})")
-        except Exception as e:
-            print(f"❌ {name}: {e}")
+    # --- Sorgenti locali ---
+    for name, path in LOCAL_SOURCES:
+        if not Path(path).exists():
+            print(f"⚠️  Skip {name} (file assente: {path})")
+            continue
+        print(f"📂 Leggo file locale {name}...")
+        lines = fetch_local_playlist(path)
+        blocks = parse_m3u(lines)
+        print(f"   -> {len(blocks)} voci trovate")
+        if blocks:
+            all_lines.append(f"# ===== SORGENTE: {name} =====")
+            added = process_blocks(blocks, name, all_lines, seen_urls)
+            print(f"   -> {added} voci aggiunte (dopo deduplica)")
 
-    out_blocks.sort(key=lambda x: -x[0])
-    lines = [f'#EXTM3U url-tvg="{EPG_URL}"']
-    for _, b in out_blocks:
-        lines.extend(b)
-    Path(OUTPUT_FILE).write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"\n✅ {OUTPUT_FILE}: {len(out_blocks)} flussi unici")
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(all_lines))
+
+    print(f"\n✅ Salvato {OUTPUT_FILE} con {len(seen_urls)} flussi unici")
 
 
 if __name__ == "__main__":
