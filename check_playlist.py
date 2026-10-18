@@ -1,259 +1,387 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-check_playlist.py — v3.5
-
-Cambiamenti rispetto a v3.2:
-- NON scrive # CHECK: nel file finale (rompeva il parsing di molti player Samsung)
-- NON cerca "error"/"offline"/ecc nel body del manifest (era falso positivo:
-  alcuni manifest validi contengono queste parole nei commenti)
-- NON richiede body minimo di 50 byte
-- Se manifest valido ma segmento fallisce, PROVA con UA iPhone prima di scartare
-- Se manifest valido e nessun segmento testabile, MANTIENE (era il caso di
-  molti stream validi che il vecchio check scartava)
-- Scrive #EXTINF + #EXTVLCOPT (se presenti nel blocco originale) + URL
-"""
-import re, sys, time, random
+import re
+import subprocess
+import sys
+import time
+import random
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-try:
-    from curl_cffi import requests as http
-except ImportError:
-    import requests as http
+from curl_cffi import requests as curl_requests
 
 playlist = Path(sys.argv[1] if len(sys.argv) > 1 else "combined_events.m3u")
 workers = 16
-HTTP_TIMEOUT = 10
+timeout = 5
+HTTP_TIMEOUT = 8
 
-UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-              "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
-UA_IPHONE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
-             "AppleWebKit/605.1.15 (KHTML, like Gecko) "
-             "Version/17.0 Mobile Safari/604.1")
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/131.0.0.0 Safari/537.36"
+)
 
-DEAD_HOSTS = {
-    "23.237.104.106", "cache0.wonvt.st",
-    "edgestream1.pro", "edgestream2.pro", "edgestream3.pro",
-    "edgestream4.pro", "edgestream5.pro", "edgestream6.pro", "edgestream7.pro",
-    "193.47.62.41", "193.47.62.44", "193.47.62.50", "193.47.62.55", "193.47.62.59",
-    "futbolx.ryzn.pro", "judiaslevels.embeds.gay", "chatgpt.hereisman.net",
-    "karimianian.store", "instreams.xyz", "instreams.live", "instreams.pro",
-    "rtmpcdn.com", "streamfree.top", "khala.futlivehd.com", "ftlly.com",
-    "fubo18.com", "webcast-origin.b-cdn.net", "88.212.15.19", "89.33.29.115",
-    "envivosenhd.beer", "cdn-5.nxplay.com.br", "stream.mcquack.net",
-    "bozztv.com", "lbgo.bozztv.com", "live20.bozztv.com", "telekomsrbije.com",
-    "31.148.48.15", "88.212.15.27", "162.19.255.233", "185.49.107.6",
-    "190.83.2.182", "190.197.41.183", "195.178.110.110", "201.190.41.246",
-    "45.4.1.201", "45.134.141.161", "45.167.2.101", "45.5.119.43",
-    "46.32.176.50", "58.8.186.128", "74.91.26.218", "87.229.103.60",
-    "91.228.35.249", "103.250.28.74", "103.151.60.162", "121.91.61.106",
-    "143.14.134.107", "145.239.5.177", "158.101.222.193", "162.250.201.58",
-    "168.228.44.241", "178.33.11.6", "180.188.254.253", "183.207.248.71",
-    "192.162.64.99", "202.150.172.59", "xn.futbolx.ryzn.pro",
-    "lb.iptvnetwork.net", "instream.click", "tvsen7.aynascope.net",
-    "tvsen5.aynaott.com", "tvsen5.aynascope.net",
-    "d2xeo83q8fcni6.cloudfront.net", "d12a2vxqkkh1bo.cloudfront.net",
-    "live-stream.iblups.com", "soultv.com.br",
-    "streamcorner.st", "streamcorner.cloud", "streamcorner.fyi",
-    "streamcorner.vu", "streamcorner.foo", "streamcorner.info",
-    "streamcorner.xyz", "streamcorner.to", "streamcorner.site",
-}
-
-HOST_HEADERS = {
+DOMAIN_HEADERS = {
+    "ondemand.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "messi.damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
     "damitv.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    "ondemand.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
-    "cdnlivetv.tv": {"Referer": "https://cdnlivetv.tv/", "Origin": "https://cdnlivetv.tv"},
-    "daddylive.app": {"Referer": "https://daddylive.app/", "Origin": "https://daddylive.app"},
-    "daddylive.pk": {"Referer": "https://daddylive.pk/", "Origin": "https://daddylive.pk"},
-    "dlhd.so": {"Referer": "https://dlhd.so/", "Origin": "https://dlhd.so"},
-    "dokagents.site": {"Referer": "https://dokagents.site/", "Origin": "https://dokagents.site"},
-    "bolaloca.my": {"Referer": "https://bolaloca.my/", "Origin": "https://bolaloca.my"},
+    "embedindia.st": {"Referer": "https://ondemand.st/", "Origin": "https://ondemand.st"},
+    "dokagents.site": {
+        "Referer": "https://dokagents.site/",
+        "Origin": "https://dokagents.site",
+        "Accept": "*/*",
+    },
+    "xameleon.phantemlis.top": {
+        "Referer": "https://xameleon.phantemlis.top/",
+        "Origin": "https://xameleon.phantemlis.top",
+        "Accept": "*/*",
+    },
+    "p13.usnlive.com": {
+        "Referer": "https://p13.usnlive.com/",
+        "Origin": "https://p13.usnlive.com",
+        "Accept": "*/*",
+    },
+    "cdnlivetv.tv": {
+        "Referer": "https://cdnlivetv.tv/",
+        "Origin": "https://cdnlivetv.tv",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+    },
+    "daddylive.app": {
+        "Referer": "https://daddylive.app/",
+        "Origin": "https://daddylive.app",
+        "Accept": "*/*",
+    },
+    "dlhd.so": {
+        "Referer": "https://dlhd.so/",
+        "Origin": "https://dlhd.so",
+    },
+    "cuttingfame.net": {
+        "Referer": "https://cuttingfame.net/",
+        "Origin": "https://cuttingfame.net",
+        "Accept": "*/*",
+    },
+    "bolaloca.my": {
+        "Referer": "https://bolaloca.my/",
+        "Origin": "https://bolaloca.my",
+        "Accept": "*/*",
+    },
 }
 
 
-def host_of(u):
-    return (urlparse(u).hostname or "").lower()
+def is_daddylive_cdn(url: str) -> bool:
+    u = url.lower()
+    return (
+        ":8443" in u
+        or "/hls/" in u
+        or "stream_url" in u
+        or bool(re.search(r"https?://[a-z0-9.-]+\.[a-z0-9.-]+/(hls|live)/", u))
+    )
 
 
-def is_embed(u):
-    return any(p in u.lower() for p in (
-        "getsugatensho", "sportsembed", "embed.st/embed/", "pandecocogaming.sbs",
-        "embedhd.", "embedme.st", "taifood-blog.asia", "streamsgate.co"))
+def parse_m3u(lines):
+    blocks = []
+    current = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#EXTINF"):
+            if current:
+                blocks.append(current)
+            current = [stripped]
+        elif stripped and not stripped.startswith("#"):
+            current.append(stripped)
+            blocks.append(current)
+            current = []
+        elif stripped.startswith("#") and current:
+            current.append(stripped)
+    if current:
+        blocks.append(current)
+    return blocks
 
 
-def is_api_endpoint(u):
-    u = u.lower()
-    return "workers.dev/?p=" in u or "workers.dev?p=" in u
+def get_headers_dict(url: str) -> dict:
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+    for domain, extra in DOMAIN_HEADERS.items():
+        if domain in url:
+            headers.update(extra)
+            return headers
+
+    if is_daddylive_cdn(url):
+        headers["Referer"] = "https://daddylive.app/"
+        headers["Origin"] = "https://daddylive.app"
+    return headers
 
 
-def extract_block_headers(block):
-    h = {}
-    for line in block[1:-1]:
-        s = line.strip()
-        if s.startswith("#EXTVLCOPT:http-user-agent="):
-            h["User-Agent"] = s.split("=", 1)[1]
-        elif s.startswith("#EXTVLCOPT:http-referrer="):
-            h["Referer"] = s.split("=", 1)[1]
-        elif s.startswith("#EXTVLCOPT:http-origin="):
-            h["Origin"] = s.split("=", 1)[1]
-    return h
+def headers_for_ffprobe(url: str, cookie_str: str = "") -> str:
+    h = get_headers_dict(url)
+    if cookie_str:
+        h["Cookie"] = cookie_str
+    return "\r\n".join(f"{k}: {v}" for k, v in h.items()) + "\r\n"
 
 
-def check_once(url, ua, extra_headers=None):
-    headers = {"User-Agent": ua, "Accept": "*/*",
-               "Accept-Language": "en-US,en;q=0.9"}
-    if extra_headers:
-        for k, v in extra_headers.items():
-            if k.lower() not in ("user-agent",):
-                headers[k] = v
-    # Aggiunge referer specifico per host
-    host = host_of(url)
-    for dom, extra in HOST_HEADERS.items():
-        if dom in host:
-            for k, v in extra.items():
-                headers.setdefault(k, v)
-            break
+def check_first_segment(manifest_text: str, manifest_url: str) -> tuple:
+    """
+    Scarica i primi 512 byte del primo segmento del manifest.
+    Ritorna (ok, motivo).
+    Gestisce URL relativi (es. cdnlivetv.tv usa /stream-segment/...).
+    Riconosce: MPEG-TS (0x47), MP4/fMP4 (ftyp), WebP+EXIF (RIFF/WEBP).
+    """
     try:
-        kw = {"impersonate": "chrome124"}
-        r = http.get(url, headers=headers, timeout=HTTP_TIMEOUT,
-                     allow_redirects=True, verify=False, **kw)
-        if r.status_code in (429, 502, 503):
-            time.sleep(2)
-            r = http.get(url, headers=headers, timeout=HTTP_TIMEOUT,
-                         allow_redirects=True, verify=False, **kw)
+        seg_lines = [
+            ln.strip()
+            for ln in manifest_text.splitlines()
+            if ln.strip() and not ln.strip().startswith("#")
+        ]
+        if not seg_lines:
+            return False, "no segments"
+
+        seg_url = seg_lines[0]
+        if not seg_url.startswith("http"):
+            seg_url = urljoin(manifest_url, seg_url)
+
+        seg_headers = get_headers_dict(seg_url)
+        session = curl_requests.Session(impersonate="chrome120")
+        r = session.get(
+            seg_url,
+            headers=seg_headers,
+            timeout=HTTP_TIMEOUT,
+            allow_redirects=True,
+            stream=True,
+        )
+
         if r.status_code >= 400:
-            return False, f"HTTP {r.status_code}", r.status_code
-        body = r.content[:8192]
-        if not body.startswith(b"#EXTM3U") and not body.startswith(b"<MPD"):
-            return False, "not_manifest", r.status_code
-        text = body.decode("utf-8", errors="ignore")
-        # Prova segmento (SOLO per conferma, non blocca se fallisce)
-        segs = [l.strip() for l in text.splitlines()
-                if l.strip() and not l.startswith("#")]
-        if segs:
-            seg = segs[0]
-            if not seg.startswith("http"):
-                seg = urljoin(url, seg)
-            try:
-                rs = http.get(seg, headers=headers, timeout=HTTP_TIMEOUT,
-                              stream=True, verify=False, **kw)
-                if rs.status_code < 400:
-                    chunk = next(rs.iter_content(64), b"")
-                    if chunk[:1] == b"\x47" or b"ftyp" in chunk[:32]:
-                        return True, "ok", r.status_code
-            except Exception:
-                pass
-        # Manifest valido ma segmento non testabile → OK (permissivo)
-        return True, "ok_manifest_only", r.status_code
+            r.close()
+            return False, f"segment HTTP {r.status_code}"
+
+        chunk = next(r.iter_content(512), b"")
+        r.close()
+
+        if not chunk:
+            return False, "segment empty"
+
+        # MPEG-TS: sync byte 0x47
+        if chunk[0:1] == b"\x47":
+            return True, "ts-ok"
+
+        # MP4 / fMP4: contiene 'ftyp'
+        if b"ftyp" in chunk[:64]:
+            return True, "mp4-ok"
+
+        # WebP con EXIF (DAMITV)
+        if chunk[:4] == b"RIFF" and b"WEBP" in chunk[:16]:
+            return True, "webp-exif"
+
+        return False, f"unknown fmt {chunk[:8].hex()}"
     except Exception as e:
-        return False, f"err_{type(e).__name__}", None
+        return False, f"segment error: {str(e)[:80]}"
 
 
-def check_block(block):
+def http_check_m3u8(url: str) -> tuple:
+    """
+    Soft-check HTTP con fingerprint Chrome.
+    Ritorna (ok, motivo, cookie_str).
+    """
+    headers = get_headers_dict(url)
+
+    sensitive_domains = (
+        "cdnlivetv.tv",
+        "bolaloca.my",
+        "epiembeds.online",
+        "cuttingfame.net",
+    )
+    if any(domain in url for domain in sensitive_domains):
+        time.sleep(random.uniform(0.4, 1.0))
+
+    attempt = 0
+    max_retries = 2
+    while attempt < max_retries:
+        try:
+            session = curl_requests.Session(impersonate="chrome120")
+            r = session.get(
+                url,
+                headers=headers,
+                timeout=HTTP_TIMEOUT,
+                allow_redirects=True,
+            )
+            cookies = session.cookies.get_dict()
+            cookie_str = "; ".join(f"{k}={v}" for k, v in cookies.items())
+
+            if r.status_code in (429, 502, 503):
+                wait = 4 * (2 ** attempt) + random.uniform(0, 1)
+                time.sleep(wait)
+                attempt += 1
+                continue
+
+            if r.status_code >= 400:
+                return False, f"HTTP {r.status_code}", cookie_str
+
+            text = r.content[:8192].decode("utf-8", errors="ignore")
+            text_l = text.lower()
+
+            # Blacklist
+            blacklist = (
+                "offline",
+                "error",
+                "denied",
+                "invalid",
+                "not found",
+                "expired",
+                "maintenance",
+            )
+            if any(word in text_l for word in blacklist):
+                return False, "contenuto di errore", cookie_str
+
+            if len(text.strip()) < 50:
+                return False, "manifest troppo corto", cookie_str
+
+            if "#extm3u" not in text_l:
+                return False, "body non m3u8", cookie_str
+
+            # Verifica primo segmento (gestisce URL relativi)
+            seg_ok, seg_msg = check_first_segment(text, url)
+            if seg_ok:
+                return True, f"soft-ok ({seg_msg})", cookie_str
+
+            # Se ha tag tipici HLS ma il segmento non Ã¨ verificabile, considera valido
+            if "#ext-x-stream-inf" in text_l or "#ext-x-targetduration" in text_l:
+                return True, "soft-ok (manifest-only)", cookie_str
+
+            return False, f"segment check failed: {seg_msg}", cookie_str
+
+        except Exception as e:
+            if attempt == max_retries - 1:
+                return False, f"http error: {str(e)[:120]}", ""
+            time.sleep(2)
+            attempt += 1
+
+    return False, "max retries", ""
+
+
+def ffprobe_check(url: str, cookie_str: str = "") -> tuple:
+    headers_string = headers_for_ffprobe(url, cookie_str)
+    cmd = [
+        "ffprobe",
+        "-v", "error",
+        "-show_entries", "stream=codec_type",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        "-timeout", str(timeout * 1_000_000),
+        "-analyzeduration", "1000000",
+        "-probesize", "1000000",
+        "-headers", headers_string,
+        "-i", url,
+    ]
+    try:
+        r = subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=timeout + 2,
+            check=False,
+        )
+        out = (r.stdout or "").strip().lower()
+        err = (r.stderr or "").strip()
+
+        if r.returncode == 0 and out:
+            if "audio" in out or "video" in out:
+                return True, "ffprobe-ok"
+            return False, "nessuna traccia audio/video"
+        motivo = err.splitlines()[-1][:200] if err else f"ffprobe code {r.returncode}"
+        return False, motivo
+    except subprocess.TimeoutExpired:
+        return False, "timeout ffprobe"
+    except Exception as e:
+        return False, str(e)[:200]
+
+
+def controlla_blocco(block):
     url = block[-1]
-    block_hdrs = extract_block_headers(block)
 
-    # Se il blocco ha già UA specifico (DAMITV v3) → usa quello
-    if "User-Agent" in block_hdrs:
-        ok, msg, _ = check_once(url, block_hdrs["User-Agent"], block_hdrs)
-        return ok, msg
-
-    # Altrimenti prova iPhone prima (colpisce DAMITV)
-    ok, msg, _ = check_once(url, UA_IPHONE, block_hdrs)
-    if ok:
-        return True, "iphone"
-
-    # Poi desktop
-    time.sleep(0.2)
-    ok, msg, _ = check_once(url, UA_DESKTOP, block_hdrs)
-    return ok, msg
-
-
-def process_block(block):
-    url = block[-1]
     if any(d in url for d in ("youtube.com", "youtu.be", "googlevideo.com")):
-        return block, False, "youtube"
-    if is_embed(url):
-        return block, False, "embed"
-    if is_api_endpoint(url):
-        return block, False, "api"
-    host = host_of(url)
-    if host in DEAD_HOSTS or any(host.startswith(d) for d in DEAD_HOSTS):
-        return block, False, "host_morto"
-    time.sleep(random.uniform(0.05, 0.15))
-    ok, msg = check_block(block)
-    return block, ok, msg
+        return block, False, "youtube escluso"
+
+    time.sleep(random.uniform(0.1, 0.3))
+
+    soft_ok, soft_msg, cookie_str = http_check_m3u8(url)
+
+    if soft_ok:
+        # Se il soft-check ha giÃ  verificato il segmento, salta ffprobe
+        if any(tag in soft_msg for tag in ("ts-ok", "mp4-ok", "webp-exif")):
+            return block, True, soft_msg
+        # Altrimenti conferma con ffprobe
+        hard_ok, hard_msg = ffprobe_check(url, cookie_str)
+        if hard_ok:
+            return block, True, soft_msg
+        return block, True, f"soft-only ({hard_msg})"
+
+    # Soft-check fallito â prova ffprobe come ultima chance
+    hard_ok, hard_msg = ffprobe_check(url, cookie_str)
+    if hard_ok:
+        return block, True, "ffprobe-ok"
+
+    motivo = soft_msg if soft_msg else hard_msg
+    if soft_msg and hard_msg and soft_msg != hard_msg:
+        motivo = f"{soft_msg} | {hard_msg}"
+    return block, False, motivo[:250]
 
 
 def main():
     try:
         lines = playlist.read_text(encoding="utf-8", errors="ignore").splitlines()
     except FileNotFoundError:
-        print(f"❌ {playlist} non trovato")
+        print(f"â Playlist non trovata: {playlist}")
         sys.exit(1)
 
-    # Parsing pulito (scarta # CHECK: residui)
-    blocks, cur = [], []
-    for line in lines:
-        s = line.strip()
-        if s.startswith("#EXTINF"):
-            if cur and cur[-1] and not cur[-1].startswith("#"):
-                blocks.append(cur)
-            cur = [s]
-        elif s.startswith("#EXTVLCOPT") and cur:
-            cur.append(s)
-        elif s.startswith("#KODIPROP") and cur:
-            cur.append(s)
-        elif s and not s.startswith("#"):
-            if cur:
-                cur.append(s)
-                blocks.append(cur)
-                cur = []
-        elif s.startswith("# CHECK:"):
-            continue
-    if cur and cur[-1] and not cur[-1].startswith("#"):
-        blocks.append(cur)
+    blocks = parse_m3u(lines)
+    print(f"ð Flussi totali: {len(blocks)}")
 
-    print(f"🔍 {len(blocks)} blocchi")
-
-    seen, unique = set(), []
+    seen = set()
+    unique = []
     for b in blocks:
-        if b[-1] not in seen:
-            seen.add(b[-1])
+        u = b[-1]
+        if u not in seen:
+            seen.add(u)
             unique.append(b)
     blocks = unique
-    print(f"🔍 {len(blocks)} unici")
+    print(f"ð Flussi unici: {len(blocks)}")
 
-    funz, non_funz = [], []
+    funzionanti = []
+    non_funzionanti = []
+    soft_only = 0
+
     with ThreadPoolExecutor(max_workers=workers) as ex:
-        futs = [ex.submit(process_block, b) for b in blocks]
+        futs = [ex.submit(controlla_blocco, b) for b in blocks]
         for i, fut in enumerate(as_completed(futs), 1):
-            block, ok, msg = fut.result()
+            block, ok, motivo = fut.result()
+            nome = block[0].split(",")[-1].strip() if "," in block[0] else "?"
             if ok:
-                funz.append(block)
+                funzionanti.append(block)
+                if motivo.startswith("soft-"):
+                    soft_only += 1
+                if i % 20 == 0:
+                    print(f"[{i}/{len(blocks)}] OK | {nome}")
             else:
-                non_funz.append((block, msg))
-            if i % 100 == 0:
-                print(f"[{i}/{len(blocks)}] OK={len(funz)} KO={len(non_funz)}")
+                non_funzionanti.append((block, motivo))
+                print(f"[{i}/{len(blocks)}] KO | {nome} | {motivo}")
 
-    # Scrivi M3U pulito (solo verificati, zero # CHECK:)
-    out_lines = ["#EXTM3U"]
-    for b in funz:
-        out_lines.extend(b)
-    Path("combined_events_checked.m3u").write_text(
-        "\n".join(out_lines) + "\n", encoding="utf-8")
+    out_ok = Path("combined_events_checked.m3u")
+    with out_ok.open("w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n")
+        for block in funzionanti:
+            f.write("\n".join(block) + "\n")
 
-    with open("flussi_non_funzionanti.txt", "w", encoding="utf-8") as f:
-        for b, m in non_funz:
-            nome = b[0].split(",")[-1].strip() if "," in b[0] else "?"
-            f.write(f"{nome} | {b[-1]} | {m}\n")
+    out_ko = Path("flussi_non_funzionanti.txt")
+    with out_ko.open("w", encoding="utf-8") as f:
+        for block, motivo in non_funzionanti:
+            nome = block[0].split(",")[-1].strip()
+            f.write(f"{nome} | {block[-1]} | {motivo}\n")
 
-    print(f"\n✅ OK: {len(funz)}")
-    print(f"❌ KO: {len(non_funz)}")
-    print("📄 combined_events_checked.m3u (solo verificati, ZERO # CHECK:)")
+    print(f"\nâ Funzionanti: {len(funzionanti)} (di cui soft-only: {soft_only})")
+    print(f"â Non funzionanti: {len(non_funzionanti)}")
+    print(f"ð {out_ok} | {out_ko}")
 
 
 if __name__ == "__main__":
