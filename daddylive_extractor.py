@@ -16,7 +16,7 @@ import requests
 BASE_CANDIDATES = [
     "https://daddylive.app",
     "https://dlhd.so",
-    "https://daddylive.sx",
+    "https://dlive.sx",
     "https://daddylive.li",
 ]
 
