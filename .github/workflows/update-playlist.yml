@@ -28,6 +28,7 @@ jobs:
           sudo apt-get install -y ffmpeg
           pip install requests yt-dlp playwright curl_cffi
           playwright install --with-deps chromium
+          patchright install --with-deps chromium
 
       # ============================================================
       # ESTRATTORI ATTIVI
@@ -43,6 +44,26 @@ jobs:
       - name: Extract CDN Live TV channels and events
         run: python cdnlivetv_extractor.py
         continue-on-error: true
+
+      # —— StreamCorner (v14.0 debug-first) -
+      - name: Extract StreamCorner streams (Playwright stealth)
+        run: python streamcorner_extractor.py --output streamcorner_COMPLETE.m3u
+        continue-on-error: true
+
+      - name: Upload StreamCorner debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: streamcorner-debug
+          path: |
+            sc_diagnosis.json
+            sc_capture.json
+            sc_network.json
+            sc_diagnosis_why_empty.json
+            sc_homepage.html
+            sc_details/*.html
+            sc_screenshots/*.png
+          retention-days: 7
 
       # ============================================================
       # STEP DISMESSI (commentati per storico)
@@ -72,3 +93,7 @@ jobs:
             daddylive_streams.m3u
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
+            streamcorner_EVENTS_LIVE.m3u
+            streamcorner_VLC.m3u
+            streamcorner_COMPLETE.m3u
+            sc_capture.json
