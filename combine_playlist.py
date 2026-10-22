@@ -42,6 +42,7 @@ LOCAL_SOURCES = [
     ("Daddylive", "daddylive_streams.m3u"),
     ("CDN Live TV Channels", "cdnlivetv_channels.m3u"),
     ("CDN Live TV Events", "cdnlivetv_events.m3u"),
+    ("StreamCorner", "streamcorner_EVENTS_LIVE.m3u"),   # <-- NEW
 ]
 
 # === SORGENTI DISMESSE (commentate per storico) ===
