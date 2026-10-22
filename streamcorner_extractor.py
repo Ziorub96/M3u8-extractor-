@@ -1,43 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-StreamCorner Extractor v13.6 — Playwright stealth + SPA nav + source click
+StreamCorner Extractor v14.0 — Debug-First Edition
 
-Changelog v13.5 → v13.6:
-- FIX #4 (BLOCCANTE): il player StreamCorner NON auto-playa. Il componente
-  PlayerIframe viene montato solo dopo click su `.stream-source-btn`
-  (o sul bottone "Play"). Senza click: nessun iframe caricato, nessuna
-  richiesta m3u8. Ecco perché v13.5 otteneva 0 stream nonostante la SPA
-  nav funzionasse. Ora:
-    • wait_for_selector('.stream-source-btn', timeout=12s) dopo la SPA nav
-    • click sul primo `.stream-source-btn` (scroll_into_view preventivo)
-    • attesa 3.5s per il load dell'iframe
-    • fallback click su "Play"/"Guarda"/video se mancano source buttons
-- FIX #5: filtro chat iframe (`streamcorner-chat.pages.dev`) da log frame
-  e da cattura URL — non è rumore utile e non contiene stream.
-- FIX #6: `wait_for_timeout(12000)` (blind) sostituito da
-  `wait_for_selector('.stream-source-btn')` — la pagina è cachata dopo il
-  primo match, il blind wait era tempo sprecato. Per-match: ~6-8s vs 12s.
-- FIX #7: contatore `consecutive_no_sources`. Se 5 match di fila non hanno
-  source buttons, interrompe (probabile layout rotto o geo-block).
-- MINOR: categoria nav wait 5000 → 3000ms (categories raramente aggiungono
-  match oltre a quelli della homepage).
-
-NOTE WORKFLOW:
-- Con questa fix il run StreamCorner dura ~6-8 min per 25 match. Il
-  `timeout-minutes: 3` corrente nel workflow TAGLIA la run a metà. Alzare
-  a `timeout-minutes: 10` (o 12) nello step "Extract StreamCorner streams".
-
-Invariato da v13.5:
-- FIX #1: navigate_client_side senza reload BASE (SPA nav React Router)
-- FIX #2: contatore consecutive_fails su navigazione fallita
-- FIX #3: probe mirror streamcorner.{st,foo,cloud,fun}
-- Salvataggio TUTTI i bundle /assets/*.js in sc_assets/
-- Playwright stealth (patchright con fallback playwright)
-- Produzione 4 file M3U, exit 0 sempre
+Novità vs v13.6:
+- DIAGNOSI PER-MATCH in sc_diagnosis.json (nav/click/iframe/m3u8 per evento)
+- TIMEOUT più larghi: source-btn 20s (era 12), click 8s (era 5),
+  post-click 4500ms (era 3500)
+- RETRY click source-btn (2 tentativi)
+- NETWORK QUIET WAIT dopo click (max 15s, stop a 2s senza richieste interessanti)
+- FALLBACK estrazione: scansiona HTML + iframe src se click non produce m3u8
+- SCREENSHOT per ogni match (utile in CI per capire cosa vede il browser)
+- SALVA detail HTML pre-click e post-click (sc_detail_*.html)
+- MULTI-SELECTOR source button (.stream-source-btn, [data-source], .source-btn)
+- --all-matches: visita TUTTE le partite (no cap 25)
+- DIAGNOSI FINALE: se entries=0, dump sc_diagnosis_why_empty.json con cause
+- Chat iframe (streamcorner-chat.pages.dev) filtrato da log e capture
+- Mantiene: SPA nav React Router, probe mirror, salvataggio bundle /assets/*.js
 """
 from __future__ import annotations
-import argparse, json, os, re, sys, time
+import argparse, json, os, re, sys, time, traceback
 from pathlib import Path
 from urllib.parse import urlparse, urljoin
 
@@ -55,27 +37,29 @@ UA_MOBILE = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
              "AppleWebKit/605.1.15 (KHTML, like Gecko) "
              "Version/17.0 Mobile Safari/604.1")
 
+# Host wrapper/embed: NON producono m3u8 direttamente, li saltiamo in output
 SKIP_HOSTS = {
     "pandecocogaming.sbs", "taifood-blog.asia", "streamcorner.xyz",
     "embed.st", "getsugatensho", "sportsembed",
     "embedhd.click", "embedhd.pk", "embedme.st", "streamsgate.co",
     "streamxhd.com", "streamtp3.com",
 }
-
-# v13.6: filtro chat iframe (non contiene stream, solo rumore)
 CHAT_HOST_FILTER = "streamcorner-chat.pages.dev"
 
 DRM_SCHEMES = ("edef8ba9", "9a04f079", "1077efecc0b24d02",
                "urn:uuid:edef8ba9", "urn:uuid:9a04f079",
                "urn:uuid:1077efecc0b24d02")
-
 CF_HINTS = ("challenges.cloudflare.com", "cf-chl",
             "/cdn-cgi/challenge", "turnstile", "challenge-platform")
 
 CAPTURE_FILE = "sc_capture.json"
 NETWORK_FILE = "sc_network.json"
+DIAGNOSIS_FILE = "sc_diagnosis.json"
+WHY_EMPTY_FILE = "sc_diagnosis_why_empty.json"
 HOMEPAGE_FILE = "sc_homepage.html"
 ASSETS_DIR = "sc_assets"
+SCREENSHOT_DIR = "sc_screenshots"
+DETAIL_DIR = "sc_details"
 
 CATEGORY_PATTERNS = [
     r'/fifa', r'/world-cup', r'/serie-a', r'/champions',
@@ -89,16 +73,21 @@ MATCH_PATTERNS = [
     r'-vs-', r'\?match=', r'\?id=', r'\?event=',
     r'\?channel=', r'\?stream=',
 ]
-
 INTERESTING_REQ_KW = (
     ".m3u8", ".mpd", "/api/", "/corner", "workers.dev",
     "embed", "/stream", "/channel", "/match", "/event",
     "playlist", ".json", "manifest", "worker",
 )
-
 JSON_STREAM_KEYS = ("stream_url", "play_url", "embed_url", "m3u8",
                     "manifest_url", "hls_url", "dash_url", "src",
                     "url", "link", "source", "video_url")
+
+SOURCE_BTN_SELECTORS = (
+    ".stream-source-btn",
+    "[data-source]",
+    ".source-btn",
+    "button[class*='source' i]",
+)
 
 MAX_CONSECUTIVE_NAV_FAILS = 3
 MAX_CONSECUTIVE_NO_SOURCES = 5
@@ -204,7 +193,8 @@ def _probe_mirrors():
 
 def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                    max_categories=10, max_matches=25, debug_dir=".",
-                   max_total_time_s=900, base_url=BASE_DEFAULT):
+                   max_total_time_s=900, base_url=BASE_DEFAULT,
+                   all_matches=False):
     try:
         from patchright.sync_api import sync_playwright
         engine = "patchright"
@@ -215,22 +205,25 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
     BASE = base_url
     found = []
     network_map = {}
+    diagnosis = []           # per-match diagnostics
     cf_hit = {"cloudflare": False}
     start_time = time.time()
     cat_links, match_links = [], []
+    homepage_html = ""
+
     assets_dir = os.path.join(debug_dir, ASSETS_DIR)
-    try:
-        os.makedirs(assets_dir, exist_ok=True)
-    except Exception:
-        pass
+    screenshot_dir = os.path.join(debug_dir, SCREENSHOT_DIR)
+    detail_dir = os.path.join(debug_dir, DETAIL_DIR)
+    for d in (assets_dir, screenshot_dir, detail_dir):
+        try: os.makedirs(d, exist_ok=True)
+        except Exception: pass
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless, args=[
             "--no-sandbox", "--disable-dev-shm-usage",
             "--use-gl=swiftshader", "--enable-unsafe-swiftshader",
             "--autoplay-policy=no-user-gesture-required",
-            "--mute-audio",
-            "--disable-web-security",
+            "--mute-audio", "--disable-web-security",
         ])
         ctx = browser.new_context(
             user_agent=ua,
@@ -238,9 +231,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             locale="it-IT",
             timezone_id="Europe/Rome",
             ignore_https_errors=True,
-            extra_http_headers={
-                "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
-            },
+            extra_http_headers={"Accept-Language": "it-IT,it;q=0.9,en;q=0.8"},
         )
         ctx.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
@@ -262,11 +253,8 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 if u in network_map:
                     return
                 network_map[u] = {
-                    "method": req.method,
-                    "url": u[:300],
-                    "type": req.resource_type,
-                    "status": None,
-                    "mime": "",
+                    "method": req.method, "url": u[:300],
+                    "type": req.resource_type, "status": None, "mime": "",
                 }
             except Exception:
                 pass
@@ -275,23 +263,22 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = resp.url
                 lu = u.lower()
-
-                # v13.6: skip chat iframe (non contiene stream)
                 if CHAT_HOST_FILTER in lu:
                     return
 
+                # Salva bundle JS
                 if "/assets/" in lu and lu.endswith(".js"):
                     try:
                         body = resp.text()
                         if body and len(body) > 500:
                             safe = re.sub(r'[^a-zA-Z0-9_.-]', '_',
                                           u.split("/")[-1])[:80]
-                            fpath = os.path.join(assets_dir, safe)
-                            with open(fpath, "w", encoding="utf-8") as fh:
+                            with open(os.path.join(assets_dir, safe), "w",
+                                      encoding="utf-8") as fh:
                                 fh.write(body)
                             log(f"    💾 {ASSETS_DIR}/{safe} ({len(body)} byte)")
-                    except Exception as e:
-                        log(f"    ⚠️ save asset: {type(e).__name__}")
+                    except Exception:
+                        pass
 
                 if u in network_map:
                     network_map[u]["status"] = resp.status
@@ -303,8 +290,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 if ".m3u8" in lu:
                     verified = False
                     try:
-                        t = resp.text()
-                        verified = "#EXTM3U" in t
+                        verified = "#EXTM3U" in resp.text()
                     except Exception:
                         pass
                     if verified or resp.status == 200:
@@ -314,12 +300,10 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                                       "source": "network",
                                       "verified": verified})
                         log(f"    🎯 M3U8 {'✓' if verified else '(unverified)'}: {u[:120]}")
-
                 elif ".mpd" in lu:
                     verified = False
                     try:
-                        t = resp.text()
-                        verified = "<MPD" in t
+                        verified = "<MPD" in resp.text()
                     except Exception:
                         pass
                     if verified or resp.status == 200:
@@ -329,18 +313,15 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                                       "source": "network",
                                       "verified": verified})
                         log(f"    🎯 MPD {'✓' if verified else '(unverified)'}: {u[:120]}")
-
                 elif "json" in (resp.headers.get("content-type") or "").lower():
                     cl = resp.headers.get("content-length")
                     try:
-                        if cl and int(cl) > 500_000:
-                            return
+                        if cl and int(cl) > 500_000: return
                     except Exception:
                         pass
                     try:
                         body = resp.text()
-                        if len(body) > 500_000:
-                            return
+                        if len(body) > 500_000: return
                         j = json.loads(body)
                         hits = []
                         scan_json_for_streams(j, u, hits)
@@ -360,21 +341,14 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 u = req.url
                 err = req.failure or "unknown"
                 if "brunhild.challenges.cloudflare.com" in u:
-                    network_map[u] = {
-                        "method": req.method, "url": u[:300],
-                        "type": req.resource_type, "status": "FAILED",
-                        "mime": "", "error": "brunhild (known)",
-                    }
+                    network_map[u] = {"method": req.method, "url": u[:300],
+                                      "type": req.resource_type, "status": "FAILED",
+                                      "mime": "", "error": "brunhild (known)"}
                     return
                 log(f"    ❌ FAILED: {req.method} {u[:110]} ({err})")
-                network_map[u] = {
-                    "method": req.method,
-                    "url": u[:300],
-                    "type": req.resource_type,
-                    "status": "FAILED",
-                    "mime": "",
-                    "error": str(err)[:200],
-                }
+                network_map[u] = {"method": req.method, "url": u[:300],
+                                  "type": req.resource_type, "status": "FAILED",
+                                  "mime": "", "error": str(err)[:200]}
             except Exception:
                 pass
 
@@ -382,9 +356,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             try:
                 u = frame.url
                 if u and u != "about:blank" and "chrome-error" not in u:
-                    # v13.6: skip chat iframe dal log
-                    if CHAT_HOST_FILTER in u:
-                        return
+                    if CHAT_HOST_FILTER in u: return
                     log(f"    🖼️ FRAME NAV: {u[:120]}")
             except Exception:
                 pass
@@ -395,7 +367,7 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         page.on("framenavigated", on_frame_navigated)
         page.on("pageerror", lambda e: log(f"    JS ERROR: {str(e)[:120]}"))
 
-        # ---------------- SPA navigation (invariato v13.5) ----------------
+        # ============ SPA nav ============
         def navigate_client_side(relative_path):
             if "streamcorner" not in (page.url or ""):
                 try:
@@ -404,27 +376,20 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                     page.wait_for_timeout(4000)
                 except Exception:
                     return False
-
             try:
                 sel = f'a[href="{relative_path}"]'
                 loc = page.locator(sel).first
                 if loc.count() > 0:
-                    try:
-                        loc.scroll_into_view_if_needed(timeout=3000)
-                    except Exception:
-                        pass
-                    try:
-                        loc.click(timeout=5000, no_wait_after=True)
-                    except TypeError:
-                        loc.click(timeout=5000)
+                    try: loc.scroll_into_view_if_needed(timeout=3000)
+                    except Exception: pass
+                    try: loc.click(timeout=5000, no_wait_after=True)
+                    except TypeError: loc.click(timeout=5000)
                     page.wait_for_timeout(800)
                     if "__cf_chl" not in (page.url or ""):
                         log(f"    ✅ click SPA su {relative_path}")
                         return True
-                    log(f"    ⚠️ click ha portato a CF challenge, provo pushState")
             except Exception as e:
                 log(f"    ⚠️ click failed: {type(e).__name__}")
-
             try:
                 page.evaluate(f"""() => {{
                     history.pushState({{}}, '', '{relative_path}');
@@ -434,13 +399,11 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                 if "__cf_chl" not in (page.url or ""):
                     log(f"    ✅ pushState SPA su {relative_path}")
                     return True
-                log(f"    ❌ pushState ha portato a CF challenge")
             except Exception as e:
                 log(f"    ❌ pushState failed: {type(e).__name__}")
-
             return False
 
-        # ===== Homepage =====
+        # ============ Homepage ============
         log(f"[*] Apro {BASE}")
         try:
             page.goto(BASE, wait_until="domcontentloaded", timeout=timeout_s * 1000)
@@ -453,17 +416,18 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
         page.wait_for_timeout(8000)
 
         title = page.title()
-        html = page.content()
-        html_len = len(html)
+        homepage_html = page.content()
+        html_len = len(homepage_html)
         log(f"[*] Titolo: '{title[:80]}'  HTML: {html_len} byte")
         log(f"[*] Cloudflare hints: {cf_hit['cloudflare']}")
 
         try:
-            Path(os.path.join(debug_dir, HOMEPAGE_FILE)).write_text(html, encoding="utf-8")
-            log(f"   💾 {HOMEPAGE_FILE} ({html_len} byte)")
-        except Exception as e:
-            log(f"   ⚠️ salvataggio homepage: {e}")
+            Path(os.path.join(debug_dir, HOMEPAGE_FILE)).write_text(
+                homepage_html, encoding="utf-8")
+        except Exception:
+            pass
 
+        blocked = False
         if "avviso" in title.lower() or html_len < 2000:
             log(f"[!] Pagina 'Avviso' — reload + attesa 15s")
             try:
@@ -472,107 +436,154 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
             except Exception:
                 pass
             title = page.title()
-            html = page.content()
-            html_len = len(html)
+            homepage_html = page.content()
+            html_len = len(homepage_html)
             log(f"[*] Dopo reload — titolo: '{title[:80]}'  HTML: {html_len} byte")
             if "avviso" in title.lower() or html_len < 2000:
+                blocked = True
                 try:
                     Path(os.path.join(debug_dir, "sc_homepage_blocked.html")).write_text(
-                        html, encoding="utf-8")
+                        homepage_html, encoding="utf-8")
                 except Exception:
                     pass
                 browser.close()
-                return found, network_map, {"engine": engine, "title": title,
-                                            "html_len": html_len,
-                                            "cloudflare": cf_hit["cloudflare"],
-                                            "blocked": True,
-                                            "base_url": BASE}
+                return found, network_map, {
+                    "engine": engine, "title": title, "html_len": html_len,
+                    "cloudflare": cf_hit["cloudflare"], "blocked": True,
+                    "base_url": BASE, "diagnosis": diagnosis,
+                }
 
-        # ===== Link extraction =====
-        cat_links = find_links(html, BASE, CATEGORY_PATTERNS)[:max_categories]
-        match_links = find_links(html, BASE, MATCH_PATTERNS)[:max_matches]
+        # ============ Link extraction ============
+        cat_links = find_links(homepage_html, BASE, CATEGORY_PATTERNS)[:max_categories]
+        match_links = find_links(homepage_html, BASE, MATCH_PATTERNS)
+        if not all_matches:
+            match_links = match_links[:max_matches]
         log(f"[*] {len(cat_links)} categorie, {len(match_links)} partite dirette")
         for c in cat_links:  log(f"    📂 {c[:100]}")
         for m in match_links: log(f"    🎬 {m[:100]}")
 
-        # ===== Categorie (v13.6: wait 3000ms) =====
+        # ============ Categorie ============
         for cat_url in cat_links:
             if time.time() - start_time > max_total_time_s:
                 log(f"[!] Budget tempo esaurito")
                 break
-            log(f"  📂 categoria (client-side): {cat_url[:100]}")
+            log(f"  📂 categoria: {cat_url[:100]}")
             try:
                 path = urlparse(cat_url).path
                 if not navigate_client_side(path):
-                    log(f"      ⚠️ skip (navigazione fallita)")
+                    log(f"      ⚠️ skip (nav fallita)")
                     continue
                 page.wait_for_timeout(3000)
                 cat_html = page.content()
                 inner = find_links(cat_html, cat_url, MATCH_PATTERNS)
                 log(f"      → {len(inner)} partite dentro")
-                for il in inner[:8]:
+                for il in inner:
                     if il not in match_links:
                         match_links.append(il)
             except Exception as e:
                 log(f"      ⚠️ {type(e).__name__}")
 
-        match_links = list(dict.fromkeys(match_links))[:max_matches]
+        match_links = list(dict.fromkeys(match_links))
+        if not all_matches:
+            match_links = match_links[:max_matches]
         log(f"[*] Totale partite da visitare: {len(match_links)}")
 
-        # ===== Visita partite (v13.6: click source button) =====
+        # ============ Visita partite ============
         consecutive_fails = 0
         consecutive_no_sources = 0
 
         for i, link in enumerate(match_links, 1):
             if time.time() - start_time > max_total_time_s:
-                log(f"[!] Budget tempo esaurito, interrompo")
+                log(f"[!] Budget tempo esaurito")
                 break
             if consecutive_fails >= MAX_CONSECUTIVE_NAV_FAILS:
-                log(f"[!] {consecutive_fails} navigazioni fallite di fila, interrompo")
-                log(f"    (probabile Cloudflare challenge persistente)")
+                log(f"[!] {consecutive_fails} nav fallite di fila, interrompo")
                 break
             if consecutive_no_sources >= MAX_CONSECUTIVE_NO_SOURCES:
-                log(f"[!] {consecutive_no_sources} match di fila senza source-btn, interrompo")
-                log(f"    (probabile layout rotto o geo-block)")
+                log(f"[!] {consecutive_no_sources} match senza source-btn, interrompo")
                 break
 
-            log(f"  [{i}/{len(match_links)}] (client-side) {link[:100]}")
+            log(f"  [{i}/{len(match_links)}] {link[:100]}")
+            diag = {
+                "index": i, "url": link,
+                "nav_ok": False, "detail_html_bytes": 0,
+                "detail_has_player_marker": False,
+                "source_buttons_found": 0, "source_selector_used": None,
+                "click_ok": False, "click_attempts": 0,
+                "iframe_count_pre": 0, "iframe_count_post": 0,
+                "frame_urls": [], "m3u8_captured": 0,
+                "elapsed_ms": 0,
+            }
+            t_match0 = time.time()
             try:
                 path = urlparse(link).path
                 if not navigate_client_side(path):
-                    log(f"      ⚠️ skip (navigazione fallita)")
+                    log(f"      ⚠️ nav fallita")
+                    diag["nav_ok"] = False
+                    diagnosis.append(diag)
                     consecutive_fails += 1
                     continue
-                consecutive_fails = 0  # reset su successo navigazione
+                diag["nav_ok"] = True
+                consecutive_fails = 0
 
-                # ---- v13.6 FIX #4: click source button ----
-                source_buttons_found = False
+                # Salva HTML pre-click
                 try:
-                    page.wait_for_selector('.stream-source-btn', timeout=12000)
-                    source_count = page.locator('.stream-source-btn').count()
-                    source_buttons_found = source_count > 0
-                    if source_buttons_found:
-                        log(f"      🎬 {source_count} source(s) trovati")
-                        try:
-                            loc = page.locator('.stream-source-btn').first
-                            try:
-                                loc.scroll_into_view_if_needed(timeout=3000)
-                            except Exception:
-                                pass
-                            try:
-                                loc.click(timeout=5000, no_wait_after=True)
-                            except TypeError:
-                                loc.click(timeout=5000)
-                            log(f"      ✅ click source")
-                            page.wait_for_timeout(3500)  # iframe load
-                        except Exception as e:
-                            log(f"      ⚠️ click source failed: {type(e).__name__}")
-                            page.wait_for_timeout(2000)
+                    slug = re.sub(r'[^a-z0-9]', '_', path.split("/")[-1])[:40] or f"m{i}"
+                    pre_html = page.content()
+                    Path(os.path.join(detail_dir, f"pre_{slug}.html")).write_text(
+                        pre_html, encoding="utf-8")
+                    diag["detail_html_bytes"] = len(pre_html)
+                    for marker in ("stream-source-btn", "player", "iframe",
+                                   "video", "jwplayer", "bitmovin"):
+                        if marker in pre_html.lower():
+                            diag["detail_has_player_marker"] = True
+                            break
                 except Exception:
-                    log(f"      ⚠️ no source-btn in 12s")
+                    slug = f"m{i}"
 
-                # Fallback: se non c'erano source button, prova Play/video
+                # Conta iframe pre-click
+                try:
+                    diag["iframe_count_pre"] = len(page.frames)
+                except Exception:
+                    pass
+
+                # --- v14 FIX: multi-selector + retry ---
+                source_buttons_found = False
+                for attempt in range(2):
+                    for sel in SOURCE_BTN_SELECTORS:
+                        try:
+                            page.wait_for_selector(sel, timeout=10000 if attempt == 0 else 5000)
+                            cnt = page.locator(sel).count()
+                            if cnt > 0:
+                                source_buttons_found = True
+                                diag["source_buttons_found"] = cnt
+                                diag["source_selector_used"] = sel
+                                log(f"      🎬 {cnt} source(s) via {sel}")
+                                try:
+                                    loc = page.locator(sel).first
+                                    try: loc.scroll_into_view_if_needed(timeout=3000)
+                                    except Exception: pass
+                                    try:
+                                        loc.click(timeout=8000, no_wait_after=True)
+                                    except TypeError:
+                                        loc.click(timeout=8000)
+                                    diag["click_ok"] = True
+                                    diag["click_attempts"] = attempt + 1
+                                    log(f"      ✅ click source (tentativo {attempt+1})")
+                                    break
+                                except Exception as e:
+                                    log(f"      ⚠️ click: {type(e).__name__}")
+                        except Exception:
+                            continue
+                    if diag["click_ok"]:
+                        break
+                    if attempt == 0:
+                        log(f"      🔄 retry source detection")
+                        page.wait_for_timeout(3000)
+
                 if not source_buttons_found:
+                    log(f"      ⚠️ nessun source-btn in 20s")
+                    # Fallback Play/Guarda
                     for sel in ("button:has-text('Play')",
                                 "button:has-text('Guarda')",
                                 "button[aria-label*='play' i]",
@@ -581,60 +592,104 @@ def run_playwright(timeout_s=45, ua=UA_DESKTOP, headless=True,
                         try:
                             if page.locator(sel).count() > 0:
                                 try:
-                                    page.locator(sel).first.click(timeout=2000, no_wait_after=True)
+                                    page.locator(sel).first.click(timeout=3000, no_wait_after=True)
                                 except TypeError:
-                                    page.locator(sel).first.click(timeout=2000)
+                                    page.locator(sel).first.click(timeout=3000)
                                 log(f"      🎬 fallback click: {sel}")
-                                page.wait_for_timeout(2500)
+                                diag["click_ok"] = True
+                                diag["source_selector_used"] = sel
+                                page.wait_for_timeout(3000)
                                 break
                         except Exception:
                             continue
 
-                # Track "no sources" (non è un nav fail, ma se 5 di fila stop)
                 if source_buttons_found:
                     consecutive_no_sources = 0
                 else:
                     consecutive_no_sources += 1
 
-                # Debug save post-click
+                # --- Network quiet wait ---
+                if diag["click_ok"]:
+                    quiet_start = time.time()
+                    last_count = len(network_map)
+                    for _ in range(30):  # max 15s
+                        page.wait_for_timeout(500)
+                        if len(network_map) != last_count:
+                            last_count = len(network_map)
+                            quiet_start = time.time()
+                        if time.time() - quiet_start >= 2.0:
+                            break
+                    diag["elapsed_ms"] = int((time.time() - t_match0) * 1000)
+
+                # Salva HTML post-click + screenshot
                 try:
-                    slug = re.sub(r'[^a-z0-9]', '_', path.split("/")[-1])[:40]
-                    dbg = os.path.join(debug_dir, f"sc_stream_{slug}.html")
-                    Path(dbg).write_text(page.content(), encoding="utf-8")
+                    post_html = page.content()
+                    Path(os.path.join(detail_dir, f"post_{slug}.html")).write_text(
+                        post_html, encoding="utf-8")
+                    page.screenshot(
+                        path=os.path.join(screenshot_dir, f"{slug}.png"),
+                        full_page=False)
                 except Exception:
                     pass
 
-                # Log frames (skip chat)
+                # Frame tree
                 for f in page.frames:
                     furl = f.url or ""
                     if (furl and furl != "about:blank"
                             and CHAT_HOST_FILTER not in furl):
+                        diag["frame_urls"].append(furl[:300])
                         log(f"      🖼️ frame: {furl[:100]}")
-
-                # Check frame URLs per m3u8
-                for frame in page.frames:
-                    try:
-                        furl = frame.url
-                        if furl and (".m3u8" in furl or ".mpd" in furl):
+                        if ".m3u8" in furl or ".mpd" in furl:
                             found.append({"url": furl, "referer": link,
                                           "title": page.title() or "StreamCorner",
                                           "source": "frame-url"})
-                            log(f"    🎯 FRAME: {furl[:120]}")
+                            diag["m3u8_captured"] += 1
+                            log(f"    🎯 FRAME URL: {furl[:120]}")
+
+                diag["iframe_count_post"] = len(page.frames)
+
+                # --- v14 FALLBACK: se click ok ma 0 m3u8, scansiona HTML ---
+                if diag["click_ok"] and diag["m3u8_captured"] == 0 and not found:
+                    try:
+                        html_now = page.content()
+                        pat = re.compile(
+                            r'https?://[^\s"\'<>\\]+\.(?:m3u8|mpd)(?:\?[^\s"\'<>\\]*)?',
+                            re.I)
+                        for m in pat.finditer(html_now):
+                            u = m.group(0)
+                            if is_skipped(u): continue
+                            found.append({"url": u, "referer": link,
+                                          "title": page.title() or "StreamCorner",
+                                          "source": "html-scan"})
+                            diag["m3u8_captured"] += 1
+                            log(f"    🎯 HTML-SCAN: {u[:120]}")
                     except Exception:
                         pass
+
             except Exception as e:
-                log(f"      ⚠️ {type(e).__name__}")
+                log(f"      ⚠️ {type(e).__name__}: {str(e)[:100]}")
+                diag["error"] = f"{type(e).__name__}: {str(e)[:200]}"
                 consecutive_fails += 1
+
+            diagnosis.append(diag)
+
+        # ============ Salva assets ============
+        try:
+            files = [f for f in os.listdir(assets_dir) if f.endswith(".js")]
+            total_size = sum(os.path.getsize(os.path.join(assets_dir, f)) for f in files)
+            log(f"   📦 Bundle JS: {len(files)} file ({total_size} byte)")
+        except Exception:
+            pass
 
         browser.close()
 
-    return found, network_map, {"engine": engine, "title": title,
-                                "html_len": html_len,
-                                "cloudflare": cf_hit["cloudflare"],
-                                "blocked": False,
-                                "categories": len(cat_links),
-                                "matches": len(match_links),
-                                "base_url": BASE}
+    return found, network_map, {
+        "engine": engine, "title": title, "html_len": html_len,
+        "cloudflare": cf_hit["cloudflare"], "blocked": blocked,
+        "categories": len(cat_links), "matches": len(match_links),
+        "base_url": BASE, "diagnosis": diagnosis,
+        "homepage_bytes": len(homepage_html),
+    }
 
 
 def entry_lines(url, title, group, referer, mtype):
@@ -657,11 +712,80 @@ def write_m3u(path, entries, group_override=None):
             if not e.get("url") or e["url"] in seen: continue
             seen.add(e["url"])
             grp = group_override or e.get("group") or "StreamCorner"
-            f.write("\n".join(entry_lines(e["url"], e.get("title") or "Evento",
-                                          grp, e.get("referer") or (BASE_DEFAULT + "/"),
-                                          e.get("mtype") or manifest_type(e["url"]))) + "\n")
+            f.write("\n".join(entry_lines(
+                e["url"], e.get("title") or "Evento", grp,
+                e.get("referer") or (BASE_DEFAULT + "/"),
+                e.get("mtype") or manifest_type(e["url"]))) + "\n")
             n += 1
     return n
+
+
+def _write_diagnosis(debug_dir, diagnosis, meta, found_count):
+    try:
+        Path(os.path.join(debug_dir, DIAGNOSIS_FILE)).write_text(
+            json.dumps({
+                "generated_at": int(time.time()),
+                "meta": meta,
+                "found_streams": found_count,
+                "matches_visited": len(diagnosis),
+                "matches_with_stream": sum(1 for d in diagnosis if d["m3u8_captured"] > 0),
+                "matches_with_click": sum(1 for d in diagnosis if d["click_ok"]),
+                "matches_no_source": sum(1 for d in diagnosis if d["source_buttons_found"] == 0),
+                "matches_nav_fail": sum(1 for d in diagnosis if not d["nav_ok"]),
+                "per_match": diagnosis,
+            }, indent=2, ensure_ascii=False), encoding="utf-8")
+        log(f"   💾 {DIAGNOSIS_FILE} salvato")
+    except Exception as e:
+        log(f"   ⚠️ {DIAGNOSIS_FILE}: {e}")
+
+
+def _write_why_empty(debug_dir, meta, diagnosis, network_map):
+    """Se 0 stream: spiega perché."""
+    causes = []
+    if meta.get("blocked"):
+        causes.append("Homepage bloccata da AGCOM/CF")
+    if meta.get("html_len", 0) < 5000:
+        causes.append(f"Homepage troppo piccola ({meta.get('html_len')} byte)")
+    if meta.get("matches", 0) == 0:
+        causes.append("0 match trovati in homepage+categorie (selettori rotti?)")
+    if diagnosis:
+        nav_ok = sum(1 for d in diagnosis if d["nav_ok"])
+        click_ok = sum(1 for d in diagnosis if d["click_ok"])
+        has_src = sum(1 for d in diagnosis if d["source_buttons_found"] > 0)
+        has_iframe = sum(1 for d in diagnosis if d["iframe_count_post"] > 0)
+        if nav_ok == 0:
+            causes.append("Nessuna navigazione match riuscita (SPA nav rotta)")
+        elif click_ok == 0:
+            causes.append(f"Nav OK ({nav_ok}) ma 0 click source-btn riusciti")
+        elif has_iframe == 0:
+            causes.append(f"Click OK ({click_ok}) ma 0 iframe montati (player non carica)")
+        else:
+            causes.append(f"Iframe montati ({has_iframe}) ma 0 m3u8 intercettati (player offuscato, runtime lento)")
+        causes.append(f"Diagnostica: nav_ok={nav_ok}, click_ok={click_ok}, "
+                      f"has_source_btn={has_src}, has_iframe={has_iframe}")
+    # Network summary
+    net_hosts = {}
+    for u in network_map.keys():
+        h = host_of(u)
+        net_hosts[h] = net_hosts.get(h, 0) + 1
+    top_hosts = sorted(net_hosts.items(), key=lambda x: -x[1])[:15]
+
+    try:
+        Path(os.path.join(debug_dir, WHY_EMPTY_FILE)).write_text(
+            json.dumps({
+                "generated_at": int(time.time()),
+                "meta": meta,
+                "causes": causes,
+                "top_network_hosts": top_hosts,
+                "hint": "Se has_iframe>0 ma 0 m3u8 → player offuscato (Function constructor + AES). "
+                        "Servono più secondi post-click o fallback DaddyLive. "
+                        "Controlla sc_screenshots/*.png e sc_details/post_*.html.",
+            }, indent=2, ensure_ascii=False), encoding="utf-8")
+        log(f"   📋 {WHY_EMPTY_FILE} salvato (diagnosi 0-stream)")
+        for c in causes:
+            log(f"      • {c}")
+    except Exception as e:
+        log(f"   ⚠️ {WHY_EMPTY_FILE}: {e}")
 
 
 def main():
@@ -679,11 +803,10 @@ def main():
                     dest="embed_limit")
     ap.add_argument("--ua", choices=["desktop", "mobile"], default="desktop")
     ap.add_argument("--headful", action="store_true")
-    ap.add_argument("--base", default=BASE_DEFAULT,
-                    help="Base URL (default streamcorner.st). "
-                         "Usare un mirror .foo/.cloud/.fun se .st è bloccato.")
-    ap.add_argument("--no-probe", action="store_true",
-                    help="Salta il probe iniziale dei mirror.")
+    ap.add_argument("--base", default=BASE_DEFAULT)
+    ap.add_argument("--no-probe", action="store_true")
+    ap.add_argument("--all-matches", action="store_true",
+                    help="Visita tutte le partite (no cap 25)")
     args, unknown = ap.parse_known_args()
     if unknown:
         log(f"[*] Argomenti ignorati: {unknown}")
@@ -694,7 +817,7 @@ def main():
     ua = UA_DESKTOP if args.ua == "desktop" else UA_MOBILE
 
     log("=" * 66)
-    log(f"📡 STREAMCORNER EXTRACTOR v13.6 (source-click fix)")
+    log(f"📡 STREAMCORNER EXTRACTOR v14.0 (Debug-First)")
     log("=" * 66)
 
     if not args.no_probe:
@@ -702,34 +825,52 @@ def main():
         log("")
 
     log(f"[*] Base URL: {args.base}")
+    if args.all_matches:
+        log(f"[*] Modalità --all-matches: visita TUTTE le partite")
 
-    found, network_map, meta = run_playwright(
-        timeout_s=45, ua=ua, headless=not args.headful,
-        debug_dir=args.output_dir, max_total_time_s=900,
-        base_url=args.base)
+    try:
+        found, network_map, meta = run_playwright(
+            timeout_s=45, ua=ua, headless=not args.headful,
+            debug_dir=args.output_dir, max_total_time_s=900,
+            base_url=args.base, all_matches=args.all_matches)
+    except Exception:
+        log(f"[!] CRASH in run_playwright:")
+        log(traceback.format_exc()[:2000])
+        found, network_map, meta = [], {}, {"engine": "?", "blocked": True,
+                                             "diagnosis": [], "html_len": 0,
+                                             "base_url": args.base}
 
     log(f"[*] Risultato Playwright: {len(found)} manifest intercettati")
-    log(f"[*] Meta: {meta}")
 
     try:
         net_list = list(network_map.values())
-        net_path = os.path.join(args.output_dir, NETWORK_FILE)
-        Path(net_path).write_text(
+        Path(os.path.join(args.output_dir, NETWORK_FILE)).write_text(
             json.dumps({"total": len(net_list), "requests": net_list},
                        indent=2, ensure_ascii=False), encoding="utf-8")
-        log(f"   💾 {NETWORK_FILE} ({len(net_list)} richieste)")
+        log(f"   💾 {NETWORK_FILE} ({len(net_list)} req)")
     except Exception as e:
-        log(f"   ⚠️ salvataggio network: {e}")
+        log(f"   ⚠️ network: {e}")
 
+    # Salva diagnosi
+    _write_diagnosis(args.output_dir, meta.get("diagnosis", []),
+                     {k: v for k, v in meta.items() if k != "diagnosis"},
+                     len(found))
+
+    if not found:
+        _write_why_empty(args.output_dir, meta,
+                         meta.get("diagnosis", []), network_map)
+
+    # Dedup + filter
     seen = set()
     entries = []
+    skipped = 0
     for f in found:
         u = f["url"]
         if is_skipped(u):
             log(f"    ⏭️  SKIP {u[:100]}")
+            skipped += 1
             continue
-        if u in seen:
-            continue
+        if u in seen: continue
         seen.add(u)
         entries.append({
             "url": u,
@@ -739,18 +880,21 @@ def main():
             "mtype": manifest_type(u),
         })
 
+    if skipped:
+        log(f"[*] {skipped} URL scartati (host wrapper/DRM)")
+
     n1 = write_m3u(os.path.join(args.output_dir, "streamcorner_EVENTS_LIVE.m3u"), entries)
     log(f"   💾 EVENTS_LIVE: {n1}")
     n2 = write_m3u(os.path.join(args.output_dir, "streamcorner_VLC.m3u"),
                    entries, group_override="StreamCorner")
     log(f"   💾 VLC: {n2}")
     n3 = write_m3u(os.path.join(args.output_dir, "streamcorner_KODI.m3u"), entries)
-    log(f"   💾 KODI: {n3} (non committato)")
+    log(f"   💾 KODI: {n3}")
     n4 = write_m3u(args.output, entries)
     log(f"   💾 {args.output}: {n4}")
 
     summary = {
-        "version": "13.6",
+        "version": "14.0",
         "site": args.base,
         "engine": meta.get("engine"),
         "title": meta.get("title"),
@@ -761,29 +905,19 @@ def main():
         "matches_found": meta.get("matches"),
         "manifests_found": len(found),
         "entries_final": len(entries),
+        "skipped_wrappers": skipped,
         "extracted_at": int(time.time()),
     }
     try:
         Path(os.path.join(args.output_dir, CAPTURE_FILE)).write_text(
             json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
-        log(f"   💾 {CAPTURE_FILE} salvato")
+        log(f"   💾 {CAPTURE_FILE}")
     except Exception as e:
         log(f"   ⚠️ capture: {e}")
-
-    try:
-        assets_path = os.path.join(args.output_dir, ASSETS_DIR)
-        if os.path.isdir(assets_path):
-            files = [f for f in os.listdir(assets_path) if f.endswith(".js")]
-            total_size = sum(os.path.getsize(os.path.join(assets_path, f))
-                             for f in files)
-            log(f"   📦 Bundle JS salvati: {len(files)} file ({total_size} byte)")
-    except Exception:
-        pass
 
     log("=" * 66)
     log(f"✅ blocked={meta.get('blocked')}  entries={len(entries)}")
     log("=" * 66)
-
     return 0
 
 
