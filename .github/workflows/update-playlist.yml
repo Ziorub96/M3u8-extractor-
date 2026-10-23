@@ -1,4 +1,4 @@
-lname: Combine and Check M3U Playlists
+name: Combine and Check M3U Playlists
 
 on:
   schedule:
@@ -22,34 +22,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      # ============================================================
-      # INSTALL — playwright + patchright (stealth)
-      # ------------------------------------------------------------
-      # patchright è opzionale: se pip o il download del browser
-      # falliscono, viene rimosso così l'extractor cade pulito su
-      # playwright (il codice ha già try: patchright → except: playwright)
-      # ============================================================
       - name: Install system deps + Python packages
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-
           pip install requests yt-dlp playwright curl_cffi
-
-          # Playwright (sempre installato, è il fallback)
           playwright install --with-deps chromium
-
-          # Patchright (stealth) — opzionale, fallback pulito
-          if pip install patchright 2>/dev/null; then
-            if patchright install --with-deps chromium 2>/dev/null; then
-              echo "✅ patchright (stealth) pronto"
-            else
-              echo "⚠️ patchright browser fallito — rimuovo patchright per forzare fallback a playwright"
-              pip uninstall -y patchright
-            fi
-          else
-            echo "ℹ️ patchright non disponibile — l'extractor userà playwright"
-          fi
 
       # ============================================================
       # ESTRATTORI ATTIVI
@@ -65,39 +43,6 @@ jobs:
       - name: Extract CDN Live TV channels and events
         run: python cdnlivetv_extractor.py
         continue-on-error: true
-
-      # --- StreamCorner v14.0 (Playwright stealth + debug-first) ---
-      - name: Extract StreamCorner streams (Playwright stealth)
-        run: python streamcorner_extractor.py --output streamcorner_COMPLETE.m3u
-        timeout-minutes: 12
-        continue-on-error: true
-
-      # ============================================================
-      # ARTIFACT DEBUG StreamCorner (solo per ispezione manuale)
-      # ------------------------------------------------------------
-      # Questi file NON vengono committati nel repo:
-      #   - sc_diagnosis.json          → tabella per-match (nav/click/iframe/m3u8)
-      #   - sc_diagnosis_why_empty.json → presente solo se 0 stream, con causes[]
-      #   - sc_network.json             → tutte le richieste interessanti
-      #   - sc_homepage.html            → HTML della home (per debug selettori)
-      #   - sc_details/*.html           → HTML pre/post click per match
-      #   - sc_screenshots/*.png        → screenshot per match
-      # ============================================================
-      - name: Upload StreamCorner debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: streamcorner-debug
-          path: |
-            sc_diagnosis.json
-            sc_capture.json
-            sc_network.json
-            sc_diagnosis_why_empty.json
-            sc_homepage.html
-            sc_details/*.html
-            sc_screenshots/*.png
-          retention-days: 7
-          if-no-files-found: ignore
 
       # ============================================================
       # STEP DISMESSI (commentati per storico)
@@ -127,7 +72,3 @@ jobs:
             daddylive_streams.m3u
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
-            streamcorner_EVENTS_LIVE.m3u
-            streamcorner_VLC.m3u
-            streamcorner_COMPLETE.m3u
-            sc_capture.json
