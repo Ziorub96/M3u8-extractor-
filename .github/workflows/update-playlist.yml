@@ -44,9 +44,6 @@ jobs:
         run: python cdnlivetv_extractor.py
         continue-on-error: true
 
-      - name: Extract Vavoo streams
-        run: python vavoo_extractor.py
-        continue-on-error: true
 
       # ============================================================
       # STEP DISMESSI (commentati per storico)
@@ -76,4 +73,3 @@ jobs:
             daddylive_streams.m3u
             cdnlivetv_channels.m3u
             cdnlivetv_events.m3u
-            vavoo_streams.m3u
