@@ -15,7 +15,7 @@ BASE_CANDIDATES = [
     "https://dlhd.so",
     "https://dlive.sx",
     "https://dlhd.st",
-    "https://daddylive.li",
+    "https://daddylive.at",
 ]
 
 PLAYER_FILES = ["player2.json", "player5.json", "player6.json", "player14.json"]
