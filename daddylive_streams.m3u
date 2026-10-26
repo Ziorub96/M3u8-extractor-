@@ -1,185 +1,223 @@
 #EXTM3U
-#EXTINF:-1 tvg-name="beIN SPORT 1" group-title="DaddyLive",beIN SPORT 1
-https://9r70o1.l948728p57nx.net:8443/hls/zj52139k3.m3u8?s=mlgSuAr-WgaT3kwgGhDetw&e=1792990219
 #EXTINF:-1 tvg-name="beIN SPORT 3" group-title="DaddyLive",beIN SPORT 3
-https://9r70o1.l948728p57nx.net:8443/hls/63r8g0nw7pt1.m3u8?s=EDTioZm77CIwjQA917bQ9w&e=1792990219
-#EXTINF:-1 tvg-name="beIN SPORT 2" group-title="DaddyLive",beIN SPORT 2
-https://9r70o1.l948728p57nx.net:8443/hls/b4zuyw944nsi.m3u8?s=TLfjlCOkssRJk1SE7wD7PQ&e=1792990220
-#EXTINF:-1 tvg-name="beIN SPORT max 5" group-title="DaddyLive",beIN SPORT max 5
-https://9r70o1.l948728p57nx.net:8443/hls/j8zrwjsk.m3u8?s=XvY49zyNZ7QWp4A44SWr3Q&e=1792990220
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/63r8g0nw7pt1.m3u8?s=2ARVdr0s_mHtj0egXdCPYw&e=1793000501
 #EXTINF:-1 tvg-name="beIN SPORT max 6" group-title="DaddyLive",beIN SPORT max 6
-https://9r70o1.l948728p57nx.net:8443/hls/9ju7q.m3u8?s=c3df1LjJx5OknMowmHi1Sw&e=1792990220
-#EXTINF:-1 tvg-name="beIN SPORT max 8" group-title="DaddyLive",beIN SPORT max 8
-https://9r70o1.l948728p57nx.net:8443/hls/3gm3g6duc.m3u8?s=QaPQEKIFjUlW6mOPCcrmiw&e=1792990221
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/9ju7q.m3u8?s=_6P5ZqmVU_3wRbV3H8Ub2Q&e=1793000502
+#EXTINF:-1 tvg-name="beIN SPORT 2" group-title="DaddyLive",beIN SPORT 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/b4zuyw944nsi.m3u8?s=LfVXZDshPdpxTmt85iVkAA&e=1793000502
+#EXTINF:-1 tvg-name="beIN SPORT max 4" group-title="DaddyLive",beIN SPORT max 4
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/f2wyt4a.m3u8?s=rQy1o0frhNCkhbi5LfFFyw&e=1793000503
+#EXTINF:-1 tvg-name="beIN SPORT 1" group-title="DaddyLive",beIN SPORT 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/zj52139k3.m3u8?s=G6jgylaOLj09rFg5F7SshA&e=1793000504
 #EXTINF:-1 tvg-name="beIN SPORT max 7" group-title="DaddyLive",beIN SPORT max 7
-https://9r70o1.l948728p57nx.net:8443/hls/yefayaj8ur40kp.m3u8?s=FASstXOKEbExVk4WKkZ4RA&e=1792990222
-#EXTINF:-1 tvg-name="canal+ sport360" group-title="DaddyLive",canal+ sport360
-https://9r70o1.l948728p57nx.net:8443/hls/ns8mv9eppyr.m3u8?s=1L3sO-blFjgurOsaypWiTw&e=1792990222
-#EXTINF:-1 tvg-name="beIN SPORT max 10" group-title="DaddyLive",beIN SPORT max 10
-https://9r70o1.l948728p57nx.net:8443/hls/301al75rx.m3u8?s=SJPnQCshtVh5IFJe-vg-Ww&e=1792990222
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/yefayaj8ur40kp.m3u8?s=lhi3edZ1zzL3zCCz_5nZIQ&e=1793000505
+#EXTINF:-1 tvg-name="beIN SPORT max 8" group-title="DaddyLive",beIN SPORT max 8
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/3gm3g6duc.m3u8?s=jJ3gyl9xPD1YukFlcyuwnQ&e=1793000505
+#EXTINF:-1 tvg-name="beIN SPORT max 9" group-title="DaddyLive",beIN SPORT max 9
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/clp38tyr7pqyd6j.m3u8?s=2r8HAJdvPOXm2XKFVmT2sA&e=1793000505
 #EXTINF:-1 tvg-name="canal+ sport" group-title="DaddyLive",canal+ sport
-https://9r70o1.l948728p57nx.net:8443/hls/zyzgjq6ase.m3u8?s=VmfHevQa2543EYoeZZIqpg&e=1792990222
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/zyzgjq6ase.m3u8?s=VImX1DGC5uiDta80vBkYtA&e=1793000505
+#EXTINF:-1 tvg-name="beIN SPORT max 10" group-title="DaddyLive",beIN SPORT max 10
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/301al75rx.m3u8?s=pc_-0wSybBQidnYx8IL6aQ&e=1793000506
+#EXTINF:-1 tvg-name="canal+ sport360" group-title="DaddyLive",canal+ sport360
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ns8mv9eppyr.m3u8?s=UqyDZe0SfipIrEzfDA26wg&e=1793000507
 #EXTINF:-1 tvg-name="eurosport1" group-title="DaddyLive",eurosport1
-https://9r70o1.l948728p57nx.net:8443/hls/90n66c8y5.m3u8?s=5O2mgvcI0BUDJUyR4B-vSg&e=1792990224
-#EXTINF:-1 tvg-name="tf1" group-title="DaddyLive",tf1
-https://9r70o1.l948728p57nx.net:8443/hls/3tczny5mnro.m3u8?s=A7C91Kh8V44Nh2ccoS6l9Q&e=1792990224
-#EXTINF:-1 tvg-name="C+Live 15" group-title="DaddyLive",C+Live 15
-https://9r70o1.l948728p57nx.net:8443/hls/5m7p1ahiuu.m3u8?s=xkLJF-9zVUMbheXFfMFtnA&e=1792990224
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/90n66c8y5.m3u8?s=V5bvV46U42wp57ej69rdGw&e=1793000508
 #EXTINF:-1 tvg-name="eurosport2" group-title="DaddyLive",eurosport2
-https://9r70o1.l948728p57nx.net:8443/hls/o0gww6.m3u8?s=1me21vWpcuToJGdW4hNFHg&e=1792990224
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/o0gww6.m3u8?s=6XS9x8R-N9oeYAx0PXRbUg&e=1793000508
+#EXTINF:-1 tvg-name="rmc sport1" group-title="DaddyLive",rmc sport1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/jpsvrnx.m3u8?s=fPL-IgukDv6Ka95_br_isg&e=1793000508
+#EXTINF:-1 tvg-name="tf1" group-title="DaddyLive",tf1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/3tczny5mnro.m3u8?s=-7x5DCneioP15urJtNljXg&e=1793000509
+#EXTINF:-1 tvg-name="C+Live 15" group-title="DaddyLive",C+Live 15
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/5m7p1ahiuu.m3u8?s=JIzGZhOKftOsV4_8v3TVsA&e=1793000510
+#EXTINF:-1 tvg-name="ES DAZN liga" group-title="DaddyLive",ES DAZN liga
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/5k7zb7n.m3u8?s=c7yYL50JU-qChHB1VvJf9g&e=1793000510
+#EXTINF:-1 tvg-name="ES DAZN 1" group-title="DaddyLive",ES DAZN 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pz65xpc.m3u8?s=4HekfB4O8KRW9FWwfZDnsQ&e=1793000511
 #EXTINF:-1 tvg-name="ES DAZN liga2" group-title="DaddyLive",ES DAZN liga2
-https://9r70o1.l948728p57nx.net:8443/hls/xd0i1.m3u8?s=nL2EMEBMS3aLBhNJMRldxw&e=1792990226
-#EXTINF:-1 tvg-name="ES DAZN 4" group-title="DaddyLive",ES DAZN 4
-https://9r70o1.l948728p57nx.net:8443/hls/hmsa6df9.m3u8?s=OdXK60o74LHX9j7jWJZjtA&e=1792990226
-#EXTINF:-1 tvg-name="ES DAZN F1" group-title="DaddyLive",ES DAZN F1
-https://9r70o1.l948728p57nx.net:8443/hls/2twhx.m3u8?s=POcpsawOggKpUC4sKCEYCg&e=1792990227
-#EXTINF:-1 tvg-name="beIN En español" group-title="DaddyLive",beIN En español
-https://9r70o1.l948728p57nx.net:8443/hls/oga0ahtwrbbgpd.m3u8?s=U_6R-VMXY6rrrUbQlhiXYQ&e=1792990228
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xd0i1.m3u8?s=BYwBwg0POCpdulEMLyEbCw&e=1793000511
+#EXTINF:-1 tvg-name="ES DAZN 2" group-title="DaddyLive",ES DAZN 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/yh3o7p7.m3u8?s=Ulq-8Obtpa5mdFG3a8GXhg&e=1793000512
+#EXTINF:-1 tvg-name="ES DAZN 3" group-title="DaddyLive",ES DAZN 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/uybh9ztgwiw1cgz.m3u8?s=YiEF2ub7pcGTNQGPXLqhUA&e=1793000512
 #EXTINF:-1 tvg-name="ESPN Deportes" group-title="DaddyLive",ESPN Deportes
-https://9r70o1.l948728p57nx.net:8443/hls/lf445b.m3u8?s=xhUazJpH4gFnj80YsTDQ9Q&e=1792990228
-#EXTINF:-1 tvg-name="TyC Sports" group-title="DaddyLive",TyC Sports
-https://9r70o1.l948728p57nx.net:8443/hls/neo2gy.m3u8?s=DtbZ2MOaTwSqicqu_xiPAA&e=1792990229
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/lf445b.m3u8?s=a7PWNwUyKUAJk59QeWC4Zg&e=1793000514
+#EXTINF:-1 tvg-name="beIN En español" group-title="DaddyLive",beIN En español
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/oga0ahtwrbbgpd.m3u8?s=gfqEOjJvsjs_ACupmD9OpQ&e=1793000514
 #EXTINF:-1 tvg-name="LAS latin america sports" group-title="DaddyLive",LAS latin america sports
-https://9r70o1.l948728p57nx.net:8443/hls/qj1k9kfmaipv.m3u8?s=pyYfoK4ZM1bqWTYBDQTiEQ&e=1792990229
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/qj1k9kfmaipv.m3u8?s=XAoG9syMtZDhaSsgH9RFBA&e=1793000514
 #EXTINF:-1 tvg-name="ESPN Premium" group-title="DaddyLive",ESPN Premium
-https://9r70o1.l948728p57nx.net:8443/hls/eka6jtsowcqgv6.m3u8?s=CiHRt6o80e9OYVWBc0jQCA&e=1792990229
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/eka6jtsowcqgv6.m3u8?s=sMH25EpoDmM9RuEw7YWWAA&e=1793000515
+#EXTINF:-1 tvg-name="TNT sport arg" group-title="DaddyLive",TNT sport arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xkvfhc3.m3u8?s=XeEmJAkFITHFAUgXWXm-ng&e=1793000515
+#EXTINF:-1 tvg-name="TyC Sports" group-title="DaddyLive",TyC Sports
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/neo2gy.m3u8?s=9zD5pzZ9FdWEp0SpNLaY_Q&e=1793000517
+#EXTINF:-1 tvg-name="FOXsport1 arg" group-title="DaddyLive",FOXsport1 arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/jablnuk6y1adx4v.m3u8?s=URtIiKLJm_0ReYRnsLWnnA&e=1793000517
+#EXTINF:-1 tvg-name="WINsport+" group-title="DaddyLive",WINsport+
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/wwcujo0oiatyw93.m3u8?s=GViUVaiIT3a3DNEGRGVWdA&e=1793000518
+#EXTINF:-1 tvg-name="FOXsport2 arg" group-title="DaddyLive",FOXsport2 arg
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ffzigjlf1zu2xlk.m3u8?s=XuwiW0uZxWSJb5QbJXKDHA&e=1793000518
 #EXTINF:-1 tvg-name="FOXsport3 arg" group-title="DaddyLive",FOXsport3 arg
-https://9r70o1.l948728p57nx.net:8443/hls/t7w70x7v57.m3u8?s=IyXqaPfCbz11RMy2K7ZemA&e=1792990231
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/t7w70x7v57.m3u8?s=X9Yx62X7mVPLsPRDlVVskg&e=1793000519
 #EXTINF:-1 tvg-name="WINsport" group-title="DaddyLive",WINsport
-https://9r70o1.l948728p57nx.net:8443/hls/l99bacdw776ns.m3u8?s=F4ARzM_-n6VJ2RlijJ62PA&e=1792990231
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/l99bacdw776ns.m3u8?s=qR_MAoj5wkeXPDmgWNB8lA&e=1793000520
 #EXTINF:-1 tvg-name="Zapping sports" group-title="DaddyLive",Zapping sports
-https://9r70o1.l948728p57nx.net:8443/hls/robqzyh3cy.m3u8?s=Lq6QwWmqwu_7mfTzbwfx_A&e=1792990231
-#EXTINF:-1 tvg-name="ESPN1" group-title="DaddyLive",ESPN1
-https://9r70o1.l948728p57nx.net:8443/hls/a31q9.m3u8?s=I-bPy2iJDU8amFpvFZyQ0w&e=1792990232
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/robqzyh3cy.m3u8?s=wxrB2S2jGi1ecXYfpZOk7A&e=1793000520
 #EXTINF:-1 tvg-name="ESPN2" group-title="DaddyLive",ESPN2
-https://9r70o1.l948728p57nx.net:8443/hls/pu1sgwiscq0e.m3u8?s=NYTEUi4Kim8AMWyUgOJlag&e=1792990233
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pu1sgwiscq0e.m3u8?s=rtLZLf4skvs3CR9rPBRqhg&e=1793000521
+#EXTINF:-1 tvg-name="ESPN1" group-title="DaddyLive",ESPN1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/a31q9.m3u8?s=WyOCH4aWYmNXRKYMav9nqQ&e=1793000521
 #EXTINF:-1 tvg-name="ESPN4" group-title="DaddyLive",ESPN4
-https://9r70o1.l948728p57nx.net:8443/hls/jv27oczy7c.m3u8?s=YTbl3XMNo6l_wp11WL7cMg&e=1792990233
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/jv27oczy7c.m3u8?s=q7DuF1nLlFZ9Ly-ShTXRyQ&e=1793000522
 #EXTINF:-1 tvg-name="ESPN5" group-title="DaddyLive",ESPN5
-https://9r70o1.l948728p57nx.net:8443/hls/mr8x6tqp6c4d.m3u8?s=yeDOkow62HYGR5fhYFzm1g&e=1792990233
-#EXTINF:-1 tvg-name="ESPN6" group-title="DaddyLive",ESPN6
-https://9r70o1.l948728p57nx.net:8443/hls/rls67qifmmmh88.m3u8?s=rmEQSeIGUnrr6vZjKKI6hA&e=1792990233
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/mr8x6tqp6c4d.m3u8?s=Oedk2_rhiUuLG1EPQZIGMA&e=1793000523
+#EXTINF:-1 tvg-name="ES DAZN F1" group-title="DaddyLive",ES DAZN F1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/2twhx.m3u8?s=FFJEyU6M_31KoQNnDe3J-g&e=1793000523
 #EXTINF:-1 tvg-name="ESPN3" group-title="DaddyLive",ESPN3
-https://9r70o1.l948728p57nx.net:8443/hls/wlloso4ptv7ory.m3u8?s=wS-sMK05sqHB-iyJMFExyg&e=1792990233
-#EXTINF:-1 tvg-name="ESPN3MX" group-title="DaddyLive",ESPN3MX
-https://9r70o1.l948728p57nx.net:8443/hls/nrdfvp7hk3.m3u8?s=6yZH0uQ6IA1Isr1iwtWnRQ&e=1792990235
-#EXTINF:-1 tvg-name="ESPN1MX" group-title="DaddyLive",ESPN1MX
-https://9r70o1.l948728p57nx.net:8443/hls/g6auvbu66y.m3u8?s=eTRFyPU6HaziQ9KN64qySw&e=1792990235
-#EXTINF:-1 tvg-name="FOXsport1MX" group-title="DaddyLive",FOXsport1MX
-https://9r70o1.l948728p57nx.net:8443/hls/3a25f0ns5g62a.m3u8?s=2jwSlH90Cpw_xmN-P31sVw&e=1792990236
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/wlloso4ptv7ory.m3u8?s=BrEnSrz-mP1-02wOJiX2Yw&e=1793000523
+#EXTINF:-1 tvg-name="ESPN7" group-title="DaddyLive",ESPN7
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/en8640r.m3u8?s=K0vKnvpQ-g98P-gKOEReEQ&e=1793000523
 #EXTINF:-1 tvg-name="ESPN2MX" group-title="DaddyLive",ESPN2MX
-https://9r70o1.l948728p57nx.net:8443/hls/22hothctx.m3u8?s=KnvO4mwAnsQCG7SkmCchsg&e=1792990236
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/22hothctx.m3u8?s=byUB-m7E1MdPc-O-WLTMHQ&e=1793000525
+#EXTINF:-1 tvg-name="ESPN6" group-title="DaddyLive",ESPN6
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/rls67qifmmmh88.m3u8?s=-VhxFYv-42AKCihSnMGprg&e=1793000525
+#EXTINF:-1 tvg-name="ESPN1MX" group-title="DaddyLive",ESPN1MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/g6auvbu66y.m3u8?s=VhAwGPlltRpKZTbOXEEG-A&e=1793000525
+#EXTINF:-1 tvg-name="ESPN3MX" group-title="DaddyLive",ESPN3MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/nrdfvp7hk3.m3u8?s=ULapakRzvGAUrXYDasGnUw&e=1793000526
+#EXTINF:-1 tvg-name="ESPN4MX" group-title="DaddyLive",ESPN4MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/yy8u716.m3u8?s=hl2shod7uc25k7xsQ6TZDA&e=1793000526
+#EXTINF:-1 tvg-name="FOXsport1MX" group-title="DaddyLive",FOXsport1MX
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/3a25f0ns5g62a.m3u8?s=HMH2SEw_h3MlUCZrh6mmiA&e=1793000526
 #EXTINF:-1 tvg-name="FOXsport2MX" group-title="DaddyLive",FOXsport2MX
-https://9r70o1.l948728p57nx.net:8443/hls/26i4kzq7gle.m3u8?s=AozGWIwAn8rMURbxsUw2WQ&e=1792990237
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/26i4kzq7gle.m3u8?s=klyKijwipE-sV68NH6GboQ&e=1793000528
 #EXTINF:-1 tvg-name="DE skyde tennis" group-title="DaddyLive",DE skyde tennis
-https://9r70o1.l948728p57nx.net:8443/hls/tqi5u10i4e7w.m3u8?s=2VNvjPAb_AwkZqvU6hjcFA&e=1792990238
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/tqi5u10i4e7w.m3u8?s=RmK31U1mFIEPY5ElvO1ITA&e=1793000529
 #EXTINF:-1 tvg-name="FOX SPORTS PREMIUM" group-title="DaddyLive",FOX SPORTS PREMIUM
-https://9r70o1.l948728p57nx.net:8443/hls/u65n7ni11.m3u8?s=Pt_hHRA8hzVWCcnGcnKzEg&e=1792990238
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/u65n7ni11.m3u8?s=3X2n30dMdGauKwd1R8_QAg&e=1793000529
 #EXTINF:-1 tvg-name="FOXsport3MX" group-title="DaddyLive",FOXsport3MX
-https://9r70o1.l948728p57nx.net:8443/hls/pzhcs.m3u8?s=MCh4oR_Wgo0VFzXIW4P_vg&e=1792990238
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pzhcs.m3u8?s=uO_EXTjy3RlXSOZ5Nc3IQw&e=1793000529
 #EXTINF:-1 tvg-name="DE skyde f1" group-title="DaddyLive",DE skyde f1
-https://9r70o1.l948728p57nx.net:8443/hls/pxchrxn0j.m3u8?s=4WWuKbWpSPKIZaqNafX9tg&e=1792990238
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pxchrxn0j.m3u8?s=sG6ncTA2_dmIkAMn5DcnWQ&e=1793000529
 #EXTINF:-1 tvg-name="DE dazn 1" group-title="DaddyLive",DE dazn 1
-https://9r70o1.l948728p57nx.net:8443/hls/uksv9.m3u8?s=XhlpVDLDDXx-RwM4XW8ijg&e=1792990238
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/uksv9.m3u8?s=1bR_t-wY3g6xAIw9mB3A0Q&e=1793000530
 #EXTINF:-1 tvg-name="DE dazn 2" group-title="DaddyLive",DE dazn 2
-https://9r70o1.l948728p57nx.net:8443/hls/1i7dz4hah.m3u8?s=oIOKE_zPiGb0Jzw23pH6fA&e=1792990239
-#EXTINF:-1 tvg-name="UK TNT SPORT" group-title="DaddyLive",UK TNT SPORT
-https://9r70o1.l948728p57nx.net:8443/hls/wy8um9jzc.m3u8?s=987a-W6iXl681UbNrRnhwA&e=1792990240
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/1i7dz4hah.m3u8?s=9Ib_qi0pCCtdNLK8ZjLQug&e=1793000531
 #EXTINF:-1 tvg-name="UK F1" group-title="DaddyLive",UK F1
-https://9r70o1.l948728p57nx.net:8443/hls/se7jggn04vd5.m3u8?s=2cACvWruuVpwEQVCLogF2Q&e=1792990240
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/se7jggn04vd5.m3u8?s=LyQxxGfk2S7bWmrDvoca8g&e=1793000532
+#EXTINF:-1 tvg-name="DE Sportdigital Fussball" group-title="DaddyLive",DE Sportdigital Fussball
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ylsjxzj.m3u8?s=vZJyrca6EiMdrEjKbGKQ2w&e=1793000532
 #EXTINF:-1 tvg-name="IT SKY CALCIO" group-title="DaddyLive",IT SKY CALCIO
-https://9r70o1.l948728p57nx.net:8443/hls/c5kpdschm8te38.m3u8?s=4KxU3VFz6Jp-2pgd1qOdQQ&e=1792990240
-#EXTINF:-1 tvg-name="IT Zona DAZN" group-title="DaddyLive",IT Zona DAZN
-https://9r70o1.l948728p57nx.net:8443/hls/wiyfbikc.m3u8?s=y2tLT4c96W0Fl5NsVRPTKw&e=1792990240
-#EXTINF:-1 tvg-name="NL ESPN 2" group-title="DaddyLive",NL ESPN 2
-https://9r70o1.l948728p57nx.net:8443/hls/47hz1omhk93.m3u8?s=a67vFxDbqzd5aBoXgUUUew&e=1792990242
-#EXTINF:-1 tvg-name="NL ESPN 1" group-title="DaddyLive",NL ESPN 1
-https://9r70o1.l948728p57nx.net:8443/hls/3dzb6y43759m.m3u8?s=LXdGzoDAywVn3zE_-5xspw&e=1792990242
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/c5kpdschm8te38.m3u8?s=lmubAOliA6StWbeW18SrXw&e=1793000532
 #EXTINF:-1 tvg-name="PT SPORT 1" group-title="DaddyLive",PT SPORT 1
-https://9r70o1.l948728p57nx.net:8443/hls/vlxrv0an8sz.m3u8?s=1ZdyuCG77Vv-s-oZWEpqnQ&e=1792990242
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/vlxrv0an8sz.m3u8?s=WAU0CTIOM8BxlwzL1lcMkA&e=1793000534
+#EXTINF:-1 tvg-name="UK TNT SPORT" group-title="DaddyLive",UK TNT SPORT
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/wy8um9jzc.m3u8?s=245AyQo3jioEIZldImeXbQ&e=1793000534
+#EXTINF:-1 tvg-name="NL ESPN 2" group-title="DaddyLive",NL ESPN 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/47hz1omhk93.m3u8?s=lNcqDhAPT8o0c7ooHvnUZQ&e=1793000535
 #EXTINF:-1 tvg-name="NL ESPN 3" group-title="DaddyLive",NL ESPN 3
-https://9r70o1.l948728p57nx.net:8443/hls/bd1smu.m3u8?s=ZNQvMamernP0Q1lqiCHV7Q&e=1792990242
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/bd1smu.m3u8?s=P2JOLgY62mh1NI46i8BaQw&e=1793000535
+#EXTINF:-1 tvg-name="NL ESPN 1" group-title="DaddyLive",NL ESPN 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/3dzb6y43759m.m3u8?s=BVYg8Gc5ungT7_vighqz4g&e=1793000535
 #EXTINF:-1 tvg-name="PT SPORT 2" group-title="DaddyLive",PT SPORT 2
-https://9r70o1.l948728p57nx.net:8443/hls/pyhkq8yt099o.m3u8?s=Urot5j2vnQ9yIPtrko3j-A&e=1792990242
-#EXTINF:-1 tvg-name="GR SPORT 3" group-title="DaddyLive",GR SPORT 3
-https://9r70o1.l948728p57nx.net:8443/hls/dhz6711x14.m3u8?s=2lrGLYh3NAs8ufbH0zUDhA&e=1792990244
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pyhkq8yt099o.m3u8?s=Walrbl_xdPcBVompvdZ7BQ&e=1793000535
+#EXTINF:-1 tvg-name="PT SPORT 3" group-title="DaddyLive",PT SPORT 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/jhg2k3cx0fkczd9.m3u8?s=L4a2Ys6I_-0uazyIYxJHgA&e=1793000537
 #EXTINF:-1 tvg-name="GR SPORT 1" group-title="DaddyLive",GR SPORT 1
-https://9r70o1.l948728p57nx.net:8443/hls/mi2ici8vuf99s.m3u8?s=Vc9zR89Tcd7Eyu_LlOpxcA&e=1792990244
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/mi2ici8vuf99s.m3u8?s=5XS3mWzzq_oAjO9gL9UVKg&e=1793000538
 #EXTINF:-1 tvg-name="TR BeIN sport 1" group-title="DaddyLive",TR BeIN sport 1
-https://9r70o1.l948728p57nx.net:8443/hls/a2ao4jza74qn.m3u8?s=M9Fm8HprcCRzzGrd7h8Kiw&e=1792990244
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/a2ao4jza74qn.m3u8?s=Tp4OieAhBG9lb4zYYaENEQ&e=1793000538
+#EXTINF:-1 tvg-name="GR SPORT 2" group-title="DaddyLive",GR SPORT 2
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/kw3emdjtppu4isd.m3u8?s=SoumzKFUVuBE_UPvoKEJdg&e=1793000538
 #EXTINF:-1 tvg-name="TR BeIN sport 2" group-title="DaddyLive",TR BeIN sport 2
-https://9r70o1.l948728p57nx.net:8443/hls/g0mhf9qfb47.m3u8?s=Wm163p3K6cI8AowDXzGYCg&e=1792990245
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/g0mhf9qfb47.m3u8?s=u24E579b6luS_S0FV8x61Q&e=1793000538
+#EXTINF:-1 tvg-name="GR SPORT 3" group-title="DaddyLive",GR SPORT 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/dhz6711x14.m3u8?s=pOSflCjxMsaFYQ54sefbcA&e=1793000539
+#EXTINF:-1 tvg-name="dazn baloncesto 1" group-title="DaddyLive",dazn baloncesto 1
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/t8ruwvt.m3u8?s=hXKN-Aukle3hNBS0VNPiGQ&e=1793000540
 #EXTINF:-1 tvg-name="dazn baloncesto 2" group-title="DaddyLive",dazn baloncesto 2
-https://9r70o1.l948728p57nx.net:8443/hls/h8dl5b.m3u8?s=7qAsTzi92fJzDEUy-Ni1og&e=1792990246
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/h8dl5b.m3u8?s=l_jEFzCstLSL-gViYiGivA&e=1793000540
 #EXTINF:-1 tvg-name="EXTRA SPORT5" group-title="DaddyLive",EXTRA SPORT5
-https://9r70o1.l948728p57nx.net:8443/hls/ccw4ltoadl0.m3u8?s=MxijcyBPucjFSScxsblI1A&e=1792990247
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ccw4ltoadl0.m3u8?s=zGMXCgLGFtvDzIdq1JmEGA&e=1793000541
+#EXTINF:-1 tvg-name="dazn baloncesto 3" group-title="DaddyLive",dazn baloncesto 3
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/okaxiv07a82j1cy.m3u8?s=RXQgVHk2PbWjyw4jXNTQmA&e=1793000541
 #EXTINF:-1 tvg-name="EXTRA SPORT6" group-title="DaddyLive",EXTRA SPORT6
-https://9r70o1.l948728p57nx.net:8443/hls/f73va64wa230r3.m3u8?s=s5PhAobGzZCR4k-75tx2Dg&e=1792990247
-#EXTINF:-1 tvg-name="EXTRA SPORT7 uefa events only" group-title="DaddyLive",EXTRA SPORT7 uefa events only
-https://9r70o1.l948728p57nx.net:8443/hls/vphgx5j98j.m3u8?s=8ZXrsjKRNt854hFl-hhvuw&e=1792990247
-#EXTINF:-1 tvg-name="EXTRA SPORT8" group-title="DaddyLive",EXTRA SPORT8
-https://9r70o1.l948728p57nx.net:8443/hls/zl7czsra5l0.m3u8?s=sz6saHh63flztN3gYlzxbA&e=1792990248
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/f73va64wa230r3.m3u8?s=64W2E4_81GwQavFHmR49EQ&e=1793000543
 #EXTINF:-1 tvg-name="EXTRA SPORT9" group-title="DaddyLive",EXTRA SPORT9
-https://9r70o1.l948728p57nx.net:8443/hls/z88ks.m3u8?s=R_DvU4465qi2_dOdMRYmjg&e=1792990249
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/z88ks.m3u8?s=5w-L3OXsuadgCBNwFdBM3w&e=1793000544
+#EXTINF:-1 tvg-name="EXTRA SPORT4" group-title="DaddyLive",EXTRA SPORT4
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/gt0tikg.m3u8?s=Im9AZeIY7SWe2mRMOkj4oQ&e=1793000545
+#EXTINF:-1 tvg-name="EXTRA SPORT7 uefa events only" group-title="DaddyLive",EXTRA SPORT7 uefa events only
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/vphgx5j98j.m3u8?s=8hvd1yoxPGJ8WDvhVJ4grQ&e=1793000545
+#EXTINF:-1 tvg-name="EXTRA SPORT8" group-title="DaddyLive",EXTRA SPORT8
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/zl7czsra5l0.m3u8?s=znbDpL6dn_2MRigfqNdumg&e=1793000545
 #EXTINF:-1 tvg-name="EXTRA SPORT10" group-title="DaddyLive",EXTRA SPORT10
-https://9r70o1.l948728p57nx.net:8443/hls/8o5tb55ck3ho.m3u8?s=At8B0rmQKPQv8EVco1_V4g&e=1792990249
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/8o5tb55ck3ho.m3u8?s=eWbwzXDk594ueOAot5xpLA&e=1793000545
+#EXTINF:-1 tvg-name="EXTRA SPORT11" group-title="DaddyLive",EXTRA SPORT11
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/5er37vc.m3u8?s=XzlthFXSUrQnzOIgjwssGw&e=1793000546
 #EXTINF:-1 tvg-name="EXTRA SPORT12" group-title="DaddyLive",EXTRA SPORT12
-https://9r70o1.l948728p57nx.net:8443/hls/o4035zxmtyg.m3u8?s=SUHytZNxjt21JB3QNOugrg&e=1792990249
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/o4035zxmtyg.m3u8?s=oxW4ojerOMdofgB2mgL-2Q&e=1793000547
 #EXTINF:-1 tvg-name="EXTRA SPORT13" group-title="DaddyLive",EXTRA SPORT13
-https://9r70o1.l948728p57nx.net:8443/hls/fuge8n.m3u8?s=o_VqColpyd7ba27SH_DFfg&e=1792990249
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/fuge8n.m3u8?s=WaX-OOAHQMSX5BNO9yklbg&e=1793000547
 #EXTINF:-1 tvg-name="EXTRA SPORT14" group-title="DaddyLive",EXTRA SPORT14
-https://9r70o1.l948728p57nx.net:8443/hls/yryis2n8r5q.m3u8?s=YKU_YLG2JOzaKP_bJERW5A&e=1792990250
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/yryis2n8r5q.m3u8?s=xtS1owIfGavPKtVBUvZb2g&e=1793000548
+#EXTINF:-1 tvg-name="EXTRA SPORT15" group-title="DaddyLive",EXTRA SPORT15
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/s5b4t8j9cwh4cjy.m3u8?s=Vc7TRnKTNWdSBpinUTy4wA&e=1793000549
 #EXTINF:-1 tvg-name="EXTRA SPORT16" group-title="DaddyLive",EXTRA SPORT16
-https://9r70o1.l948728p57nx.net:8443/hls/cv6msc.m3u8?s=cX2fYpFhdTjf7PYwFwGBbg&e=1792990251
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/cv6msc.m3u8?s=F5t4wMwqNieo6U2OEkR05w&e=1793000548
+#EXTINF:-1 tvg-name="EXTRA SPORT17" group-title="DaddyLive",EXTRA SPORT17
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ei0swmg4bakyilo.m3u8?s=dDXR6Vicren17qqgAo5PlQ&e=1793000549
 #EXTINF:-1 tvg-name="EXTRA SPORT19" group-title="DaddyLive",EXTRA SPORT19
-https://9r70o1.l948728p57nx.net:8443/hls/0x0agb9il.m3u8?s=JfH4Y_ECjcD_OmlBuLiBqw&e=1792990251
-#EXTINF:-1 tvg-name="EXTRA SPORT18" group-title="DaddyLive",EXTRA SPORT18
-https://9r70o1.l948728p57nx.net:8443/hls/wxf3s.m3u8?s=tMg8oxtkf6Qc_HIdGCn0CA&e=1792990252
-#EXTINF:-1 tvg-name="EXTRA SPORT21" group-title="DaddyLive",EXTRA SPORT21
-https://9r70o1.l948728p57nx.net:8443/hls/r6e6kpsvzw.m3u8?s=zjryibetvNry0R2nhgfK3g&e=1792990253
-#EXTINF:-1 tvg-name="EXTRA SPORT24" group-title="DaddyLive",EXTRA SPORT24
-https://9r70o1.l948728p57nx.net:8443/hls/vq465szxfcqx.m3u8?s=lAUeiIxS0wpXZ4pKv0ZnJw&e=1792990253
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/0x0agb9il.m3u8?s=vDGILPu68wS4SKiiDZWbFA&e=1793000550
 #EXTINF:-1 tvg-name="EXTRA SPORT20" group-title="DaddyLive",EXTRA SPORT20
-https://9r70o1.l948728p57nx.net:8443/hls/msxuwe7lv6m.m3u8?s=uuku8kI82p5Ee44XLbpVSQ&e=1792990254
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/msxuwe7lv6m.m3u8?s=T2smfuUKgLlXAGk1sLSGmQ&e=1793000550
+#EXTINF:-1 tvg-name="EXTRA SPORT22" group-title="DaddyLive",EXTRA SPORT22
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/f9pjaof.m3u8?s=nvVd4arB8QVhFPUJyfKR1g&e=1793000552
 #EXTINF:-1 tvg-name="EXTRA SPORT23" group-title="DaddyLive",EXTRA SPORT23
-https://9r70o1.l948728p57nx.net:8443/hls/dll56gi5f5.m3u8?s=-NrA9PtAAw5u_a8Il2jIrA&e=1792990254
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/dll56gi5f5.m3u8?s=fvVn_HDgyi2A-RPko7JtdA&e=1793000552
+#EXTINF:-1 tvg-name="EXTRA SPORT18" group-title="DaddyLive",EXTRA SPORT18
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/wxf3s.m3u8?s=qfNZDJJyWLJlaMARjlqqVQ&e=1793000552
+#EXTINF:-1 tvg-name="EXTRA SPORT21" group-title="DaddyLive",EXTRA SPORT21
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/r6e6kpsvzw.m3u8?s=XVuIvfJ7KnkLt255TALiLg&e=1793000553
 #EXTINF:-1 tvg-name="EXTRA SPORT25" group-title="DaddyLive",EXTRA SPORT25
-https://9r70o1.l948728p57nx.net:8443/hls/xhyx0.m3u8?s=kgd_23hA7ja0j0Xhdpv0_w&e=1792990254
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xhyx0.m3u8?s=QXLQj48Fb22NY88WyRO5IQ&e=1793000553
+#EXTINF:-1 tvg-name="EXTRA SPORT27" group-title="DaddyLive",EXTRA SPORT27
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/tipd9ojbhil4gpx.m3u8?s=cC5BgwpyjbTg_ZBnvVZzzQ&e=1793000554
 #EXTINF:-1 tvg-name="EXTRA SPORT26" group-title="DaddyLive",EXTRA SPORT26
-https://9r70o1.l948728p57nx.net:8443/hls/p06dma8fw.m3u8?s=mqLHws-sFPri5FsxUT_VTA&e=1792990256
-#EXTINF:-1 tvg-name="EXTRA SPORT28" group-title="DaddyLive",EXTRA SPORT28
-https://9r70o1.l948728p57nx.net:8443/hls/jcb4nh2u544l.m3u8?s=Dp0mXE8QezcL9KSGSdFmPg&e=1792990256
-#EXTINF:-1 tvg-name="EXTRA SPORT31" group-title="DaddyLive",EXTRA SPORT31
-https://9r70o1.l948728p57nx.net:8443/hls/qjlkr2kjv6jgz.m3u8?s=_YdZ4w6ELr74weChwa0i7Q&e=1792990256
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/p06dma8fw.m3u8?s=S7VZPWBan5hubNGgCGPalg&e=1793000554
 #EXTINF:-1 tvg-name="EXTRA SPORT30" group-title="DaddyLive",EXTRA SPORT30
-https://9r70o1.l948728p57nx.net:8443/hls/o3zhpii8t0.m3u8?s=dNV-jT9FWR9dRzXMbmZUJA&e=1792990256
-#EXTINF:-1 tvg-name="EXTRA SPORT32" group-title="DaddyLive",EXTRA SPORT32
-https://9r70o1.l948728p57nx.net:8443/hls/tuwkpzzb.m3u8?s=JlzUpP-eard797LHUphBJA&e=1792990256
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/o3zhpii8t0.m3u8?s=57-tBsagVPikF6mLX7Nodg&e=1793000555
+#EXTINF:-1 tvg-name="EXTRA SPORT28" group-title="DaddyLive",EXTRA SPORT28
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/jcb4nh2u544l.m3u8?s=EsCCx1vseaf4m9dt0izwDw&e=1793000556
+#EXTINF:-1 tvg-name="EXTRA SPORT24" group-title="DaddyLive",EXTRA SPORT24
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/vq465szxfcqx.m3u8?s=OWdbFBC0_sZItdCycFvX8g&e=1793000556
 #EXTINF:-1 tvg-name="EXTRA SPORT33" group-title="DaddyLive",EXTRA SPORT33
-https://9r70o1.l948728p57nx.net:8443/hls/fiqsc5cnnk1fu.m3u8?s=qKNlqcfu_snD1e2_FnI8HQ&e=1792990258
-#EXTINF:-1 tvg-name="EXTRA SPORT35" group-title="DaddyLive",EXTRA SPORT35
-https://9r70o1.l948728p57nx.net:8443/hls/2bdhvj5wr8jz.m3u8?s=2CltX90-CSdHbdQcdrnH9w&e=1792990258
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/fiqsc5cnnk1fu.m3u8?s=cYC6zAPzRLUL9WiFvs0PbA&e=1793000557
+#EXTINF:-1 tvg-name="EXTRA SPORT31" group-title="DaddyLive",EXTRA SPORT31
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/qjlkr2kjv6jgz.m3u8?s=BqEGWThFAHVZwH8am3WH9Q&e=1793000557
 #EXTINF:-1 tvg-name="EXTRA SPORT34" group-title="DaddyLive",EXTRA SPORT34
-https://9r70o1.l948728p57nx.net:8443/hls/ejfvit501zy.m3u8?s=PC8KF39vO6B6XV2YTEFivg&e=1792990258
-#EXTINF:-1 tvg-name="EXTRA SPORT38" group-title="DaddyLive",EXTRA SPORT38
-https://9r70o1.l948728p57nx.net:8443/hls/pnznwxs88t3jmb.m3u8?s=uMvh9NGNovmqCsw4CLAHeQ&e=1792990258
-#EXTINF:-1 tvg-name="EXTRA SPORT36" group-title="DaddyLive",EXTRA SPORT36
-https://9r70o1.l948728p57nx.net:8443/hls/y00605nd.m3u8?s=xZNvsciwS6mLMSRl4N_RHw&e=1792990258
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ejfvit501zy.m3u8?s=iaudpgq84HAQb639oZ1aFA&e=1793000558
+#EXTINF:-1 tvg-name="EXTRA SPORT35" group-title="DaddyLive",EXTRA SPORT35
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/2bdhvj5wr8jz.m3u8?s=FRmozbw0pMUdH4kWJ3eK9g&e=1793000558
 #EXTINF:-1 tvg-name="EXTRA SPORT37" group-title="DaddyLive",EXTRA SPORT37
-https://9r70o1.l948728p57nx.net:8443/hls/o0m90t.m3u8?s=cAJhHEh0I7Hg9Qn1gqmYtw&e=1792990259
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/o0m90t.m3u8?s=4W9gFGDa3iKTWMglHyWUdw&e=1793000559
 #EXTINF:-1 tvg-name="EXTRA SPORT39" group-title="DaddyLive",EXTRA SPORT39
-https://9r70o1.l948728p57nx.net:8443/hls/o6ar0m4xg.m3u8?s=lrC24PtB2zKa37MIeWlRfg&e=1792990260
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/o6ar0m4xg.m3u8?s=Lsxj0p00xj_yDruYDo5EqQ&e=1793000560
 #EXTINF:-1 tvg-name="EXTRA SPORT41" group-title="DaddyLive",EXTRA SPORT41
-https://9r70o1.l948728p57nx.net:8443/hls/8oy6m1pk6kjb.m3u8?s=_fOjcfMklVwSiDZGn1dxcg&e=1792990260
-#EXTINF:-1 tvg-name="EXTRA SPORT43" group-title="DaddyLive",EXTRA SPORT43
-https://9r70o1.l948728p57nx.net:8443/hls/78gim9aq.m3u8?s=pT_3RWYLv8wTSrGPuif5xg&e=1792990261
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/8oy6m1pk6kjb.m3u8?s=ZtDIwqecwIPOK2cWj8YSsg&e=1793000561
+#EXTINF:-1 tvg-name="EXTRA SPORT40" group-title="DaddyLive",EXTRA SPORT40
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/q05ghne.m3u8?s=wz9WTTcHL0HoseFMQZobuw&e=1793000561
+#EXTINF:-1 tvg-name="EXTRA SPORT38" group-title="DaddyLive",EXTRA SPORT38
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/pnznwxs88t3jmb.m3u8?s=MfP4zB2oF8h2UpU9aIqkjw&e=1793000561
 #EXTINF:-1 tvg-name="EXTRA SPORT42" group-title="DaddyLive",EXTRA SPORT42
-https://9r70o1.l948728p57nx.net:8443/hls/lqyemakx9.m3u8?s=ne9TemdEMHCEKl0ACGKukA&e=1792990261
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/lqyemakx9.m3u8?s=DsbLRbSY-WAkI2UKfwcMtw&e=1793000562
 #EXTINF:-1 tvg-name="EXTRA SPORT44" group-title="DaddyLive",EXTRA SPORT44
-https://9r70o1.l948728p57nx.net:8443/hls/m7yoanrsw.m3u8?s=42aaPIItVzc7_PYht69uZg&e=1792990261
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/m7yoanrsw.m3u8?s=6cskM_v0H-Ca3L8ooaZ1QQ&e=1793000563
 #EXTINF:-1 tvg-name="EXTRA SPORT45" group-title="DaddyLive",EXTRA SPORT45
-https://9r70o1.l948728p57nx.net:8443/hls/xzyd0.m3u8?s=ID6Nf4u9yly6HQcC3bbX9Q&e=1792990262
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/xzyd0.m3u8?s=Vy0rZTQ5P0SNWo6d_TLC6Q&e=1793000563
 #EXTINF:-1 tvg-name="EXTRA SPORT46" group-title="DaddyLive",EXTRA SPORT46
-https://9r70o1.l948728p57nx.net:8443/hls/ckjmp3izx.m3u8?s=khFtlfGf1CdzCYKlNhS-cg&e=1792990263
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/ckjmp3izx.m3u8?s=4Xc-4iVAFYYh1XK1uNs72Q&e=1793000563
 #EXTINF:-1 tvg-name="EXTRA SPORT47" group-title="DaddyLive",EXTRA SPORT47
-https://9r70o1.l948728p57nx.net:8443/hls/btk8ovbsgbj1y.m3u8?s=4wItQ0jch2pxLvF0qbxKCA&e=1792990263
+https://9wd9h6.7m12bgo8dx9z.net:8443/hls/btk8ovbsgbj1y.m3u8?s=yRyw5-80-ZH28yRYd41oAQ&e=1793000564
